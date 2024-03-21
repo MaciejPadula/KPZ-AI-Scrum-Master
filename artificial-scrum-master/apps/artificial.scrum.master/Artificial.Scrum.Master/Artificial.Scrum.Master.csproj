@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Artificial.Scrum.Master.Infrastructure\Artificial.Scrum.Master.Infrastructure.csproj" />
+    <ProjectReference Include="..\Artificial.Scrum.Master.Interfaces\Artificial.Scrum.Master.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>

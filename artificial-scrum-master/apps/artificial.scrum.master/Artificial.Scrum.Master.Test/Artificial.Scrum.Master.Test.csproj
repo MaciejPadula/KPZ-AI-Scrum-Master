@@ -18,11 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="NUnit.Framework" />
+    <ProjectReference Include="..\Artificial.Scrum.Master\Artificial.Scrum.Master.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Artificial.Scrum.Master\ArtificialScrumMaster.ArtificialScrumMaster.ArtificialScrumMaster.csproj" />
+    <Using Include="NUnit.Framework" />
   </ItemGroup>
 
 </Project>

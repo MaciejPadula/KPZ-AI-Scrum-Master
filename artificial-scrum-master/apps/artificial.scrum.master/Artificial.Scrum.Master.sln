@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master", "Artificial.Scrum.Master\Artificial.Scrum.Master.csproj", "{173A3335-F449-46B5-BE55-1512DD7C9799}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master.Test", "Artificial.Scrum.Master.Test\Artificial.Scrum.Master.Test.csproj", "{A264DD87-C1B1-48D9-9680-5D8940C236DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B432A0FE-0244-45E2-962F-3F9B55350DCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.Infrastructure", "Artificial.Scrum.Master.Infrastructure\Artificial.Scrum.Master.Infrastructure.csproj", "{A60BC40A-0229-4029-B2A4-DD4F89968124}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.Interfaces", "Artificial.Scrum.Master.Interfaces\Artificial.Scrum.Master.Interfaces.csproj", "{1CC75432-02EF-4AC5-9CE0-8CE7C13D8346}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{173A3335-F449-46B5-BE55-1512DD7C9799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{173A3335-F449-46B5-BE55-1512DD7C9799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{173A3335-F449-46B5-BE55-1512DD7C9799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{173A3335-F449-46B5-BE55-1512DD7C9799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A264DD87-C1B1-48D9-9680-5D8940C236DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A264DD87-C1B1-48D9-9680-5D8940C236DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A264DD87-C1B1-48D9-9680-5D8940C236DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A264DD87-C1B1-48D9-9680-5D8940C236DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A60BC40A-0229-4029-B2A4-DD4F89968124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A60BC40A-0229-4029-B2A4-DD4F89968124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A60BC40A-0229-4029-B2A4-DD4F89968124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A60BC40A-0229-4029-B2A4-DD4F89968124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CC75432-02EF-4AC5-9CE0-8CE7C13D8346}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CC75432-02EF-4AC5-9CE0-8CE7C13D8346}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CC75432-02EF-4AC5-9CE0-8CE7C13D8346}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CC75432-02EF-4AC5-9CE0-8CE7C13D8346}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A264DD87-C1B1-48D9-9680-5D8940C236DE} = {B432A0FE-0244-45E2-962F-3F9B55350DCF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C3EE4105-802C-4017-AA5D-87CBDAFCA91E}
+	EndGlobalSection
+EndGlobal

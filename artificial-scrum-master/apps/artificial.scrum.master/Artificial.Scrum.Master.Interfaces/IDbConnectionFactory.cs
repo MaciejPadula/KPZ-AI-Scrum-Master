@@ -4,6 +4,6 @@ namespace Artificial.Scrum.Master.Interfaces;
 
 public interface IDbConnectionFactory
 {
-  IDbConnection GetOpenConnection();
-  Task<IDbConnection> GetOpenConnectionAsync();
+    IDbConnection GetOpenConnection();
+    Task<IDbConnection> GetOpenConnectionAsync();
 }

@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Artificial.Scrum.Master.Infrastructure\Artificial.Scrum.Master.Infrastructure.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.Interfaces\Artificial.Scrum.Master.Interfaces.csproj" />
+    <ProjectReference Include="..\Artificial.Scrum.Master.ScrumProjectIntegration\Artificial.Scrum.Master.ScrumProjectIntegration.csproj" />
   </ItemGroup>
 
 </Project>

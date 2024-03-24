@@ -1,12 +1,16 @@
 using Artificial.Scrum.Master.Infrastructure;
+using Artificial.Scrum.Master.ScrumProjectIntegration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var sqlConnectionString = builder.Configuration.GetConnectionString("MS-SQL")
-  ?? throw new ArgumentNullException("MS-SQL");
+                          ?? throw new ArgumentNullException("MS-SQL");
 
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(sqlConnectionString);
+
+builder.Services.AddScrumProjectIntegration(
+    builder.Configuration.GetSection("ScrumManagementService"));
 
 var app = builder.Build();
 

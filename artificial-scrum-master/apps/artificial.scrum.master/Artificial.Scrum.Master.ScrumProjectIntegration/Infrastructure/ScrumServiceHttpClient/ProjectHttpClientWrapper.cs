@@ -25,37 +25,6 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ScrumSe
             _settings = settings;
         }
 
-        // public async Task<IEnumerable<Project>> GetUserProjects(string userId)
-        // {
-        //     var userTokens = await _userTokensRepository.GetUserAccessTokens(userId);
-        //     if (userTokens is null)
-        //     {
-        //         throw new ProjectResourceNotFoundException(
-        //             HttpStatusCode.NotFound,
-        //             $"Credentials of user:{userId} not found");
-        //     }
-        //
-        //     var response = await _httpClient.GetAsync($"{_settings.BaseUrl}/projects");
-        //     var responseString = await response.Content.ReadAsStringAsync();
-        //
-        //     var serializedResponse = JsonSerializer.Deserialize<List<Project>>(responseString);
-        //     if (response.StatusCode != HttpStatusCode.OK || serializedResponse is null)
-        //     {
-        //         throw new ProjectRequestFailedException(response.StatusCode, responseString);
-        //     }
-        //
-        //     return serializedResponse.Select(project => new GetUserProjectsResponse(
-        //         project.Id,
-        //         project.Name,
-        //         project.Slug,
-        //         project.Description,
-        //         project.ModifiedDate,
-        //         project.Owner.Username,
-        //         project.IsPrivate
-        //     ));
-        // }
-
-
         public async Task<WrapperHttpResponse> GetHttpRequest(string userId, string url)
         {
             var tokens = await _userTokensRepository.GetUserAccessTokens(userId);

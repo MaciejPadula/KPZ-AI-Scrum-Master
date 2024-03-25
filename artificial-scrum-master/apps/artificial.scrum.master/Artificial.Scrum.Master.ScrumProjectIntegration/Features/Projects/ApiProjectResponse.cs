@@ -2,7 +2,6 @@ using System.Text.Json.Serialization;
 
 namespace Artificial.Scrum.Master.ScrumProjectIntegration.Features.Projects
 {
-    // Project myDeserializedClass = JsonConvert.DeserializeObject<List<Project>>(myJsonResponse);
     public class Project
     {
         [JsonPropertyName("id")] public int Id { get; set; }

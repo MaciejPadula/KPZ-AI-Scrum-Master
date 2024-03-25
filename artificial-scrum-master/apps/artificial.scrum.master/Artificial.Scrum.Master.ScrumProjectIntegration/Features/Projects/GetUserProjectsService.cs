@@ -9,14 +9,11 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Features.Projects
 {
     internal interface IGetUserProjectsService
     {
-        // TODO: do zmainy, trzeba bedzie autoryzowac uzytkownika jakims wlasnym tokenem JWT
         Task<IEnumerable<GetUserProjectsResponse>> Handle(string userId);
     }
 
     internal class GetUserProjectsService : IGetUserProjectsService
     {
-        // TODO: wrapper opakowujacy http clienta powinien brac uuid uzytkownika, nastepnie wyciagnac z bazy tokeny do API Taiga.io...\
-
         private readonly IUserTokensRepository _userTokensRepository;
         private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
         private readonly IJwtDecoder _jwtDecoder;
@@ -31,7 +28,6 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Features.Projects
 
         public async Task<IEnumerable<GetUserProjectsResponse>> Handle(string userId)
         {
-            // TODO: tutaj wyciagniecie z bazy tokenow po id...
             var userTokens = await _userTokensRepository.GetUserAccessTokens(userId);
             if (userTokens is null)
             {

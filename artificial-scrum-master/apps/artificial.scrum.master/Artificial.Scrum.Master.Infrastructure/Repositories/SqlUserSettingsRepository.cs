@@ -20,20 +20,20 @@ internal class SqlUserSettingsRepository : IUserSettingsRepository
 
         await connection.ExecuteAsync(@"
 INSERT INTO [ScrumMaster].[UserSettings]
-(UserId, TaigaApiKey)
+(UserId, TaigaAccess)
 VALUES
-(@UserId, @TaigaApiKey)
-", new { userSettings.UserId, userSettings.TaigaApiKey });
+(@UserId, @TaigaAccess)
+", new { userSettings.UserId, userSettings.TaigaAccess });
     }
 
-    public async Task<UserSettingsEntity> GetUserSettings(string userId)
+    public async Task<UserSettingsEntity?> GetUserSettings(string userId)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
 
         var result = await connection.QueryFirstOrDefaultAsync<UserSettingsEntity>(@$"
 SELECT TOP 1
     UserId AS {nameof(UserSettingsEntity.UserId)},
-    TaigaApiKey AS {nameof(UserSettingsEntity.TaigaApiKey)}
+    TaigaAccess AS {nameof(UserSettingsEntity.TaigaAccess)}
 FROM [ScrumMaster].[UserSettings]
 WHERE UserId = @userId
 ", new { userId });
@@ -47,9 +47,9 @@ WHERE UserId = @userId
 
         await connection.ExecuteAsync(@"
 UPDATE [ScrumMaster].[UserSettings]
-SET TaigaApiKey = @TaigaApiKey
+SET TaigaAccess = @TaigaAccess
 WHERE UserId = @UserId
-", new { userSettings.UserId, userSettings.TaigaApiKey });
+", new { userSettings.UserId, userSettings.TaigaAccess });
     }
 
     public async Task<bool> UserSettingsExists(string userId)

@@ -1,10 +1,6 @@
 using Artificial.Scrum.Master.UserSettings.Features.Shared;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Artificial.Scrum.Master.UserSettings.Features.GetUserSettings;
 
@@ -25,6 +21,12 @@ internal class GetUserSettingsService : IGetUserSettingsService
     public async Task<Settings> Handle(string userId)
     {
         var result = await _userSettingsRepository.GetUserSettings(userId);
-        return new Settings(result.TaigaApiKey);
+        if (!result.HasValue)
+        {
+            return new();
+        }
+
+        var taigaAccess = JsonSerializer.Deserialize<TaigaAccess>(result.Value.TaigaAccess);
+        return new Settings(taigaAccess);
     }
 }

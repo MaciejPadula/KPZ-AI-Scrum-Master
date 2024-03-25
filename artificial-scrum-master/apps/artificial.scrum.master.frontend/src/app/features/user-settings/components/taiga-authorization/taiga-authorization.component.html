@@ -1,0 +1,39 @@
+<div class="flex flex-col m-4">
+  @if (showLoginForm()) {
+  <mat-form-field appearance="fill">
+    <mat-label>Login</mat-label>
+    <input matInput type="text" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Hasło</mat-label>
+    <input matInput type="password" required />
+  </mat-form-field>
+
+  <div class="flex flex-row justify-end gap-2">
+    <button
+      mat-stroked-button
+      color="primary"
+      type="submit"
+      (click)="hideForm()"
+    >
+      Wróć
+    </button>
+    <button mat-raised-button color="primary" type="submit">Zaloguj</button>
+  </div>
+  } @else {
+  <div>
+    <p>
+      <span>Access Token:</span>
+      <span>{{ taigaAccess?.accessToken }}</span>
+    </p>
+    <p>
+      <span>Refresh Token:</span>
+      <span>{{ taigaAccess?.refreshToken }}</span>
+    </p>
+  </div>
+  <button mat-raised-button color="primary" type="submit" (click)="showForm()">
+    Wprowadź dane ponownie
+  </button>
+  }
+</div>

@@ -1,6 +1,7 @@
 using Artificial.Scrum.Master.UserSettings.Features.Shared;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
 using Artificial.Scrum.Master.UserSettings.Infrastructure.Models;
+using System.Text.Json;
 
 namespace Artificial.Scrum.Master.UserSettings.Features.SetUserSettings;
 
@@ -21,7 +22,9 @@ internal class SetUserSettingsService : ISetUserSettingsService
     public async Task Handle(string userId, Settings settings)
     {
         var alreadyExists = await _userSettingsRepository.UserSettingsExists(userId);
-        var entity = new UserSettingsEntity(userId, settings.TaigaApiKey);
+        var entity = new UserSettingsEntity(
+            userId,
+            JsonSerializer.Serialize(settings.TaigaAccess));
 
         if (alreadyExists)
         {

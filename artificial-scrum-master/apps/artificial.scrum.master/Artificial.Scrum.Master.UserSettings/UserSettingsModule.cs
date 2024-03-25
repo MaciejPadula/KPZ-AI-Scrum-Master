@@ -25,7 +25,7 @@ public static class UserSettingsModule
             async (HttpContext context, IGetUserSettingsService service) =>
             {
                 var result = await service.Handle(userId);
-                var response = new GerUserSettingsResponse(result.TaigaApiKey);
+                var response = new GerUserSettingsResponse(result.TaigaAccess);
 
                 await context.Response.WriteAsJsonAsync(response);
             });
@@ -34,7 +34,7 @@ public static class UserSettingsModule
             "/api/user-settings",
             async (SetUserSettingsRequest settings, HttpContext context, ISetUserSettingsService service) =>
             {
-                await service.Handle(userId, new Settings(settings.TaigaApiKey));
+                await service.Handle(userId, new Settings(settings.TaigaAccess));
             });
     }
 }

@@ -1,3 +1,5 @@
+using Artificial.Scrum.Master.UserSettings.Features.Shared;
+
 namespace Artificial.Scrum.Master.UserSettings.Features.SetUserSettings;
 
-public record SetUserSettingsRequest(string TaigaApiKey);
+public readonly record struct SetUserSettingsRequest(TaigaAccess TaigaAccess);

@@ -23,7 +23,8 @@ public class SetUserSettingsServiceTests
     {
         // Arrange
         var userId = "userid";
-        var settings = new Settings("some_key");
+        var settings = new Settings(
+            new TaigaAccess("some_key", "refresh"));
         var expectedEntityCall = new UserSettingsEntity("userid", "some_key");
         _userSettingsRepository.UserSettingsExists(userId).Returns(true);
 
@@ -39,7 +40,8 @@ public class SetUserSettingsServiceTests
     {
         // Arrange
         var userId = "userid";
-        var settings = new Settings("some_key");
+        var settings = new Settings(
+            new TaigaAccess("some_key", "refresh"));
         var expectedEntityCall = new UserSettingsEntity("userid", "some_key");
         _userSettingsRepository.UserSettingsExists(userId).Returns(false);
 

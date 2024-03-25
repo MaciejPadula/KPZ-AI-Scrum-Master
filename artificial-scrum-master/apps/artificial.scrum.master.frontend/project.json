@@ -8,19 +8,27 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/artificial.scrum.master.frontend",
         "index": "apps/artificial.scrum.master.frontend/src/index.html",
         "browser": "apps/artificial.scrum.master.frontend/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/artificial.scrum.master.frontend/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           "apps/artificial.scrum.master.frontend/src/favicon.ico",
           "apps/artificial.scrum.master.frontend/src/assets"
         ],
-        "styles": ["apps/artificial.scrum.master.frontend/src/styles.scss"],
+        "styles": [
+          "@angular/material/prebuilt-themes/indigo-pink.css",
+          "apps/artificial.scrum.master.frontend/src/styles.scss",
+          "apps/artificial.scrum.master.frontend/src/theme.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -72,7 +80,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/artificial.scrum.master.frontend/jest.config.ts"
       }

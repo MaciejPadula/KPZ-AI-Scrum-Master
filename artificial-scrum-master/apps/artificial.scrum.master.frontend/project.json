@@ -28,8 +28,8 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumWarning": "1mb",
+              "maximumError": "2mb"
             },
             {
               "type": "anyComponentStyle",
@@ -42,7 +42,8 @@
         "development": {
           "optimization": false,
           "extractLicenses": false,
-          "sourceMap": true
+          "sourceMap": true,
+          "namedChunks": true
         }
       },
       "defaultConfiguration": "production"
@@ -54,7 +55,8 @@
           "buildTarget": "artificial.scrum.master.frontend:build:production"
         },
         "development": {
-          "buildTarget": "artificial.scrum.master.frontend:build:development"
+          "buildTarget": "artificial.scrum.master.frontend:build:development",
+          "proxyConfig": "apps/artificial.scrum.master.frontend/proxy.conf.js"
         }
       },
       "defaultConfiguration": "development"

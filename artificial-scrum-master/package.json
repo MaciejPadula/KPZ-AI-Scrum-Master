@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "prepare": "nx g @nx-dotnet/core:restore"
+    "prepare": "nx g @nx-dotnet/core:restore",
+    "serve-scrum-master": "nx run-many --target=serve --projects=artificial.scrum.master,artificial.scrum.master.frontend"
   },
   "private": true,
   "dependencies": {

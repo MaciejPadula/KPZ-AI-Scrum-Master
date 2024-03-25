@@ -10,9 +10,30 @@ builder.Services.AddControllers();
 builder.Services.AddInfrastructure(sqlConnectionString);
 builder.Services.AddUserSettings();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+
 app.RegisterUserSettingsEndpoints();
+app.MapControllerRoute(name: "default", "{controller}/{action=Index}/{id?}");
+
+app.MapFallbackToFile("index.html");
 
 app.Run();

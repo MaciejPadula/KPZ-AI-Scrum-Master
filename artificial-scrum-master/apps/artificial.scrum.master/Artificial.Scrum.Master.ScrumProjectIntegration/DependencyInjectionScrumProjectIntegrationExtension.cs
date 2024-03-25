@@ -26,9 +26,8 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
             });
 
-            // TODO: jak nie bedzie mocked Tokens Repository to Token Manager do wywalenia...
-            services.AddSingleton<MockupTokenManager>();
-            services.AddScoped<IUserTokensRepository, MockedUserTokensRepository>();
+            // TODO: mocked Token Repository
+            services.AddSingleton<IUserTokensRepository, MockedUserTokensRepository>();
             //
 
             services.AddScoped<IGetUserProjectsService, GetUserProjectsService>();

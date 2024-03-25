@@ -11,9 +11,9 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiToke
         // This is a mock implementation of the IUserTokensRepository interface.
         private readonly MockupTokenManager _mockupTokenManager;
 
-        public MockedUserTokensRepository(MockupTokenManager mockupTokenManager)
+        public MockedUserTokensRepository(ScrumManagementServiceSettings settings)
         {
-            _mockupTokenManager = mockupTokenManager;
+            _mockupTokenManager = new MockupTokenManager(settings);
         }
 
         public async Task<UserTokens?> GetUserAccessTokens(string userId)

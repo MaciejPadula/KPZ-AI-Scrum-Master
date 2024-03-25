@@ -43,9 +43,9 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Features.Projects
                 $"projects?member={_jwtDecoder.GetClaim(userTokens.Value.AccessToken, "user_id")}"
             );
 
-            if (projectRequestResult.StatusCode != HttpStatusCode.OK || projectRequestResult.Response is null)
+            if (projectRequestResult.StatusCode != HttpStatusCode.OK)
             {
-                throw new ProjectRequestFailedException(projectRequestResult?.Response);
+                throw new ProjectRequestFailedException(projectRequestResult.Response);
             }
 
             var serializedResponse = JsonSerializer.Deserialize<List<Project>>(projectRequestResult.Response);

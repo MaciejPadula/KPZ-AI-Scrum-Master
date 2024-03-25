@@ -1,6 +1,5 @@
 using System.Net;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Exceptions;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.Models;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Settings;
@@ -17,12 +16,12 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiToke
             _mockupTokenManager = mockupTokenManager;
         }
 
-        public async Task<UserTokens> GetUserAccessToken(string userId)
+        public async Task<UserTokens?> GetUserAccessTokens(string userId)
         {
             var loginResponse = _mockupTokenManager.LoginResponse ?? await _mockupTokenManager.LoginRequest();
             if (loginResponse is null)
             {
-                throw new RequestFailedException(HttpStatusCode.InternalServerError, "Failed to get access token");
+                throw new ProjectRequestFailedException("Failed to get access token");
             }
 
             return new UserTokens
@@ -32,7 +31,7 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiToke
             };
         }
 
-        public Task SaveUserAccessToken(string userId, UserTokens userTokens)
+        public Task SaveUserAccessTokens(string userId, UserTokens userTokens)
         {
             _mockupTokenManager.LoginResponse = new LoginResponse
             {
@@ -42,12 +41,6 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiToke
 
             return Task.CompletedTask;
         }
-    }
-
-    public class LoginResponse
-    {
-        [JsonPropertyName("auth_token")] public string AccessToken { get; set; } = default!;
-        [JsonPropertyName("refresh")] public string RefreshToken { get; set; } = default!;
     }
 
     public class MockupTokenManager
@@ -84,7 +77,7 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiToke
 
             if (response.StatusCode != HttpStatusCode.OK || serializedResponse is null)
             {
-                throw new RequestFailedException(response.StatusCode, responseString);
+                throw new ProjectRequestFailedException(responseString);
             }
 
             LoginResponse = serializedResponse;

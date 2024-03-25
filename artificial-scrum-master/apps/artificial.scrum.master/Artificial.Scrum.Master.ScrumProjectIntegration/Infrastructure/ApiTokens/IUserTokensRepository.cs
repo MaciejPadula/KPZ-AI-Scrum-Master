@@ -4,7 +4,7 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiToke
 {
     public interface IUserTokensRepository
     {
-        Task<UserTokens> GetUserAccessToken(string userId);
-        Task SaveUserAccessToken(string userId, UserTokens userTokens);
+        Task<UserTokens?> GetUserAccessTokens(string userId);
+        Task SaveUserAccessTokens(string userId, UserTokens userTokens);
     }
 }

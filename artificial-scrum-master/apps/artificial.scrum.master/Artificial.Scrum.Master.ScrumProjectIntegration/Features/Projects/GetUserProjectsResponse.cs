@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Artificial.Scrum.Master.ScrumProjectIntegration.Features.Projects
 {
-    public class GetUserProjectsResponse
-    {
-    }
+    public readonly record struct GetUserProjectsResponse(
+        int Id,
+        string Name,
+        string Slug,
+        string Description,
+        DateTime ModifiedDate,
+        string OwnerUsername,
+        bool IsPrivate
+    );
 }

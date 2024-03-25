@@ -1,5 +1,8 @@
+using Artificial.Scrum.Master.ScrumProjectIntegration.Features.Projects;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiTokens;
+using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Settings;
+using Artificial.Scrum.Master.ScrumProjectIntegration.Utilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,9 +18,20 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration
             scrumManagementServiceSettings.Bind(settings);
             services.AddSingleton(settings);
 
+            services.AddSingleton<IJwtDecoder, JwtDecoder>();
 
+            services.AddHttpClient<IProjectHttpClientWrapper, ProjectHttpClientWrapper>(c =>
+            {
+                c.BaseAddress = new Uri(settings.BaseUrl);
+                c.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+
+            // TODO: jak nie bedzie mocked Tokens Repository to Token Manager do wywalenia...
             services.AddSingleton<MockupTokenManager>();
             services.AddScoped<IUserTokensRepository, MockedUserTokensRepository>();
+            //
+
+            services.AddScoped<IGetUserProjectsService, GetUserProjectsService>();
 
             return services;
         }

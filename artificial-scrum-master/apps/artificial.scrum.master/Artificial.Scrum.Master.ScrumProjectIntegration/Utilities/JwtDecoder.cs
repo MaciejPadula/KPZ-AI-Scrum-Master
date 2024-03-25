@@ -2,20 +2,37 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace Artificial.Scrum.Master.ScrumProjectIntegration.Utilities
 {
-    public class JwtDecoder
+    public class JwtDecoder : IJwtDecoder
     {
-        public static string Decode(string token)
+        private readonly JwtSecurityTokenHandler _handler;
+
+        public JwtDecoder()
         {
-            var handler = new JwtSecurityTokenHandler();
-            var jwtSecurityToken = handler.ReadJwtToken(token);
-            return jwtSecurityToken.ToString();
+            _handler = new JwtSecurityTokenHandler();
         }
 
-        public static string GetClaim(string token, string claimType)
+        public string? GetClaim(string token, string claimTypeName)
         {
-            var handler = new JwtSecurityTokenHandler();
-            var jwtSecurityToken = handler.ReadJwtToken(token);
-            return jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == claimType)?.Value;
+            var jwtSecurityToken = _handler.ReadJwtToken(token);
+            return jwtSecurityToken.Claims
+                .FirstOrDefault(c => c.Type == claimTypeName)?.Value;
+        }
+
+        public DateTime GetExpirationDate(string token, string claimTypeName)
+        {
+            var expirationStringValue = GetClaim(token, claimTypeName);
+            if (expirationStringValue is null)
+            {
+                return DateTime.UtcNow;
+            }
+
+            var result = long.TryParse(expirationStringValue, out var expirationMilliseconds);
+            if (!result)
+            {
+                return DateTime.UtcNow;
+            }
+
+            return DateTimeOffset.FromUnixTimeSeconds(expirationMilliseconds).UtcDateTime;
         }
     }
 }

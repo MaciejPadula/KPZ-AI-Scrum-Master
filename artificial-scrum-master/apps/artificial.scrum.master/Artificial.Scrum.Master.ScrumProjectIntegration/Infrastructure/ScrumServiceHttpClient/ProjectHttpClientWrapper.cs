@@ -1,120 +1,109 @@
-using System.Net;
-using System.Text.Json;
+using System.Net.Http.Json;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Exceptions;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.Models;
-using Artificial.Scrum.Master.ScrumProjectIntegration.Settings;
-using Artificial.Scrum.Master.ScrumProjectIntegration.Utilities;
 
-namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ScrumServiceHttpClient
+namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ScrumServiceHttpClient;
+
+public class ProjectHttpClientWrapper : IProjectHttpClientWrapper
 {
-    public class ProjectHttpClientWrapper : IProjectHttpClientWrapper
+    private const string RefreshTokenUrl = "auth/refresh";
+
+    private readonly HttpClient _httpClient;
+    private readonly IUserTokensRepository _userTokensRepository;
+    private readonly ITokenValidator _tokenValidator;
+
+    public ProjectHttpClientWrapper(
+        HttpClient httpClient,
+        IUserTokensRepository userTokensRepository,
+        ITokenValidator tokenValidator)
     {
-        private readonly ScrumManagementServiceSettings _settings;
+        _httpClient = httpClient;
+        _userTokensRepository = userTokensRepository;
+        _tokenValidator = tokenValidator;
+    }
 
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IJwtDecoder _jwtDecoder;
-        private readonly IUserTokensRepository _userTokensRepository;
-
-        public ProjectHttpClientWrapper(ScrumManagementServiceSettings settings, IHttpClientFactory httpClientFactory,
-            IUserTokensRepository userTokensRepository, IJwtDecoder jwtDecoder)
+    public async Task<TResponse> GetHttpRequest<TResponse>(
+        string userId, UserTokens userTokens, string url)
+    {
+        var isValid = _tokenValidator.ValidateAccessTokenExpirationTime(userTokens.AccessToken);
+        if (!isValid)
         {
-            _httpClientFactory = httpClientFactory;
-            _userTokensRepository = userTokensRepository;
-            _jwtDecoder = jwtDecoder;
-            _settings = settings;
+            userTokens = await RefreshUserTokens(userId, userTokens);
         }
 
-        public async Task<WrapperHttpResponse> GetHttpRequest(string userId, string url)
+        _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {userTokens.AccessToken}");
+        var httpResponse = await _httpClient.GetAsync(url);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            var tokens = await _userTokensRepository.GetUserAccessTokens(userId);
-            if (tokens is null)
-            {
-                throw new ProjectResourceNotFoundException($"Credentials of user:{userId} not found");
-            }
-
-            var isValid = ValidateAccessToken(tokens.Value.AccessToken);
-            if (!isValid)
-            {
-                tokens = await RefreshUserTokens(userId, tokens.Value);
-            }
-
-            var httpClient = _httpClientFactory.CreateClient();
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {tokens.Value.AccessToken}");
-
-            var httpResponse = await httpClient.GetAsync(url);
-            var result = await httpResponse.Content.ReadAsStringAsync();
-
-            return new WrapperHttpResponse
-            {
-                Response = result,
-                StatusCode = httpResponse.StatusCode
-            };
+            var errorContent = await httpResponse.Content.ReadAsStringAsync();
+            throw new ProjectResourceNotFoundException(
+                $"Request to {url} failed with status code {httpResponse.StatusCode}: {errorContent}");
         }
 
-        public async Task<WrapperHttpResponse> PostHttpRequest(string userId, string url,
-            Dictionary<string, string> parameters)
+        var result = await httpResponse.Content.ReadFromJsonAsync<TResponse>();
+        if (result is null)
         {
-            var tokens = await _userTokensRepository.GetUserAccessTokens(userId);
-            if (tokens is null)
-            {
-                throw new ProjectResourceNotFoundException($"Credentials of user:{userId} not found");
-            }
-
-            var isValid = ValidateAccessToken(tokens.Value.AccessToken);
-            if (!isValid)
-            {
-                tokens = await RefreshUserTokens(userId, tokens.Value);
-            }
-
-            var httpClient = _httpClientFactory.CreateClient();
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {tokens.Value.AccessToken}");
-
-            var content = new FormUrlEncodedContent(parameters);
-            var httpResponse = await httpClient.PostAsync(url, content);
-            var result = await httpResponse.Content.ReadAsStringAsync();
-
-            return new WrapperHttpResponse
-            {
-                Response = result,
-                StatusCode = httpResponse.StatusCode
-            };
+            throw new ProjectRequestFailedException("Response deserialization failed");
         }
 
-        private bool ValidateAccessToken(string accessToken)
+        return result;
+    }
+
+    public async Task<TResponse> PostHttpRequest<TRequest, TResponse>(
+        string userId, UserTokens userTokens, string url, TRequest payload)
+    {
+        var isValid = _tokenValidator.ValidateAccessTokenExpirationTime(userTokens.AccessToken);
+        if (!isValid)
         {
-            var expirationDate = _jwtDecoder.GetExpirationDate(accessToken, "exp");
-            var expired = DateTime.UtcNow.AddMinutes(-(_settings.ExpirationTimeBuffer));
-            return expirationDate >= expired;
+            userTokens = await RefreshUserTokens(userId, userTokens);
         }
 
-        private async Task<UserTokens> RefreshUserTokens(string userId, UserTokens currentUserTokens)
+        _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {userTokens.AccessToken}");
+        var httpResponse = await _httpClient.PostAsJsonAsync(url, payload);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            var httpClient = _httpClientFactory.CreateClient();
-            var values = new Dictionary<string, string>
-            {
-                { "refresh", currentUserTokens.RefreshToken }
-            };
-
-            var content = new FormUrlEncodedContent(values);
-            var response = await httpClient.PostAsync($"auth/refresh", content);
-            var responseString = await response.Content.ReadAsStringAsync();
-
-            var serializedResponse = JsonSerializer.Deserialize<RefreshResponse>(responseString);
-
-            if (response.StatusCode != HttpStatusCode.OK || serializedResponse is null)
-            {
-                throw new ProjectRequestFailedException(responseString);
-            }
-
-            var newTokens = new UserTokens
-            {
-                AccessToken = serializedResponse.AccessToken,
-                RefreshToken = serializedResponse.RefreshToken
-            };
-
-            await _userTokensRepository.SaveUserAccessTokens(userId, newTokens);
-            return newTokens;
+            var errorContent = await httpResponse.Content.ReadAsStringAsync();
+            throw new ProjectResourceNotFoundException(
+                $"Request to {url} failed with status code {httpResponse.StatusCode}: {errorContent}");
         }
+
+        var result = await httpResponse.Content.ReadFromJsonAsync<TResponse>();
+        if (result is null)
+        {
+            throw new ProjectRequestFailedException("Response deserialization failed");
+        }
+
+        return result;
+    }
+
+    private async Task<UserTokens> RefreshUserTokens(string userId, UserTokens currentUserTokens)
+    {
+        var httpResponse = await _httpClient.PostAsJsonAsync(RefreshTokenUrl, new
+        {
+            refresh = currentUserTokens.RefreshToken
+        });
+
+        if (!httpResponse.IsSuccessStatusCode)
+        {
+            var errorContent = await httpResponse.Content.ReadAsStringAsync();
+            throw new ProjectResourceNotFoundException(
+                $"Request to {RefreshTokenUrl} failed with status code {httpResponse.StatusCode}: {errorContent}");
+        }
+
+        var result = await httpResponse.Content.ReadFromJsonAsync<RefreshResponse>();
+        if (result is null)
+        {
+            throw new ProjectRequestFailedException("Response deserialization failed");
+        }
+
+        var newTokens = new UserTokens
+        {
+            AccessToken = result.AccessToken,
+            RefreshToken = result.RefreshToken
+        };
+
+        await _userTokensRepository.SaveUserAccessTokens(userId, newTokens);
+        return newTokens;
     }
 }

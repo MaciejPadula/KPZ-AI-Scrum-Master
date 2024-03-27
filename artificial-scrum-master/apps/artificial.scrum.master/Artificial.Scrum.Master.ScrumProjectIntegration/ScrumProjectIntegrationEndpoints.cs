@@ -14,7 +14,7 @@ public static class ScrumProjectIntegrationEndpoints
             "/api/projects",
             async (HttpContext context, IGetUserProjectsService service, IUserAccessor userAccessor) =>
             {
-                var userId = userAccessor.GetUserId();
+                var userId = userAccessor.UserId;
                 var result = await service.Handle(userId);
 
                 context.Response.StatusCode = StatusCodes.Status200OK;

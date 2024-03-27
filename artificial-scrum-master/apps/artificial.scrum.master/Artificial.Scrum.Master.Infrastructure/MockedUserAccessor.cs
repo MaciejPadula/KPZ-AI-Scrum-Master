@@ -4,9 +4,6 @@ namespace Artificial.Scrum.Master.Infrastructure
 {
     public class MockedUserAccessor : IUserAccessor
     {
-        public string GetUserId()
-        {
-            return new Guid().ToString();
-        }
+        public string UserId => "d26186fe-c5da-4d1f-bb52-230ade2d8763";
     }
 }

@@ -4,7 +4,7 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.Models
 {
     public class RefreshResponse
     {
-        [JsonPropertyName("auth_token")] public string AccessToken { get; set; } = default!;
-        [JsonPropertyName("refresh")] public string RefreshToken { get; set; } = default!;
+        [JsonPropertyName("auth_token")] public required string AccessToken { get; set; }
+        [JsonPropertyName("refresh")] public required string RefreshToken { get; set; }
     }
 }

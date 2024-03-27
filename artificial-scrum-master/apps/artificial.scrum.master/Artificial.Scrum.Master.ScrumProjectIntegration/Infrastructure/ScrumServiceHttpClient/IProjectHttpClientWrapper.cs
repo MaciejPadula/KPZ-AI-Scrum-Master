@@ -4,7 +4,9 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ScrumSe
 {
     public interface IProjectHttpClientWrapper
     {
-        Task<WrapperHttpResponse> GetHttpRequest(string userId, string url);
-        Task<WrapperHttpResponse> PostHttpRequest(string userId, string url, Dictionary<string, string> parameters);
+        Task<TResponse> GetHttpRequest<TResponse>(string userId, UserTokens userTokens, string url);
+
+        Task<TResponse> PostHttpRequest<TRequest, TResponse>(
+            string userId, UserTokens userTokens, string url, TRequest payload);
     }
 }

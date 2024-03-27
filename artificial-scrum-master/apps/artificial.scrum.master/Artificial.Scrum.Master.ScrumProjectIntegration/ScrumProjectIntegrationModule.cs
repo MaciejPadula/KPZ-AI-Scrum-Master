@@ -1,38 +1,40 @@
 using Artificial.Scrum.Master.ScrumProjectIntegration.Features.Projects;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiTokens;
+using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.Middleware;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ScrumServiceHttpClient;
-using Artificial.Scrum.Master.ScrumProjectIntegration.Settings;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Utilities;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Artificial.Scrum.Master.ScrumProjectIntegration
 {
-    public static class DependencyInjectionScrumProjectIntegrationExtension
+    public static class ScrumProjectIntegrationModule
     {
         public static IServiceCollection AddScrumProjectIntegration(
             this IServiceCollection services,
             IConfigurationSection scrumManagementServiceSettings)
         {
-            var settings = new ScrumManagementServiceSettings();
-            scrumManagementServiceSettings.Bind(settings);
-            services.AddSingleton(settings);
-
-            services.AddSingleton<IJwtDecoder, JwtDecoder>();
-
             services.AddHttpClient<IProjectHttpClientWrapper, ProjectHttpClientWrapper>(c =>
             {
-                c.BaseAddress = new Uri(settings.BaseUrl);
-                c.DefaultRequestHeaders.Add("Accept", "application/json");
+                c.BaseAddress = new Uri(scrumManagementServiceSettings["BaseUrl"] ?? throw new
+                    InvalidOperationException("Base Url for agile service integration required"));
             });
-
             // TODO: mocked Token Repository
             services.AddSingleton<IUserTokensRepository, MockedUserTokensRepository>();
             //
+            services.AddTransient<IJwtDecoder, JwtDecoder>();
+            services.AddTransient<ITokenValidator, TokenValidator>();
+            services.AddTransient<IGetUserProjectsService, GetUserProjectsService>();
 
-            services.AddScoped<IGetUserProjectsService, GetUserProjectsService>();
+            services.AddTransient<ScrumProjectIntegrationMiddleware>();
 
             return services;
+        }
+
+        public static IApplicationBuilder UseScrumProjectIntegration(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<ScrumProjectIntegrationMiddleware>();
         }
     }
 }

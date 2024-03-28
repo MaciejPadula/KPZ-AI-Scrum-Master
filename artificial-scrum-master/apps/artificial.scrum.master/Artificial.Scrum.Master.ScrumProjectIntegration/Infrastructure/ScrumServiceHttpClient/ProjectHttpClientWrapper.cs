@@ -88,7 +88,7 @@ public class ProjectHttpClientWrapper : IProjectHttpClientWrapper
         {
             var errorContent = await httpResponse.Content.ReadAsStringAsync();
             throw new ProjectResourceNotFoundException(
-                $"Request to {RefreshTokenUrl} failed with status code {httpResponse.StatusCode}: {errorContent}");
+                $"Request to refresh jwt: {RefreshTokenUrl} failed with status code {httpResponse.StatusCode}: {errorContent}");
         }
 
         var result = await httpResponse.Content.ReadFromJsonAsync<RefreshResponse>();

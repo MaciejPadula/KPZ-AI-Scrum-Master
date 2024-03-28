@@ -33,7 +33,7 @@ internal class GetUserProjectsService : IGetUserProjectsService
         }
 
         var memberId = _jwtDecoder.GetClaim(userTokens.Value.AccessToken, "user_id");
-        if (memberId is null)
+        if (string.IsNullOrEmpty(memberId))
         {
             throw new ProjectRequestForbidException("User id not found in token");
         }

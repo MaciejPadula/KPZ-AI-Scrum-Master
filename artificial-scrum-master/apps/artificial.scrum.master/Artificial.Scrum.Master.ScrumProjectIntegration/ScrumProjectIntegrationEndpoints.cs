@@ -1,5 +1,7 @@
 using Artificial.Scrum.Master.Interfaces;
+using Artificial.Scrum.Master.ScrumProjectIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Features.Projects;
+using Artificial.Scrum.Master.ScrumProjectIntegration.Features.Timeline;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -17,7 +19,27 @@ public static class ScrumProjectIntegrationEndpoints
                 var userId = userAccessor.UserId;
                 var result = await service.Handle(userId);
 
-                context.Response.StatusCode = StatusCodes.Status200OK;
+                await context.Response.WriteAsJsonAsync(result);
+            });
+
+        routes.MapGet(
+            "/api/projects/timeline",
+            async (HttpContext context, IGetProfileTimeLineService service, IUserAccessor userAccessor) =>
+            {
+                var userId = userAccessor.UserId;
+                var result = await service.Handle(userId);
+
+                await context.Response.WriteAsJsonAsync(result);
+            });
+
+        routes.MapGet(
+            "/api/projects/timeline/{projectId}",
+            async (HttpContext context, IGetProjectTimeLineService service, IUserAccessor userAccessor,
+                string projectId) =>
+            {
+                var userId = userAccessor.UserId;
+                var result = await service.Handle(userId, projectId);
+
                 await context.Response.WriteAsJsonAsync(result);
             });
     }

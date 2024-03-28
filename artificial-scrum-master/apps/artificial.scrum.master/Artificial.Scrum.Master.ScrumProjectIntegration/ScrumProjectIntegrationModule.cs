@@ -1,4 +1,6 @@
+using Artificial.Scrum.Master.ScrumProjectIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Features.Projects;
+using Artificial.Scrum.Master.ScrumProjectIntegration.Features.Timeline;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.Middleware;
 using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ScrumServiceHttpClient;
@@ -26,6 +28,8 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration
             services.AddTransient<IJwtDecoder, JwtDecoder>();
             services.AddTransient<ITokenValidator, TokenValidator>();
             services.AddTransient<IGetUserProjectsService, GetUserProjectsService>();
+            services.AddTransient<IGetProfileTimeLineService, GetProfileTimeLineService>();
+            services.AddTransient<IGetProjectTimeLineService, GetProjectTimeLineService>();
 
             services.AddTransient<ScrumProjectIntegrationMiddleware>();
 

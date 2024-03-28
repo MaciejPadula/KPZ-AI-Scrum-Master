@@ -21,7 +21,7 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Utilities
         public DateTime GetExpirationDate(string token, string claimTypeName)
         {
             var expirationStringValue = GetClaim(token, claimTypeName);
-            if (expirationStringValue is null)
+            if (string.IsNullOrEmpty(expirationStringValue))
             {
                 return DateTime.UtcNow;
             }

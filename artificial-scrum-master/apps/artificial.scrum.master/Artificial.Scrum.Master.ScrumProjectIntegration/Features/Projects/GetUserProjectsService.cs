@@ -32,10 +32,11 @@ internal class GetUserProjectsService : IGetUserProjectsService
             throw new ProjectRequestForbidException($"Credentials of user:{userId} not found");
         }
 
+        var memberId = _jwtDecoder.GetClaim(userTokens.Value.AccessToken, "user_id");
         var projectRequestResult = await _projectHttpClientWrapper.GetHttpRequest<List<Project>>(
             userId,
             userTokens.Value,
-            $"projects?member={_jwtDecoder.GetClaim(userTokens.Value.AccessToken, "user_id")}");
+            $"projects?member={memberId}");
 
         return projectRequestResult.Select(project => new GetUserProjectsResponse
         {

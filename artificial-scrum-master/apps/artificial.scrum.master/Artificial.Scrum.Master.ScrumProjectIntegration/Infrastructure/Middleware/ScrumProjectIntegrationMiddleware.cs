@@ -1,18 +1,10 @@
 using Artificial.Scrum.Master.ScrumProjectIntegration.Exceptions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.Middleware
 {
     internal class ScrumProjectIntegrationMiddleware : IMiddleware
     {
-        private readonly ILogger<ScrumProjectIntegrationMiddleware> _logger;
-
-        public ScrumProjectIntegrationMiddleware(ILogger<ScrumProjectIntegrationMiddleware> logger)
-        {
-            _logger = logger;
-        }
-
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
@@ -31,7 +23,6 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.Middlew
             }
             catch (ProjectRequestFailedException ex)
             {
-                _logger.LogError(ex, ex.Message);
                 context.Response.StatusCode = 400;
                 await context.Response.WriteAsJsonAsync(ex.Message);
             }

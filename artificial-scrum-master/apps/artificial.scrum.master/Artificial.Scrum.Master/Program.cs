@@ -12,13 +12,31 @@ builder.Services.AddInfrastructure(sqlConnectionString);
 builder.Services.AddScrumProjectIntegration(
     builder.Configuration.GetSection("ScrumManagementService"));
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 app.UseScrumProjectIntegration();
-
-
-app.MapGet("/", () => "Hello World!");
-
 app.RegisterScrumProjectIntegrationEndpoints();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.MapControllerRoute(name: "default", "{controller}/{action=Index}/{id?}");
+
+app.MapFallbackToFile("index.html");
 
 app.Run();

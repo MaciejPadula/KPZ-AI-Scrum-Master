@@ -7,17 +7,19 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiToke
         private const int TokenRefreshRequestTimeBuffer = 2;
         private const string ExpirationTimeClaimTypeName = "exp";
 
+        private readonly TimeProvider _timeProvider;
         private readonly IJwtDecoder _jwtDecoder;
 
-        public TokenValidator(IJwtDecoder jwtDecoder)
+        public TokenValidator(TimeProvider timeProvider, IJwtDecoder jwtDecoder)
         {
+            _timeProvider = timeProvider;
             _jwtDecoder = jwtDecoder;
         }
 
         public bool ValidateAccessTokenExpirationTime(string accessToken)
         {
             var expirationDate = _jwtDecoder.GetExpirationDate(accessToken, ExpirationTimeClaimTypeName);
-            var expired = DateTime.UtcNow.AddMinutes(-TokenRefreshRequestTimeBuffer);
+            var expired = _timeProvider.GetUtcNow().AddMinutes(-TokenRefreshRequestTimeBuffer).UtcDateTime;
             return expirationDate >= expired;
         }
     }

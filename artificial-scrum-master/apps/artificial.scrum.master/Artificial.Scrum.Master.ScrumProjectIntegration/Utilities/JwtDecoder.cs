@@ -4,10 +4,12 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Utilities
 {
     public class JwtDecoder : IJwtDecoder
     {
+        private readonly TimeProvider _timeProvider;
         private readonly JwtSecurityTokenHandler _handler;
 
-        public JwtDecoder()
+        public JwtDecoder(TimeProvider timeProvider)
         {
+            _timeProvider = timeProvider;
             _handler = new JwtSecurityTokenHandler();
         }
 
@@ -23,13 +25,13 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Utilities
             var expirationStringValue = GetClaim(token, claimTypeName);
             if (string.IsNullOrEmpty(expirationStringValue))
             {
-                return DateTime.UtcNow;
+                return _timeProvider.GetUtcNow().UtcDateTime;
             }
 
             var result = long.TryParse(expirationStringValue, out var expirationMilliseconds);
             if (!result)
             {
-                return DateTime.UtcNow;
+                return _timeProvider.GetUtcNow().UtcDateTime;
             }
 
             return DateTimeOffset.FromUnixTimeSeconds(expirationMilliseconds).UtcDateTime;

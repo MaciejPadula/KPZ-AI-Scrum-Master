@@ -33,6 +33,11 @@ internal class GetUserProjectsService : IGetUserProjectsService
         }
 
         var memberId = _jwtDecoder.GetClaim(userTokens.Value.AccessToken, "user_id");
+        if (memberId is null)
+        {
+            throw new ProjectRequestForbidException("User id not found in token");
+        }
+
         var projectRequestResult = await _projectHttpClientWrapper.GetHttpRequest<List<Project>>(
             userId,
             userTokens.Value,

@@ -64,12 +64,12 @@ namespace Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiToke
             var response = await client.PostAsync("https://api.taiga.io/api/v1/auth", content);
             var responseString = await response.Content.ReadAsStringAsync();
 
-            var serializedResponse = JsonSerializer.Deserialize<LoginResponse>(responseString);
-
-            if (response.StatusCode != HttpStatusCode.OK || serializedResponse is null)
+            if (response.StatusCode != HttpStatusCode.OK)
             {
                 throw new ProjectRequestFailedException(responseString);
             }
+
+            var serializedResponse = JsonSerializer.Deserialize<LoginResponse>(responseString);
 
             LoginResponse = serializedResponse;
             return serializedResponse;

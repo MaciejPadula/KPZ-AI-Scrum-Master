@@ -27,6 +27,10 @@ internal class GetUserSettingsService : IGetUserSettingsService
         }
 
         var taigaAccess = JsonSerializer.Deserialize<TaigaAccess>(result.Value.TaigaAccess);
-        return new Settings(taigaAccess);
+
+        return new Settings
+        {
+            IsLoggedToTaiga = !string.IsNullOrEmpty(taigaAccess.AccessToken) && !string.IsNullOrEmpty(taigaAccess.RefreshToken)
+        };
     }
 }

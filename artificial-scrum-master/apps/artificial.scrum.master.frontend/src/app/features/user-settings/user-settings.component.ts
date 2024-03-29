@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   OnInit,
   signal,
@@ -8,6 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { UserSettingsDataService } from './services/user-settings-data.service';
 import { UserSettings } from './models/user-settings';
+import { TaigaAuthorizationService } from './services/taiga-authorization.service';
 import { TaigaAuthorizationComponent } from './components/taiga-authorization/taiga-authorization.component';
 
 @Component({
@@ -18,15 +20,18 @@ import { TaigaAuthorizationComponent } from './components/taiga-authorization/ta
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserSettingsComponent implements OnInit {
-  private userSettingsDataService = inject(UserSettingsDataService);
+  private readonly userSettingsDataService = inject(UserSettingsDataService);
+  private readonly taigaAuthorizationService = inject(
+    TaigaAuthorizationService
+  );
 
   #settings = signal<UserSettings | null>(null);
   public settings = this.#settings.asReadonly();
 
   public ngOnInit(): void {
-    this.userSettingsDataService.getUserSettings()
-      .subscribe((settings) => {
-        this.#settings.set(settings);
-      });
+    this.userSettingsDataService.getUserSettings().subscribe((settings) => {
+      this.#settings.set(settings);
+      this.taigaAuthorizationService.loggedToTaiga = settings.isLoggedToTaiga;
+    });
   }
 }

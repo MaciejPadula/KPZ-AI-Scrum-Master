@@ -51,16 +51,4 @@ SET TaigaAccess = @TaigaAccess
 WHERE UserId = @UserId
 ", new { userSettings.UserId, userSettings.TaigaAccess });
     }
-
-    public async Task<bool> UserSettingsExists(string userId)
-    {
-        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
-
-        var result = await connection.ExecuteScalarAsync<bool>(@"
-SELECT 1
-FROM [ScrumMaster].[UserSettings]
-WHERE UserId = @userId", new { userId });
-
-        return result;
-    }
 }

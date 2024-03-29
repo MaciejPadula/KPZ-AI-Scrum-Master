@@ -7,5 +7,4 @@ public interface IUserSettingsRepository
     Task<UserSettingsEntity?> GetUserSettings(string userId);
     Task UpdateUserSettings(UserSettingsEntity userSettings);
     Task AddUserSettings(UserSettingsEntity userSettings);
-    Task<bool> UserSettingsExists(string userId);
 }

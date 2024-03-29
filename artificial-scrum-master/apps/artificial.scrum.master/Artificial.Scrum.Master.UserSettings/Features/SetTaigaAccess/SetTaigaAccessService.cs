@@ -29,20 +29,17 @@ internal class SetTaigaAccessService : ISetTaigaAccessService
         var taigaAccessString = JsonSerializer.Serialize(taigaAccess);
         var entity = await _userSettingsRepository.GetUserSettings(userId);
 
-        if (entity.HasValue)
+        if (entity is not null)
         {
-            await _userSettingsRepository.UpdateUserSettings(entity.Value with
+            await _userSettingsRepository.UpdateUserSettings(entity with
             {
                 TaigaAccess = taigaAccessString
             });
         }
         else
         {
-            await _userSettingsRepository.AddUserSettings(new UserSettingsEntity
-            {
-                TaigaAccess = taigaAccessString,
-                UserId = userId
-            });
+            await _userSettingsRepository.AddUserSettings(new UserSettingsEntity(
+                userId, taigaAccessString));
         }
     }
 }

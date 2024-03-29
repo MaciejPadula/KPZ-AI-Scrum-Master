@@ -1,5 +1,5 @@
 namespace Artificial.Scrum.Master.UserSettings.Infrastructure.Models;
 
-public readonly record struct UserSettingsEntity(
+public record UserSettingsEntity(
     string UserId,
     string TaigaAccess);

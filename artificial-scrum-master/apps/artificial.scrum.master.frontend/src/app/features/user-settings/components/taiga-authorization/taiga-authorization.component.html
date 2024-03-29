@@ -1,23 +1,30 @@
-<div class="m-4 flex justify-center">
+<div class="m-4 flex justify-start">
   @if (!showLoginForm()) {
-  <button
-    mat-raised-button
-    color="primary"
-    type="submit"
-    (click)="forceLoginForm()"
-  >
-    Wprowadź dane ponownie
-  </button>
+  <div class="flex flex-col">
+    <p>Jesteś już zalogowany do taigi</p>
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="forceLoginForm()"
+    >
+      Wprowadź dane ponownie
+    </button>
+  </div>
   } @else {
   <div [formGroup]="formGroup" class="flex flex-col w-full">
+    <div class="mat-headline-6">Logowanie do serwisu Taiga</div>
+
     <mat-form-field appearance="fill">
       <mat-label>Login</mat-label>
       <input formControlName="login" matInput type="text" required />
+      <mat-error>Login jest wymagany</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Hasło</mat-label>
       <input formControlName="password" matInput type="password" required />
+      <mat-error>Hasło jest wymagane</mat-error>
     </mat-form-field>
 
     <div class="flex flex-row justify-end gap-2">

@@ -21,16 +21,33 @@ internal class GetUserSettingsService : IGetUserSettingsService
     public async Task<Settings> Handle(string userId)
     {
         var result = await _userSettingsRepository.GetUserSettings(userId);
-        if (!result.HasValue)
+        if (result is null)
         {
             return new();
         }
 
-        var taigaAccess = JsonSerializer.Deserialize<TaigaAccess>(result.Value.TaigaAccess);
+        var taigaAccess = DeserializeTaigaAccess(result.TaigaAccess);
 
         return new Settings
         {
-            IsLoggedToTaiga = !string.IsNullOrEmpty(taigaAccess.AccessToken) && !string.IsNullOrEmpty(taigaAccess.RefreshToken)
+            IsLoggedToTaiga = ValidateTaigaAccess(taigaAccess)
         };
+    }
+
+    private bool ValidateTaigaAccess(TaigaAccess? taigaAccess)
+    {
+        return taigaAccess.HasValue
+            && !string.IsNullOrEmpty(taigaAccess.Value.AccessToken)
+            && !string.IsNullOrEmpty(taigaAccess.Value.RefreshToken);
+    }
+
+    private TaigaAccess? DeserializeTaigaAccess(string taigaAccessString)
+    {
+        if (string.IsNullOrEmpty(taigaAccessString))
+        {
+            return null;
+        }
+
+        return JsonSerializer.Deserialize<TaigaAccess>(taigaAccessString);
     }
 }

@@ -8,8 +8,14 @@ import {
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TaigaAuthorizationService } from '../../services/taiga-authorization.service';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { TaigaAuthFormControl } from './taiga-auth-form-control';
+import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-taiga-authorization',
@@ -22,6 +28,7 @@ export class TaigaAuthorizationComponent {
   private readonly taigaAuthorizationService = inject(
     TaigaAuthorizationService
   );
+  private readonly toastService = inject(ToastService);
 
   public formGroup = new FormGroup<TaigaAuthFormControl>({
     login: new FormControl<string | null>(null, [Validators.required]),
@@ -43,6 +50,7 @@ export class TaigaAuthorizationComponent {
 
   public cancelLoginFormIfPossible() {
     this.#forceShowLoginForm.set(false);
+    this.formGroup.reset();
   }
 
   public get isFormValid() {
@@ -53,6 +61,17 @@ export class TaigaAuthorizationComponent {
     const login = this.formGroup.get('login')?.value ?? '';
     const password = this.formGroup.get('password')?.value ?? '';
 
-    this.taigaAuthorizationService.loginToTaiga(login, password);
+    this.taigaAuthorizationService.loginToTaiga(login, password).subscribe({
+      next: () => {
+        this.formGroup.reset();
+        this.#forceShowLoginForm.set(false);
+        this.toastService.openSuccess('Pomyślnie zalogowano do Taigi');
+      },
+      error: () => {
+        this.toastService.openError(
+          'Wystąpił problem z logowaniem do Taigi. Spróbuj ponownie.'
+        );
+      },
+    });
   }
 }

@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   inject,
   OnInit,
   signal,
@@ -11,13 +10,20 @@ import { UserSettingsDataService } from './services/user-settings-data.service';
 import { UserSettings } from './models/user-settings';
 import { TaigaAuthorizationService } from './services/taiga-authorization.service';
 import { TaigaAuthorizationComponent } from './components/taiga-authorization/taiga-authorization.component';
+import { MaterialModule } from '../../shared/material.module';
+import { TaigaIconComponent } from '../../shared/components/taiga-icon/taiga-icon.component';
 
 @Component({
   selector: 'app-user-settings',
   standalone: true,
   templateUrl: './user-settings.component.html',
-  imports: [CommonModule, TaigaAuthorizationComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    TaigaAuthorizationComponent,
+    MaterialModule,
+    TaigaIconComponent,
+  ],
 })
 export class UserSettingsComponent implements OnInit {
   private readonly userSettingsDataService = inject(UserSettingsDataService);

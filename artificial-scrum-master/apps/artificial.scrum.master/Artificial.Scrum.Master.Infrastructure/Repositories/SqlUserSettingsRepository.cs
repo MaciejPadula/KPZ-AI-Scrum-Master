@@ -34,7 +34,6 @@ VALUES
 
         var result = await connection.QueryFirstOrDefaultAsync<UserTokens>(@$"
 SELECT TOP 1
-    UserId AS {nameof(UserSettingsEntity.UserId)},
     TaigaAccessToken AS {nameof(UserTokens.AccessToken)},
     TaigaRefreshToken AS {nameof(UserTokens.RefreshToken)}
 FROM [ScrumMaster].[UserSettings]

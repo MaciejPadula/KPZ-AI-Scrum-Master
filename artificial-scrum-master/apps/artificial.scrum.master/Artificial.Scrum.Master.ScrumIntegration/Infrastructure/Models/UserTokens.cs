@@ -1,6 +1,6 @@
 namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Models;
 
-public readonly record struct UserTokens(
+public record UserTokens(
     string AccessToken,
     string RefreshToken
 );

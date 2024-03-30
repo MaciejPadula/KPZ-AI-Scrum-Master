@@ -28,21 +28,13 @@ internal class GetUserProjectsService : IGetUserProjectsService
 
     public async Task<IEnumerable<GetUserProjectsResponse>> Handle(string userId)
     {
-        var userTokensString = await _userTokensRepository.GetUserAccessTokens(userId);
-        if (string.IsNullOrEmpty(userTokensString))
+        var userTokens = await _userTokensRepository.GetUserAccessTokens(userId);
+        if (userTokens is null)
         {
             throw new ProjectRequestForbidException($"Credentials of user:{userId} not found");
         }
 
-        var userTokens = JsonSerializer.Deserialize<UserTokens?>(userTokensString);
-        if (!userTokens.HasValue
-            || string.IsNullOrEmpty(userTokens.Value.AccessToken)
-            || string.IsNullOrEmpty(userTokens.Value.RefreshToken))
-        {
-            throw new ProjectRequestForbidException($"Credentials of user:{userId} not found");
-        }
-
-        var memberId = _jwtDecoder.GetClaim(userTokens.Value.AccessToken, "user_id");
+        var memberId = _jwtDecoder.GetClaim(userTokens.AccessToken, "user_id");
         if (string.IsNullOrEmpty(memberId))
         {
             throw new ProjectRequestForbidException("User id not found in token");
@@ -50,7 +42,7 @@ internal class GetUserProjectsService : IGetUserProjectsService
 
         var projectRequestResult = await _projectHttpClientWrapper.GetHttpRequest<List<Project>>(
             userId,
-            userTokens.Value,
+            userTokens,
             $"projects?member={memberId}");
 
         return projectRequestResult.Select(project => new GetUserProjectsResponse

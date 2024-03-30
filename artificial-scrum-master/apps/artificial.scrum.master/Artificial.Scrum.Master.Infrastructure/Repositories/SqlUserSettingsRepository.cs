@@ -1,5 +1,6 @@
 using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
+using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Models;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
 using Artificial.Scrum.Master.UserSettings.Infrastructure.Models;
 using Dapper;
@@ -21,10 +22,26 @@ internal class SqlUserSettingsRepository : IUserSettingsRepository, IUserTokensR
 
         await connection.ExecuteAsync(@"
 INSERT INTO [ScrumMaster].[UserSettings]
-(UserId, TaigaAccess)
+(UserId, TaigaAccessToken, TaigaRefreshToken)
 VALUES
-(@UserId, @TaigaAccess)
-", new { userSettings.UserId, userSettings.TaigaAccess });
+(@UserId, @TaigaAccessToken, @TaigaRefreshToken)
+", new { userSettings.UserId, userSettings.TaigaAccessToken, userSettings.TaigaRefreshToken});
+    }
+
+    public async Task<UserTokens?> GetUserAccessTokens(string userId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+
+        var result = await connection.QueryFirstOrDefaultAsync<UserTokens>(@$"
+SELECT TOP 1
+    UserId AS {nameof(UserSettingsEntity.UserId)},
+    TaigaAccessToken AS {nameof(UserTokens.AccessToken)},
+    TaigaRefreshToken AS {nameof(UserTokens.RefreshToken)}
+FROM [ScrumMaster].[UserSettings]
+WHERE UserId = @userId
+", new { userId });
+
+        return result;
     }
 
     public async Task<UserSettingsEntity?> GetUserSettings(string userId)
@@ -34,12 +51,28 @@ VALUES
         var result = await connection.QueryFirstOrDefaultAsync<UserSettingsEntity>(@$"
 SELECT TOP 1
     UserId AS {nameof(UserSettingsEntity.UserId)},
-    TaigaAccess AS {nameof(UserSettingsEntity.TaigaAccess)}
+    TaigaAccessToken AS {nameof(UserSettingsEntity.TaigaAccessToken)},
+    TaigaRefreshToken AS {nameof(UserSettingsEntity.TaigaRefreshToken)}
 FROM [ScrumMaster].[UserSettings]
 WHERE UserId = @userId
 ", new { userId });
 
         return result;
+    }
+
+    public async Task SaveAccessTokensWhenExists(string userId, UserTokens tokens)
+    {
+        var settings = await GetUserSettings(userId);
+        if (settings is null)
+        {
+            return;
+        }
+
+        await UpdateUserSettings(settings with
+        {
+            TaigaAccessToken = tokens.AccessToken,
+            TaigaRefreshToken = tokens.RefreshToken
+        });
     }
 
     public async Task UpdateUserSettings(UserSettingsEntity userSettings)
@@ -48,35 +81,10 @@ WHERE UserId = @userId
 
         await connection.ExecuteAsync(@"
 UPDATE [ScrumMaster].[UserSettings]
-SET TaigaAccess = @TaigaAccess
+SET
+    TaigaAccessToken = @TaigaAccessToken,
+    TaigaRefreshToken = @TaigaRefreshToken
 WHERE UserId = @UserId
-", new { userSettings.UserId, userSettings.TaigaAccess });
-    }
-
-    public async Task<string?> GetUserAccessTokens(string userId)
-    {
-        var result = await GetUserSettings(userId);
-
-        return result?.TaigaAccess;
-    }
-
-    public async Task SaveAccessTokens(string userId, string tokens)
-    {
-        var settings = await GetUserSettings(userId);
-
-        if (settings is null)
-        {
-            await AddUserSettings(new UserSettingsEntity(
-                userId,
-                tokens
-            ));
-        }
-        else
-        {
-            await UpdateUserSettings(settings with
-            {
-                TaigaAccess = tokens
-            });
-        }
+", new { userSettings.UserId, userSettings.TaigaAccessToken, userSettings.TaigaRefreshToken});
     }
 }

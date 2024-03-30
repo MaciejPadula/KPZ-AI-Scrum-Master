@@ -36,35 +36,16 @@ public class GetUserSettingsServiceTests
     }
 
     [Test]
-    [TestCase(null)]
-    [TestCase("")]
-    public async Task Handle_WhenTaigaAccessInDbIsWithValue_ShouldReturnFalseTaigaFlag(string? taigaAccessInDb)
-    {
-        // Arrange
-        string userId = "1";
-        _userSettingsRepository.GetUserSettings(userId).Returns(new UserSettingsEntity(
-            userId,
-            taigaAccessInDb!));
-
-        // Act
-        var result = await _sut.Handle(userId);
-
-        // Assert
-        result.IsLoggedToTaiga.Should().BeFalse();
-    }
-
-    [Test]
     [TestCase("AccessToken", "RefreshToken", true)]
     [TestCase("", "RefreshToken", false)]
     [TestCase("AccessToken", "", false)]
     [TestCase("", "", false)]
-    public async Task Handle_WhenUserSettingsAreNotNull_ShouldReturnCorrectTaigaFlag(
+    public async Task Handle_WhenUserSettings_ShouldReturnCorrectTaigaFlag(
         string accessToken, string refreshToken, bool expectedIsLoggedToTaiga)
     {
         // Arrange
         string userId = "1";
-        var taigaAccess = new TaigaAccess(accessToken, refreshToken);
-        var userSettingsEntity = new UserSettingsEntity(userId, JsonSerializer.Serialize(taigaAccess));
+        var userSettingsEntity = new UserSettingsEntity(userId, accessToken, refreshToken);
         _userSettingsRepository.GetUserSettings(userId).Returns(userSettingsEntity);
 
         // Act

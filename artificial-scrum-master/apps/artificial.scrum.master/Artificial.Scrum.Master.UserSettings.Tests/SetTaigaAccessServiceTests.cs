@@ -24,8 +24,8 @@ public class SetTaigaAccessServiceTests
         // Arrange
         var userId = "userid";
         var taigaAccess = new TaigaAccess("some_key", "refresh");
-        var expectedEntityCall = new UserSettingsEntity("userid", "{\"AccessToken\":\"some_key\",\"RefreshToken\":\"refresh\"}");
-        _userSettingsRepository.GetUserSettings(userId).Returns(new UserSettingsEntity("userid", "{\"AccessToken\":\"key1\",\"RefreshToken\":\"key2\"}"));
+        var expectedEntityCall = new UserSettingsEntity("userid", "some_key", "refresh");
+        _userSettingsRepository.GetUserSettings(userId).Returns(new UserSettingsEntity("userid", "some_key", "refresh"));
 
         // Act
         await _sut.Handle(userId, taigaAccess);
@@ -41,7 +41,7 @@ public class SetTaigaAccessServiceTests
         // Arrange
         var userId = "userid";
         var taigaAccess = new TaigaAccess("some_key", "refresh");
-        var expectedEntityCall = new UserSettingsEntity("userid", "{\"AccessToken\":\"some_key\",\"RefreshToken\":\"refresh\"}");
+        var expectedEntityCall = new UserSettingsEntity("userid", "some_key", "refresh");
         _userSettingsRepository.GetUserSettings(userId).Returns((UserSettingsEntity?)null);
 
         // Act

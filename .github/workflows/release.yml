@@ -78,12 +78,10 @@ jobs:
     - name: Insecure Docker Repository
       run: |
         sudo truncate -s-2 /etc/docker/daemon.json
-        echo ", \"insecure-registries\": [\"172.28.0.4:5000\"]}" | sudo tee -a /etc/docker/daemon.json
+        echo ", \"insecure-registries\": [\"${{ secrets.DOCKER_REGISTRY_NAME }}\"]}" | sudo tee -a /etc/docker/daemon.json
         sudo systemctl restart docker
       
     - name: Build and push to local registry
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: 172.28.0.4:5000/artificialscrummaster:latest
+      run: |
+        docker build -t ${{ secrets.DOCKER_REGISTRY_NAME }}/artificialscrummaster:latest .
+        docker push ${{ secrets.DOCKER_REGISTRY_NAME }}/artificialscrummaster:latest

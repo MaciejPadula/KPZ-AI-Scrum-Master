@@ -50,9 +50,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: 'eris'
-    defaults:
-      run:
-        working-directory: ./artificial-scrum-master
 
     steps:
     - name: Checkout

@@ -70,26 +70,23 @@ jobs:
     - name: Copy Dockerfile
       run: cp ./artificial-scrum-master/Dockerfile .
 
-    - name: Test
-      run: ls -l
-    - name: Test
-      run: pwd
-    - name: Test
-      run: ls ./dist
+    - name: ZeroTier
+      uses: zerotier/github-action@v1
+      with:
+        network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
 
-    # - name: Test
-    #   run: ls ./KPZ-AI-Scrum-Master/wwwroot
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        config-inline: |
+          [registry."172.28.0.4:5000"]
+          http = true
+          insecure = true
 
-    # - name: Test
-    #   run: ls ./KPZ-AI-Scrum-Master
-      # - name: ZeroTier
-      #   uses: zerotier/github-action@v1
-      #   with:
-      #     network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
       
-      # - name: Build and push to local registry
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: .
-      #     push: true
-      #     tags: 172.28.0.4:5000/${{ IMAGE_NAME }}:latest
+    - name: Build and push to local registry
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: 172.28.0.4:5000/${{ IMAGE_NAME }}:latest

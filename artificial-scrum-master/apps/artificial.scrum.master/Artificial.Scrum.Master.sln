@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master.Tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B432A0FE-0244-45E2-962F-3F9B55350DCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.Infrastructure", "Artificial.Scrum.Master.Infrastructure\Artificial.Scrum.Master.Infrastructure.csproj", "{A60BC40A-0229-4029-B2A4-DD4F89968124}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master.Infrastructure", "Artificial.Scrum.Master.Infrastructure\Artificial.Scrum.Master.Infrastructure.csproj", "{A60BC40A-0229-4029-B2A4-DD4F89968124}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.Interfaces", "Artificial.Scrum.Master.Interfaces\Artificial.Scrum.Master.Interfaces.csproj", "{1CC75432-02EF-4AC5-9CE0-8CE7C13D8346}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master.Interfaces", "Artificial.Scrum.Master.Interfaces\Artificial.Scrum.Master.Interfaces.csproj", "{1CC75432-02EF-4AC5-9CE0-8CE7C13D8346}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.ScrumProjectIntegration", "Artificial.Scrum.Master.ScrumProjectIntegration\Artificial.Scrum.Master.ScrumProjectIntegration.csproj", "{7509B11C-F372-4B64-9531-CEA15420E859}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{1CC75432-02EF-4AC5-9CE0-8CE7C13D8346}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CC75432-02EF-4AC5-9CE0-8CE7C13D8346}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CC75432-02EF-4AC5-9CE0-8CE7C13D8346}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7509B11C-F372-4B64-9531-CEA15420E859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7509B11C-F372-4B64-9531-CEA15420E859}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7509B11C-F372-4B64-9531-CEA15420E859}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7509B11C-F372-4B64-9531-CEA15420E859}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

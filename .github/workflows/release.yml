@@ -30,6 +30,12 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Test dotnet app
+      run: dotnet test apps/artificial.scrum.master
+    
+    - name: Test frontend
+      run: npx nx test artificial.scrum.master.frontend
+
     - name: Build dotnet app
       run: npx nx build artificial.scrum.master
 
@@ -61,10 +67,15 @@ jobs:
         name: artificial-scrum-master-binaries
 
     - name: Test
-      run: ls ./KPZ-AI-Scrum-Master/wwwroot
-
+      run: ls -l
     - name: Test
-      run: ls ./KPZ-AI-Scrum-Master
+      run: pwd
+
+    # - name: Test
+    #   run: ls ./KPZ-AI-Scrum-Master/wwwroot
+
+    # - name: Test
+    #   run: ls ./KPZ-AI-Scrum-Master
       # - name: ZeroTier
       #   uses: zerotier/github-action@v1
       #   with:

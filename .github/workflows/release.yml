@@ -1,0 +1,58 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: artificialscrummaster
+
+jobs:
+
+  release-eris:
+      runs-on: ubuntu-latest
+      environment: 'eris'
+      defaults:
+        run:
+          working-directory: ./artificial-scrum-master
+  
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # - name: ZeroTier
+      #   uses: zerotier/github-action@v1
+      #   with:
+      #     network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
+      
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '21'
+
+      - name: Install dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build dotnet app
+        run: npx nx build artificial.scrum.master
+
+      - name: Build frontend
+        run: npx nx build artificial.scrum.master.frontend --configuration=production
+
+      - name: Copy frontend
+        run: cp -r ./dist/apps/artificial.scrum.master.frontend/browser ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/wwwroot
+
+      - name: Test
+        run: ls ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/wwwroot
+
+      - name: Test
+        run: ls ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master
+      # - name: Build and push to local registry
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: 172.28.0.4:5000/${{ IMAGE_NAME }}:latest

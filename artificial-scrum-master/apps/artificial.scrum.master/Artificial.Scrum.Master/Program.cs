@@ -1,4 +1,5 @@
 using Artificial.Scrum.Master.Infrastructure;
+using Artificial.Scrum.Master.ScrumProjectIntegration;
 using Artificial.Scrum.Master.UserSettings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ var sqlConnectionString = builder.Configuration.GetConnectionString("MS-SQL")
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(sqlConnectionString);
 builder.Services.AddUserSettings();
+builder.Services.AddScrumProjectIntegration(
+    builder.Configuration.GetSection("ScrumManagementService"));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -32,6 +35,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.RegisterUserSettingsEndpoints();
+app.UseScrumProjectIntegration();
+app.RegisterScrumProjectIntegrationEndpoints();
 app.MapControllerRoute(name: "default", "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");

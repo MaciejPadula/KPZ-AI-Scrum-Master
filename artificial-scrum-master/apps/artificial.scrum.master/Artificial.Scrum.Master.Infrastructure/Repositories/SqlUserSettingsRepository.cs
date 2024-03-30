@@ -1,11 +1,12 @@
 using Artificial.Scrum.Master.Interfaces;
+using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
 using Artificial.Scrum.Master.UserSettings.Infrastructure.Models;
 using Dapper;
 
 namespace Artificial.Scrum.Master.Infrastructure.Repositories;
 
-internal class SqlUserSettingsRepository : IUserSettingsRepository
+internal class SqlUserSettingsRepository : IUserSettingsRepository, IUserTokensRepository
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
@@ -50,5 +51,31 @@ UPDATE [ScrumMaster].[UserSettings]
 SET TaigaAccess = @TaigaAccess
 WHERE UserId = @UserId
 ", new { userSettings.UserId, userSettings.TaigaAccess });
+    }
+
+    public async Task<string?> GetUserAccessTokens(string userId)
+    {
+        var result = await GetUserSettings(userId);
+
+        return result?.TaigaAccess;
+    }
+
+    public async Task SaveAccessTokens(string userId, string tokens)
+    {
+        var settings = await GetUserSettings(userId);
+
+        if (settings is null)
+        {
+            await AddUserSettings(new UserSettingsEntity(
+                userId,
+                tokens
+            ));
+        }
+        else
+        {
+            await UpdateUserSettings(settings with {
+                TaigaAccess = tokens
+            });
+        }
     }
 }

@@ -39,20 +39,15 @@ jobs:
     - name: Copy frontend
       run: cp -r ./dist/apps/artificial.scrum.master.frontend/browser ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0/wwwroot
 
-    - name: Test
-      run: ls ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0/wwwroot
-
-    - name: Test
-      run: ls ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0
-
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v4
       with:
         name: artificial-scrum-master-binaries
-        path: ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0
+        path: ./artificial-scrum-master/dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0
         retention-days: 1
 
   release-eris:
+    needs: build
     runs-on: ubuntu-latest
     environment: 'eris'
     defaults:

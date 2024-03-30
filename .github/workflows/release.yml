@@ -3,9 +3,6 @@ name: Release Artificial Scrum Master
 on:
   workflow_dispatch:
 
-env:
-  IMAGE_NAME: artificialscrummaster
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -89,4 +86,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: 172.28.0.4:5000/${{ IMAGE_NAME }}:latest
+        tags: 172.28.0.4:5000/artificialscrummaster:latest

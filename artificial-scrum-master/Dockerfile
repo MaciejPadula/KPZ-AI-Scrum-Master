@@ -4,5 +4,5 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-COPY ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0 .
+COPY ./dist .
 ENTRYPOINT ["dotnet", "Artificial.Scrum.Master.dll"]

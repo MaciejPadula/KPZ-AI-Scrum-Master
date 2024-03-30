@@ -65,11 +65,17 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: artificial-scrum-master-binaries
+        path: ./dist
+
+    - name: Copy Dockerfile
+      run: cp ./artificial-scrum-master/Dockerfile .
 
     - name: Test
       run: ls -l
     - name: Test
       run: pwd
+    - name: Test
+      run: ls ./dist
 
     # - name: Test
     #   run: ls ./KPZ-AI-Scrum-Master/wwwroot

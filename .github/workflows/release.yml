@@ -1,0 +1,29 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: artificialscrummaster
+
+jobs:
+
+  release-eris:
+      runs-on: ubuntu-latest
+      environment: 'dev'
+      defaults:
+        run:
+          working-directory: ./artificial-scrum-master
+  
+      steps:
+      - name: ZeroTier
+        uses: zerotier/github-action@v1
+        with:
+          network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
+      - uses: actions/checkout@v3
+      - name: Build and push to local registry
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ REGISTRY }}/${{ IMAGE_NAME }}:latest

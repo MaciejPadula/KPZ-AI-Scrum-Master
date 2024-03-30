@@ -73,5 +73,10 @@
       "style": "css"
     }
   },
-  "nxCloudAccessToken": "YzQzZjJmNjEtYWQxOC00ODdkLThkODUtZTBjYTA1NzgwYWQwfHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "YzQzZjJmNjEtYWQxOC00ODdkLThkODUtZTBjYTA1NzgwYWQwfHJlYWQtd3JpdGU=",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default"
+    }
+  }
 }

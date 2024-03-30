@@ -1,5 +1,5 @@
 using Artificial.Scrum.Master.Interfaces;
-using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiTokens;
+using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
 using Artificial.Scrum.Master.UserSettings.Infrastructure.Models;
 using Dapper;
@@ -73,7 +73,8 @@ WHERE UserId = @UserId
         }
         else
         {
-            await UpdateUserSettings(settings with {
+            await UpdateUserSettings(settings with
+            {
                 TaigaAccess = tokens
             });
         }

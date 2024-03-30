@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Artificial.Scrum.Master.Interfaces\Artificial.Scrum.Master.Interfaces.csproj" />
-    <ProjectReference Include="..\Artificial.Scrum.Master.ScrumProjectIntegration\Artificial.Scrum.Master.ScrumProjectIntegration.csproj" />
+    <ProjectReference Include="..\Artificial.Scrum.Master.ScrumIntegration\Artificial.Scrum.Master.ScrumIntegration.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.UserSettings\Artificial.Scrum.Master.UserSettings.csproj" />
   </ItemGroup>
 

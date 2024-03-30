@@ -9,8 +9,8 @@ var sqlConnectionString = builder.Configuration.GetConnectionString("MS-SQL")
 
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(sqlConnectionString);
-builder.Services.AddUserSettings();
-builder.Services.AddScrumProjectIntegration(
+builder.Services.AddUserSettingsModule();
+builder.Services.AddScrumIntegrationModule(
     builder.Configuration.GetSection("ScrumManagementService"));
 
 builder.Services.AddEndpointsApiExplorer();
@@ -36,7 +36,7 @@ app.UseRouting();
 
 app.RegisterUserSettingsEndpoints();
 app.UseScrumProjectIntegration();
-app.RegisterScrumProjectIntegrationEndpoints();
+app.RegisterScrumIntegrationEndpoints();
 app.MapControllerRoute(name: "default", "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");

@@ -1,6 +1,6 @@
 using Artificial.Scrum.Master.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
-using Artificial.Scrum.Master.ScrumProjectIntegration.Infrastructure.ApiTokens;
+using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 

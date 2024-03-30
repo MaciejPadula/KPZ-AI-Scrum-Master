@@ -10,7 +10,7 @@ namespace Artificial.Scrum.Master.UserSettings;
 
 public static class UserSettingsModule
 {
-    public static void AddUserSettings(this IServiceCollection services)
+    public static void AddUserSettingsModule(this IServiceCollection services)
     {
         services.AddTransient<IGetUserSettingsService, GetUserSettingsService>();
         services.AddTransient<ISetTaigaAccessService, SetTaigaAccessService>();

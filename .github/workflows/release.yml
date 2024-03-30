@@ -71,6 +71,7 @@ jobs:
       uses: zerotier/github-action@v1
       with:
         network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
+        auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -85,3 +86,10 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKER_REGISTRY_NAME }}/artificialscrummaster:latest .
         docker push ${{ secrets.DOCKER_REGISTRY_NAME }}/artificialscrummaster:latest
+    
+    - name: Restart pods
+      uses: actions-hub/kubectl@master
+      env:
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+      with:
+        args: rollout restart deploy ai-scrum-master-deploy --namespace scrum-master

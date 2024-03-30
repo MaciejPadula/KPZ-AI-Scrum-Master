@@ -17,19 +17,19 @@ jobs:
   
       steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       # - name: ZeroTier
       #   uses: zerotier/github-action@v1
       #   with:
       #     network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
       
       - name: Install node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '21'
+          node-version: '21.1'
 
       - name: Install dotnet
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 

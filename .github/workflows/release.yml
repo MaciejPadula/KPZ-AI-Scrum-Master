@@ -43,13 +43,13 @@ jobs:
         run: npx nx build artificial.scrum.master.frontend --configuration=production
 
       - name: Copy frontend
-        run: cp -r ./dist/apps/artificial.scrum.master.frontend/browser ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/wwwroot
+        run: cp -r ./dist/apps/artificial.scrum.master.frontend/browser ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0/wwwroot
 
       - name: Test
-        run: ls ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/wwwroot
+        run: ls ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0/wwwroot
 
       - name: Test
-        run: ls ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master
+        run: ls ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0
       # - name: Build and push to local registry
       #   uses: docker/build-push-action@v5
       #   with:

@@ -64,10 +64,10 @@ jobs:
         name: artificial-scrum-master-binaries
 
     - name: Test
-      run: ls ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0/wwwroot
+      run: ls ./KPZ-AI-Scrum-Master/wwwroot
 
     - name: Test
-      run: ls ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0
+      run: ls ./KPZ-AI-Scrum-Master
       # - name: ZeroTier
       #   uses: zerotier/github-action@v1
       #   with:

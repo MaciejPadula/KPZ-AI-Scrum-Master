@@ -1,3 +1,4 @@
+using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Utilities;
@@ -6,7 +7,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 
 internal interface IGetProjectTimeLineService
 {
-    Task<GetProjectTimeLineResponse> Handle(string userId, string projectId);
+    Task<List<GetProjectTimeLineResponse>> Handle(string userId, string projectId);
 }
 
 internal class GetProjectTimeLineService : IGetProjectTimeLineService
@@ -23,8 +24,27 @@ internal class GetProjectTimeLineService : IGetProjectTimeLineService
         _jwtDecoder = jwtDecoder;
     }
 
-    public Task<GetProjectTimeLineResponse> Handle(string userId, string projectId)
+    public async Task<List<GetProjectTimeLineResponse>> Handle(string userId, string projectId)
     {
-        throw new NotImplementedException();
+        var userTokens = await _userTokensRepository.GetUserAccessTokens(userId);
+        if (userTokens is null)
+        {
+            throw new ProjectRequestForbidException($"Credentials of user:{userId} not found");
+        }
+
+        var memberId = _jwtDecoder.GetClaim(userTokens.AccessToken, "user_id");
+        if (string.IsNullOrEmpty(memberId))
+        {
+            throw new ProjectRequestForbidException("User id not found in token");
+        }
+
+        var projectTimeLineRequestResult = await _projectHttpClientWrapper.GetHttpRequest<List<Root>>(
+            userId,
+            userTokens,
+            $"timeline/project/{projectId}");
+
+        return projectTimeLineRequestResult.Select(elem => new GetProjectTimeLineResponse
+        {
+        }).ToList();
     }
 }

@@ -1,7 +1,6 @@
-namespace Artificial.Scrum.Master.Interfaces
+namespace Artificial.Scrum.Master.Interfaces;
+
+public interface IUserAccessor
 {
-    public interface IUserAccessor
-    {
-        string UserId { get; }
-    }
+    string UserId { get; }
 }

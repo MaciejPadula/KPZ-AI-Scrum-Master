@@ -2,7 +2,6 @@ using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Models;
 using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 

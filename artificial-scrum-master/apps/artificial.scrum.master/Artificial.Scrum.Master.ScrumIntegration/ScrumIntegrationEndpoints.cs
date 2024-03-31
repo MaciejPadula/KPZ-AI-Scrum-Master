@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
@@ -29,7 +31,10 @@ public static class ScrumIntegrationEndpoints
                 var userId = userAccessor.UserId;
                 var result = await service.Handle(userId);
 
-                await context.Response.WriteAsJsonAsync(result);
+                await context.Response.WriteAsJsonAsync(result, new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                });
             });
 
         routes.MapGet(
@@ -40,7 +45,10 @@ public static class ScrumIntegrationEndpoints
                 var userId = userAccessor.UserId;
                 var result = await service.Handle(userId, projectId);
 
-                await context.Response.WriteAsJsonAsync(result);
+                await context.Response.WriteAsJsonAsync(result, new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
             });
     }
 }

@@ -26,20 +26,22 @@ internal class SetTaigaAccessService : ISetTaigaAccessService
 
     public async Task Handle(string userId, TaigaAccess taigaAccess)
     {
-        var taigaAccessString = JsonSerializer.Serialize(taigaAccess);
         var entity = await _userSettingsRepository.GetUserSettings(userId);
 
         if (entity is not null)
         {
             await _userSettingsRepository.UpdateUserSettings(entity with
             {
-                TaigaAccess = taigaAccessString
+                TaigaAccessToken = taigaAccess.AccessToken,
+                TaigaRefreshToken = taigaAccess.RefreshToken
             });
         }
         else
         {
             await _userSettingsRepository.AddUserSettings(new UserSettingsEntity(
-                userId, taigaAccessString));
+                userId,
+                taigaAccess.AccessToken,
+                taigaAccess.RefreshToken));
         }
     }
 }

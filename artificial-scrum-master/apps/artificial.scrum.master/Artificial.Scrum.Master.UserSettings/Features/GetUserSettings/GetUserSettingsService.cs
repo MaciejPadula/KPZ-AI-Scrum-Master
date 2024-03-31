@@ -1,6 +1,6 @@
 using Artificial.Scrum.Master.UserSettings.Features.Shared;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
-using System.Text.Json;
+using Artificial.Scrum.Master.UserSettings.Infrastructure.Models;
 
 namespace Artificial.Scrum.Master.UserSettings.Features.GetUserSettings;
 
@@ -26,28 +26,16 @@ internal class GetUserSettingsService : IGetUserSettingsService
             return new();
         }
 
-        var taigaAccess = DeserializeTaigaAccess(result.TaigaAccess);
-
         return new Settings
         {
-            IsLoggedToTaiga = ValidateTaigaAccess(taigaAccess)
+            IsLoggedToTaiga = ValidateTaigaAccess(result)
         };
     }
 
-    private bool ValidateTaigaAccess(TaigaAccess? taigaAccess)
+    private bool ValidateTaigaAccess(UserSettingsEntity? userSettings)
     {
-        return taigaAccess.HasValue
-            && !string.IsNullOrEmpty(taigaAccess.Value.AccessToken)
-            && !string.IsNullOrEmpty(taigaAccess.Value.RefreshToken);
-    }
-
-    private TaigaAccess? DeserializeTaigaAccess(string taigaAccessString)
-    {
-        if (string.IsNullOrEmpty(taigaAccessString))
-        {
-            return null;
-        }
-
-        return JsonSerializer.Deserialize<TaigaAccess>(taigaAccessString);
+        return userSettings is not null
+            && !string.IsNullOrEmpty(userSettings.TaigaAccessToken)
+            && !string.IsNullOrEmpty(userSettings.TaigaRefreshToken);
     }
 }

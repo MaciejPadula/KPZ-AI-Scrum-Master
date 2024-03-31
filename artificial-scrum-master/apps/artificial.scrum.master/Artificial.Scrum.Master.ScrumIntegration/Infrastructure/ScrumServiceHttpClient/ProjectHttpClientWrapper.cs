@@ -98,13 +98,11 @@ public class ProjectHttpClientWrapper : IProjectHttpClientWrapper
             throw new ProjectRequestFailedException("Response deserialization failed");
         }
 
-        var newTokens = new UserTokens
-        {
-            AccessToken = result.AccessToken,
-            RefreshToken = result.RefreshToken
-        };
+        var newTokens = new UserTokens(
+            result.AccessToken,
+            result.RefreshToken);
 
-        await _userTokensRepository.SaveAccessTokens(userId, JsonSerializer.Serialize(newTokens));
+        await _userTokensRepository.SaveAccessTokensWhenExists(userId, newTokens);
         return newTokens;
     }
 }

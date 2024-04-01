@@ -7,7 +7,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 
 internal interface IGetUserProjectsService
 {
-    Task<IEnumerable<GetUserProjectsResponse>> Handle(string userId);
+    Task<GetUserProjectsResponse> Handle(string userId);
 }
 
 internal class GetUserProjectsService : IGetUserProjectsService
@@ -16,15 +16,17 @@ internal class GetUserProjectsService : IGetUserProjectsService
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
     private readonly IJwtDecoder _jwtDecoder;
 
-    public GetUserProjectsService(IAccessTokenProvider accessTokenProvider,
-        IProjectHttpClientWrapper projectHttpClientWrapper, IJwtDecoder jwtDecoder)
+    public GetUserProjectsService(
+        IAccessTokenProvider accessTokenProvider,
+        IProjectHttpClientWrapper projectHttpClientWrapper,
+        IJwtDecoder jwtDecoder)
     {
         _accessTokenProvider = accessTokenProvider;
         _projectHttpClientWrapper = projectHttpClientWrapper;
         _jwtDecoder = jwtDecoder;
     }
 
-    public async Task<IEnumerable<GetUserProjectsResponse>> Handle(string userId)
+    public async Task<GetUserProjectsResponse> Handle(string userId)
     {
         var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
 
@@ -39,14 +41,17 @@ internal class GetUserProjectsService : IGetUserProjectsService
             userTokens,
             $"projects?member={memberId}");
 
-        return projectRequestResult.Select(project => new GetUserProjectsResponse
+        return new GetUserProjectsResponse
         {
-            Id = project.Id,
-            Name = project.Name,
-            ModifiedDate = project.ModifiedDate,
-            IsPrivate = project.IsPrivate,
-            AmOwner = project.AmOwner,
-            OwnerUsername = project.Owner.Username
-        }).ToList();
+            Elements = projectRequestResult.Select(project => new GetUserProjectsResponseElement
+            {
+                Id = project.Id,
+                Name = project.Name,
+                ModifiedDate = project.ModifiedDate,
+                IsPrivate = project.IsPrivate,
+                AmOwner = project.AmOwner,
+                OwnerUsername = project.Owner.Username
+            }).ToList()
+        };
     }
 }

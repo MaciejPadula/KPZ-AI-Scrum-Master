@@ -16,13 +16,13 @@ internal class GetProjectTimeLineService : IGetProjectTimeLineService
     private readonly IAccessTokenProvider _accessTokenProvider;
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
     private readonly IJwtDecoder _jwtDecoder;
-    private readonly ITimeLineElementParser _timeLineElementParser;
+    private readonly ITimeLineEventParser _timeLineElementParser;
 
     public GetProjectTimeLineService(
         IAccessTokenProvider accessTokenProvider,
         IProjectHttpClientWrapper projectHttpClientWrapper,
         IJwtDecoder jwtDecoder,
-        ITimeLineElementParser timeLineElementParser)
+        ITimeLineEventParser timeLineElementParser)
     {
         _accessTokenProvider = accessTokenProvider;
         _projectHttpClientWrapper = projectHttpClientWrapper;

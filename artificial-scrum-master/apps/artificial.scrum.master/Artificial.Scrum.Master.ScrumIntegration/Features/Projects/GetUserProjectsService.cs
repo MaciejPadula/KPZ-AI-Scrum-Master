@@ -43,7 +43,7 @@ internal class GetUserProjectsService : IGetUserProjectsService
 
         return new GetUserProjectsResponse
         {
-            Elements = projectRequestResult.Select(project => new GetUserProjectsResponseElement
+            Projects = projectRequestResult.Select(project => new GetUserProjectsResponseElement
             {
                 Id = project.Id,
                 Name = project.Name,

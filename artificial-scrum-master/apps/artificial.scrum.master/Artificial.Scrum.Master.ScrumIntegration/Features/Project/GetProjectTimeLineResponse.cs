@@ -3,9 +3,9 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 
 internal readonly record struct GetProjectTimeLineResponse(
-    IEnumerable<GetProjectTimeLineResponseElement> Elements
+    IEnumerable<GetProjectTimeLineResponseElement> TimeLineEvents
 );
 
-internal record GetProjectTimeLineResponseElement : GetTimeLineElement
+internal record GetProjectTimeLineResponseElement : GetTimeLineEvent
 {
 }

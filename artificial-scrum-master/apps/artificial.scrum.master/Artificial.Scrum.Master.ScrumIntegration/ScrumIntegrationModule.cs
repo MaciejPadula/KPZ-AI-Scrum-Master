@@ -23,7 +23,7 @@ public static class ScrumIntegrationModule
             c.BaseAddress = new Uri(scrumManagementServiceSettings["BaseUrl"] ?? throw new
                 InvalidOperationException("Base Url for agile service integration required"));
         });
-        services.AddTransient<ITimeLineElementParser, TimeLineElementParser>();
+        services.AddTransient<ITimeLineEventParser, TimeLineEventParser>();
         services.AddTransient<IJwtDecoder, JwtDecoder>();
         services.AddTransient<ITokenValidator, TokenValidator>();
         services.AddTransient<IAccessTokenProvider, TokenProvider>();

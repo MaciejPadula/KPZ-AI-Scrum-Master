@@ -3,7 +3,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 
-internal interface ITimeLineElementParser
+internal interface ITimeLineEventParser
 {
     GetProfileTimeLineResponse ParseProfileTimeLineElement(List<ProfileTimeLineElementRoot> elements);
     GetProjectTimeLineResponse ParseProjectTimeLineElement(List<ProjectTimeLineElementRoot> elements);

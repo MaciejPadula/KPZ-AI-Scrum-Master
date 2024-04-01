@@ -1,6 +1,6 @@
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 
-internal abstract record GetTimeLineElement
+internal abstract record GetTimeLineEvent
 {
     public int Id { get; set; }
     public string? EventType { get; set; }
@@ -15,5 +15,5 @@ internal abstract record GetTimeLineElement
     public string? UserPhoto { get; set; }
     public string? UserUsername { get; set; }
     public required string ProjectName { get; set; }
-    public required IEnumerable<KeyValuePair<string, string>> ValuesDiff { get; set; }
+    public required List<KeyValuePair<string, string>> ValuesDiff { get; set; }
 }

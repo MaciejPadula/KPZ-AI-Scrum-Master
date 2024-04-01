@@ -1,7 +1,7 @@
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 
 internal readonly record struct GetUserProjectsResponse(
-    List<GetUserProjectsResponseElement> Elements
+    List<GetUserProjectsResponseElement> Projects
 );
 
 internal readonly record struct GetUserProjectsResponseElement(

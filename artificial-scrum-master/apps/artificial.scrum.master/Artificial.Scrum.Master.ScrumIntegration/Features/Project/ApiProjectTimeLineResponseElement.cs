@@ -9,7 +9,7 @@ internal class ProjectTimeLineElementRoot
 {
     public required Data Data { get; set; }
     public int Id { get; set; }
-    [JsonPropertyName("event_type")] public string? EventType { get; set; }
+    [JsonPropertyName("event_type")] public required string EventType { get; set; }
     public int Project { get; set; }
     public DateTime Created { get; set; }
 }

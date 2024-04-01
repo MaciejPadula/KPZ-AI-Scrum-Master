@@ -1,4 +1,5 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.ResponseEnums;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,16 +11,19 @@ internal class TimeLineEventParser : ITimeLineEventParser
     {
         var timelineEvents = elements.Select(elem =>
         {
-            var valuesDiff = ParseValuesDiff(elem.Data.ValuesDiff);
+            var parsedValuesDiff = ParseValuesDiff(elem.Data.ValuesDiff);
             if (!string.IsNullOrEmpty(elem.Data.Comment))
             {
-                valuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
+                parsedValuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
             }
+
+            var (scrumObjectType, scrumObjectState) = ParseEventType(elem.EventType);
 
             return new GetProfileTimeLineResponseEvent
             {
                 Id = elem.Id,
-                EventType = elem.EventType,
+                ScrumObjectType = scrumObjectType,
+                ScrumObjectState = scrumObjectState,
                 Created = elem.Created,
                 ProjectId = elem.Project,
                 TaskId = elem.Data.Task?.Id ?? -1,
@@ -29,13 +33,13 @@ internal class TimeLineEventParser : ITimeLineEventParser
                 UserId = elem.Data.User.Id,
                 UserName = elem.Data.User.Name,
                 UserPhoto = elem.Data.User.Photo,
-                UserUsername = elem.Data.User.Username,
+                UserNick = elem.Data.User.Username,
                 ProjectName = elem.Data.Project.Name,
                 MileStoneId = elem.Data.Milestone?.Id ?? -1,
                 MileStoneName = elem.Data.Milestone?.Name,
                 UserStoryId = elem.Data.Userstory?.Id ?? -1,
                 UserStorySubject = elem.Data.Userstory?.Subject,
-                ValuesDiff = valuesDiff
+                ValuesDiff = parsedValuesDiff
             };
         }).ToList();
 
@@ -46,16 +50,19 @@ internal class TimeLineEventParser : ITimeLineEventParser
     {
         var timelineEvents = elements.Select(elem =>
         {
-            var valuesDiff = ParseValuesDiff(elem.Data.ValuesDiff);
+            var parsedValuesDiff = ParseValuesDiff(elem.Data.ValuesDiff);
             if (!string.IsNullOrEmpty(elem.Data.Comment))
             {
-                valuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
+                parsedValuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
             }
+
+            var (scrumObjectType, scrumObjectState) = ParseEventType(elem.EventType);
 
             return new GetProjectTimeLineResponseEvent
             {
                 Id = elem.Id,
-                EventType = elem.EventType,
+                ScrumObjectType = scrumObjectType,
+                ScrumObjectState = scrumObjectState,
                 Created = elem.Created,
                 ProjectId = elem.Project,
                 TaskId = elem.Data.Task?.Id ?? -1,
@@ -65,9 +72,9 @@ internal class TimeLineEventParser : ITimeLineEventParser
                 UserId = elem.Data.User.Id,
                 UserName = elem.Data.User.Name,
                 UserPhoto = elem.Data.User.Photo,
-                UserUsername = elem.Data.User.Username,
+                UserNick = elem.Data.User.Username,
                 ProjectName = elem.Data.Project.Name,
-                ValuesDiff = valuesDiff
+                ValuesDiff = parsedValuesDiff
             };
         }).ToList();
 
@@ -124,6 +131,26 @@ internal class TimeLineEventParser : ITimeLineEventParser
 
         return keyValuePairs;
     }
-}
 
-// TODO : Event type na Enum!!!
+    private static (ScrumObjectType, ScrumObjectState) ParseEventType(string eventType)
+    {
+        var eventTypeSplit = eventType.Split(".");
+        if (eventTypeSplit.Length != 3)
+        {
+            return (ScrumObjectType.Task, ScrumObjectState.Change);
+        }
+
+        var scrumObjectTypeParseSuccess =
+            Enum.TryParse<ScrumObjectType>(eventTypeSplit[1], ignoreCase: true, out var scrumObjectType);
+
+        var scrumObjectStateParseSuccess =
+            Enum.TryParse<ScrumObjectState>(eventTypeSplit[2], ignoreCase: true, out var scrumObjectState);
+
+        if (!scrumObjectTypeParseSuccess || !scrumObjectStateParseSuccess)
+        {
+            return (ScrumObjectType.Task, ScrumObjectState.Change);
+        }
+
+        return (scrumObjectType, scrumObjectState);
+    }
+}

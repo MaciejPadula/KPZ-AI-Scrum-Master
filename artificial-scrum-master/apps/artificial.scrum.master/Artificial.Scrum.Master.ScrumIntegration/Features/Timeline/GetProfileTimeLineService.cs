@@ -49,32 +49,3 @@ internal class GetProfileTimeLineService : IGetProfileTimeLineService
         return _timeLineElementParser.ParseProfileTimeLineElement(profileTimeLineRequestResult);
     }
 }
-
-
-// var profileTimeLineRequestResult =
-//     await _projectHttpClientWrapper.GetHttpRequest<List<ProfileTimeLineElementRoot>>(
-//         userId,
-//         userTokens,
-//         $"timeline/profile/{memberId}");
-//
-// return profileTimeLineRequestResult.Select(elem => new GetProfileTimeLineResponse
-// {
-//     Id = elem.Id,
-//     EventType = elem.EventType,
-//     Created = elem.Created,
-//     ProjectId = elem.Project,
-//     Comment = elem.Data.Comment,
-//     CommentHtml = elem.Data.CommentHtml,
-//     TaskId = elem.Data.Task?.Id ?? -1,
-//     TaskSubject = elem.Data.Task?.Subject,
-//     TaskUserStoryId = elem.Data.Task?.Userstory?.Id ?? -1,
-//     TaskUserStorySubject = elem.Data.Task?.Userstory?.Subject,
-//     UserId = elem.Data.User.Id,
-//     UserName = elem.Data.User.Name,
-//     UserPhoto = elem.Data.User.Photo,
-//     UserUsername = elem.Data.User.Username,
-//     ProjectName = elem.Data.Project.Name,
-//     ValuesDiff = elem.Data.ValuesDiff,
-//     Milestone = elem.Data.Milestone,
-//     Userstory = elem.Data.Userstory,
-// }).ToList();

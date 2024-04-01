@@ -49,30 +49,3 @@ internal class GetProjectTimeLineService : IGetProjectTimeLineService
         return _timeLineElementParser.ParseProjectTimeLineElement(projectTimeLineRequestResult);
     }
 }
-
-//
-// var projectTimeLineRequestResult =
-//     await _projectHttpClientWrapper.GetHttpRequest<List<ProjectTimeLineElementRoot>>(
-//         userId,
-//         userTokens,
-//         $"timeline/project/{projectId}");
-//
-// return projectTimeLineRequestResult.Select(elem => new GetProjectTimeLineResponse
-// {
-//     Id = elem.Id,
-//     EventType = elem.EventType,
-//     Created = elem.Created,
-//     ProjectId = elem.Project,
-//     Comment = elem.Data.Comment,
-//     CommentHtml = elem.Data.CommentHtml,
-//     TaskId = elem.Data.Task?.Id ?? -1,
-//     TaskSubject = elem.Data.Task?.Subject,
-//     UserStoryId = elem.Data.Task?.Userstory?.Id ?? -1,
-//     UserStorySubject = elem.Data.Task?.Userstory?.Subject,
-//     UserId = elem.Data.User.Id,
-//     UserName = elem.Data.User.Name,
-//     UserPhoto = elem.Data.User.Photo,
-//     UserUsername = elem.Data.User.Username,
-//     ProjectName = elem.Data.Project.Name,
-//     ValuesDiff = elem.Data.ValuesDiff,
-// }).ToList();

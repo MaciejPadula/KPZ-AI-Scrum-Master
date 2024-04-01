@@ -5,6 +5,6 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 
 internal interface ITimeLineEventParser
 {
-    GetProfileTimeLineResponse ParseProfileTimeLineElement(List<ProfileTimeLineElementRoot> elements);
-    GetProjectTimeLineResponse ParseProjectTimeLineElement(List<ProjectTimeLineElementRoot> elements);
+    GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<ProfileTimeLineElementRoot> elements);
+    GetProjectTimeLineResponse ParseProjectTimeLineElement(IEnumerable<ProjectTimeLineElementRoot> elements);
 }

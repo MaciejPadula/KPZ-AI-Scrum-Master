@@ -9,6 +9,7 @@ internal class ValuesDiff
     public List<List<string>>? Tags { get; set; }
     public List<string>? Subject { get; set; }
     public List<string>? Status { get; set; }
+    [JsonPropertyName("description_diff")] public string? DescriptionDiff { get; set; }
 }
 
 internal class Attachments

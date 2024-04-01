@@ -6,28 +6,17 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 
 internal class TimeLineEventParser : ITimeLineEventParser
 {
-    private static readonly Dictionary<string, string> DiffTypeMessages = new()
-    {
-        ["Comment"] = "has added a comment",
-        [$"{nameof(ValuesDiff.AssignedTo)}"] = $"has updated the attribute {nameof(ValuesDiff.AssignedTo)}",
-        [$"{nameof(ValuesDiff.Tags)}"] = $"has updated the attribute {nameof(ValuesDiff.Tags)}",
-        [$"{nameof(ValuesDiff.Subject)}"] = $"has updated the attribute {nameof(ValuesDiff.Subject)}",
-        [$"{nameof(ValuesDiff.Status)}"] = $"has updated the attribute {nameof(ValuesDiff.Status)}",
-        [$"{nameof(ValuesDiff.Attachments)}"] = $"has updated the attribute {nameof(ValuesDiff.Attachments)}",
-    };
-
-    public GetProfileTimeLineResponse ParseProfileTimeLineElement(List<ProfileTimeLineElementRoot> elements)
+    public GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<ProfileTimeLineElementRoot> elements)
     {
         var timelineEvents = elements.Select(elem =>
         {
-            var valuesDiff = ParseTaskChangeValuesDiff(elem.Data.ValuesDiff);
-
+            var valuesDiff = ParseValuesDiff(elem.Data.ValuesDiff);
             if (!string.IsNullOrEmpty(elem.Data.Comment))
             {
                 valuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
             }
 
-            return new GetProfileTimeLineResponseElement
+            return new GetProfileTimeLineResponseEvent
             {
                 Id = elem.Id,
                 EventType = elem.EventType,
@@ -53,18 +42,17 @@ internal class TimeLineEventParser : ITimeLineEventParser
         return new GetProfileTimeLineResponse { TimeLineEvents = timelineEvents };
     }
 
-    public GetProjectTimeLineResponse ParseProjectTimeLineElement(List<ProjectTimeLineElementRoot> elements)
+    public GetProjectTimeLineResponse ParseProjectTimeLineElement(IEnumerable<ProjectTimeLineElementRoot> elements)
     {
         var timelineEvents = elements.Select(elem =>
         {
-            var valuesDiff = ParseTaskChangeValuesDiff(elem.Data.ValuesDiff);
-
+            var valuesDiff = ParseValuesDiff(elem.Data.ValuesDiff);
             if (!string.IsNullOrEmpty(elem.Data.Comment))
             {
                 valuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
             }
 
-            return new GetProjectTimeLineResponseElement
+            return new GetProjectTimeLineResponseEvent
             {
                 Id = elem.Id,
                 EventType = elem.EventType,
@@ -86,64 +74,56 @@ internal class TimeLineEventParser : ITimeLineEventParser
         return new GetProjectTimeLineResponse { TimeLineEvents = timelineEvents };
     }
 
-    private List<KeyValuePair<string, string>> ParseTaskChangeValuesDiff(ValuesDiff valuesDiff)
+    private static List<KeyValuePair<string, string>> ParseValuesDiff(ValuesDiff valuesDiff)
     {
-        List<KeyValuePair<string, string>> keyValuePairs = new();
+        List<KeyValuePair<string, string>> keyValuePairs = [];
 
         if (!valuesDiff.AssignedTo.IsNullOrEmpty())
         {
             keyValuePairs.Add(new KeyValuePair<string, string>(
                 $"{nameof(ValuesDiff.AssignedTo)}",
-                $"from {valuesDiff.AssignedTo?[0]} to {valuesDiff.AssignedTo?[1]}"));
+                $"from {valuesDiff.AssignedTo?[0] ?? "None"} to {valuesDiff.AssignedTo?[1] ?? "None"}"));
         }
 
         if (!valuesDiff.Status.IsNullOrEmpty())
         {
             keyValuePairs.Add(new KeyValuePair<string, string>(
                 $"{nameof(ValuesDiff.Status)}",
-                $"from {valuesDiff.Status?[0]} to {valuesDiff.Status?[1]}"));
+                $"from {valuesDiff.Status?[0] ?? "None"} to {valuesDiff.Status?[1] ?? "None"}"));
         }
 
         if (!valuesDiff.Tags.IsNullOrEmpty())
         {
             keyValuePairs.Add(new KeyValuePair<string, string>(
                 $"{nameof(ValuesDiff.Tags)}",
-                $"from {valuesDiff.Tags?[0].FirstOrDefault()} to {valuesDiff.Tags?[1].FirstOrDefault()}"));
+                $"from {valuesDiff.Tags?[0].FirstOrDefault() ?? "None"} to {valuesDiff.Tags?[1].FirstOrDefault() ?? "None"}"));
         }
 
         if (!valuesDiff.Subject.IsNullOrEmpty())
         {
             keyValuePairs.Add(new KeyValuePair<string, string>(
                 $"{nameof(ValuesDiff.Subject)}",
-                $"from {valuesDiff.Subject?[0]} to {valuesDiff.Subject?[1]}"));
+                $"from {valuesDiff.Subject?[0] ?? "None"} to {valuesDiff.Subject?[1] ?? "None"}"));
         }
 
-        if (valuesDiff.Attachments is not null)
+        if (!string.IsNullOrEmpty(valuesDiff.DescriptionDiff))
         {
-            if (!valuesDiff.Attachments.New.IsNullOrEmpty())
+            keyValuePairs.Add(new KeyValuePair<string, string>(
+                $"{nameof(ValuesDiff.DescriptionDiff)}", "Description has been changed"));
+        }
+
+        if (valuesDiff.Attachments is not null && !valuesDiff.Attachments.New.IsNullOrEmpty())
+        {
+            var value = valuesDiff.Attachments.New?.FirstOrDefault()?.Url;
+            if (value is not null)
             {
                 keyValuePairs.Add(new KeyValuePair<string, string>(
-                    $"{nameof(ValuesDiff.Attachments)}",
-                    valuesDiff.Attachments.New.FirstOrDefault()?.Url));
+                    $"{nameof(ValuesDiff.Attachments)}", value));
             }
         }
 
         return keyValuePairs;
     }
-
-    private List<KeyValuePair<string, string>> ParseUserStoryChangeValuesDiff(ValuesDiff valuesDiff, User dataUser)
-    {
-        List<KeyValuePair<string, string>> values = new();
-
-        return values;
-
-
-        return valuesDiff.GetType().GetProperties()
-            .Select(prop =>
-            {
-                var key = prop.Name;
-                var value = prop.GetValue(valuesDiff);
-                return new KeyValuePair<string, string>(key, DiffTypeMessages[key] + " to " + value);
-            }).ToList();
-    }
 }
+
+// TODO : Event type na Enum!!!

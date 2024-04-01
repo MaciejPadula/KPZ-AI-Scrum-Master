@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 
-public class ProjectHttpClientWrapper : IProjectHttpClientWrapper
+internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
 {
     private const string RefreshTokenUrl = "auth/refresh";
 

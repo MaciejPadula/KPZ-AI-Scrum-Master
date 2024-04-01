@@ -12,25 +12,21 @@ internal interface IGetUserProjectsService
 
 internal class GetUserProjectsService : IGetUserProjectsService
 {
-    private readonly IUserTokensRepository _userTokensRepository;
+    private readonly IAccessTokenProvider _accessTokenProvider;
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
     private readonly IJwtDecoder _jwtDecoder;
 
-    public GetUserProjectsService(IUserTokensRepository userTokensRepository,
+    public GetUserProjectsService(IAccessTokenProvider accessTokenProvider,
         IProjectHttpClientWrapper projectHttpClientWrapper, IJwtDecoder jwtDecoder)
     {
-        _userTokensRepository = userTokensRepository;
+        _accessTokenProvider = accessTokenProvider;
         _projectHttpClientWrapper = projectHttpClientWrapper;
         _jwtDecoder = jwtDecoder;
     }
 
     public async Task<IEnumerable<GetUserProjectsResponse>> Handle(string userId)
     {
-        var userTokens = await _userTokensRepository.GetUserAccessTokens(userId);
-        if (userTokens is null)
-        {
-            throw new ProjectRequestForbidException($"Credentials of user:{userId} not found");
-        }
+        var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
 
         var memberId = _jwtDecoder.GetClaim(userTokens.AccessToken, "user_id");
         if (string.IsNullOrEmpty(memberId))

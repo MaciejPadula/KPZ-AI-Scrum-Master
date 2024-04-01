@@ -1,28 +1,15 @@
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
+
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 
-public readonly record struct GetProfileTimeLineResponse(
-    int Id,
-    string? EventType,
-    DateTime Created,
-    int ProjectId,
-    string? Comment,
-    string? CommentHtml,
-    // Data
-    int TaskId,
-    string? TaskSubject,
-    int TaskUserStoryId,
-    string? TaskUserStorySubject,
-    // User
-    int UserId,
-    string UserName,
-    string? UserPhoto,
-    string? UserUsername,
-    // Project
-    string ProjectName,
-    // ValuesDiff
-    ValuesDiff? ValuesDiff,
-    // Milestone
-    Milestone? Milestone,
-    // Userstory
-    Userstory? Userstory
+internal readonly record struct GetProfileTimeLineResponse(
+    IEnumerable<GetProfileTimeLineResponseElement> Elements
 );
+
+internal record GetProfileTimeLineResponseElement : GetTimeLineElement
+{
+    public int MileStoneId { get; set; }
+    public required string MileStoneName { get; set; }
+    public int UserStoryId { get; set; }
+    public string? UserStorySubject { get; set; }
+}

@@ -1,6 +1,6 @@
 namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 
-public interface ITokenValidator
+internal interface ITokenValidator
 {
     bool ValidateAccessTokenExpirationTime(string accessToken);
 }

@@ -16,19 +16,21 @@ import {
 } from '@angular/forms';
 import { TaigaAuthFormControl } from './taiga-auth-form-control';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-taiga-authorization',
   standalone: true,
   templateUrl: './taiga-authorization.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
+  imports: [CommonModule, MaterialModule, ReactiveFormsModule, TranslateModule],
 })
 export class TaigaAuthorizationComponent {
   private readonly taigaAuthorizationService = inject(
     TaigaAuthorizationService
   );
   private readonly toastService = inject(ToastService);
+  private readonly translateService = inject(TranslateService);
 
   public formGroup = new FormGroup<TaigaAuthFormControl>({
     login: new FormControl<string | null>(null, [Validators.required]),
@@ -65,11 +67,13 @@ export class TaigaAuthorizationComponent {
       next: () => {
         this.formGroup.reset();
         this.#forceShowLoginForm.set(false);
-        this.toastService.openSuccess('Pomyślnie zalogowano do Taigi');
+        this.toastService.openSuccess(
+          this.translateService.instant('UserSettings.Tagia.LoginSuccess')
+        );
       },
       error: () => {
         this.toastService.openError(
-          'Wystąpił problem z logowaniem do Taigi. Spróbuj ponownie.'
+          this.translateService.instant('UserSettings.Tagia.LoginError')
         );
       },
     });

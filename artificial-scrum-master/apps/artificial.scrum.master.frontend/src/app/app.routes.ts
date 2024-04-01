@@ -8,4 +8,9 @@ export const appRoutes: Route[] = [
         (mod) => mod.UserSettingsRoutes
       ),
   },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./features/feed/routes').then((mod) => mod.FeedRoutes),
+  },
 ];

@@ -1,6 +1,26 @@
 using System.Text.Json.Serialization;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
+
+internal class TimeLineEventRoot
+{
+    public required Data Data { get; set; }
+    public int Id { get; set; }
+    [JsonPropertyName("event_type")] public required string EventType { get; set; }
+    public int Project { get; set; }
+    public DateTime Created { get; set; }
+}
+
+internal class Data
+{
+    [JsonPropertyName("task")] public PbiItem? Task { get; set; }
+    public required User User { get; set; }
+    public string? Comment { get; set; }
+    public required Project Project { get; set; }
+    [JsonPropertyName("values_diff")] public required ValuesDiff ValuesDiff { get; set; }
+    public Milestone? Milestone { get; set; }
+    public Userstory? Userstory { get; set; }
+}
 
 internal class ValuesDiff
 {
@@ -33,7 +53,7 @@ internal class Project
     public required string Name { get; set; }
 }
 
-internal class Task
+internal class PbiItem
 {
     public int Id { get; set; }
     public string? Subject { get; set; }
@@ -52,4 +72,10 @@ internal class User
     public required string Name { get; set; }
     public string? Photo { get; set; }
     public string? Username { get; set; }
+}
+
+internal class Milestone
+{
+    public int Id { get; set; }
+    public required string Name { get; set; }
 }

@@ -1,4 +1,5 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.ResponseEnums;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +8,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 
 internal class TimeLineEventParser : ITimeLineEventParser
 {
-    public GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<ProfileTimeLineElementRoot> elements)
+    public GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
     {
         var timelineEvents = elements.Select(elem =>
         {
@@ -17,28 +18,23 @@ internal class TimeLineEventParser : ITimeLineEventParser
                 parsedValuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
             }
 
-            var (scrumObjectType, scrumObjectState) = ParseEventType(elem.EventType);
+            var (scrumObjectType, scrumObjectState) = ParseEventTypeEnum(elem.EventType);
+            var (objectId, objectName) = ParseObjectIdAndName(elem.Data.Task, elem.Data.Userstory);
 
-            return new GetProfileTimeLineResponseEvent
+            return new GetTimeLineEvent
             {
-                Id = elem.Id,
+                EventId = elem.Id,
                 ScrumObjectType = scrumObjectType,
                 ScrumObjectState = scrumObjectState,
                 Created = elem.Created,
                 ProjectId = elem.Project,
-                TaskId = elem.Data.Task?.Id ?? -1,
-                TaskSubject = elem.Data.Task?.Subject,
-                TaskUserStoryId = elem.Data.Task?.Userstory?.Id ?? -1,
-                TaskUserStorySubject = elem.Data.Task?.Userstory?.Subject,
+                ProjectName = elem.Data.Project.Name,
+                ObjectId = objectId,
+                ObjectName = objectName,
                 UserId = elem.Data.User.Id,
                 UserName = elem.Data.User.Name,
                 UserPhoto = elem.Data.User.Photo,
                 UserNick = elem.Data.User.Username,
-                ProjectName = elem.Data.Project.Name,
-                MileStoneId = elem.Data.Milestone?.Id ?? -1,
-                MileStoneName = elem.Data.Milestone?.Name,
-                UserStoryId = elem.Data.Userstory?.Id ?? -1,
-                UserStorySubject = elem.Data.Userstory?.Subject,
                 ValuesDiff = parsedValuesDiff
             };
         }).ToList();
@@ -46,7 +42,7 @@ internal class TimeLineEventParser : ITimeLineEventParser
         return new GetProfileTimeLineResponse { TimeLineEvents = timelineEvents };
     }
 
-    public GetProjectTimeLineResponse ParseProjectTimeLineElement(IEnumerable<ProjectTimeLineElementRoot> elements)
+    public GetProjectTimeLineResponse ParseProjectTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
     {
         var timelineEvents = elements.Select(elem =>
         {
@@ -56,19 +52,18 @@ internal class TimeLineEventParser : ITimeLineEventParser
                 parsedValuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
             }
 
-            var (scrumObjectType, scrumObjectState) = ParseEventType(elem.EventType);
+            var (scrumObjectType, scrumObjectState) = ParseEventTypeEnum(elem.EventType);
+            var (objectId, objectName) = ParseObjectIdAndName(elem.Data.Task, elem.Data.Userstory);
 
-            return new GetProjectTimeLineResponseEvent
+            return new GetTimeLineEvent
             {
-                Id = elem.Id,
+                EventId = elem.Id,
                 ScrumObjectType = scrumObjectType,
                 ScrumObjectState = scrumObjectState,
                 Created = elem.Created,
                 ProjectId = elem.Project,
-                TaskId = elem.Data.Task?.Id ?? -1,
-                TaskSubject = elem.Data.Task?.Subject,
-                TaskUserStoryId = elem.Data.Task?.Userstory?.Id ?? -1,
-                TaskUserStorySubject = elem.Data.Task?.Userstory?.Subject,
+                ObjectId = objectId,
+                ObjectName = objectName,
                 UserId = elem.Data.User.Id,
                 UserName = elem.Data.User.Name,
                 UserPhoto = elem.Data.User.Photo,
@@ -89,28 +84,28 @@ internal class TimeLineEventParser : ITimeLineEventParser
         {
             keyValuePairs.Add(new KeyValuePair<string, string>(
                 $"{nameof(ValuesDiff.AssignedTo)}",
-                $"from {valuesDiff.AssignedTo?[0] ?? "None"} to {valuesDiff.AssignedTo?[1] ?? "None"}"));
+                $"from '{valuesDiff.AssignedTo?[0] ?? "None"}' to '{valuesDiff.AssignedTo?[1] ?? "None"}'"));
         }
 
         if (!valuesDiff.Status.IsNullOrEmpty())
         {
             keyValuePairs.Add(new KeyValuePair<string, string>(
                 $"{nameof(ValuesDiff.Status)}",
-                $"from {valuesDiff.Status?[0] ?? "None"} to {valuesDiff.Status?[1] ?? "None"}"));
+                $"from '{valuesDiff.Status?[0] ?? "None"}' to '{valuesDiff.Status?[1] ?? "None"}'"));
         }
 
         if (!valuesDiff.Tags.IsNullOrEmpty())
         {
             keyValuePairs.Add(new KeyValuePair<string, string>(
                 $"{nameof(ValuesDiff.Tags)}",
-                $"from {valuesDiff.Tags?[0].FirstOrDefault() ?? "None"} to {valuesDiff.Tags?[1].FirstOrDefault() ?? "None"}"));
+                $"from '{valuesDiff.Tags?[0].FirstOrDefault() ?? "None"}' to '{valuesDiff.Tags?[1].FirstOrDefault() ?? "None"}'"));
         }
 
         if (!valuesDiff.Subject.IsNullOrEmpty())
         {
             keyValuePairs.Add(new KeyValuePair<string, string>(
                 $"{nameof(ValuesDiff.Subject)}",
-                $"from {valuesDiff.Subject?[0] ?? "None"} to {valuesDiff.Subject?[1] ?? "None"}"));
+                $"from '{valuesDiff.Subject?[0] ?? "None"}' to '{valuesDiff.Subject?[1] ?? "None"}'"));
         }
 
         if (!string.IsNullOrEmpty(valuesDiff.DescriptionDiff))
@@ -119,20 +114,19 @@ internal class TimeLineEventParser : ITimeLineEventParser
                 $"{nameof(ValuesDiff.DescriptionDiff)}", "Description has been changed"));
         }
 
-        if (valuesDiff.Attachments is not null && !valuesDiff.Attachments.New.IsNullOrEmpty())
+        if (valuesDiff.Attachments is null || valuesDiff.Attachments.New.IsNullOrEmpty()) return keyValuePairs;
+
+        var value = valuesDiff.Attachments.New?.FirstOrDefault()?.Url;
+        if (value is not null)
         {
-            var value = valuesDiff.Attachments.New?.FirstOrDefault()?.Url;
-            if (value is not null)
-            {
-                keyValuePairs.Add(new KeyValuePair<string, string>(
-                    $"{nameof(ValuesDiff.Attachments)}", value));
-            }
+            keyValuePairs.Add(new KeyValuePair<string, string>(
+                $"{nameof(ValuesDiff.Attachments)}", value));
         }
 
         return keyValuePairs;
     }
 
-    private static (ScrumObjectType, ScrumObjectState) ParseEventType(string eventType)
+    private static (ScrumObjectType, ScrumObjectState) ParseEventTypeEnum(string eventType)
     {
         var eventTypeSplit = eventType.Split(".");
         if (eventTypeSplit.Length != 3)
@@ -152,5 +146,28 @@ internal class TimeLineEventParser : ITimeLineEventParser
         }
 
         return (scrumObjectType, scrumObjectState);
+    }
+
+    private static (int Id, string Subject) ParseObjectIdAndName(PbiItem? task, Userstory? userStory)
+    {
+        if (task is not null)
+        {
+            if (!string.IsNullOrEmpty(task.Subject))
+            {
+                return (task.Id, task.Subject);
+            }
+
+            if (task.Userstory is not null && !string.IsNullOrEmpty(task.Userstory.Subject))
+            {
+                return (task.Userstory.Id, task.Userstory.Subject);
+            }
+        }
+
+        if (userStory is not null && !string.IsNullOrEmpty(userStory.Subject))
+        {
+            return (userStory.Id, userStory.Subject);
+        }
+
+        return (-1, "None");
     }
 }

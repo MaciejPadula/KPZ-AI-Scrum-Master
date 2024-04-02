@@ -1,5 +1,6 @@
 using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Utilities;
@@ -41,7 +42,7 @@ internal class GetProjectTimeLineService : IGetProjectTimeLineService
         }
 
         var projectTimeLineRequestResult =
-            await _projectHttpClientWrapper.GetHttpRequest<List<ProjectTimeLineElementRoot>>(
+            await _projectHttpClientWrapper.GetHttpRequest<List<TimeLineEventRoot>>(
                 userId,
                 userTokens,
                 $"timeline/project/{projectId}");

@@ -1,5 +1,6 @@
 using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Utilities;
@@ -41,7 +42,7 @@ internal class GetProfileTimeLineService : IGetProfileTimeLineService
         }
 
         var profileTimeLineRequestResult =
-            await _projectHttpClientWrapper.GetHttpRequest<List<ProfileTimeLineElementRoot>>(
+            await _projectHttpClientWrapper.GetHttpRequest<List<TimeLineEventRoot>>(
                 userId,
                 userTokens,
                 $"timeline/profile/{memberId}");

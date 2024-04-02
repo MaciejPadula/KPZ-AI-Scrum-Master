@@ -1,10 +1,11 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 
 internal interface ITimeLineEventParser
 {
-    GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<ProfileTimeLineElementRoot> elements);
-    GetProjectTimeLineResponse ParseProjectTimeLineElement(IEnumerable<ProjectTimeLineElementRoot> elements);
+    GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements);
+    GetProjectTimeLineResponse ParseProjectTimeLineElement(IEnumerable<TimeLineEventRoot> elements);
 }

@@ -12,6 +12,7 @@ import { TaigaAuthorizationService } from './services/taiga-authorization.servic
 import { TaigaAuthorizationComponent } from './components/taiga-authorization/taiga-authorization.component';
 import { MaterialModule } from '../../shared/material.module';
 import { TaigaIconComponent } from '../../shared/components/taiga-icon/taiga-icon.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-settings',
@@ -23,6 +24,7 @@ import { TaigaIconComponent } from '../../shared/components/taiga-icon/taiga-ico
     TaigaAuthorizationComponent,
     MaterialModule,
     TaigaIconComponent,
+    TranslateModule,
   ],
 })
 export class UserSettingsComponent implements OnInit {

@@ -15,6 +15,11 @@ export const appRoutes: Route[] = [
       import('./features/feed/routes').then((mod) => mod.FeedRoutes),
   },
   {
+    path: 'Project',
+    loadChildren: () =>
+      import('./features/project/routes').then((mod) => mod.ProjectRoutes),
+  },
+  {
     path: 'Projects',
     loadChildren: () =>
       import('./features/projects/routes').then((mod) => mod.ProjectsRoutes),

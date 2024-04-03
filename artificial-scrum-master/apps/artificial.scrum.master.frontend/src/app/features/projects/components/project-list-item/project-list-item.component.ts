@@ -1,15 +1,17 @@
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserProject } from '../../models/user-project';
 import { LinkComponent } from '../../../../shared/components/link/link.component';
 import { MaterialModule } from '../../../../shared/material.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-project-list-item',
   standalone: true,
-  imports: [CommonModule, LinkComponent, MaterialModule],
+  imports: [CommonModule, LinkComponent, MaterialModule, TranslateModule],
   templateUrl: './project-list-item.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectListItemComponent {
   @Input()
@@ -32,5 +34,13 @@ export class ProjectListItemComponent {
 
   redirectToProject(id: number) {
     this.router.navigate([`/Project/${id}`]);
+  }
+
+  public get isOwnerKey(): string {
+    return this.userProject.amOwner ? 'Shared.Words.Yes' : 'Shared.Words.No';
+  }
+
+  public get visibilityKey(): string {
+    return this.userProject.isPrivate ? 'Shared.Words.Private' : 'Shared.Words.Public';
   }
 }

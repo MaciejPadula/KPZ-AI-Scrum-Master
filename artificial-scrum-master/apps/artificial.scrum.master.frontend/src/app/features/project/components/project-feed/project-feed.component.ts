@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectDataService } from '../../services/project-data.service';
 import { ActivatedRoute } from '@angular/router';
@@ -15,6 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [CommonModule, MaterialModule, TimelineRowComponent, TranslateModule],
   templateUrl: './project-feed.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectFeedComponent implements OnInit {
   private readonly activatedRoute = inject(ActivatedRoute);

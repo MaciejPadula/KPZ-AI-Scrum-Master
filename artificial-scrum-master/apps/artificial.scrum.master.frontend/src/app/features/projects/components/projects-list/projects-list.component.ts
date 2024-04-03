@@ -8,30 +8,30 @@ import {
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/material.module';
 import { ProjectListItemComponent } from '../project-list-item/project-list-item.component';
-import { GetUserProjectsResponseElement } from '../../models/user-project';
-import { ProjectListDataService } from '../../services/project-list-data.service';
+import { UserProject } from '../../models/user-project';
+import { ProjectsListDataService } from '../../services/projects-list-data.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
-  selector: 'app-project-item-list',
+  selector: 'app-projects-list',
   standalone: true,
   imports: [CommonModule, MaterialModule, ProjectListItemComponent],
-  templateUrl: './project-item-list.component.html',
+  templateUrl: './projects-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectItemListComponent implements OnInit {
-  private readonly projectListDataService = inject(ProjectListDataService);
+export class ProjectsListComponent implements OnInit {
+  private readonly projectListDataService = inject(ProjectsListDataService);
   private readonly toastService = inject(ToastService);
 
-  #projects = signal<GetUserProjectsResponseElement[]>([]);
+  #projects = signal<UserProject[]>([]);
   public readonly projects = this.#projects.asReadonly();
 
   public ngOnInit(): void {
-    this.projectListDataService.getProjectsEvents().subscribe({
-      next: (events) => {
-        this.#projects.set(events);
+    this.projectListDataService.getProjects().subscribe({
+      next: (project) => {
+        this.#projects.set(project);
       },
-      error: () => this.toastService.openError('Error fetching project events'),
+      error: () => this.toastService.openError('Error fetching projects'),
     });
   }
 }

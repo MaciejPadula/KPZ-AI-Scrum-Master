@@ -1,7 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { GetUserProjectsResponseElement } from '../../models/user-project';
+import { UserProject } from '../../models/user-project';
 import { LinkComponent } from '../../../../shared/components/link/link.component';
 import { MaterialModule } from '../../../../shared/material.module';
 
@@ -13,14 +13,13 @@ import { MaterialModule } from '../../../../shared/material.module';
 })
 export class ProjectListItemComponent {
   @Input()
-  public userProject: GetUserProjectsResponseElement;
+  public userProject: UserProject;
 
   private readonly router = inject(Router);
 
   public formatDate(date: string): string {
-    const dateObj = new Date(date);
-    return dateObj
-      .toLocaleString('pl-PL', {
+    return new Date(date)
+      .toLocaleString(navigator.language, {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
@@ -31,7 +30,7 @@ export class ProjectListItemComponent {
       .replace(',', ' at');
   }
 
-  onComponentClick(id: number) {
-    this.router.navigate([`/projects/${id}`]);
+  redirectToProject(id: number) {
+    this.router.navigate([`/Projects/${id}`]);
   }
 }

@@ -9,6 +9,6 @@ import { RouterModule } from '@angular/router';
   templateUrl: './not-found.component.html',
 })
 export class NotFoundComponent {
-  public readonly ImageUrl =
+  public readonly imageUrl =
     'https://i.kym-cdn.com/photos/images/original/002/738/959/060.gif';
 }

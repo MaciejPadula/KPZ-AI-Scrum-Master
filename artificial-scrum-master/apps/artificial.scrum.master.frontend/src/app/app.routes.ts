@@ -17,9 +17,7 @@ export const appRoutes: Route[] = [
   {
     path: 'Projects',
     loadChildren: () =>
-      import('./features/project-list/routes').then(
-        (mod) => mod.ProjectsRoutes
-      ),
+      import('./features/projects/routes').then((mod) => mod.ProjectsRoutes),
   },
   {
     path: '**',

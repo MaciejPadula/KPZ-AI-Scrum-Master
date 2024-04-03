@@ -1,4 +1,4 @@
-export interface GetUserProjectsResponseElement {
+export interface UserProject {
   id: number;
   name: string;
   modifiedDate: string;

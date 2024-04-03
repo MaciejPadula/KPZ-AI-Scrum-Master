@@ -9,15 +9,16 @@ import { CommonModule } from '@angular/common';
 import { FeedDataService } from '../../services/feed-data.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { TimelineRow } from '../../../../shared/components/timeline-row/timeline-row';
-import { map } from 'rxjs';
+import { finalize, map } from 'rxjs';
 import { ProfileTimelineEvent } from '../../models/profile-timeline-event';
 import { TimelineRowComponent } from '../../../../shared/components/timeline-row/timeline-row.component';
+import { MaterialModule } from '../../../../shared/material.module';
 
 @Component({
   selector: 'app-feed-list',
   standalone: true,
   templateUrl: './feed-list.component.html',
-  imports: [CommonModule, TimelineRowComponent],
+  imports: [CommonModule, TimelineRowComponent, MaterialModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeedListComponent implements OnInit {
@@ -27,11 +28,16 @@ export class FeedListComponent implements OnInit {
   #feeds = signal<TimelineRow[]>([]);
   public readonly feeds = this.#feeds.asReadonly();
 
+  #isLoading = signal<boolean>(false);
+  public isLoading = this.#isLoading.asReadonly();
+
   public ngOnInit(): void {
+    this.#isLoading.set(true);
     this.feedDataService
       .getFeedEvents()
       .pipe(
-        map((events) => events.map((event) => this.mapToTimelineRow(event)))
+        map((events) => events.map((event) => this.mapToTimelineRow(event))),
+        finalize(() => this.#isLoading.set(false))
       )
       .subscribe({
         next: (events) => {
@@ -45,10 +51,10 @@ export class FeedListComponent implements OnInit {
     return {
       userName: event.userName,
       userNick: event.userNick,
-      userAvatar: event.userAvatar,
+      userAvatar: event.userPhoto,
       scrumObjectType: event.scrumObjectType,
-      scrumObjectId: event.scrumObjectId,
-      scrumObjectName: event.scrumObjectName,
+      scrumObjectId: event.objectId,
+      scrumObjectName: event.objectName,
       scrumObjectState: event.scrumObjectState,
       projectId: event.projectId,
       projectName: event.projectName,

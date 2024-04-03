@@ -1,7 +1,7 @@
 export interface GetUserProjectsResponseElement {
   id: number;
   name: string;
-  modifiedDate: Date;
+  modifiedDate: string;
   isPrivate: boolean;
   amOwner: boolean;
   ownerUsername: string;

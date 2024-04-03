@@ -27,15 +27,11 @@ export class ProjectItemListComponent implements OnInit {
   public readonly projects = this.#projects.asReadonly();
 
   public ngOnInit(): void {
-    this.projectListDataService
-      .getProjectsEvents()
-      .pipe()
-      .subscribe({
-        next: (events) => {
-          this.#projects.set(events);
-        },
-        error: () =>
-          this.toastService.openError('Error fetching project events'),
-      });
+    this.projectListDataService.getProjectsEvents().subscribe({
+      next: (events) => {
+        this.#projects.set(events);
+      },
+      error: () => this.toastService.openError('Error fetching project events'),
+    });
   }
 }

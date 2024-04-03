@@ -1,0 +1,23 @@
+{
+  "Feed.Title": "Ostatnia aktywność",
+  "Shared.Timeline.Row.ScrumObjectType.Task": "Zadanie",
+  "Shared.Timeline.Row.HasBeen.Task": "zostało",
+  "Shared.Timeline.Row.ScrumObjectState.Created.Task": "stworzone",
+  "Shared.Timeline.Row.ScrumObjectState.Changed.Task": "zaktualizowane",
+  "Shared.Timeline.Row.ScrumObjectType.UserStory": "Historyjka użytkownika",
+  "Shared.Timeline.Row.HasBeen.UserStory": "została",
+  "Shared.Timeline.Row.ScrumObjectState.Created.UserStory": "stworzona",
+  "Shared.Timeline.Row.ScrumObjectState.Changed.UserStory": "zaktualizowana",
+  "UserSettings.Tagia.Title": "Ustawienia serwisu Taiga",
+  "UserSettings.Tagia.AlreadyLoggedIn": "Jesteś już zalogowany do taigi",
+  "UserSettings.Tagia.ProvideDataOnceAgain": "Wprowadź dane ponownie",
+  "UserSettings.Tagia.LogInTitle": "Logowanie do serwisu Taiga",
+  "UserSettings.Tagia.Login": "Login",
+  "UserSettings.Tagia.Login.Required": "Login jest wymagany",
+  "UserSettings.Tagia.Password": "Hasło",
+  "UserSettings.Tagia.Password.Required": "Hasło jest wymagane",
+  "UserSettings.Tagia.Return": "Wróć",
+  "UserSettings.Tagia.LoginText": "Zaloguj się",
+  "UserSettings.Tagia.LoginError": "Wystąpił problem z logowaniem do Taigi. Spróbuj ponownie.",
+  "UserSettings.Tagia.LoginSuccess": "Pomyślnie zalogowano do Taigi!"
+}

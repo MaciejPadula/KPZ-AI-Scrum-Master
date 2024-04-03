@@ -1,0 +1,8 @@
+@if (isLoading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+<div class="w-full flex flex-col">
+  @for (event of feeds(); track $index) {
+    <app-timeline-row [timelineRow]="event"/>
+  }
+</div>

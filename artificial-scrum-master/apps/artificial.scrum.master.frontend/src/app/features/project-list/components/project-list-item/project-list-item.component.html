@@ -1,21 +1,29 @@
 <div
   class="flex flex-col p-4 outline outline-1 outline-gray-200 shadow-lg my-1 hover:bg-sky-50"
+  (click)="onComponentClick(userProject.id)"
 >
   <div class="flex flex-col">
     <p>
-      <span class="mat-subtitle-1"
-        ><app-link [href]="getObjectUrl(userProject.id)">{{
-          userProject.name
-        }}</app-link></span
-      >
+      <span class="text-2xl font-bold dark:text-gray-700">{{
+        userProject.name
+      }}</span>
       <span class="mat-caption ml-2"
-        >Owner: ({{ userProject.ownerUsername }})</span
+        >Owner: {{ userProject.ownerUsername }}</span
       >
     </p>
-    <p class="space-x-1 mat-body-1">
-      <span>{{ userProject.amOwner }}</span>
-      <span>{{ userProject.isPrivate }}</span>
-      <span>{{ userProject.modifiedDate }}</span>
-    </p>
+    <div>
+      <div class="space-x-1 mat-body-1 w-1/4">
+        <div class="grid grid-cols-1 divide-y">
+          <span>Owner: {{ userProject.amOwner ? 'Yes' : 'No' }}</span>
+          <span
+            >Visibility:
+            {{ userProject.isPrivate ? 'Private' : 'Public' }}</span
+          >
+        </div>
+      </div>
+      <span class="mat-caption"
+        >Last modified: {{ formatDate(userProject.modifiedDate) }}</span
+      >
+    </div>
   </div>
 </div>

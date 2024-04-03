@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
 export const appRoutes: Route[] = [
   {
@@ -17,5 +18,14 @@ export const appRoutes: Route[] = [
     path: 'Project',
     loadChildren: () =>
       import('./features/project/routes').then((mod) => mod.ProjectRoutes),
+  },
+  {
+    path: 'Projects',
+    loadChildren: () =>
+      import('./features/projects/routes').then((mod) => mod.ProjectsRoutes),
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];

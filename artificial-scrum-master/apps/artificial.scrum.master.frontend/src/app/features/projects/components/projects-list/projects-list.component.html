@@ -1,0 +1,7 @@
+<div class="w-full flex flex-col">
+  <div class="flex flex-col p-4 w-7/10 mx-20">
+    @for (event of projects(); track $index) {
+    <app-project-list-item [userProject]="event" />
+    }
+  </div>
+</div>

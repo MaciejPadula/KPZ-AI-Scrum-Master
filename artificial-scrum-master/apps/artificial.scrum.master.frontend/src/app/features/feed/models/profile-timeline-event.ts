@@ -4,11 +4,11 @@ import { ScrumObjectType } from "../../../shared/models/scrum-object-type";
 export interface ProfileTimelineEvent {
   userName: string;
   userNick: string | null;
-  userAvatar: string;
+  userPhoto: string;
 
   scrumObjectType: ScrumObjectType;
-  scrumObjectId: number;
-  scrumObjectName: string;
+  objectId: number;
+  objectName: string;
   scrumObjectState: ScrumObjectState;
 
   projectId: number | null;

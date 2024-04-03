@@ -1,4 +1,5 @@
 {
+  "Feed.Title": "Ostatnia aktywność",
   "Shared.Timeline.Row.ScrumObjectType.Task": "Zadanie",
   "Shared.Timeline.Row.HasBeen.Task": "zostało",
   "Shared.Timeline.Row.ScrumObjectState.Created.Task": "stworzone",
@@ -19,5 +20,4 @@
   "UserSettings.Tagia.LoginText": "Zaloguj się",
   "UserSettings.Tagia.LoginError": "Wystąpił problem z logowaniem do Taigi. Spróbuj ponownie.",
   "UserSettings.Tagia.LoginSuccess": "Pomyślnie zalogowano do Taigi!"
-
 }

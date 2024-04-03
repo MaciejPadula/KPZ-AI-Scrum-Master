@@ -3,10 +3,12 @@
     <app-avatar [src]="timelineRow.userAvatar" class="mr-4" />
     <div class="flex flex-col">
       <p>
-        <span class="mat-subtitle-1">{{ timelineRow.userName }}</span>
+        <span class="mat-subtitle-2 sm:mat-subtitle-1">{{
+          timelineRow.userName
+        }}</span>
         <span class="mat-caption ml-2">({{ timelineRow.userNick }})</span>
       </p>
-      <p class="space-x-1 mat-body-1">
+      <p class="space-x-1 mat-body-2 sm:mat-body-1">
         <span>{{ getScrumObjectTypeText(timelineRow.scrumObjectType) }}</span>
         <app-link
           [href]="
@@ -25,9 +27,11 @@
     </div>
   </div>
   <div class="flex justify-end">
-    <app-link [href]="'Project/' + timelineRow.projectId">{{
-      timelineRow.projectName
-    }}</app-link>
+    <app-link
+      [href]="'Project/' + timelineRow.projectId"
+      class="mat-caption sm:mat-body-1"
+      >{{ timelineRow.projectName }}</app-link
+    >
   </div>
 
   <mat-divider />

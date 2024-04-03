@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [],
@@ -15,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatDividerModule,
     MatExpansionModule,
     MatIconModule,
+    MatProgressBarModule,
   ],
   exports: [
     MatButtonModule,
@@ -22,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatDividerModule,
     MatExpansionModule,
     MatIconModule,
+    MatProgressBarModule,
   ],
 })
 export class MaterialModule {}

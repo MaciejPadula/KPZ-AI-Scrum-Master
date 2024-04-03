@@ -31,6 +31,6 @@ export class ProjectListItemComponent {
   }
 
   redirectToProject(id: number) {
-    this.router.navigate([`/Projects/${id}`]);
+    this.router.navigate([`/Project/${id}`]);
   }
 }

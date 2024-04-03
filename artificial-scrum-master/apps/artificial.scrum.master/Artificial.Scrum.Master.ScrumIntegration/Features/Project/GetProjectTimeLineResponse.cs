@@ -1,5 +1,7 @@
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
+
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 
-internal class GetProjectTimeLineResponse
-{
-}
+internal readonly record struct GetProjectTimeLineResponse(
+    IEnumerable<GetTimeLineEvent> TimeLineEvents
+);

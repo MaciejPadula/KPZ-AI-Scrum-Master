@@ -2,7 +2,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Utilities;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 
-public class TokenValidator : ITokenValidator
+internal class TokenValidator : ITokenValidator
 {
     private const int TokenRefreshRequestTimeBuffer = 2;
     private const string ExpirationTimeClaimTypeName = "exp";

@@ -1,5 +1,6 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Middleware;
@@ -22,8 +23,10 @@ public static class ScrumIntegrationModule
             c.BaseAddress = new Uri(scrumManagementServiceSettings["BaseUrl"] ?? throw new
                 InvalidOperationException("Base Url for agile service integration required"));
         });
+        services.AddTransient<ITimeLineEventParser, TimeLineEventParser>();
         services.AddTransient<IJwtDecoder, JwtDecoder>();
         services.AddTransient<ITokenValidator, TokenValidator>();
+        services.AddTransient<IAccessTokenProvider, TokenProvider>();
         services.AddTransient<IGetUserProjectsService, GetUserProjectsService>();
         services.AddTransient<IGetProfileTimeLineService, GetProfileTimeLineService>();
         services.AddTransient<IGetProjectTimeLineService, GetProjectTimeLineService>();

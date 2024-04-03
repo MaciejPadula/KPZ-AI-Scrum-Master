@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 
-public class Project
+internal class Project
 {
     public int Id { get; set; }
     public required string Name { get; set; }
@@ -12,7 +12,7 @@ public class Project
     [JsonPropertyName("i_am_owner")] public bool AmOwner { get; set; }
 }
 
-public class Owner
+internal class Owner
 {
     public required string Username { get; set; }
 }

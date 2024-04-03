@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Utilities;
 
-public class JwtDecoder : IJwtDecoder
+internal class JwtDecoder : IJwtDecoder
 {
     private readonly TimeProvider _timeProvider;
     private readonly JwtSecurityTokenHandler _handler;

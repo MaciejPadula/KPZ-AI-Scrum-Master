@@ -1,6 +1,10 @@
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 
-public readonly record struct GetUserProjectsResponse(
+internal readonly record struct GetUserProjectsResponse(
+    List<GetUserProjectsResponseElement> Projects
+);
+
+internal readonly record struct GetUserProjectsResponseElement(
     int Id,
     string Name,
     DateTime ModifiedDate,

@@ -2,11 +2,10 @@ using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Models;
 using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 
-public class ProjectHttpClientWrapper : IProjectHttpClientWrapper
+internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
 {
     private const string RefreshTokenUrl = "auth/refresh";
 

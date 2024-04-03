@@ -10,6 +10,10 @@
   "Shared.Timeline.Row.HasBeen.UserStory": "została",
   "Shared.Timeline.Row.ScrumObjectState.Created.UserStory": "stworzona",
   "Shared.Timeline.Row.ScrumObjectState.Changed.UserStory": "zaktualizowana",
+  "Shared.Words.Yes": "Tak",
+  "Shared.Words.No": "Nie",
+  "Shared.Words.Private": "Prywatny",
+  "Shared.Words.Public": "Publiczny",
   "UserSettings.Title": "Ustawienia profilu",
   "UserSettings.Tagia.Title": "Ustawienia serwisu Taiga",
   "UserSettings.Tagia.AlreadyLoggedIn": "Jesteś już zalogowany do taigi",
@@ -22,5 +26,9 @@
   "UserSettings.Tagia.Return": "Wróć",
   "UserSettings.Tagia.LoginText": "Zaloguj się",
   "UserSettings.Tagia.LoginError": "Wystąpił problem z logowaniem do Taigi. Spróbuj ponownie.",
-  "UserSettings.Tagia.LoginSuccess": "Pomyślnie zalogowano do Taigi!"
+  "UserSettings.Tagia.LoginSuccess": "Pomyślnie zalogowano do Taigi!",
+  "Projects.Title": "Moje projekty",
+  "Projects.Item.Owner": "Właściciel: ",
+  "Projects.Item.LastModified": "Ostatnio zmodyfikowany: ",
+  "Projects.Item.Visibility": "Widoczność: "
 }

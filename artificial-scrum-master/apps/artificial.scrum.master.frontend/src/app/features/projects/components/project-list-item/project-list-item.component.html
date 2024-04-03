@@ -8,21 +8,26 @@
         userProject.name
       }}</span>
       <span class="mat-caption ml-2"
-        >Owner: {{ userProject.ownerUsername }}</span
+        >{{ 'Projects.Item.Owner' | translate }}
+        {{ userProject.ownerUsername }}</span
       >
     </p>
     <div>
-      <div class="space-x-1 mat-body-1 w-1/4">
+      <div class="space-x-1 mat-body-1">
         <div class="grid grid-cols-1 divide-y">
-          <span>Owner: {{ userProject.amOwner ? 'Yes' : 'No' }}</span>
           <span
-            >Visibility:
-            {{ userProject.isPrivate ? 'Private' : 'Public' }}</span
+            >{{ 'Projects.Item.Owner' | translate }}
+            {{ isOwnerKey | translate }}</span
+          >
+          <span
+            >{{ 'Projects.Item.Visibility' | translate }}
+            {{ visibilityKey | translate }}</span
           >
         </div>
       </div>
       <span class="mat-caption"
-        >Last modified: {{ formatDate(userProject.modifiedDate) }}</span
+        >{{ 'Projects.Item.LastModified' | translate }}
+        {{ formatDate(userProject.modifiedDate) }}</span
       >
     </div>
   </div>

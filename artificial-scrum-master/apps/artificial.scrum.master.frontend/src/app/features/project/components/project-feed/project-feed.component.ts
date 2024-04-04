@@ -31,7 +31,6 @@ export class ProjectFeedComponent implements OnInit {
   public ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       const projectId = params['projectId'];
-      console.log(params);
       this.loadProject(projectId);
     });
   }

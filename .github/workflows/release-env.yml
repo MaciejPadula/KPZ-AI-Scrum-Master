@@ -2,14 +2,16 @@ name: Release NX App to k8s
 
 on:
   workflow_call:
-    secrets:
+    inputs:
       env:
+        description: 'Environment to deploy to'
         required: true
+        type: string
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    environment: ${{ secrets.env }}
+    environment: ${{ inputs.env }}
 
     steps:
     - name: Checkout

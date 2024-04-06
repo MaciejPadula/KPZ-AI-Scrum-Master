@@ -7,11 +7,11 @@ jobs:
   build:
     uses: ./.github/workflows/build-nx-app.yml
 
-  variables-eris:
+  prepare-eris:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ secrets.ZEROTIER_NETWORK_ID }}"
+      - run: echo "Prepare Eris environment"
     environment: 'eris'
     outputs:
       ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
@@ -19,7 +19,7 @@ jobs:
       DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
-  # variables-roxy:
+  # prepare-roxy:
   #   needs: build
   #   runs-on: ubuntu-latest
   # steps: [run: echo]
@@ -31,19 +31,19 @@ jobs:
   #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
   release-eris:
-    needs: variables-eris
+    needs: prepare-eris
     uses: ./.github/workflows/release-env.yml
     secrets:
-      ZEROTIER_NETWORK_ID: ${{ needs.variables-eris.outputs.ZEROTIER_NETWORK_ID }}
-      ZEROTIER_CENTRAL_TOKEN: ${{ needs.variables-eris.outputs.ZEROTIER_CENTRAL_TOKEN }}
-      DOCKER_REGISTRY_NAME: ${{ needs.variables-eris.outputs.DOCKER_REGISTRY_NAME }}
-      KUBE_CONFIG: ${{ needs.variables-eris.outputs.KUBE_CONFIG }}
+      ZEROTIER_NETWORK_ID: ${{ needs.prepare-eris.outputs.ZEROTIER_NETWORK_ID }}
+      ZEROTIER_CENTRAL_TOKEN: ${{ needs.prepare-eris.outputs.ZEROTIER_CENTRAL_TOKEN }}
+      DOCKER_REGISTRY_NAME: ${{ needs.prepare-eris.outputs.DOCKER_REGISTRY_NAME }}
+      KUBE_CONFIG: ${{ needs.prepare-eris.outputs.KUBE_CONFIG }}
 
   # release-roxy:
-  #   needs: variables-roxy
+  #   needs: prepare-roxy
   #   uses: ./.github/workflows/release-env.yml
   #   with:
-  #     ZEROTIER_NETWORK_ID: ${{ needs.variables-roxy.outputs.ZEROTIER_NETWORK_ID }}
-  #     ZEROTIER_CENTRAL_TOKEN: ${{ needs.variables-roxy.outputs.ZEROTIER_CENTRAL_TOKEN }}
-  #     DOCKER_REGISTRY_NAME: ${{ needs.variables-roxy.outputs.DOCKER_REGISTRY_NAME }}
-  #     KUBE_CONFIG: ${{ needs.variables-roxy.outputs.KUBE_CONFIG }}
+  #     ZEROTIER_NETWORK_ID: ${{ needs.prepare-roxy.outputs.ZEROTIER_NETWORK_ID }}
+  #     ZEROTIER_CENTRAL_TOKEN: ${{ needs.prepare-roxy.outputs.ZEROTIER_CENTRAL_TOKEN }}
+  #     DOCKER_REGISTRY_NAME: ${{ needs.prepare-roxy.outputs.DOCKER_REGISTRY_NAME }}
+  #     KUBE_CONFIG: ${{ needs.prepare-roxy.outputs.KUBE_CONFIG }}

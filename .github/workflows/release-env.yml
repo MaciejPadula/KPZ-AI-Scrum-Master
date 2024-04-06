@@ -4,9 +4,13 @@ on:
   workflow_call:
     secrets:
       ZEROTIER_NETWORK_ID:
+        required: true
       ZEROTIER_CENTRAL_TOKEN:
+        required: true
       DOCKER_REGISTRY_NAME:
+        required: true
       KUBE_CONFIG:
+        required: true
 
 jobs:
   release:

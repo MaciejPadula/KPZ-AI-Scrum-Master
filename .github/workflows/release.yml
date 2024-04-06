@@ -7,17 +7,17 @@ jobs:
   build:
     uses: ./.github/workflows/build-nx-app.yml
 
-  prepare-eris:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Prepare Eris environment"
-    environment: 'eris'
-    outputs:
-      ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
-      ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
-      DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+  # prepare-eris:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: echo "Prepare Eris environment"
+  #   environment: 'eris'
+  #   outputs:
+  #     ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
+  #     ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+  #     DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
+  #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
   # prepare-roxy:
   #   needs: build
@@ -31,13 +31,15 @@ jobs:
   #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
   release-eris:
-    needs: prepare-eris
+    needs: build
     uses: ./.github/workflows/release-env.yml
+    with:
+      environment: 'eris'
     secrets:
-      ZEROTIER_NETWORK_ID: ${{ needs.prepare-eris.outputs.ZEROTIER_NETWORK_ID }}
-      ZEROTIER_CENTRAL_TOKEN: ${{ needs.prepare-eris.outputs.ZEROTIER_CENTRAL_TOKEN }}
-      DOCKER_REGISTRY_NAME: ${{ needs.prepare-eris.outputs.DOCKER_REGISTRY_NAME }}
-      KUBE_CONFIG: ${{ needs.prepare-eris.outputs.KUBE_CONFIG }}
+      ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
+      ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+      DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
   # release-roxy:
   #   needs: prepare-roxy

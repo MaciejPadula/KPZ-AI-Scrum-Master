@@ -2,6 +2,11 @@ name: Release NX App to k8s
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        type: string
+        description: environment to deploy to
+        required: true
     secrets:
       ZEROTIER_NETWORK_ID:
         required: true
@@ -15,6 +20,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
 
     steps:
     - name: Checkout

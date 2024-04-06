@@ -30,7 +30,7 @@ jobs:
   release-eris:
     needs: [build, variables-eris]
     uses: ./.github/workflows/release-env.yml
-    with:
+    secrets:
       ZEROTIER_NETWORK_ID: ${{ needs.variables-eris.outputs.ZEROTIER_NETWORK_ID }}
       ZEROTIER_CENTRAL_TOKEN: ${{ needs.variables-eris.outputs.ZEROTIER_CENTRAL_TOKEN }}
       DOCKER_REGISTRY_NAME: ${{ needs.variables-eris.outputs.DOCKER_REGISTRY_NAME }}

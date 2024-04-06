@@ -8,8 +8,10 @@ jobs:
     uses: ./.github/workflows/build-nx-app.yml
 
   variables-eris:
+    needs: build
     runs-on: ubuntu-latest
-    steps: [run: echo]
+    steps:
+      - run: echo "${{ secrets.ZEROTIER_NETWORK_ID }}"
     environment: 'eris'
     outputs:
       ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
@@ -18,6 +20,7 @@ jobs:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
   # variables-roxy:
+  #   needs: build
   #   runs-on: ubuntu-latest
   # steps: [run: echo]
   #   environment: 'roxy'
@@ -28,7 +31,7 @@ jobs:
   #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
   release-eris:
-    needs: [build, variables-eris]
+    needs: variables-eris
     uses: ./.github/workflows/release-env.yml
     secrets:
       ZEROTIER_NETWORK_ID: ${{ needs.variables-eris.outputs.ZEROTIER_NETWORK_ID }}
@@ -37,7 +40,7 @@ jobs:
       KUBE_CONFIG: ${{ needs.variables-eris.outputs.KUBE_CONFIG }}
 
   # release-roxy:
-  #   needs: [build, variables-roxy]
+  #   needs: variables-roxy
   #   uses: ./.github/workflows/release-env.yml
   #   with:
   #     ZEROTIER_NETWORK_ID: ${{ needs.variables-roxy.outputs.ZEROTIER_NETWORK_ID }}

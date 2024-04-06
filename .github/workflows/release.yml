@@ -11,4 +11,4 @@ jobs:
     needs: build
     uses: ./.github/workflows/release-env.yml
     secrets:
-      env: eris
+      env: 'eris'

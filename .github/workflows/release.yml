@@ -5,49 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./artificial-scrum-master
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Install node
-      uses: actions/setup-node@v4
-      with:
-        node-version: '21.1'
-
-    - name: Install dotnet
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Test dotnet app
-      run: dotnet test apps/artificial.scrum.master
-    
-    - name: Test frontend
-      run: npx nx test artificial.scrum.master.frontend
-
-    - name: Build dotnet app
-      run: npx nx build artificial.scrum.master
-
-    - name: Build frontend
-      run: npx nx build artificial.scrum.master.frontend --configuration=production
-
-    - name: Copy frontend
-      run: cp -r ./dist/apps/artificial.scrum.master.frontend/browser ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0/wwwroot
-
-    - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v4
-      with:
-        name: artificial-scrum-master-binaries
-        path: ./artificial-scrum-master/dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0
-        retention-days: 1
+    uses: ./.github/workflows/build-nx-app.yml
 
   release-eris:
     needs: build

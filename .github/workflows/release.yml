@@ -9,6 +9,7 @@ jobs:
 
   variables-eris:
     runs-on: ubuntu-latest
+    steps: [run: echo]
     environment: 'eris'
     outputs:
       ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
@@ -18,6 +19,7 @@ jobs:
 
   # variables-roxy:
   #   runs-on: ubuntu-latest
+  # steps: [run: echo]
   #   environment: 'roxy'
   #   outputs:
   #     ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}

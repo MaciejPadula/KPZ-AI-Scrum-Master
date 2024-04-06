@@ -7,29 +7,6 @@ jobs:
   build:
     uses: ./.github/workflows/build-nx-app.yml
 
-  # prepare-eris:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: echo "Prepare Eris environment"
-  #   environment: 'eris'
-  #   outputs:
-  #     ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
-  #     ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
-  #     DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
-  #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-
-  # prepare-roxy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  # steps: [run: echo]
-  #   environment: 'roxy'
-  #   outputs:
-  #     ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
-  #     ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
-  #     DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
-  #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-
   release-eris:
     needs: build
     uses: ./.github/workflows/release-env.yml
@@ -41,11 +18,13 @@ jobs:
       DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
-  # release-roxy:
-  #   needs: prepare-roxy
-  #   uses: ./.github/workflows/release-env.yml
-  #   with:
-  #     ZEROTIER_NETWORK_ID: ${{ needs.prepare-roxy.outputs.ZEROTIER_NETWORK_ID }}
-  #     ZEROTIER_CENTRAL_TOKEN: ${{ needs.prepare-roxy.outputs.ZEROTIER_CENTRAL_TOKEN }}
-  #     DOCKER_REGISTRY_NAME: ${{ needs.prepare-roxy.outputs.DOCKER_REGISTRY_NAME }}
-  #     KUBE_CONFIG: ${{ needs.prepare-roxy.outputs.KUBE_CONFIG }}
+  release-roxy:
+    needs: build
+    uses: ./.github/workflows/release-env.yml
+    with:
+      environment: 'roxy'
+    secrets:
+      ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
+      ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+      DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}

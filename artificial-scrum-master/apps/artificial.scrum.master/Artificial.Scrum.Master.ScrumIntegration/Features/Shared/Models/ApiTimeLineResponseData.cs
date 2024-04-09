@@ -7,7 +7,7 @@ internal class TimeLineEventRoot
     public required Data Data { get; set; }
     public int Id { get; set; }
     [JsonPropertyName("event_type")] public required string EventType { get; set; }
-    public int Project { get; set; }
+    public int? Project { get; set; }
     public DateTime Created { get; set; }
 }
 
@@ -16,8 +16,8 @@ internal class Data
     [JsonPropertyName("task")] public PbiItem? Task { get; set; }
     public required User User { get; set; }
     public string? Comment { get; set; }
-    public required Project Project { get; set; }
-    [JsonPropertyName("values_diff")] public required ValuesDiff ValuesDiff { get; set; }
+    public Project? Project { get; set; }
+    [JsonPropertyName("values_diff")] public ValuesDiff? ValuesDiff { get; set; }
     public Milestone? Milestone { get; set; }
     public Userstory? Userstory { get; set; }
 }

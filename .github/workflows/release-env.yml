@@ -1,0 +1,63 @@
+name: Release NX App to k8s
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        description: environment to deploy to
+        required: true
+    secrets:
+      ZEROTIER_NETWORK_ID:
+        required: true
+      ZEROTIER_CENTRAL_TOKEN:
+        required: true
+      DOCKER_REGISTRY_NAME:
+        required: true
+      KUBE_CONFIG:
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Download Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: artificial-scrum-master-binaries
+        path: ./dist
+
+    - name: Copy Dockerfile
+      run: cp ./artificial-scrum-master/Dockerfile .
+
+    - name: ZeroTier
+      uses: zerotier/github-action@v1
+      with:
+        network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
+        auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Insecure Docker Repository
+      run: |
+        sudo truncate -s-2 /etc/docker/daemon.json
+        echo ", \"insecure-registries\": [\"${{ secrets.DOCKER_REGISTRY_NAME }}\"]}" | sudo tee -a /etc/docker/daemon.json
+        sudo systemctl restart docker
+      
+    - name: Build and push to local registry
+      run: |
+        docker build -t ${{ secrets.DOCKER_REGISTRY_NAME }}/artificialscrummaster:latest .
+        docker push ${{ secrets.DOCKER_REGISTRY_NAME }}/artificialscrummaster:latest
+    
+    - name: Restart pods
+      uses: actions-hub/kubectl@master
+      env:
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+      with:
+        args: rollout restart deploy ai-scrum-master-deploy --namespace scrum-master

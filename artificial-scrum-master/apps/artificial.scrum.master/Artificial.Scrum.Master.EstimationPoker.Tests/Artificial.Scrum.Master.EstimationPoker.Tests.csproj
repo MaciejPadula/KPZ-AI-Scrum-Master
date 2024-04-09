@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Artificial.Scrum.Master.UserSettings\Artificial.Scrum.Master.UserSettings.csproj" />
+    <ProjectReference Include="..\Artificial.Scrum.Master.EstimationPoker\Artificial.Scrum.Master.EstimationPoker.csproj" />
   </ItemGroup>
 
   <ItemGroup>

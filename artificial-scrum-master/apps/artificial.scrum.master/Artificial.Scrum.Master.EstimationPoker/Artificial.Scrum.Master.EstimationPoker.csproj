@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="Artificial.Scrum.Master.UserSettings.Tests" />
+    <InternalsVisibleTo Include="Artificial.Scrum.Master.EstimationPoker.Tests" />
   </ItemGroup>
 
   <ItemGroup>

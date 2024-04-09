@@ -18,15 +18,11 @@ public static class UserSettingsModule
 
     public static void RegisterUserSettingsEndpoints(this IEndpointRouteBuilder routes)
     {
-        string userId = "1";
-
         routes.MapGet(
             "/api/user-settings",
             async (HttpContext context, IGetUserSettingsService service) =>
             {
-                var result = await service.Handle(userId);
-                var response = new GerUserSettingsResponse(result.IsLoggedToTaiga);
-
+                var response = await service.Handle();
                 await context.Response.WriteAsJsonAsync(response);
             });
 
@@ -34,11 +30,7 @@ public static class UserSettingsModule
             "/api/user-settings/set-taiga-access",
             async (SetTaigaAccessRequest settings, HttpContext context, ISetTaigaAccessService service) =>
             {
-                await service.Handle(
-                    userId,
-                    new TaigaAccess(
-                        settings.AccessToken,
-                        settings.RefreshToken));
+                await service.Handle(settings);
             });
     }
 }

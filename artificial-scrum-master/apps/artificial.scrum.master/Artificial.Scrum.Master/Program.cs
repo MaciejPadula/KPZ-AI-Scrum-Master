@@ -1,3 +1,4 @@
+using Artificial.Scrum.Master.EstimationPoker;
 using Artificial.Scrum.Master.Infrastructure;
 using Artificial.Scrum.Master.ScrumProjectIntegration;
 using Artificial.Scrum.Master.UserSettings;
@@ -12,6 +13,7 @@ builder.Services.AddInfrastructure(sqlConnectionString);
 builder.Services.AddUserSettingsModule();
 builder.Services.AddScrumIntegrationModule(
     builder.Configuration.GetSection("ScrumManagementService"));
+builder.Services.AddEstimationPokerModule();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -33,9 +35,10 @@ app.UseCors(x => x
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseScrumProjectIntegration();
 
 app.RegisterUserSettingsEndpoints();
-app.UseScrumProjectIntegration();
+app.RegisterEstimationPokerEndpoints();
 app.RegisterScrumIntegrationEndpoints();
 app.MapControllerRoute(name: "default", "{controller}/{action=Index}/{id?}");
 

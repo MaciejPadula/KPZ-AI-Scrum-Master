@@ -1,3 +1,4 @@
+using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
@@ -13,6 +14,7 @@ public static class InfrastructureModule
         services.AddTransient<IDbConnectionFactory>(_ => new SqlDbConnectionFactory(sqlConnectionString));
         services.AddTransient<IUserSettingsRepository, SqlUserSettingsRepository>();
         services.AddTransient<IUserTokensRepository, SqlUserSettingsRepository>();
+        services.AddTransient<ISessionRepository, SqlSessionRepository>();
         services.AddTransient(_ => TimeProvider.System);
 
         services.AddTransient<IUserAccessor, MockedUserAccessor>();

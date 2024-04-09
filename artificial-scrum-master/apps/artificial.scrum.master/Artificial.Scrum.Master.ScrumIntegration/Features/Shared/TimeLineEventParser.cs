@@ -135,7 +135,7 @@ internal class TimeLineEventParser : ITimeLineEventParser
         var eventTypeSplit = eventType.Split(".");
         if (eventTypeSplit.Length != 3)
         {
-            return (ScrumObjectType.Task, ScrumObjectState.Change);
+            throw new Exception(eventType);
         }
 
         var scrumObjectTypeParseSuccess =
@@ -146,7 +146,7 @@ internal class TimeLineEventParser : ITimeLineEventParser
 
         if (!scrumObjectTypeParseSuccess || !scrumObjectStateParseSuccess)
         {
-            return (ScrumObjectType.Task, ScrumObjectState.Change);
+            throw new Exception(eventType);
         }
 
         return (scrumObjectType, scrumObjectState);

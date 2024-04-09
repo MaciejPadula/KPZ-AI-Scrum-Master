@@ -16,7 +16,7 @@ internal static class HttpContextExtensions
 
         httpContext.Response.StatusCode = exception switch
         {
-            UnauthorizedAccessException => StatusCodes.Status403Forbidden,
+            UserNotAuthorizedException => StatusCodes.Status403Forbidden,
             SessionNotFoundException => StatusCodes.Status404NotFound,
             _ => StatusCodes.Status500InternalServerError
         };

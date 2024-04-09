@@ -24,7 +24,7 @@ public class AddSessionTaskServiceTests
     [Test]
     [TestCase(false, false, typeof(SessionNotFoundException))]
     [TestCase(false, true, typeof(SessionNotFoundException))]
-    [TestCase(true, false, typeof(UnauthorizedAccessException))]
+    [TestCase(true, false, typeof(UserNotAuthorizedException))]
     public async Task Handle_WhenSessionDoesNotExistOrUserIsNotValidated_ReturnsException(bool sessionExists, bool isUserValidated, Type exceptionType)
     {
         // Arrange

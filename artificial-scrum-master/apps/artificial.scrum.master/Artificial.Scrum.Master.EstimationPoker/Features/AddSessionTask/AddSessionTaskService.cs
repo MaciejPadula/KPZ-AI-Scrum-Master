@@ -40,7 +40,9 @@ internal class AddSessionTaskService : IAddSessionTaskService
 
         if (!isValidated)
         {
-            return Result.OnError(new UnauthorizedAccessException());
+            return Result.OnError(new UserNotAuthorizedException(
+                _userAccessor.UserId,
+                request.SessionId));
         }
 
         await _sessionRepository.AddSessionTask(new SessionTaskEntity(

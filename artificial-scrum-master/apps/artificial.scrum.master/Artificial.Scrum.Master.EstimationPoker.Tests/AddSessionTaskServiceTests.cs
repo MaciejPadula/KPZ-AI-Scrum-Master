@@ -1,5 +1,6 @@
 using Artificial.Scrum.Master.EstimationPoker.Features.AddSessionTask;
-using Artificial.Scrum.Master.EstimationPoker.Features.Shared;
+using Artificial.Scrum.Master.EstimationPoker.Features.Shared.Exceptions;
+using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Models;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
 using FluentAssertions;
@@ -12,13 +13,17 @@ public class AddSessionTaskServiceTests
     private AddSessionTaskService _sut;
     private ISessionRepository _sessionRepository;
     private IUserAccessor _userAccessor;
+    private TimeProvider _timeProvider;
+    private ISessionTaskRepository _sessionTaskRepository;
 
     [SetUp]
     public void SetUp()
     {
         _sessionRepository = Substitute.For<ISessionRepository>();
         _userAccessor = Substitute.For<IUserAccessor>();
-        _sut = new AddSessionTaskService(_sessionRepository, _userAccessor);
+        _timeProvider = Substitute.For<TimeProvider>();
+        _sessionTaskRepository = Substitute.For<ISessionTaskRepository>();
+        _sut = new AddSessionTaskService(_sessionRepository, _userAccessor, _timeProvider, _sessionTaskRepository);
     }
 
     [Test]
@@ -43,6 +48,7 @@ public class AddSessionTaskServiceTests
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().NotBeNull();
         result.Error!.Exception.Should().BeOfType(exceptionType);
+        await _sessionTaskRepository.Received(0).AddSessionTask(Arg.Any<SessionTaskEntity>());
     }
 
     [Test]
@@ -63,5 +69,9 @@ public class AddSessionTaskServiceTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Error.Should().BeNull();
+        await _sessionTaskRepository.Received(1).AddSessionTask(Arg.Is<SessionTaskEntity>(x =>
+            x.SessionId == sessionId
+            && x.Title == request.Title
+            && x.Description == request.Description));
     }
 }

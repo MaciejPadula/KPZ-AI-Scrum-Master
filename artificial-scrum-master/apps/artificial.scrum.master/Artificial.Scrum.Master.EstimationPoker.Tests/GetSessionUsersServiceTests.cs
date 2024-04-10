@@ -1,6 +1,5 @@
 using Artificial.Scrum.Master.EstimationPoker.Features.GetSessionUsers;
-using Artificial.Scrum.Master.EstimationPoker.Features.Shared;
-using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Models;
+using Artificial.Scrum.Master.EstimationPoker.Features.Shared.Exceptions;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
 using FluentAssertions;
 using NSubstitute;
@@ -11,12 +10,14 @@ public class GetSessionUsersServiceTests
 {
     private GetSessionUsersService _sut;
     private ISessionRepository _sessionRepository;
+    private ISessionUserRepository _sessionUserRepository;
 
     [SetUp]
     public void SetUp()
     {
         _sessionRepository = Substitute.For<ISessionRepository>();
-        _sut = new GetSessionUsersService(_sessionRepository);
+        _sessionUserRepository = Substitute.For<ISessionUserRepository>();
+        _sut = new GetSessionUsersService(_sessionRepository, _sessionUserRepository);
     }
 
     [Test]
@@ -41,14 +42,14 @@ public class GetSessionUsersServiceTests
         // Arrange
         var sessionId = Guid.NewGuid().ToString();
         _sessionRepository.SessionExists(sessionId).Returns(true);
-        _sessionRepository.GetSessionUsers(sessionId).Returns([
-            new(sessionId, "User1"),
-            new(sessionId, "User2")]);
+        _sessionUserRepository.GetSessionUsers(sessionId).Returns([
+            new(sessionId, "User1") { Id = 21 },
+            new(sessionId, "User2") { Id = 37 }]);
         var expectedResult = new GetSessionUsersResponse([
             new SessionUser(
-                "User1"),
+                21, "User1"),
             new SessionUser(
-                "User2")]);
+                37, "User2")]);
 
         // Act
         var result = await _sut.Handle(sessionId);

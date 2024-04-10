@@ -5,17 +5,7 @@ namespace Artificial.Scrum.Master.Infrastructure.Repositories;
 
 internal class SqlSessionRepository : ISessionRepository
 {
-    public Task AddSessionTask(SessionTaskEntity task)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task AddSessionUser(SessionUserEntity user)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<List<SessionUserEntity>> GetSessionUsers(string sessionId)
+    public Task AddSession(string sessionId, string userId, int projectId)
     {
         throw new NotImplementedException();
     }

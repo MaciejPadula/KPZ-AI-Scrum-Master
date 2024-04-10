@@ -1,4 +1,4 @@
-namespace Artificial.Scrum.Master.EstimationPoker.Features.Shared;
+namespace Artificial.Scrum.Master.EstimationPoker.Features.Shared.Exceptions;
 
 internal class UserNotAuthorizedException : Exception
 {

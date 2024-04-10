@@ -1,3 +1,5 @@
+using Artificial.Scrum.Master.EstimationPoker.Features.AddTaskEstimation.Exceptions;
+using Artificial.Scrum.Master.EstimationPoker.Features.Shared.Exceptions;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure;
 using Microsoft.AspNetCore.Http;
 
@@ -17,7 +19,8 @@ internal static class HttpContextExtensions
         httpContext.Response.StatusCode = exception switch
         {
             UserNotAuthorizedException => StatusCodes.Status403Forbidden,
-            SessionNotFoundException => StatusCodes.Status404NotFound,
+            SessionNotFoundException or UserNotFoundException or TaskNotFoundException => StatusCodes.Status404NotFound,
+            EstimationValidationException or EstimationAlreadyExistsException or TaskIsNotLatestException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };
 

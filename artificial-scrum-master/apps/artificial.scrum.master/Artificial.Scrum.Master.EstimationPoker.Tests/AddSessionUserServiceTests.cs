@@ -1,5 +1,6 @@
 using Artificial.Scrum.Master.EstimationPoker.Features.AddSessionUser;
-using Artificial.Scrum.Master.EstimationPoker.Features.Shared;
+using Artificial.Scrum.Master.EstimationPoker.Features.Shared.Exceptions;
+using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Models;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
 using FluentAssertions;
 using NSubstitute;
@@ -10,12 +11,14 @@ public class AddSessionUserServiceTests
 {
     private AddSessionUserService _sut;
     private ISessionRepository _sessionRepository;
+    private ISessionUserRepository _sessionUserRepository;
 
     [SetUp]
     public void SetUp()
     {
         _sessionRepository = Substitute.For<ISessionRepository>();
-        _sut = new AddSessionUserService(_sessionRepository);
+        _sessionUserRepository = Substitute.For<ISessionUserRepository>();
+        _sut = new AddSessionUserService(_sessionRepository, _sessionUserRepository);
     }
 
     [Test]
@@ -24,8 +27,8 @@ public class AddSessionUserServiceTests
         // Arrange
         var sessionId = Guid.NewGuid().ToString();
         var request = new AddSessionUserRequest(
-                       sessionId,
-                                  "UserName");
+            sessionId,
+            "UserName");
         _sessionRepository.SessionExists(sessionId).Returns(false);
 
         // Act
@@ -35,6 +38,7 @@ public class AddSessionUserServiceTests
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().NotBeNull();
         result.Error!.Exception.Should().BeOfType<SessionNotFoundException>();
+        await _sessionUserRepository.Received(0).AddSessionUser(Arg.Any<SessionUserEntity>());
     }
 
     [Test]
@@ -51,5 +55,8 @@ public class AddSessionUserServiceTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Error.Should().BeNull();
+        await _sessionUserRepository.Received(1).AddSessionUser(Arg.Is<SessionUserEntity>(x =>
+            x.SessionId == request.SessionId
+            && x.UserName == request.UserName));
     }
 }

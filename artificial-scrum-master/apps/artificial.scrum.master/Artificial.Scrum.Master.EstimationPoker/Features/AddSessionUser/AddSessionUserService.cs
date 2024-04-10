@@ -1,5 +1,6 @@
-using Artificial.Scrum.Master.EstimationPoker.Features.Shared;
+using Artificial.Scrum.Master.EstimationPoker.Features.Shared.Exceptions;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure;
+using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Models;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
 
 namespace Artificial.Scrum.Master.EstimationPoker.Features.AddSessionUser;
@@ -12,10 +13,14 @@ internal interface IAddSessionUserService
 internal class AddSessionUserService : IAddSessionUserService
 {
     private readonly ISessionRepository _sessionRepository;
+    private readonly ISessionUserRepository _sessionUserRepository;
 
-    public AddSessionUserService(ISessionRepository sessionRepository)
+    public AddSessionUserService(
+        ISessionRepository sessionRepository,
+        ISessionUserRepository sessionUserRepository)
     {
         _sessionRepository = sessionRepository;
+        _sessionUserRepository = sessionUserRepository;
     }
 
     public async Task<Result> Handle(AddSessionUserRequest request)
@@ -27,7 +32,7 @@ internal class AddSessionUserService : IAddSessionUserService
             return Result.OnError(new SessionNotFoundException(request.SessionId));
         }
 
-        await _sessionRepository.AddSessionUser(new Infrastructure.Models.SessionUserEntity(
+        await _sessionUserRepository.AddSessionUser(new SessionUserEntity(
             request.SessionId,
             request.UserName));
 

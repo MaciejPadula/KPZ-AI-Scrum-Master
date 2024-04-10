@@ -1,4 +1,6 @@
 export enum ScrumObjectState {
-  Created = 0,
-  Changed = 1
+  None = 0,
+  Created = 1,
+  Changed = 2,
+  Deleted = 3,
 }

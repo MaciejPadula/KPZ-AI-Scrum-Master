@@ -27,8 +27,8 @@ internal class TimeLineEventParser : ITimeLineEventParser
                 ScrumObjectType = scrumObjectType,
                 ScrumObjectState = scrumObjectState,
                 Created = elem.Created,
-                ProjectId = elem.Project,
-                ProjectName = elem.Data.Project.Name,
+                ProjectId = elem.Project ?? -1,
+                ProjectName = elem.Data.Project?.Name ?? "",
                 ObjectId = objectId,
                 ObjectName = objectName,
                 UserId = elem.Data.User.Id,
@@ -61,14 +61,14 @@ internal class TimeLineEventParser : ITimeLineEventParser
                 ScrumObjectType = scrumObjectType,
                 ScrumObjectState = scrumObjectState,
                 Created = elem.Created,
-                ProjectId = elem.Project,
+                ProjectId = elem.Project ?? -1,
                 ObjectId = objectId,
                 ObjectName = objectName,
                 UserId = elem.Data.User.Id,
                 UserName = elem.Data.User.Name,
                 UserPhoto = elem.Data.User.Photo,
                 UserNick = elem.Data.User.Username,
-                ProjectName = elem.Data.Project.Name,
+                ProjectName = elem.Data.Project?.Name ?? "",
                 ValuesDiff = parsedValuesDiff
             };
         }).ToList();
@@ -76,9 +76,13 @@ internal class TimeLineEventParser : ITimeLineEventParser
         return new GetProjectTimeLineResponse { TimeLineEvents = timelineEvents };
     }
 
-    private static List<KeyValuePair<string, string>> ParseValuesDiff(ValuesDiff valuesDiff)
+    private static List<KeyValuePair<string, string>> ParseValuesDiff(ValuesDiff? valuesDiff)
     {
         List<KeyValuePair<string, string>> keyValuePairs = [];
+        if (valuesDiff is null)
+        {
+            return keyValuePairs;
+        }
 
         if (!valuesDiff.AssignedTo.IsNullOrEmpty())
         {

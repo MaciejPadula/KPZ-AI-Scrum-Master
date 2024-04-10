@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.2" />
@@ -18,6 +19,7 @@
     <ProjectReference Include="..\Artificial.Scrum.Master.Interfaces\Artificial.Scrum.Master.Interfaces.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.ScrumIntegration\Artificial.Scrum.Master.ScrumIntegration.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.UserSettings\Artificial.Scrum.Master.UserSettings.csproj" />
+    <ProjectReference Include="..\Artificial.Scrum.Master.User\Artificial.Scrum.Master.User.csproj" />
   </ItemGroup>
 
 </Project>

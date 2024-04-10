@@ -3,6 +3,10 @@ import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { HttpBackend, provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import {
+  SocialAuthServiceConfig,
+  GoogleLoginProvider,
+} from "@abacritt/angularx-social-login";
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 
@@ -15,6 +19,25 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     provideHttpClient(),
     provideAnimationsAsync(),
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              "",
+              { oneTapEnabled: false }
+            ),
+          },
+        ],
+        onError: (err) => {
+          debugger;
+          console.error(err);
+        },
+      } as SocialAuthServiceConfig,
+    },
     importProvidersFrom(
       TranslateModule.forRoot({
         loader: {

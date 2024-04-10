@@ -1,6 +1,7 @@
 using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -35,6 +36,17 @@ public static class ScrumIntegrationEndpoints
         routes.MapGet(
             "/api/projects/timeline/{projectId}",
             async (HttpContext context, IGetProjectTimeLineService service, IUserAccessor userAccessor,
+                string projectId) =>
+            {
+                var userId = userAccessor.UserId;
+                var result = await service.Handle(userId, projectId);
+
+                await context.Response.WriteAsJsonAsync(result);
+            });
+
+        routes.MapGet(
+            "/api/projects/sprints/{projectId}",
+            async (HttpContext context, IGetActiveSprintsService service, IUserAccessor userAccessor,
                 string projectId) =>
             {
                 var userId = userAccessor.UserId;

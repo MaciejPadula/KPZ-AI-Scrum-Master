@@ -27,7 +27,7 @@ internal class TimeLineEventParser : ITimeLineEventParser
             }
 
             var (scrumObjectType, scrumObjectState) = ParseEventTypeEnum(elem.EventType);
-            var (objectId, objectName) = ParseObjectIdAndName(scrumObjectType, elem.Data.Task,
+            var (objectId, objectName) = ParseScrumObject(scrumObjectType, elem.Data.Task,
                 elem.Data.Userstory, elem.Data.Milestone, elem.Data.User, elem.Data.Project);
 
             return new GetTimeLineEvent
@@ -62,7 +62,7 @@ internal class TimeLineEventParser : ITimeLineEventParser
             }
 
             var (scrumObjectType, scrumObjectState) = ParseEventTypeEnum(elem.EventType);
-            var (objectId, objectName) = ParseObjectIdAndName(scrumObjectType, elem.Data.Task,
+            var (objectId, objectName) = ParseScrumObject(scrumObjectType, elem.Data.Task,
                 elem.Data.Userstory, elem.Data.Milestone, elem.Data.User, elem.Data.Project);
 
             return new GetTimeLineEvent
@@ -120,44 +120,45 @@ internal class TimeLineEventParser : ITimeLineEventParser
         return (scrumObjectType, scrumObjectState);
     }
 
-    private (int Id, string Subject) ParseObjectIdAndName(
+    private (int Id, string Subject) ParseScrumObject(
         ScrumObjectType scrumObjectType, PbiItem? task, Userstory? userStory,
         Milestone? milestone, User user, Models.Project? project)
     {
-        if (scrumObjectType == ScrumObjectType.Task && task is not null)
+        return scrumObjectType switch
         {
-            if (!string.IsNullOrEmpty(task.Subject))
-            {
-                return (task.Id, task.Subject);
-            }
+            ScrumObjectType.Task when task is not null =>
+                ParseTaskObject(task),
 
-            if (task.Userstory is not null && !string.IsNullOrEmpty(task.Userstory.Subject))
-            {
-                return (task.Userstory.Id, task.Userstory.Subject);
-            }
-        }
+            ScrumObjectType.UserStory when userStory is not null && !string.IsNullOrEmpty(userStory.Subject) =>
+                (userStory.Id, userStory.Subject),
 
-        if (scrumObjectType == ScrumObjectType.UserStory && userStory is not null &&
-            !string.IsNullOrEmpty(userStory.Subject))
-        {
-            return (userStory.Id, userStory.Subject);
-        }
+            ScrumObjectType.Sprint when milestone is not null =>
+                (milestone.Id, milestone.Name),
 
-        if (scrumObjectType == ScrumObjectType.Sprint && milestone is not null)
-        {
-            return (milestone.Id, milestone.Name);
-        }
+            ScrumObjectType.Membership =>
+                (user.Id, user.Name),
 
-        if (scrumObjectType == ScrumObjectType.Membership)
-        {
-            return (user.Id, user.Name);
-        }
+            ScrumObjectType.Project when project is not null =>
+                (project.Id, project.Name),
 
-        if (scrumObjectType == ScrumObjectType.Project && project is not null)
-        {
-            return (project.Id, project.Name);
-        }
+            _ =>
+                HandleScrumObjectParsingFailure(scrumObjectType)
+        };
+    }
 
+    private (int, string) ParseTaskObject(PbiItem task)
+    {
+        if (!string.IsNullOrEmpty(task.Subject))
+            return (task.Id, task.Subject);
+
+        if (task.Userstory is not null && !string.IsNullOrEmpty(task.Userstory.Subject))
+            return (task.Userstory.Id, task.Userstory.Subject);
+
+        return HandleScrumObjectParsingFailure(ScrumObjectType.Task);
+    }
+
+    private (int, string) HandleScrumObjectParsingFailure(ScrumObjectType scrumObjectType)
+    {
         _logger.LogError("ScrumObjectType:{ScrumObjectType} is not supported", scrumObjectType.ToString());
         return (-1, string.Empty);
     }

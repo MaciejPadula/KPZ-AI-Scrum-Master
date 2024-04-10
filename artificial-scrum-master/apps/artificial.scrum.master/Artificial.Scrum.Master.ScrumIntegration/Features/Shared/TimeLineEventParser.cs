@@ -27,7 +27,8 @@ internal class TimeLineEventParser : ITimeLineEventParser
             }
 
             var (scrumObjectType, scrumObjectState) = ParseEventTypeEnum(elem.EventType);
-            var (objectId, objectName) = ParseObjectIdAndName(elem.Data.Task, elem.Data.Userstory);
+            var (objectId, objectName) = ParseObjectIdAndName(scrumObjectType, elem.Data.Task,
+                elem.Data.Userstory, elem.Data.Milestone, elem.Data.User, elem.Data.Project);
 
             return new GetTimeLineEvent
             {
@@ -61,7 +62,8 @@ internal class TimeLineEventParser : ITimeLineEventParser
             }
 
             var (scrumObjectType, scrumObjectState) = ParseEventTypeEnum(elem.EventType);
-            var (objectId, objectName) = ParseObjectIdAndName(elem.Data.Task, elem.Data.Userstory);
+            var (objectId, objectName) = ParseObjectIdAndName(scrumObjectType, elem.Data.Task,
+                elem.Data.Userstory, elem.Data.Milestone, elem.Data.User, elem.Data.Project);
 
             return new GetTimeLineEvent
             {
@@ -82,6 +84,82 @@ internal class TimeLineEventParser : ITimeLineEventParser
         }).ToList();
 
         return new GetProjectTimeLineResponse { TimeLineEvents = timelineEvents };
+    }
+
+    private (ScrumObjectType, ScrumObjectState) ParseEventTypeEnum(string eventType)
+    {
+        var eventTypeSplit = eventType.Split(".");
+        if (eventTypeSplit.Length != 3)
+        {
+            _logger.LogError("Event type:{EventType} is not in the correct format", eventType);
+        }
+
+        var scrumObjectType = eventTypeSplit[1] switch
+        {
+            "task" => ScrumObjectType.Task,
+            "userstory" => ScrumObjectType.UserStory,
+            "membership" => ScrumObjectType.Membership,
+            "milestone" => ScrumObjectType.Sprint,
+            "project" => ScrumObjectType.Project,
+            _ => ScrumObjectType.None
+        };
+
+        var scrumObjectState = eventTypeSplit[2] switch
+        {
+            "create" => ScrumObjectState.Create,
+            "change" => ScrumObjectState.Change,
+            "delete" => ScrumObjectState.Delete,
+            _ => ScrumObjectState.None
+        };
+
+        if (scrumObjectType == ScrumObjectType.None || scrumObjectState == ScrumObjectState.None)
+        {
+            _logger.LogError("Event type:{EventType} unknown", eventType);
+        }
+
+        return (scrumObjectType, scrumObjectState);
+    }
+
+    private (int Id, string Subject) ParseObjectIdAndName(
+        ScrumObjectType scrumObjectType, PbiItem? task, Userstory? userStory,
+        Milestone? milestone, User user, Models.Project? project)
+    {
+        if (scrumObjectType == ScrumObjectType.Task && task is not null)
+        {
+            if (!string.IsNullOrEmpty(task.Subject))
+            {
+                return (task.Id, task.Subject);
+            }
+
+            if (task.Userstory is not null && !string.IsNullOrEmpty(task.Userstory.Subject))
+            {
+                return (task.Userstory.Id, task.Userstory.Subject);
+            }
+        }
+
+        if (scrumObjectType == ScrumObjectType.UserStory && userStory is not null &&
+            !string.IsNullOrEmpty(userStory.Subject))
+        {
+            return (userStory.Id, userStory.Subject);
+        }
+
+        if (scrumObjectType == ScrumObjectType.Sprint && milestone is not null)
+        {
+            return (milestone.Id, milestone.Name);
+        }
+
+        if (scrumObjectType == ScrumObjectType.Membership)
+        {
+            return (user.Id, user.Name);
+        }
+
+        if (scrumObjectType == ScrumObjectType.Project && project is not null)
+        {
+            return (project.Id, project.Name);
+        }
+
+        _logger.LogError("ScrumObjectType:{ScrumObjectType} is not supported", scrumObjectType.ToString());
+        return (-1, string.Empty);
     }
 
     private static List<KeyValuePair<string, string>> ParseValuesDiff(ValuesDiff? valuesDiff)
@@ -136,62 +214,5 @@ internal class TimeLineEventParser : ITimeLineEventParser
         }
 
         return keyValuePairs;
-    }
-
-    private (ScrumObjectType, ScrumObjectState) ParseEventTypeEnum(string eventType)
-    {
-        var eventTypeSplit = eventType.Split(".");
-        if (eventTypeSplit.Length != 3)
-        {
-            _logger.LogError("Event type:{EventType} is not in the correct format", eventType);
-        }
-
-        var scrumObjectType = eventTypeSplit[1] switch
-        {
-            "task" => ScrumObjectType.Task,
-            "userstory" => ScrumObjectType.UserStory,
-            "membership" => ScrumObjectType.Membership,
-            "milestone" => ScrumObjectType.Sprint,
-            "project" => ScrumObjectType.Project,
-            _ => ScrumObjectType.None
-        };
-
-        var scrumObjectState = eventTypeSplit[2] switch
-        {
-            "create" => ScrumObjectState.Create,
-            "change" => ScrumObjectState.Change,
-            "delete" => ScrumObjectState.Delete,
-            _ => ScrumObjectState.None
-        };
-
-        if (scrumObjectType == ScrumObjectType.None || scrumObjectState == ScrumObjectState.None)
-        {
-            _logger.LogError("Event type:{EventType} unknown", eventType);
-        }
-
-        return (scrumObjectType, scrumObjectState);
-    }
-
-    private static (int Id, string Subject) ParseObjectIdAndName(PbiItem? task, Userstory? userStory)
-    {
-        if (task is not null)
-        {
-            if (!string.IsNullOrEmpty(task.Subject))
-            {
-                return (task.Id, task.Subject);
-            }
-
-            if (task.Userstory is not null && !string.IsNullOrEmpty(task.Userstory.Subject))
-            {
-                return (task.Userstory.Id, task.Userstory.Subject);
-            }
-        }
-
-        if (userStory is not null && !string.IsNullOrEmpty(userStory.Subject))
-        {
-            return (userStory.Id, userStory.Subject);
-        }
-
-        return (-1, string.Empty);
     }
 }

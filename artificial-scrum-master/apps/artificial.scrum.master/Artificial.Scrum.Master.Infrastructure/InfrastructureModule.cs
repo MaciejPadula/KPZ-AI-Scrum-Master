@@ -15,6 +15,8 @@ public static class InfrastructureModule
         services.AddTransient<IUserSettingsRepository, SqlUserSettingsRepository>();
         services.AddTransient<IUserTokensRepository, SqlUserSettingsRepository>();
         services.AddTransient<ISessionRepository, SqlSessionRepository>();
+        services.AddTransient<ISessionUserRepository, SqlSessionUserRepository>();
+        services.AddTransient<ISessionTaskRepository, SqlSessionTaskRepository>();
         services.AddTransient(_ => TimeProvider.System);
 
         services.AddTransient<IUserAccessor, MockedUserAccessor>();

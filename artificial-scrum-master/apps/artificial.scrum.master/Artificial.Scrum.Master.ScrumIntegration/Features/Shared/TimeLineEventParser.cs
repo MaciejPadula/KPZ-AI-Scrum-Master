@@ -2,12 +2,20 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.ResponseEnums;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 
 internal class TimeLineEventParser : ITimeLineEventParser
 {
+    private readonly ILogger<TimeLineEventParser> _logger;
+
+    public TimeLineEventParser(ILogger<TimeLineEventParser> logger)
+    {
+        _logger = logger;
+    }
+
     public GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
     {
         var timelineEvents = elements.Select(elem =>
@@ -130,23 +138,35 @@ internal class TimeLineEventParser : ITimeLineEventParser
         return keyValuePairs;
     }
 
-    private static (ScrumObjectType, ScrumObjectState) ParseEventTypeEnum(string eventType)
+    private (ScrumObjectType, ScrumObjectState) ParseEventTypeEnum(string eventType)
     {
         var eventTypeSplit = eventType.Split(".");
         if (eventTypeSplit.Length != 3)
         {
-            throw new Exception(eventType);
+            _logger.LogError("Event type:{EventType} is not in the correct format", eventType);
         }
 
-        var scrumObjectTypeParseSuccess =
-            Enum.TryParse<ScrumObjectType>(eventTypeSplit[1], ignoreCase: true, out var scrumObjectType);
-
-        var scrumObjectStateParseSuccess =
-            Enum.TryParse<ScrumObjectState>(eventTypeSplit[2], ignoreCase: true, out var scrumObjectState);
-
-        if (!scrumObjectTypeParseSuccess || !scrumObjectStateParseSuccess)
+        var scrumObjectType = eventTypeSplit[1] switch
         {
-            throw new Exception(eventType);
+            "task" => ScrumObjectType.Task,
+            "userstory" => ScrumObjectType.UserStory,
+            "membership" => ScrumObjectType.Membership,
+            "milestone" => ScrumObjectType.Sprint,
+            "project" => ScrumObjectType.Project,
+            _ => ScrumObjectType.None
+        };
+
+        var scrumObjectState = eventTypeSplit[2] switch
+        {
+            "create" => ScrumObjectState.Create,
+            "change" => ScrumObjectState.Change,
+            "delete" => ScrumObjectState.Delete,
+            _ => ScrumObjectState.None
+        };
+
+        if (scrumObjectType == ScrumObjectType.None || scrumObjectState == ScrumObjectState.None)
+        {
+            _logger.LogError("Event type:{EventType} unknown", eventType);
         }
 
         return (scrumObjectType, scrumObjectState);

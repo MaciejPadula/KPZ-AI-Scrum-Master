@@ -27,13 +27,13 @@
     </div>
   </div>
   @if (timelineRow.projectId) {
-    <div class="flex justify-end">
-      <app-link
-        [href]="'Project/' + timelineRow.projectId"
-        class="mat-caption sm:mat-body-1"
-        >{{ timelineRow.projectName }}</app-link
-      >
-    </div>
+  <div class="flex justify-end">
+    <app-link
+      [href]="'Project/' + timelineRow.projectId"
+      class="mat-caption sm:mat-body-1"
+      >{{ timelineRow.projectName }}</app-link
+    >
+  </div>
   }
   <mat-divider />
 </div>

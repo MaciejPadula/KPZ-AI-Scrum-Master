@@ -21,6 +21,11 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Middleware
                 context.Response.StatusCode = 404;
                 await context.Response.WriteAsJsonAsync(ex.Message);
             }
+            catch (RefreshTokenExpiredException ex)
+            {
+                context.Response.StatusCode = 410;
+                await context.Response.WriteAsJsonAsync(ex.Message);
+            }
             catch (ProjectRequestFailedException ex)
             {
                 context.Response.StatusCode = 400;

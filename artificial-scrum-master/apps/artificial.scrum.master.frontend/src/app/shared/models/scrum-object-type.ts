@@ -1,4 +1,8 @@
 export enum ScrumObjectType {
-  Task = 0,
-  UserStory = 1
+  None = 0,
+  Task = 1,
+  UserStory = 2,
+  Membeship = 3,
+  Sprint = 4,
+  Project = 5,
 }

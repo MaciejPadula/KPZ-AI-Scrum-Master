@@ -7,7 +7,7 @@ namespace Artificial.Scrum.Master.EstimationPoker.Features.CreateSession;
 
 internal interface ICreateSessionService
 {
-    Task<Result<CreateSessionResponse>> Handle(int projectId);
+    Task<Result<CreateSessionResponse>> Handle(CreateSessionRequest request);
 }
 
 internal class CreateSessionService : ICreateSessionService
@@ -26,7 +26,7 @@ internal class CreateSessionService : ICreateSessionService
         _userAccessor = userAccessor;
     }
 
-    public async Task<Result<CreateSessionResponse>> Handle(int projectId)
+    public async Task<Result<CreateSessionResponse>> Handle(CreateSessionRequest request)
     {
         var userId = _userAccessor.UserId;
         if (userId is null)
@@ -36,7 +36,11 @@ internal class CreateSessionService : ICreateSessionService
 
         var sessionId = _sessionKeyGenerator.Key;
 
-        await _sessionRepository.AddSession(sessionId, userId, projectId);
+        await _sessionRepository.AddSession(new(
+            sessionId,
+            request.Name,
+            request.ProjectId,
+            _userAccessor.UserId));
 
         return Result<CreateSessionResponse>.OnSuccess(new CreateSessionResponse(sessionId));
     }

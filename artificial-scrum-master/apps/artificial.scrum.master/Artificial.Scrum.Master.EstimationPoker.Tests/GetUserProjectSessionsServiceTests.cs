@@ -31,8 +31,8 @@ public class GetUserProjectSessionsServiceTests
         _userAccessor.UserId.Returns("UserId");
         _sessionRepository.GetUserProjectSessions("UserId", projectId).Returns(
         [
-            new("21", "Session 1", projectId),
-            new("37", "Session 2", projectId)
+            new("21", "Session 1", projectId, "2"),
+            new("37", "Session 2", projectId, "3")
         ]);
         var expectedResult = new GetUserProjectSessionsResponse(
         [

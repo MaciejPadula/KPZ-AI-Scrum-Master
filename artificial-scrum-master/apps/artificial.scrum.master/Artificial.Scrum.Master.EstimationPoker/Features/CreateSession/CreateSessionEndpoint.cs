@@ -10,10 +10,10 @@ internal static class CreateSessionEndpoint
     public static void MapCreateSessionEndpoint(this IEndpointRouteBuilder routes)
     {
         routes.MapPost(
-            "/api/sessions/{projectId}",
-            async (int projectId, HttpContext context, ICreateSessionService service) =>
+            "/api/sessions",
+            async (CreateSessionRequest request, HttpContext context, ICreateSessionService service) =>
             {
-                var result = await service.Handle(projectId);
+                var result = await service.Handle(request);
                 await context.HandleResult(result);
             });
     }

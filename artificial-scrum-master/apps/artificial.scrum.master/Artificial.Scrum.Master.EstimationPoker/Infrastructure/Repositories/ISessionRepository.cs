@@ -4,7 +4,7 @@ namespace Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
 
 public interface ISessionRepository
 {
-    Task AddSession(string sessionId, string userId, int projectId);
+    Task AddSession(SessionEntity session);
     Task<List<SessionEntity>> GetUserProjectSessions(string userId, int projectId);
     Task<bool> SessionExists(string sessionId);
     Task<bool> ValidateUserAccess(string userId, string sessionId);

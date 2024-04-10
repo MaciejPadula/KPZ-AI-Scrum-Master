@@ -9,6 +9,7 @@ import {
 } from "@abacritt/angularx-social-login";
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { AppSecrets } from './app.secrets';
 
 export function HttpLoaderFactory(_httpBackend: HttpBackend) {
   return new MultiTranslateHttpLoader(_httpBackend, ['/assets/i18n/']);
@@ -27,7 +28,7 @@ export const appConfig: ApplicationConfig = {
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              "",
+              AppSecrets.GOOGLE_CLIENT_ID,
               { oneTapEnabled: false }
             ),
           },

@@ -19,6 +19,7 @@ internal class UserStory
     public int Id { get; set; }
     [JsonPropertyName("is_closed")] public bool IsClosed { get; set; }
     public string? Subject { get; set; }
+    [JsonPropertyName("ref")] public int Ref { get; set; }
     [JsonPropertyName("total_points")] public double TotalPoints { get; set; }
 }
 

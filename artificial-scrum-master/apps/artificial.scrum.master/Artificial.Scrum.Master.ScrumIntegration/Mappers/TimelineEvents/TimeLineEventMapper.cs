@@ -1,37 +1,36 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
-using Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
+namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
 
-internal interface ITimeLineEventParser
+internal interface ITimeLineEventMapper
 {
     GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements);
     GetProjectTimeLineResponse ParseProjectTimeLineElement(IEnumerable<TimeLineEventRoot> elements);
 }
 
-internal class TimeLineEventParser : ITimeLineEventParser
+internal class TimeLineEventMapper : ITimeLineEventMapper
 {
-    private readonly ITimeLineEventObjectsMapper _timeLineEventObjectMapper;
+    private readonly ITimeLineEventObjectsParser _timeLineEventObjectParser;
 
-    public TimeLineEventParser(ITimeLineEventObjectsMapper timeLineEventObjectMapper)
+    public TimeLineEventMapper(ITimeLineEventObjectsParser timeLineEventObjectParser)
     {
-        _timeLineEventObjectMapper = timeLineEventObjectMapper;
+        _timeLineEventObjectParser = timeLineEventObjectParser;
     }
 
     public GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
     {
         var timelineEvents = elements.Select(elem =>
         {
-            var parsedValuesDiff = _timeLineEventObjectMapper.ParseValuesDiff(elem.Data.ValuesDiff);
+            var parsedValuesDiff = _timeLineEventObjectParser.ParseValuesDiff(elem.Data.ValuesDiff);
             if (!string.IsNullOrEmpty(elem.Data.Comment))
             {
                 parsedValuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
             }
 
-            var (scrumObjectType, scrumObjectState) = _timeLineEventObjectMapper.ParseEventTypeEnum(elem.EventType);
-            var (objectId, objectName) = _timeLineEventObjectMapper.ParseScrumObject(scrumObjectType, elem.Data.Task,
+            var (scrumObjectType, scrumObjectState) = _timeLineEventObjectParser.ParseEventTypeEnum(elem.EventType);
+            var (objectId, objectName) = _timeLineEventObjectParser.ParseScrumObject(scrumObjectType, elem.Data.Task,
                 elem.Data.Userstory, elem.Data.Milestone, elem.Data.User, elem.Data.Project);
 
             return new GetTimeLineEvent
@@ -59,14 +58,14 @@ internal class TimeLineEventParser : ITimeLineEventParser
     {
         var timelineEvents = elements.Select(elem =>
         {
-            var parsedValuesDiff = _timeLineEventObjectMapper.ParseValuesDiff(elem.Data.ValuesDiff);
+            var parsedValuesDiff = _timeLineEventObjectParser.ParseValuesDiff(elem.Data.ValuesDiff);
             if (!string.IsNullOrEmpty(elem.Data.Comment))
             {
                 parsedValuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
             }
 
-            var (scrumObjectType, scrumObjectState) = _timeLineEventObjectMapper.ParseEventTypeEnum(elem.EventType);
-            var (objectId, objectName) = _timeLineEventObjectMapper.ParseScrumObject(scrumObjectType, elem.Data.Task,
+            var (scrumObjectType, scrumObjectState) = _timeLineEventObjectParser.ParseEventTypeEnum(elem.EventType);
+            var (objectId, objectName) = _timeLineEventObjectParser.ParseScrumObject(scrumObjectType, elem.Data.Task,
                 elem.Data.Userstory, elem.Data.Milestone, elem.Data.User, elem.Data.Project);
 
             return new GetTimeLineEvent

@@ -2,9 +2,12 @@ using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
+using Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
 namespace Artificial.Scrum.Master.ScrumProjectIntegration;
@@ -51,6 +54,28 @@ public static class ScrumIntegrationEndpoints
             {
                 var userId = userAccessor.UserId;
                 var result = await service.Handle(userId, projectId);
+
+                await context.Response.WriteAsJsonAsync(result);
+            });
+
+        routes.MapGet(
+            "/api/projects/userStories",
+            async (HttpContext context, IGetUserStoriesService service, IUserAccessor userAccessor,
+                [FromQuery] string projectId, [FromQuery] string sprintId) =>
+            {
+                var userId = userAccessor.UserId;
+                var result = await service.Handle(userId, projectId, sprintId);
+
+                await context.Response.WriteAsJsonAsync(result);
+            });
+
+        routes.MapGet(
+            "/api/projects/userStories/{userStoryId}/tasks",
+            async (HttpContext context, IGetStoryTasksService service, IUserAccessor userAccessor,
+                string userStoryId) =>
+            {
+                var userId = userAccessor.UserId;
+                var result = await service.Handle(userId, userStoryId);
 
                 await context.Response.WriteAsJsonAsync(result);
             });

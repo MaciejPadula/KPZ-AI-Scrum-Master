@@ -1,4 +1,3 @@
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.ResponseEnums;
 using Microsoft.Extensions.Logging;
@@ -6,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
 
-internal interface ITimeLineEventObjectsMapper
+internal interface ITimeLineEventObjectsParser
 {
     public (ScrumObjectType, ScrumObjectState) ParseEventTypeEnum(string eventType);
 
@@ -16,11 +15,11 @@ internal interface ITimeLineEventObjectsMapper
     List<KeyValuePair<string, string>> ParseValuesDiff(ValuesDiff? valuesDiff);
 }
 
-internal class TimeLineEventObjectsMapper : ITimeLineEventObjectsMapper
+internal class TimeLineEventObjectsParser : ITimeLineEventObjectsParser
 {
-    private readonly ILogger<TimeLineEventParser> _logger;
+    private readonly ILogger<TimeLineEventMapper> _logger;
 
-    public TimeLineEventObjectsMapper(ILogger<TimeLineEventParser> logger)
+    public TimeLineEventObjectsParser(ILogger<TimeLineEventMapper> logger)
     {
         _logger = logger;
     }

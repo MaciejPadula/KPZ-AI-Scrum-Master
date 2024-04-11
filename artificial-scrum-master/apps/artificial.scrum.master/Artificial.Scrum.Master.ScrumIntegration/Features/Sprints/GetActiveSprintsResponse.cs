@@ -20,5 +20,6 @@ internal readonly record struct ActiveSprintUserStory(
     string? UserStoryName,
     string? StatusName,
     bool IsClosed,
+    int UserStoryRef,
     double TotalPoints
 );

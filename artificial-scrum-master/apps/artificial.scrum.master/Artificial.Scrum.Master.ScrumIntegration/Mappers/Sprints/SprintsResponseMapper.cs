@@ -11,7 +11,7 @@ internal class SprintsResponseMapper : ISprintsResponseMapper
 {
     public GetActiveSprintsResponse MapSprintsResponse(List<Sprint> sprints)
     {
-        var parsedSprints = sprints.Select(sprint => new GetActiveSprintsResponseElement
+        var mappedSprints = sprints.Select(sprint => new GetActiveSprintsResponseElement
         {
             ProjectId = sprint.Project,
             ProjectName = sprint.ProjectExtraInfo?.Name,
@@ -26,10 +26,11 @@ internal class SprintsResponseMapper : ISprintsResponseMapper
                 UserStoryName = userStory.Subject,
                 StatusName = userStory.StatusExtraInfo?.Name,
                 IsClosed = userStory.IsClosed,
+                UserStoryRef = userStory.Ref,
                 TotalPoints = userStory.TotalPoints
             })
         }).ToList();
 
-        return new GetActiveSprintsResponse(Sprints: parsedSprints);
+        return new GetActiveSprintsResponse(Sprints: mappedSprints);
     }
 }

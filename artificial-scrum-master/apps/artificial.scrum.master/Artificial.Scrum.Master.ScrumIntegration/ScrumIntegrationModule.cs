@@ -1,13 +1,16 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
+using Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Middleware;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.Sprints;
+using Artificial.Scrum.Master.ScrumIntegration.Mappers.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
+using Artificial.Scrum.Master.ScrumIntegration.Mappers.UserStories;
 using Artificial.Scrum.Master.ScrumIntegration.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -27,9 +30,11 @@ public static class ScrumIntegrationModule
                 InvalidOperationException("Base Url for agile service integration required"));
         });
 
-        services.AddTransient<ITimeLineEventParser, TimeLineEventParser>();
-        services.AddTransient<ITimeLineEventObjectsMapper, TimeLineEventObjectsMapper>();
+        services.AddTransient<ITimeLineEventMapper, TimeLineEventMapper>();
+        services.AddTransient<ITimeLineEventObjectsParser, TimeLineEventObjectsParser>();
         services.AddTransient<ISprintsResponseMapper, SprintsResponseMapper>();
+        services.AddTransient<IUserStoriesMapper, UserStoriesMapper>();
+        services.AddTransient<ITasksResponseMapper, TasksResponseMapper>();
 
         services.AddTransient<IJwtDecoder, JwtDecoder>();
         services.AddTransient<ITokenValidator, TokenValidator>();
@@ -39,6 +44,8 @@ public static class ScrumIntegrationModule
         services.AddTransient<IGetProfileTimeLineService, GetProfileTimeLineService>();
         services.AddTransient<IGetProjectTimeLineService, GetProjectTimeLineService>();
         services.AddTransient<IGetActiveSprintsService, GetActiveSprintsService>();
+        services.AddTransient<IGetUserStoriesService, GetUserStoriesService>();
+        services.AddTransient<IGetStoryTasksService, GetStoryTasksService>();
 
         services.AddTransient<ScrumIntegrationMiddleware>();
 

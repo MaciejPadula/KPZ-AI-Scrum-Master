@@ -1,8 +1,8 @@
 using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
+using Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
 using Artificial.Scrum.Master.ScrumIntegration.Utilities;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
@@ -17,18 +17,18 @@ internal class GetProfileTimeLineService : IGetProfileTimeLineService
     private readonly IAccessTokenProvider _accessTokenProvider;
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
     private readonly IJwtDecoder _jwtDecoder;
-    private readonly ITimeLineEventParser _timeLineElementParser;
+    private readonly ITimeLineEventMapper _timeLineElementMapper;
 
     public GetProfileTimeLineService(
         IAccessTokenProvider accessTokenProvider,
         IProjectHttpClientWrapper projectHttpClientWrapper,
         IJwtDecoder jwtDecoder,
-        ITimeLineEventParser timeLineElementParser)
+        ITimeLineEventMapper timeLineElementMapper)
     {
         _accessTokenProvider = accessTokenProvider;
         _projectHttpClientWrapper = projectHttpClientWrapper;
         _jwtDecoder = jwtDecoder;
-        _timeLineElementParser = timeLineElementParser;
+        _timeLineElementMapper = timeLineElementMapper;
     }
 
     public async Task<GetProfileTimeLineResponse> Handle(string userId)
@@ -47,6 +47,6 @@ internal class GetProfileTimeLineService : IGetProfileTimeLineService
                 userTokens,
                 $"timeline/profile/{memberId}");
 
-        return _timeLineElementParser.ParseProfileTimeLineElement(profileTimeLineRequestResult);
+        return _timeLineElementMapper.ParseProfileTimeLineElement(profileTimeLineRequestResult);
     }
 }

@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 artificial-scrum-master/package-lock.json
+artificial-scrum-master/apps/artificial.scrum.master.frontend/src/app/app.secrets.dev.ts

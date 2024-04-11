@@ -4,7 +4,9 @@ on:
   pull_request:
   workflow_dispatch:
   workflow_call:
-
+    secrets:
+        GOOGLE_CLIENT_ID:
+          required: true
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,6 +36,9 @@ jobs:
     
     - name: Test frontend
       run: npx nx test artificial.scrum.master.frontend
+
+    - name: Restore Secrets
+      run: sed -i 's/<GOOGLE_CLIENT_ID>/${{ secrets.GOOGLE_CLIENT_ID }}/g' ./apps/artificial.scrum.master.frontend/src/app/app.secrets.ts 
 
     - name: Build dotnet app
       run: npx nx build artificial.scrum.master

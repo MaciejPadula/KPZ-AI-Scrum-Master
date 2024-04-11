@@ -28,3 +28,24 @@ jobs:
       ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
       DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
+  release-production:
+    needs: release-eris
+    runs-on: ubuntu-latest
+    environment:
+      name: 'production'
+
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: artificial-scrum-master-binaries
+          path: ./dist
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./dist

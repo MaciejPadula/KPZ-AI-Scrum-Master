@@ -25,7 +25,7 @@ namespace Artificial.Scrum.Master.User.Features.ExternalSignIn
             {
                 if (string.IsNullOrEmpty(idToken))
                 {
-                    return new JwtTokenResponse { Success = false };
+                    return new JwtTokenResponse();
                 }
 
                 var validatedToken = await GoogleJsonWebSignature.ValidateAsync(idToken);
@@ -39,13 +39,12 @@ namespace Artificial.Scrum.Master.User.Features.ExternalSignIn
                     });
                 return new JwtTokenResponse
                 {
-                    Token = jwtToken,
-                    Success = true
+                    Token = jwtToken
                 };
             }
             catch
             {
-                return new JwtTokenResponse { Success = false };
+                return new JwtTokenResponse();
             }
         }
     }

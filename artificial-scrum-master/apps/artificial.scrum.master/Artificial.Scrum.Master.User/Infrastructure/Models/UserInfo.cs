@@ -8,8 +8,8 @@ namespace Artificial.Scrum.Master.User.Infrastructure.Models
 {
     internal class UserInfo
     {
-        public string UserId { get; set; }
-        public string UserName { get; set; }
-        public string PhotoUrl { get; set; }
+        public required string UserId { get; set; }
+        public required string UserName { get; set; }
+        public required string PhotoUrl { get; set; }
     }
 }

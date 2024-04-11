@@ -8,10 +8,13 @@ import { UserData } from "../models/user-data";
 })
 
 export class AuthorizationService {
-    #userData = signal(
+    #userData = signal<UserData>(
         {
-            isAuthorized: false
-        } as UserData
+            isAuthorized: false,
+            userId: null,
+            userName: null,
+            userPhotoUrl: null
+        }
     );
     public userData = this.#userData.asReadonly();
 
@@ -24,37 +27,47 @@ export class AuthorizationService {
         this.googleAuthService.authState.subscribe((user: SocialUser) => {
             const headers = { "Authorization": `Bearer ${user.idToken}` };
             this.httpClient.post("/api/user/google-sign-in", {}, { headers })
-                .subscribe(response => {
-                    if ((response as any).success === true) {
-                        this.#userData.set({
-                            isAuthorized: true,
-                            userId: user.id,
-                            userName: user.name,
-                            userPhotoUrl: user.photoUrl
-                        });
-                    }
-                });
+                .subscribe(
+                    {
+                        next: () => {
+                            this.#userData.set({
+                                isAuthorized: true,
+                                userId: user.id,
+                                userName: user.name,
+                                userPhotoUrl: user.photoUrl
+                            });
+                        },
+                        error: () => {
+                            this.#userData.set({
+                                isAuthorized: false,
+                                userId: null,
+                                userName: null,
+                                userPhotoUrl: null
+                            });
+                        }
+                    });
         });
     }
 
     logout() {
-        this.httpClient.post("/api/user/logout", {}).subscribe(response => {
-            if ((response as any).success === true) {
-                this.#userData.set({
-                    isAuthorized: false,
-                    userId: null,
-                    userName: null,
-                    userPhotoUrl: null
-                });
-            }
-        });
+        this.httpClient.post("/api/user/logout", {}).subscribe(
+            {
+                next: () => {
+                    this.#userData.set({
+                        isAuthorized: false,
+                        userId: null,
+                        userName: null,
+                        userPhotoUrl: null
+                    });
+                }
+            });
 
     }
 
 
     private getServerAuthorizationStatus() {
-        this.httpClient.get("/api/user/user-info").subscribe(response => {
-            this.#userData.set(response as UserData);
+        this.httpClient.get<UserData>("/api/user/user-info").subscribe(response => {
+            this.#userData.set(response);
         });
     }
 }

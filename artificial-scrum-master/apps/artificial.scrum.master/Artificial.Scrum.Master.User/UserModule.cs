@@ -59,7 +59,7 @@ namespace Artificial.Scrum.Master.User
                         context.Request.Headers.Authorization.ToString().Replace("Bearer ", "")
                             );
 
-                    if (tokenResponse.Success && !string.IsNullOrEmpty(tokenResponse.Token))
+                    if (!string.IsNullOrEmpty(tokenResponse.Token))
                     {
 
                         context.Response.Cookies.Append("AuthToken", tokenResponse.Token, new CookieOptions
@@ -68,32 +68,19 @@ namespace Artificial.Scrum.Master.User
                             Secure = true,
                             SameSite = SameSiteMode.Strict
                         });
-
-                        await context.Response.WriteAsJsonAsync(new
-                        {
-                            success = true
-                        });
                     }
                     else
                     {
-                        await context.Response.WriteAsJsonAsync(new
-                        {
-                            success = false
-                        });
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     }
 
                 });
 
             routes.MapPost(
                 "/api/user/logout",
-                async (HttpContext context) =>
+                (HttpContext context) =>
                 {
                     context.Response.Cookies.Delete("AuthToken");
-
-                    await context.Response.WriteAsJsonAsync(new
-                    {
-                        success = true
-                    });
                 });
 
             routes.MapGet(

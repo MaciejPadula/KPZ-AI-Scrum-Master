@@ -9,6 +9,5 @@ namespace Artificial.Scrum.Master.User.Infrastructure
     internal class JwtTokenResponse
     {
         public string? Token { get; set; }
-        public bool Success { get; set; }
     }
 }

@@ -16,8 +16,8 @@ internal readonly record struct GetUserStoriesResponseElement(
     string? OwnerUsername,
     string? OwnerFullNameDisplay,
     string? OwnerPhoto,
-    int MileStoneId,
-    string? MileStoneSlug,
-    string? MileStoneName,
+    int SprintId,
+    string? SprintSlug,
+    string? SprintName,
     double TotalPoints
 );

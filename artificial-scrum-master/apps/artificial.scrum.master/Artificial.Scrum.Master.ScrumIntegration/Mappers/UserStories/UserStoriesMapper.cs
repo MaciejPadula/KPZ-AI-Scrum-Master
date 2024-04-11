@@ -24,9 +24,9 @@ internal class UserStoriesMapper : IUserStoriesMapper
             OwnerUsername = us.OwnerExtraInfo?.Username,
             OwnerFullNameDisplay = us.OwnerExtraInfo?.FullNameDisplay,
             OwnerPhoto = us.OwnerExtraInfo?.Photo,
-            MileStoneId = us.Milestone,
-            MileStoneSlug = us.MilestoneSlug,
-            MileStoneName = us.MilestoneName,
+            SprintId = us.Milestone,
+            SprintSlug = us.MilestoneSlug,
+            SprintName = us.MilestoneName,
             TotalPoints = us.TotalPoints,
         }).ToList();
 

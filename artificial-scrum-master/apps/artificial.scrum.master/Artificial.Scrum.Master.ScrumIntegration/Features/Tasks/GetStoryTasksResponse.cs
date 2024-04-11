@@ -9,7 +9,7 @@ internal readonly record struct GetStoryTasksResponseElement(
     string? Subject,
     int TaskRef,
     int TotalComments,
-    List<string>? Tags,
+    List<List<string>>? Tags,
     string? StatusName,
     string? StatusColor,
     string? AssignedToUsername,

@@ -19,7 +19,7 @@ internal class SqlSessionRepository : ISessionRepository
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
 
         await connection.ExecuteAsync(@"
-INSERT INTO [Session].[Sessions]
+INSERT INTO [EstimationPoker].[Sessions]
 (Id, UserId, ProjectId, Name)
 VALUES
 (@Id, @OwnerId, @ProjectId, @Name)
@@ -36,7 +36,7 @@ SELECT
     Name AS {nameof(SessionEntity.Name)},
     UserId AS {nameof(SessionEntity.OwnerId)},
     ProjectId AS {nameof(SessionEntity.ProjectId)}
-FROM [Session].[Sessions]
+FROM [EstimationPoker].[Sessions]
 WHERE UserId = @UserId AND ProjectId = @ProjectId
 ", new { userId, projectId });
 
@@ -49,7 +49,7 @@ WHERE UserId = @UserId AND ProjectId = @ProjectId
 
         return await connection.ExecuteScalarAsync<bool>(@"
 SELECT 1
-FROM [Session].[Sessions]
+FROM [EstimationPoker].[Sessions]
 WHERE Id = @SessionId
 ", new { sessionId });
     }
@@ -60,7 +60,7 @@ WHERE Id = @SessionId
 
         return await connection.ExecuteScalarAsync<bool>(@"
 SELECT 1
-FROM [Session].[Sessions]
+FROM [EstimationPoker].[Sessions]
 WHERE Id = @SessionId AND UserId = @UserId
 ", new { sessionId, userId });
     }

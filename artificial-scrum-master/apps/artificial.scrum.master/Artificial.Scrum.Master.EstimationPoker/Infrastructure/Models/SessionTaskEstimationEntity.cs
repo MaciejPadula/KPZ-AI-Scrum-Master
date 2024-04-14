@@ -1,6 +1,6 @@
 namespace Artificial.Scrum.Master.EstimationPoker.Infrastructure.Models;
 
-public record SessionTaskEstimationEntity(
+public readonly record struct SessionTaskEstimationEntity(
     int TaskId,
     int UserId,
     decimal Value);

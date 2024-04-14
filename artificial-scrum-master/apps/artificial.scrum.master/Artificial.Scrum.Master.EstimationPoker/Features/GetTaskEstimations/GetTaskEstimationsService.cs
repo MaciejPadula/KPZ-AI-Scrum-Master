@@ -28,7 +28,7 @@ internal class GetTaskEstimationsService : IGetTaskEstimationsService
         }
 
         var estimations = await _sessionTaskRepository.GetTaskEstimations(taskId);
-        var averageEstimation = estimations.Average(e => e.Value);
+        var averageEstimation = estimations.Count > 0 ? estimations.Average(e => e.Value) : 0;
 
         return Result<GetTaskEstimationsResponse>.OnSuccess(
             new GetTaskEstimationsResponse(

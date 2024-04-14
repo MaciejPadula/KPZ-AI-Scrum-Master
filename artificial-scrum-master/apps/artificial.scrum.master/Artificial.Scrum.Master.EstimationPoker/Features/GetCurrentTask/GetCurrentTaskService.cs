@@ -33,14 +33,14 @@ internal class GetCurrentTaskService : IGetCurrentTaskService
 
         var currentTask = await _sessionTaskRepository.GetLatestTask(sessionId);
 
-        if (currentTask is null)
+        if (!currentTask.HasValue)
         {
             return Result<GetCurrentTaskResponse>.OnError(new NoTasksInSessionException(sessionId));
         }
 
         return Result<GetCurrentTaskResponse>.OnSuccess(new GetCurrentTaskResponse(
-            currentTask.Id,
-            currentTask.Title,
-            currentTask.Description));
+            currentTask.Value.Id,
+            currentTask.Value.Title,
+            currentTask.Value.Description));
     }
 }

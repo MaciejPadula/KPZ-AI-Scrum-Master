@@ -40,7 +40,7 @@ internal class RequestValidator : IRequestValidator
             return new UserNotFoundException(request.UserId);
         }
 
-        if (await _sessionTaskRepository.EstimationExists(request.SessionId, request.UserId, request.TaskId))
+        if (await _sessionTaskRepository.EstimationExists(request.UserId, request.TaskId))
         {
             return new EstimationAlreadyExistsException(request.SessionId, request.UserId, request.TaskId);
         }

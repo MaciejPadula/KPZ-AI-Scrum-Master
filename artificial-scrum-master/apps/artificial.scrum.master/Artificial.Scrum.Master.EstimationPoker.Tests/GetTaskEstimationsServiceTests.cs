@@ -35,6 +35,24 @@ public class GetTaskEstimationsServiceTests
     }
 
     [Test]
+    public async Task Handle_WhenTaskExistButThereAreNoEstimations_ShouldReturnEmptyListAndZeroAverage()
+    {
+        // Arrange
+        var taskId = 1;
+        _sessionTaskRepository.TaskExists(taskId).Returns(true);
+        _sessionTaskRepository.GetTaskEstimations(taskId).Returns([]);
+        var expectedResult = new GetTaskEstimationsResponse([], 0);
+
+        // Act
+        var result = await _sut.Handle(taskId);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.Error.Should().BeNull();
+        result.Value.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [Test]
     [TestCase(2, 1, 1.5)]
     [TestCase(3, 2, 2.5)]
     [TestCase(5, 8, 6.5)]

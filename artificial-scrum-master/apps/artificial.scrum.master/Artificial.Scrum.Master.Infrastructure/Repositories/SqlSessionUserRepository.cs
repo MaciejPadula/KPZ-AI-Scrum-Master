@@ -1,21 +1,54 @@
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Models;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
+using Artificial.Scrum.Master.Interfaces;
+using Dapper;
 
 namespace Artificial.Scrum.Master.Infrastructure.Repositories;
 internal class SqlSessionUserRepository : ISessionUserRepository
 {
-    public Task AddSessionUser(SessionUserEntity user)
+    private readonly IDbConnectionFactory _dbConnectionFactory;
+
+    public SqlSessionUserRepository(IDbConnectionFactory dbConnectionFactory)
     {
-        throw new NotImplementedException();
+        _dbConnectionFactory = dbConnectionFactory;
     }
 
-    public Task<List<SessionUserEntity>> GetSessionUsers(string sessionId)
+    public async Task AddSessionUser(SessionUserEntity user)
     {
-        throw new NotImplementedException();
+        using var connection = _dbConnectionFactory.GetOpenConnection();
+
+        await connection.ExecuteAsync($@"
+INSERT INTO [EstimationPoker].[SessionUsers]
+(UserName, SessionId)
+VALUES
+(@UserName, @SessionId)
+", new { user.UserName, user.SessionId });
     }
 
-    public Task<bool> UserExists(int userId)
+    public async Task<List<SessionUserEntity>> GetSessionUsers(string sessionId)
     {
-        throw new NotImplementedException();
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+
+        var result = await connection.QueryAsync<SessionUserEntity>($@"
+SELECT
+    Id AS [{nameof(SessionUserEntity.Id)}],
+    UserName AS [{nameof(SessionUserEntity.UserName)}],
+    SessionId AS [{nameof(SessionUserEntity.SessionId)}]
+FROM [EstimationPoker].[SessionUsers]
+WHERE SessionId = @SessionId
+", new { sessionId });
+
+        return result.ToList();
+    }
+
+    public async Task<bool> UserExists(int userId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+
+        return await connection.ExecuteScalarAsync<bool>(@"
+SELECT 1
+FROM [EstimationPoker].[SessionUsers]
+WHERE Id = @UserId
+", new { userId });
     }
 }

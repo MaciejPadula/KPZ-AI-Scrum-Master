@@ -1,3 +1,4 @@
+using Artificial.Scrum.Master.EstimationPoker.Features.Shared.Exceptions;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
@@ -24,8 +25,14 @@ internal class GetUserProjectSessionsService : IGetUserProjectSessionsService
 
     public async Task<Result<GetUserProjectSessionsResponse>> Handle(int projectId)
     {
+        var userId = _userAccessor.UserId;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Result<GetUserProjectSessionsResponse>.OnError(new UnauthorizedAccessException());
+        }
+
         var sessions = await _sessionRepository.GetUserProjectSessions(
-            _userAccessor.UserId,
+            userId,
             projectId);
 
         return Result<GetUserProjectSessionsResponse>.OnSuccess(new GetUserProjectSessionsResponse(

@@ -39,14 +39,20 @@ internal class AddSessionTaskService : IAddSessionTaskService
             return Result.OnError(new SessionNotFoundException(request.SessionId));
         }
 
+        var userId = _userAccessor.UserId ?? string.Empty;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Result.OnError(new UnauthorizedAccessException());
+        }
+
         var isValidated = await _sessionRepository.ValidateUserAccess(
-            _userAccessor.UserId,
+            userId,
             request.SessionId);
 
         if (!isValidated)
         {
             return Result.OnError(new UserNotAuthorizedException(
-                _userAccessor.UserId,
+                userId,
                 request.SessionId));
         }
 

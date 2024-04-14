@@ -38,8 +38,10 @@ public class AddSessionTaskServiceTests
             sessionId,
             "Ttitle",
             "Description");
+        var userId = "123";
         _sessionRepository.SessionExists(sessionId).Returns(sessionExists);
-        _sessionRepository.ValidateUserAccess(_userAccessor.UserId, sessionId).Returns(isUserValidated);
+        _sessionRepository.ValidateUserAccess(userId, sessionId).Returns(isUserValidated);
+        _userAccessor.UserId.Returns(userId);
 
         // Act
         var result = await _sut.Handle(request);
@@ -60,8 +62,10 @@ public class AddSessionTaskServiceTests
             sessionId,
             "Ttitle",
             "Description");
+        var userId = "123";
         _sessionRepository.SessionExists(sessionId).Returns(true);
-        _sessionRepository.ValidateUserAccess(_userAccessor.UserId, sessionId).Returns(true);
+        _sessionRepository.ValidateUserAccess(userId, sessionId).Returns(true);
+        _userAccessor.UserId.Returns(userId);
 
         // Act
         var result = await _sut.Handle(request);

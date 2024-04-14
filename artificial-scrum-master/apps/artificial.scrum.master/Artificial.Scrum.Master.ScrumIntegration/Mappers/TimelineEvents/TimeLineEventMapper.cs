@@ -6,8 +6,8 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
 
 internal interface ITimeLineEventMapper
 {
-    GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements);
-    GetProjectTimeLineResponse ParseProjectTimeLineElement(IEnumerable<TimeLineEventRoot> elements);
+    GetProfileTimeLine ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements);
+    GetProjectTimeLine ParseProjectTimeLineElement(IEnumerable<TimeLineEventRoot> elements);
 }
 
 internal class TimeLineEventMapper : ITimeLineEventMapper
@@ -19,7 +19,7 @@ internal class TimeLineEventMapper : ITimeLineEventMapper
         _timeLineEventObjectParser = timeLineEventObjectParser;
     }
 
-    public GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
+    public GetProfileTimeLine ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
     {
         var timelineEvents = elements.Select(elem =>
         {
@@ -51,10 +51,10 @@ internal class TimeLineEventMapper : ITimeLineEventMapper
             };
         }).ToList();
 
-        return new GetProfileTimeLineResponse { TimeLineEvents = timelineEvents };
+        return new GetProfileTimeLine { TimeLineEvents = timelineEvents };
     }
 
-    public GetProjectTimeLineResponse ParseProjectTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
+    public GetProjectTimeLine ParseProjectTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
     {
         var timelineEvents = elements.Select(elem =>
         {
@@ -86,6 +86,6 @@ internal class TimeLineEventMapper : ITimeLineEventMapper
             };
         }).ToList();
 
-        return new GetProjectTimeLineResponse { TimeLineEvents = timelineEvents };
+        return new GetProjectTimeLine { TimeLineEvents = timelineEvents };
     }
 }

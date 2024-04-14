@@ -1,6 +1,6 @@
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
 
-internal readonly record struct GetUserStoriesResponse(
+internal readonly record struct GetUserStories(
     List<GetUserStoriesResponseElement> UserStories
 );
 

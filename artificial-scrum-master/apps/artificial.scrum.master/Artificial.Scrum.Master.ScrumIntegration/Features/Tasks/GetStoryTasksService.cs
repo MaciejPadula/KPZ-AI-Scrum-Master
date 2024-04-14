@@ -8,7 +8,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 
 internal interface IGetStoryTasksService
 {
-    Task<GetStoryTasksResponse> Handle(string userId, string userStoryId);
+    Task<GetStoryTasks> Handle(string userId, string userStoryId);
 }
 
 internal class GetStoryTasksService : IGetStoryTasksService
@@ -28,7 +28,7 @@ internal class GetStoryTasksService : IGetStoryTasksService
         _tasksResponseMapper = tasksResponseMapper;
     }
 
-    public async Task<GetStoryTasksResponse> Handle(string userId, string userStoryId)
+    public async Task<GetStoryTasks> Handle(string userId, string userStoryId)
     {
         var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
 

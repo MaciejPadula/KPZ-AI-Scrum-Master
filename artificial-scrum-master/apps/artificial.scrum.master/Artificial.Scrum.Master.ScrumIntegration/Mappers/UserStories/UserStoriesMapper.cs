@@ -4,12 +4,12 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.UserStories;
 
 internal interface IUserStoriesMapper
 {
-    GetUserStoriesResponse MapUserStoriesResponse(List<UserStory> userStories);
+    GetUserStories MapUserStoriesResponse(List<UserStory> userStories);
 }
 
 internal class UserStoriesMapper : IUserStoriesMapper
 {
-    public GetUserStoriesResponse MapUserStoriesResponse(List<UserStory> userStories)
+    public GetUserStories MapUserStoriesResponse(List<UserStory> userStories)
     {
         var mappedUserStories = userStories.Select(us => new GetUserStoriesResponseElement
         {
@@ -30,6 +30,6 @@ internal class UserStoriesMapper : IUserStoriesMapper
             TotalPoints = us.TotalPoints,
         }).ToList();
 
-        return new GetUserStoriesResponse(UserStories: mappedUserStories);
+        return new GetUserStories(UserStories: mappedUserStories);
     }
 }

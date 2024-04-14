@@ -4,12 +4,12 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.Sprints;
 
 internal interface ISprintsResponseMapper
 {
-    GetActiveSprintsResponse MapSprintsResponse(List<Sprint> sprints);
+    GetActiveSprints MapSprintsResponse(List<Sprint> sprints);
 }
 
 internal class SprintsResponseMapper : ISprintsResponseMapper
 {
-    public GetActiveSprintsResponse MapSprintsResponse(List<Sprint> sprints)
+    public GetActiveSprints MapSprintsResponse(List<Sprint> sprints)
     {
         var mappedSprints = sprints.Select(sprint => new GetActiveSprintsResponseElement
         {
@@ -31,6 +31,6 @@ internal class SprintsResponseMapper : ISprintsResponseMapper
             })
         }).ToList();
 
-        return new GetActiveSprintsResponse(Sprints: mappedSprints);
+        return new GetActiveSprints(Sprints: mappedSprints);
     }
 }

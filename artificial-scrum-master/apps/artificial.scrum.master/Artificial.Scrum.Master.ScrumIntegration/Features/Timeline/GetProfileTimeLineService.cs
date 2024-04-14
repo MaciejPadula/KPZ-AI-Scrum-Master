@@ -9,7 +9,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 
 internal interface IGetProfileTimeLineService
 {
-    Task<GetProfileTimeLineResponse> Handle(string userId);
+    Task<GetProfileTimeLine> Handle(string userId);
 }
 
 internal class GetProfileTimeLineService : IGetProfileTimeLineService
@@ -31,7 +31,7 @@ internal class GetProfileTimeLineService : IGetProfileTimeLineService
         _timeLineElementMapper = timeLineElementMapper;
     }
 
-    public async Task<GetProfileTimeLineResponse> Handle(string userId)
+    public async Task<GetProfileTimeLine> Handle(string userId)
     {
         var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
 

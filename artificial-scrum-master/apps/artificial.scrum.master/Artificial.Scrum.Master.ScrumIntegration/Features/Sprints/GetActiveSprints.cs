@@ -1,6 +1,6 @@
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
 
-internal readonly record struct GetActiveSprintsResponse(
+internal readonly record struct GetActiveSprints(
     List<GetActiveSprintsResponseElement> Sprints
 );
 

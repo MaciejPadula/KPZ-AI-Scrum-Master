@@ -9,7 +9,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 
 internal interface IGetProjectTimeLineService
 {
-    Task<GetProjectTimeLineResponse> Handle(string userId, string projectId);
+    Task<GetProjectTimeLine> Handle(string userId, string projectId);
 }
 
 internal class GetProjectTimeLineService : IGetProjectTimeLineService
@@ -31,7 +31,7 @@ internal class GetProjectTimeLineService : IGetProjectTimeLineService
         _timeLineElementMapper = timeLineElementMapper;
     }
 
-    public async Task<GetProjectTimeLineResponse> Handle(string userId, string projectId)
+    public async Task<GetProjectTimeLine> Handle(string userId, string projectId)
     {
         var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
 

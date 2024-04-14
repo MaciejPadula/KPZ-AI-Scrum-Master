@@ -8,7 +8,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
 
 internal interface IGetUserStoriesService
 {
-    Task<GetUserStoriesResponse> Handle(string userId, string projectId, string sprintId);
+    Task<GetUserStories> Handle(string userId, string projectId, string sprintId);
 }
 
 internal class GetUserStoriesService : IGetUserStoriesService
@@ -28,7 +28,7 @@ internal class GetUserStoriesService : IGetUserStoriesService
         _userStoriesMapper = userStoriesMapper;
     }
 
-    public async Task<GetUserStoriesResponse> Handle(string userId, string projectId, string sprintId)
+    public async Task<GetUserStories> Handle(string userId, string projectId, string sprintId)
     {
         var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
 

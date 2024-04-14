@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Artificial.Scrum.Master.Interfaces;
 
 namespace Artificial.Scrum.Master.UserSettings;
 
@@ -20,17 +21,37 @@ public static class UserSettingsModule
     {
         routes.MapGet(
             "/api/user-settings",
-            async (HttpContext context, IGetUserSettingsService service) =>
+            async (HttpContext context, IGetUserSettingsService service, IUserAccessor userAccessor) =>
             {
-                var response = await service.Handle();
+                var userId = userAccessor.UserId;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return;
+                }
+
+                var result = await service.Handle();
+                var response = new GetUserSettingsResponse(result.IsLoggedToTaiga);
+
                 await context.Response.WriteAsJsonAsync(response);
             });
 
         routes.MapPost(
             "/api/user-settings/set-taiga-access",
-            async (SetTaigaAccessRequest settings, HttpContext context, ISetTaigaAccessService service) =>
+            async (SetTaigaAccessRequest settings, HttpContext context, ISetTaigaAccessService service, IUserAccessor userAccessor) =>
             {
-                await service.Handle(settings);
+                var userId = userAccessor.UserId;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return;
+                }
+
+                await service.Handle(new(
+                    settings.AccessToken,
+                    settings.RefreshToken));
             });
     }
 }

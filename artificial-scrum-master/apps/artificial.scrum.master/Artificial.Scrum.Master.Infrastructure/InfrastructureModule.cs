@@ -18,8 +18,9 @@ public static class InfrastructureModule
         services.AddTransient<ISessionUserRepository, SqlSessionUserRepository>();
         services.AddTransient<ISessionTaskRepository, SqlSessionTaskRepository>();
         services.AddTransient(_ => TimeProvider.System);
+        services.AddHttpContextAccessor();
 
-        services.AddTransient<IUserAccessor, MockedUserAccessor>();
+        services.AddTransient<IUserAccessor, JwtUserAccessor>();
         return services;
     }
 }

@@ -1,0 +1,13 @@
+<div class="self-center flex space-x-2">
+    @if(userData().isAuthorized) {
+    <p>{{userData().userName}}</p>
+    <img class="rounded-full max-h-10" src="{{userData().userPhotoUrl}}"
+        alt="{{userData().userName}}'s Profile Picture">
+    <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+    }
+    @else {
+    <p class="flex">
+        Log in: &nbsp;<asl-google-signin-button></asl-google-signin-button>
+    </p>
+    }
+</div>

@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectDataService } from '../../services/project-data.service';
 import { ActivatedRoute } from '@angular/router';
@@ -13,7 +19,12 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-project-feed',
   standalone: true,
-  imports: [CommonModule, MaterialModule, TimelineRowComponent, TranslateModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    TimelineRowComponent,
+    TranslateModule,
+  ],
   templateUrl: './project-feed.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -29,7 +40,7 @@ export class ProjectFeedComponent implements OnInit {
   public readonly feeds = this.#feeds.asReadonly();
 
   public ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params.subscribe((params) => {
       const projectId = params['projectId'];
       this.loadProject(projectId);
     });

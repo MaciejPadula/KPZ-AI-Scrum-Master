@@ -6,7 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {
   SocialAuthServiceConfig,
   GoogleLoginProvider,
-} from "@abacritt/angularx-social-login";
+} from '@abacritt/angularx-social-login';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { AppSecrets } from './app.secrets';
@@ -27,14 +27,12 @@ export const appConfig: ApplicationConfig = {
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              AppSecrets.GOOGLE_CLIENT_ID,
-              { oneTapEnabled: false }
-            ),
+            provider: new GoogleLoginProvider(AppSecrets.GOOGLE_CLIENT_ID, {
+              oneTapEnabled: false,
+            }),
           },
         ],
         onError: (err) => {
-          debugger;
           console.error(err);
         },
       } as SocialAuthServiceConfig,

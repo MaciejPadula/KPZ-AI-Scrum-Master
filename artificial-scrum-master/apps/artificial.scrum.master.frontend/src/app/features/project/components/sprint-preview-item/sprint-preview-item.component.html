@@ -1,0 +1,28 @@
+<div class="flex flex-col">
+  <p>
+    <span class="mat-headline-6 font-bold dark:text-gray-700"
+      >{{ sprintElement.ProjectName }}
+    </span>
+    <span class="mat-caption ml-2"
+      >End date: {{ sprintElement.EstimatedEnd }}</span
+    >
+  </p>
+  <div>
+    <div class="space-x-1 mat-body-1">
+      <div class="grid grid-cols-1 divide-y">
+        <!-- <span
+          >{{ 'Projects.Item.Owner' | translate }}
+          {{ isOwnerKey | translate }}</span
+        >
+        <span
+          >{{ 'Projects.Item.Visibility' | translate }}
+          {{ visibilityKey | translate }}</span
+        > -->
+
+        @for (story of sprintElement.UserStories; track $index) {
+        <div>{{ story | json }}</div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

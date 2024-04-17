@@ -1,0 +1,28 @@
+<div
+  class="bg-zinc-100 pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1"
+>
+  <div class="mat-headline-6">
+    #{{ userStory.userStoryRef }} {{ userStory.userStorySubject }}
+  </div>
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="more-horiz"
+        ></mat-icon>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="grid grid-cols-4 divide-x items-stretch">
+      <span class="mat-body-1">Status: {{ userStory.statusName }}</span>
+      <span class="mat-body-1">Total points: {{ userStory.totalPoints }}</span>
+      <span class="mat-body-1"
+        >Created by: {{ userStory.ownerFullNameDisplay }}</span
+      >
+      <span class="mat-body-1"
+        >Assigned to: {{ userStory.assignedToFullNameDisplay }}</span
+      >
+    </div>
+  </mat-expansion-panel>
+</div>

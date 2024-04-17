@@ -1,26 +1,47 @@
-<div class="flex flex-col">
-  <p>
-    <span class="mat-headline-6 font-bold dark:text-gray-700"
-      >{{ sprintElement.ProjectName }}
+<div class="flex flex-col divide-y mx-2">
+  <div
+    class="flex flex-col p-4 outline outline-1 outline-gray-200 shadow-lg my-1 hover:bg-zinc-100 hover:cursor-pointer"
+    (click)="
+      redirectToUserStories(sprintElement.projectId, sprintElement.sprintId)
+    "
+  >
+    <span class="mat-headline-8 dark:text-gray-700"
+      >{{ sprintElement.projectName }}
     </span>
-    <span class="mat-caption ml-2"
-      >End date: {{ sprintElement.EstimatedEnd }}</span
-    >
-  </p>
+    <span class="mat-headline-6 font-bold dark:text-gray-700"
+      >{{ sprintElement.sprintName }}
+    </span>
+
+    <span class="grid grid-cols-3 items-center pb-2">
+      <span class="mat-caption ml-2"
+        >Start: {{ formatDate(sprintElement.estimatedStart) }}</span
+      >
+      <span class="mat-caption ml-2"
+        >End: {{ formatDate(sprintElement.estimatedFinish) }}</span
+      >
+    </span>
+  </div>
+
   <div>
     <div class="space-x-1 mat-body-1">
       <div class="grid grid-cols-1 divide-y">
-        <!-- <span
-          >{{ 'Projects.Item.Owner' | translate }}
-          {{ isOwnerKey | translate }}</span
-        >
-        <span
-          >{{ 'Projects.Item.Visibility' | translate }}
-          {{ visibilityKey | translate }}</span
-        > -->
-
-        @for (story of sprintElement.UserStories; track $index) {
-        <div>{{ story | json }}</div>
+        @for (story of sprintElement.userStories; track $index) {
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                #{{ story.userStoryRef }}
+                {{ story.userStoryName }}</mat-panel-title
+              >
+            </mat-expansion-panel-header>
+            <span class="grid grid-cols-3 items-center">
+              <span class="mat-body">Status: {{ story.statusName }}</span>
+              <span class="mat-body"
+                >Total points: {{ story.totalPoints }}</span
+              >
+            </span>
+          </mat-expansion-panel>
+        </mat-accordion>
         }
       </div>
     </div>

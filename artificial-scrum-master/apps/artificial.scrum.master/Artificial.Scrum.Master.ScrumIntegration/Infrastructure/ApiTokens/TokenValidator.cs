@@ -4,7 +4,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 
 internal class TokenValidator : ITokenValidator
 {
-    private const int TokenRefreshRequestTimeBuffer = 2;
+    private const int TokenRefreshRequestTimeBuffer = 5;
     private const string ExpirationTimeClaimTypeName = "exp";
 
     private readonly TimeProvider _timeProvider;

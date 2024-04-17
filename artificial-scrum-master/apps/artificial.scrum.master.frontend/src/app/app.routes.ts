@@ -25,6 +25,13 @@ export const appRoutes: Route[] = [
       import('./features/projects/routes').then((mod) => mod.ProjectsRoutes),
   },
   {
+    path: 'UserStories',
+    loadChildren: () =>
+      import('./features/user-stories/routes').then(
+        (mod) => mod.UserStoriesRoutes
+      ),
+  },
+  {
     path: '**',
     component: NotFoundComponent,
   },

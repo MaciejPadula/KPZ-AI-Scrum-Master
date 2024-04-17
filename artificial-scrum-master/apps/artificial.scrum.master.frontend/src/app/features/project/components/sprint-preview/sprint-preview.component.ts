@@ -29,8 +29,8 @@ export class SprintPreviewComponent implements OnInit {
 
   private loadSprintPreviews(projectId: number): void {
     this.sprintPreviewDataService.getSprintPreviews(projectId).subscribe({
-      next: (sprint) => {
-        this.#sprints.set(sprint);
+      next: (sprints) => {
+        this.#sprints.set(sprints);
       },
       error: () =>
         this.toastService.openError('Error fetching sprint previews'),

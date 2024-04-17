@@ -1,19 +1,19 @@
 export interface SprintPreview {
-  ProjectId: number;
-  ProjectName: string;
-  ProjectSlug: string;
-  SprintId: number;
-  SprintName: string;
-  EstimatedStart: Date;
-  EstimatedEnd: Date;
-  UserStories: UserStoryPrweview[];
+  projectId: number;
+  projectName: string;
+  projectSlug: string;
+  sprintId: number;
+  sprintName: string;
+  estimatedStart: string;
+  estimatedFinish: string;
+  userStories: UserStoryPrweview[];
 }
 
-interface UserStoryPrweview {
-  UserStoryId: number;
-  UserStoryName: string;
-  StatusName: string;
-  IsClosed: boolean;
-  UserStoryRef: number;
-  UserStoryPoints: number;
+export interface UserStoryPrweview {
+  userStoryId: number;
+  userStoryName: string;
+  statusName: string;
+  isClosed: boolean;
+  userStoryRef: number;
+  totalPoints: number;
 }

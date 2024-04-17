@@ -4,12 +4,10 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Utilities;
 
 internal class JwtDecoder : IJwtDecoder
 {
-    private readonly TimeProvider _timeProvider;
     private readonly JwtSecurityTokenHandler _handler;
 
-    public JwtDecoder(TimeProvider timeProvider)
+    public JwtDecoder()
     {
-        _timeProvider = timeProvider;
         _handler = new JwtSecurityTokenHandler();
     }
 

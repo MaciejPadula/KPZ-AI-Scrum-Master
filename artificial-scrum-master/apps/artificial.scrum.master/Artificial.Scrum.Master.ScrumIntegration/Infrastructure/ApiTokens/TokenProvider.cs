@@ -17,14 +17,7 @@ internal class TokenProvider : IAccessTokenProvider
         _userTokensRepository = userTokensRepository;
     }
 
-    public async Task<UserTokens> ProvideOrThrow(string userId)
-    {
-        var userTokens = await _userTokensRepository.GetUserAccessTokens(userId);
-        if (userTokens is null)
-        {
-            throw new ProjectRequestForbidException($"Credentials of user:{userId} not found");
-        }
-
-        return userTokens;
-    }
+    public async Task<UserTokens> ProvideOrThrow(string userId) =>
+        await _userTokensRepository.GetUserAccessTokens(userId)
+            ?? throw new ProjectRequestForbidException($"Credentials of user:{userId} not found");
 }

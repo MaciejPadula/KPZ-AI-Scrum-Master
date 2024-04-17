@@ -81,7 +81,7 @@ internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
         return newTokens;
     }
 
-    private async Task EnsureStatusSuccess(HttpResponseMessage httpResponse)
+    private static async Task EnsureStatusSuccess(HttpResponseMessage httpResponse)
     {
         if (!httpResponse.IsSuccessStatusCode)
         {

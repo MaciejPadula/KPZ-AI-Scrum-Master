@@ -70,8 +70,8 @@ public class GetTaskEstimationsServiceTests
         ]);
         var expectedResult = new GetTaskEstimationsResponse(
         [
-            new(taskId, "user2", estimation1),
-            new(taskId, "user1", estimation2)
+            new(taskId, "user1", estimation1),
+            new(taskId, "user2", estimation2)
         ], expectedAverage);
 
         // Act

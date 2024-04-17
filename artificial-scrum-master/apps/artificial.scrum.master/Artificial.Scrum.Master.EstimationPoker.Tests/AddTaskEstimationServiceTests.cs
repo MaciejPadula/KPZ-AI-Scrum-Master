@@ -27,7 +27,7 @@ public class AddTaskEstimationServiceTests
         // Arrange
         var request = new AddTaskEstimationRequest(
             "",
-            1,
+            "",
             2,
             2137);
         _requestValidator.Validate(request).Returns(new ArgumentNullException());
@@ -47,7 +47,7 @@ public class AddTaskEstimationServiceTests
         // Arrange
         var request = new AddTaskEstimationRequest(
             "session-id",
-            1,
+            "maciej",
             2,
             2137);
         _requestValidator.Validate(request).Returns((Exception?)null);
@@ -59,7 +59,7 @@ public class AddTaskEstimationServiceTests
         result.IsSuccess.Should().BeTrue();
         await _sessionTaskRepository.Received(1).AddTaskEstimation(Arg.Is<SessionTaskEstimationEntity>(x =>
             x.TaskId == 2
-            && x.UserId == 1
+            && x.Username == "maciej"
             && x.Value == 2137));
     }
 }

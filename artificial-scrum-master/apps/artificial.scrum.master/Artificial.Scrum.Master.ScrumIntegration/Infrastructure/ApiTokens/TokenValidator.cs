@@ -19,6 +19,11 @@ internal class TokenValidator : ITokenValidator
     public bool ValidateAccessTokenExpirationTime(string accessToken)
     {
         var expirationDate = _jwtDecoder.GetExpirationDate(accessToken, ExpirationTimeClaimTypeName);
+        if (!expirationDate.HasValue)
+        {
+            return false;
+        }
+
         var expired = _timeProvider.GetUtcNow().AddMinutes(-TokenRefreshRequestTimeBuffer).UtcDateTime;
         return expirationDate >= expired;
     }

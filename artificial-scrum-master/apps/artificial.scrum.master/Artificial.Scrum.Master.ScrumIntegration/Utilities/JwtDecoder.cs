@@ -20,18 +20,18 @@ internal class JwtDecoder : IJwtDecoder
             .FirstOrDefault(c => c.Type == claimTypeName)?.Value;
     }
 
-    public DateTime GetExpirationDate(string token, string claimTypeName)
+    public DateTime? GetExpirationDate(string token, string claimTypeName)
     {
         var expirationStringValue = GetClaim(token, claimTypeName);
         if (string.IsNullOrEmpty(expirationStringValue))
         {
-            return _timeProvider.GetUtcNow().UtcDateTime;
+            return null;
         }
 
         var result = long.TryParse(expirationStringValue, out var expirationMilliseconds);
         if (!result)
         {
-            return _timeProvider.GetUtcNow().UtcDateTime;
+            return null;
         }
 
         return DateTimeOffset.FromUnixTimeSeconds(expirationMilliseconds).UtcDateTime;

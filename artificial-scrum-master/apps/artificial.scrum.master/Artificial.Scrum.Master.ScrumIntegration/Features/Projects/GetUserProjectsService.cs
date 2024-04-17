@@ -7,7 +7,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 
 internal interface IGetUserProjectsService
 {
-    Task<GetUserProjects> Handle(string userId);
+    Task<GetUserProjectsResponse> Handle(string userId);
 }
 
 internal class GetUserProjectsService : IGetUserProjectsService
@@ -26,7 +26,7 @@ internal class GetUserProjectsService : IGetUserProjectsService
         _jwtDecoder = jwtDecoder;
     }
 
-    public async Task<GetUserProjects> Handle(string userId)
+    public async Task<GetUserProjectsResponse> Handle(string userId)
     {
         var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
 
@@ -41,9 +41,9 @@ internal class GetUserProjectsService : IGetUserProjectsService
             userTokens,
             $"projects?member={memberId}");
 
-        return new GetUserProjects
+        return new GetUserProjectsResponse
         {
-            Projects = projectRequestResult.Select(project => new GetUserProjectsResponseElement
+            Projects = projectRequestResult.Select(project => new UserProject
             {
                 Id = project.Id,
                 Name = project.Name,

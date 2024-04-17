@@ -1,22 +1,17 @@
-import {
-  Component,
-  Input,
-  ChangeDetectionStrategy,
-  inject,
-  ViewChild,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserStory } from '../../models/user-story';
-import { Router } from '@angular/router';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
 
 @Component({
   selector: 'app-user-story-list-item',
   standalone: true,
+  templateUrl: './user-story-list-item.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     MatExpansionModule,
@@ -24,26 +19,12 @@ import { MatIconModule } from '@angular/material/icon';
     MatSortModule,
     MatTableModule,
     MatIconModule,
+    AvatarComponent,
   ],
-  templateUrl: './user-story-list-item.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserStoryListItemComponent implements AfterViewInit {
+export class UserStoryListItemComponent {
   @Input()
   public userStory: UserStory;
 
-  @ViewChild(MatSort) sort: MatSort;
-
-  private readonly router = inject(Router);
-
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource = new MatTableDataSource<UserStory>();
-
-  constructor() {
-    //this.dataSource = new MatTableDataSource(this.userStory.tas);
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-  }
+  public panelOpenState = false;
 }

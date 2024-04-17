@@ -1,28 +1,46 @@
-<div
-  class="bg-zinc-100 pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1"
->
+<div class="pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1">
   <div class="mat-headline-6">
     #{{ userStory.userStoryRef }} {{ userStory.userStorySubject }}
   </div>
-  <mat-expansion-panel hideToggle>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <mat-icon
-          aria-hidden="false"
-          aria-label="Example home icon"
-          fontIcon="more-horiz"
-        ></mat-icon>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <div class="grid grid-cols-4 divide-x items-stretch">
-      <span class="mat-body-1">Status: {{ userStory.statusName }}</span>
-      <span class="mat-body-1">Total points: {{ userStory.totalPoints }}</span>
+
+  <div class="grid grid-cols-4 items-stretch mb-4">
+    <div class="flex flex-row items-center">
       <span class="mat-body-1"
         >Created by: {{ userStory.ownerFullNameDisplay }}</span
       >
+      <app-avatar [src]="userStory.ownerPhoto" class="ml-2" />
+    </div>
+
+    <div class="flex flex-row items-center">
       <span class="mat-body-1"
         >Assigned to: {{ userStory.assignedToFullNameDisplay }}</span
       >
+      <app-avatar [src]="userStory.assignedToPhoto" class="ml-2" />
     </div>
+
+    <span class="mat-body-1">Status: {{ userStory.statusName }}</span>
+    <span class="mat-body-1">Total points: {{ userStory.totalPoints }}</span>
+  </div>
+
+  <mat-expansion-panel
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Tasks @if (!panelOpenState) {<mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="expand_more"
+        ></mat-icon
+        >}@else{
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="expand_less"
+        ></mat-icon>
+        }
+      </mat-panel-title>
+    </mat-expansion-panel-header>
   </mat-expansion-panel>
 </div>

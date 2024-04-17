@@ -4,14 +4,14 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.Tasks;
 
 internal interface ITasksResponseMapper
 {
-    GetStoryTasks MapUserStoriesResponse(List<StoryTask> userStories);
+    GetStoryTasksResponse MapUserStoriesResponse(List<StoryTask> userStories);
 }
 
 internal class TasksResponseMapper : ITasksResponseMapper
 {
-    public GetStoryTasks MapUserStoriesResponse(List<StoryTask> userStories)
+    public GetStoryTasksResponse MapUserStoriesResponse(List<StoryTask> userStories)
     {
-        var mappedTasks = userStories.Select(x => new GetStoryTasksResponseElement
+        var mappedTasks = userStories.Select(x => new UserStoryTask
         {
             TaskId = x.Id,
             Subject = x.Subject,
@@ -26,6 +26,6 @@ internal class TasksResponseMapper : ITasksResponseMapper
             IsClosed = x.IsClosed
         }).ToList();
 
-        return new GetStoryTasks(Tasks: mappedTasks);
+        return new GetStoryTasksResponse(Tasks: mappedTasks);
     }
 }

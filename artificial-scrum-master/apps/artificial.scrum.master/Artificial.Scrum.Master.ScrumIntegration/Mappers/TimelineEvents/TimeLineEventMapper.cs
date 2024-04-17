@@ -6,7 +6,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
 
 internal interface ITimeLineEventMapper
 {
-    GetProfileTimeLine ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements);
+    GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements);
     GetProjectTimeLine ParseProjectTimeLineElement(IEnumerable<TimeLineEventRoot> elements);
 }
 
@@ -19,7 +19,7 @@ internal class TimeLineEventMapper : ITimeLineEventMapper
         _timeLineEventObjectParser = timeLineEventObjectParser;
     }
 
-    public GetProfileTimeLine ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
+    public GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
     {
         var timelineEvents = elements.Select(elem =>
         {
@@ -33,7 +33,7 @@ internal class TimeLineEventMapper : ITimeLineEventMapper
             var (objectId, objectName) = _timeLineEventObjectParser.ParseScrumObject(scrumObjectType, elem.Data.Task,
                 elem.Data.Userstory, elem.Data.Milestone, elem.Data.User, elem.Data.Project);
 
-            return new GetTimeLineEvent
+            return new TimeLineEvent
             {
                 EventId = elem.Id,
                 ScrumObjectType = scrumObjectType,
@@ -51,7 +51,7 @@ internal class TimeLineEventMapper : ITimeLineEventMapper
             };
         }).ToList();
 
-        return new GetProfileTimeLine { TimeLineEvents = timelineEvents };
+        return new GetProfileTimeLineResponse { TimeLineEvents = timelineEvents };
     }
 
     public GetProjectTimeLine ParseProjectTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
@@ -68,7 +68,7 @@ internal class TimeLineEventMapper : ITimeLineEventMapper
             var (objectId, objectName) = _timeLineEventObjectParser.ParseScrumObject(scrumObjectType, elem.Data.Task,
                 elem.Data.Userstory, elem.Data.Milestone, elem.Data.User, elem.Data.Project);
 
-            return new GetTimeLineEvent
+            return new TimeLineEvent
             {
                 EventId = elem.Id,
                 ScrumObjectType = scrumObjectType,

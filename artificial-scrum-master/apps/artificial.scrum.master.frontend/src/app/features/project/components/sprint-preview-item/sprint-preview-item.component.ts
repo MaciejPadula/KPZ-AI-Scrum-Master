@@ -9,11 +9,12 @@ import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SprintPreview } from '../../models/sprint-preview';
 import { MatButtonModule } from '@angular/material/button';
+import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
 
 @Component({
   selector: 'app-sprint-preview-item',
   standalone: true,
-  imports: [CommonModule, MatExpansionModule, MatButtonModule],
+  imports: [CommonModule, MatExpansionModule, MatButtonModule, AvatarComponent],
   templateUrl: './sprint-preview-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

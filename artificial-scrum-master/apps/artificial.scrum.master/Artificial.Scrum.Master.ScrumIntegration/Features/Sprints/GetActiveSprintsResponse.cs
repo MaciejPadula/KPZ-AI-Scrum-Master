@@ -1,10 +1,10 @@
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
 
-internal readonly record struct GetActiveSprints(
-    List<GetActiveSprintsResponseElement> Sprints
+internal readonly record struct GetActiveSprintsResponse(
+    List<ActiveSprint> Sprints
 );
 
-internal readonly record struct GetActiveSprintsResponseElement(
+internal readonly record struct ActiveSprint(
     int ProjectId,
     string? ProjectName,
     string? ProjectSlug,

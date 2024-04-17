@@ -26,22 +26,18 @@
     <div class="space-x-1 mat-body-1">
       <div class="grid grid-cols-1 divide-y">
         @for (story of sprintElement.userStories; track $index) {
-        <mat-accordion>
-          <mat-expansion-panel hideToggle>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                #{{ story.userStoryRef }}
-                {{ story.userStoryName }}</mat-panel-title
-              >
-            </mat-expansion-panel-header>
-            <span class="grid grid-cols-3 items-center">
-              <span class="mat-body">Status: {{ story.statusName }}</span>
-              <span class="mat-body"
-                >Total points: {{ story.totalPoints }}</span
-              >
-            </span>
-          </mat-expansion-panel>
-        </mat-accordion>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              #{{ story.userStoryRef }}
+              {{ story.userStoryName }}</mat-panel-title
+            >
+          </mat-expansion-panel-header>
+          <span class="grid grid-cols-3 items-center">
+            <span class="mat-body">Status: {{ story.statusName }}</span>
+            <span class="mat-body">Total points: {{ story.totalPoints }}</span>
+          </span>
+        </mat-expansion-panel>
         }
       </div>
     </div>

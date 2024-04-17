@@ -1,10 +1,10 @@
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 
-internal readonly record struct GetStoryTasks(
-    List<GetStoryTasksResponseElement> Tasks
+internal readonly record struct GetStoryTasksResponse(
+    List<UserStoryTask> Tasks
 );
 
-internal readonly record struct GetStoryTasksResponseElement(
+internal readonly record struct UserStoryTask(
     int TaskId,
     string? Subject,
     int TaskRef,

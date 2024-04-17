@@ -8,7 +8,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
 
 internal interface IGetActiveSprintsService
 {
-    Task<GetActiveSprints> Handle(string userId, string projectId);
+    Task<GetActiveSprintsResponse> Handle(string userId, string projectId);
 }
 
 internal class GetActiveSprintsService : IGetActiveSprintsService
@@ -28,7 +28,7 @@ internal class GetActiveSprintsService : IGetActiveSprintsService
         _sprintsResponseMapper = sprintsResponseMapper;
     }
 
-    public async Task<GetActiveSprints> Handle(string userId, string projectId)
+    public async Task<GetActiveSprintsResponse> Handle(string userId, string projectId)
     {
         var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
 

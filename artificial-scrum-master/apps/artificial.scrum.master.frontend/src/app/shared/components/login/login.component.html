@@ -1,13 +1,23 @@
 <div class="self-center flex space-x-2">
     @if(userData().isAuthorized) {
-    <p>{{userData().userName}}</p>
-    <img class="rounded-full max-h-10" src="{{userData().userPhotoUrl}}"
-        alt="{{userData().userName}}'s Profile Picture">
-    <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+    <img class="rounded-full max-w-10 cursor-pointer" imageLoader
+        [placeholderSrc]="'assets\\images\\user-placeholder.jpg'" [matMenuTriggerFor]="menu"
+        src="{{userData().userPhotoUrl}}" alt="{{userData().userName}}'s Profile Picture">
+    <mat-menu #menu="matMenu" class="my-2">
+        <div class="flex justify-center items-center flex-col px-8 py-4 space-y-3">
+            <img class="rounded-full max-h-16 max-w-16 cursor-pointer" imageLoader
+                [placeholderSrc]="'assets\\images\\user-placeholder.jpg'" src="{{userData().userPhotoUrl}}"
+                alt="{{userData().userName}}'s Profile Picture">
+            <h1 class="font-medium text-2xl">{{userData().userName}}</h1>
+            <span class="flex space-x-1">
+                <button mat-stroked-button [routerLink]="'UserSettings'">{{"UserAccount.Settings" | translate}}</button>
+                <button mat-stroked-button (click)="logout()">{{"UserAccount.Logout" | translate}}</button>
+            </span>
+        </div>
+    </mat-menu>
     }
     @else {
-    <p class="flex">
-        Log in: &nbsp;<asl-google-signin-button></asl-google-signin-button>
-    </p>
+    <asl-google-signin-button type="standard" shape="pill" theme="outline" size="large" >
+        ></asl-google-signin-button>
     }
 </div>

@@ -16,9 +16,7 @@ public static class ScrumIntegrationEndpoints
             "/api/projects",
             async (HttpContext context, IGetUserProjectsService service, IUserAccessor userAccessor) =>
             {
-                var userId = userAccessor.UserId;
-                var result = await service.Handle(userId);
-
+                var result = await service.Handle();
                 await context.Response.WriteAsJsonAsync(result);
             });
 
@@ -26,9 +24,7 @@ public static class ScrumIntegrationEndpoints
             "/api/projects/timeline",
             async (HttpContext context, IGetProfileTimeLineService service, IUserAccessor userAccessor) =>
             {
-                var userId = userAccessor.UserId;
-                var result = await service.Handle(userId);
-
+                var result = await service.Handle();
                 await context.Response.WriteAsJsonAsync(result);
             });
 
@@ -37,9 +33,7 @@ public static class ScrumIntegrationEndpoints
             async (HttpContext context, IGetProjectTimeLineService service, IUserAccessor userAccessor,
                 string projectId) =>
             {
-                var userId = userAccessor.UserId;
-                var result = await service.Handle(userId, projectId);
-
+                var result = await service.Handle(projectId);
                 await context.Response.WriteAsJsonAsync(result);
             });
     }

@@ -1,3 +1,4 @@
+using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
@@ -9,7 +10,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 
 internal interface IGetProjectTimeLineService
 {
-    Task<GetProjectTimeLineResponse> Handle(string userId, string projectId);
+    Task<GetProjectTimeLineResponse> Handle(string projectId);
 }
 
 internal class GetProjectTimeLineService : IGetProjectTimeLineService
@@ -18,21 +19,25 @@ internal class GetProjectTimeLineService : IGetProjectTimeLineService
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
     private readonly IJwtDecoder _jwtDecoder;
     private readonly ITimeLineEventParser _timeLineElementParser;
+    private readonly IUserAccessor _userAccessor;
 
     public GetProjectTimeLineService(
         IAccessTokenProvider accessTokenProvider,
         IProjectHttpClientWrapper projectHttpClientWrapper,
         IJwtDecoder jwtDecoder,
-        ITimeLineEventParser timeLineElementParser)
+        ITimeLineEventParser timeLineElementParser,
+        IUserAccessor userAccessor)
     {
         _accessTokenProvider = accessTokenProvider;
         _projectHttpClientWrapper = projectHttpClientWrapper;
         _jwtDecoder = jwtDecoder;
         _timeLineElementParser = timeLineElementParser;
+        _userAccessor = userAccessor;
     }
 
-    public async Task<GetProjectTimeLineResponse> Handle(string userId, string projectId)
+    public async Task<GetProjectTimeLineResponse> Handle(string projectId)
     {
+        var userId = _userAccessor.UserId ?? throw new UnauthorizedAccessException();
         var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
 
         var memberId = _jwtDecoder.GetClaim(userTokens.AccessToken, "user_id");

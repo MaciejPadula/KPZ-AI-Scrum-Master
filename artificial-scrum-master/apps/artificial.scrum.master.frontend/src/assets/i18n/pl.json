@@ -39,5 +39,7 @@
   "Projects.Title": "Moje projekty",
   "Projects.Item.Owner": "Właściciel: ",
   "Projects.Item.LastModified": "Ostatnio zmodyfikowany: ",
-  "Projects.Item.Visibility": "Widoczność: "
+  "Projects.Item.Visibility": "Widoczność: ",
+  "Project.Poker.Create": "Stwórz sesję pokera",
+  "Project.Poker.Title": "Istniejące sesje estymacyjnego pokera"
 }

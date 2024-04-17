@@ -2,5 +2,5 @@ namespace Artificial.Scrum.Master.EstimationPoker.Infrastructure.Models;
 
 public readonly record struct SessionTaskEstimationEntity(
     int TaskId,
-    int UserId,
+    string Username,
     decimal Value);

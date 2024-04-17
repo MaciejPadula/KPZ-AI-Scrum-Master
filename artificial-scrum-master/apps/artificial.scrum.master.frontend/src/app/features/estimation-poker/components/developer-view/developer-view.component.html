@@ -1,0 +1,25 @@
+@if (currentTask() !== null) {
+  <div>
+    {{ currentTask()?.title }}
+    {{ currentTask()?.description }}
+  </div>
+} @else {
+  <div>No task selected</div>
+}
+
+@if (username().length > 0) {
+  @for (estimation of estimationValues(); track $index) {
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="estimateCurrentTask(estimation)"
+    >
+      {{ estimation }}
+    </button>
+  }
+}
+
+<mat-form-field>
+  <mat-label>Username</mat-label>
+  <input matInput [formControl]="usernameControl" />
+</mat-form-field>

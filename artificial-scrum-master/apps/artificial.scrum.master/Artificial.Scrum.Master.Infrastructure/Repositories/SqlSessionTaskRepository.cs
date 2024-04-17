@@ -31,21 +31,21 @@ VALUES
 
         await connection.ExecuteAsync(@"
 INSERT INTO [EstimationPoker].[TaskEstimations]
-(TaskId, UserId, Value)
+(TaskId, Username, Value)
 VALUES
-(@TaskId, @UserId, @Value)
-", new { estimation.TaskId, estimation.UserId, estimation.Value });
+(@TaskId, @Username, @Value)
+", new { estimation.TaskId, estimation.Username, estimation.Value });
     }
 
-    public async Task<bool> EstimationExists(int userId, int taskId)
+    public async Task<bool> EstimationExists(string username, int taskId)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
 
         return await connection.ExecuteScalarAsync<bool>(@"
 SELECT 1
 FROM [EstimationPoker].[TaskEstimations]
-WHERE TaskId = @TaskId AND UserId = @UserId
-", new { taskId, userId });
+WHERE TaskId = @TaskId AND Username = @Username
+", new { taskId, username });
     }
 
     public async Task<SessionTaskEntity?> GetLatestTask(string sessionId)
@@ -61,6 +61,7 @@ SELECT
     CreatedAt AS {nameof(SessionTaskEntity.CreatedAt)}
 FROM [EstimationPoker].[SessionTasks]
 WHERE SessionId = @SessionId
+ORDER BY CreatedAt DESC
 ", new { sessionId });
 
         return result == default ? null : result;
@@ -73,7 +74,7 @@ WHERE SessionId = @SessionId
         var result = await connection.QueryAsync<SessionTaskEstimationEntity>($@"
 SELECT
     TaskId AS {nameof(SessionTaskEstimationEntity.TaskId)},
-    UserId AS {nameof(SessionTaskEstimationEntity.UserId)},
+    Username AS {nameof(SessionTaskEstimationEntity.Username)},
     Value AS {nameof(SessionTaskEstimationEntity.Value)}
 FROM [EstimationPoker].[TaskEstimations]
 WHERE TaskId = @TaskId

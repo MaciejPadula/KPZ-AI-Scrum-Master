@@ -35,7 +35,7 @@ internal class GetTaskEstimationsService : IGetTaskEstimationsService
                 estimations
                     .Select(x => new TaskEstimation(
                         x.TaskId,
-                        x.UserId,
+                        x.Username,
                         x.Value))
                     .ToList(),
                 averageEstimation));

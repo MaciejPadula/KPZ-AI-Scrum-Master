@@ -1,0 +1,6 @@
+<div class="mat-headline-5">{{ 'EstimationPoker.Title' | translate }}</div>
+@if (showScrumMasterView()) {
+    <app-scrum-master-view [sessionId]="sessionId()" />
+} @else {
+    <app-developer-view [sessionId]="sessionId()" />
+}

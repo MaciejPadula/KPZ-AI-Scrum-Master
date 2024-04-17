@@ -35,12 +35,12 @@ internal class GetCurrentTaskService : IGetCurrentTaskService
 
         if (!currentTask.HasValue)
         {
-            return Result<GetCurrentTaskResponse>.OnError(new NoTasksInSessionException(sessionId));
+            return Result<GetCurrentTaskResponse>.OnSuccess(new GetCurrentTaskResponse(null));
         }
 
-        return Result<GetCurrentTaskResponse>.OnSuccess(new GetCurrentTaskResponse(
+        return Result<GetCurrentTaskResponse>.OnSuccess(new GetCurrentTaskResponse(new(
             currentTask.Value.Id,
             currentTask.Value.Title,
-            currentTask.Value.Description));
+            currentTask.Value.Description)));
     }
 }

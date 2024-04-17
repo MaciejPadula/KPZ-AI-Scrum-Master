@@ -1,0 +1,33 @@
+@if (currentTask() !== null) {
+  <div>
+    {{ currentTask()?.title }}
+    {{ currentTask()?.description }}
+  </div>
+
+  @if (estimations().length > 0) {
+    <div>
+      @for (estimation of estimations(); track $index) {
+        <div>
+          {{ estimation.username }}
+          {{ estimation.estimation }}
+        </div>
+      }
+
+      <div>{{averageEstimation()}}</div>
+    </div>
+  }
+} @else {
+  <div>No task selected</div>
+}
+
+<button mat-raised-button color="primary" (click)="addTask()">
+  <mat-icon>add</mat-icon>
+  <span>{{ 'EstimationPoker.AddTask' | translate }}</span>
+</button>
+
+@if (estimations().length == 0) {
+  <button mat-raised-button color="primary" (click)="revealEstimations()">
+    <mat-icon>add</mat-icon>
+    <span>{{ 'EstimationPoker.RevealEstimations' | translate }}</span>
+  </button>
+}

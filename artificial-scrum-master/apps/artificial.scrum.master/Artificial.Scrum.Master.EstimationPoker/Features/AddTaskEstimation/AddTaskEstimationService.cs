@@ -36,7 +36,7 @@ internal class AddTaskEstimationService : IAddTaskEstimationService
 
         await _sessionTaskRepository.AddTaskEstimation(new SessionTaskEstimationEntity(
             request.TaskId,
-            request.UserId,
+            request.Username,
             request.EstimationValue));
 
         return Result.OnSuccess();

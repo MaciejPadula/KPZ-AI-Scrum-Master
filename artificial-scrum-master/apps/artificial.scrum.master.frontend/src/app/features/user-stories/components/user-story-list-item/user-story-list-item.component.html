@@ -25,6 +25,7 @@
   <mat-expansion-panel
     (opened)="panelOpenState = true"
     (closed)="panelOpenState = false"
+    #storyTasks
   >
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -42,5 +43,11 @@
         }
       </mat-panel-title>
     </mat-expansion-panel-header>
+
+    @defer (on interaction(storyTasks)) {
+    <app-story-task-list [userStoryId]="userStory.userStoryId" />
+    } @placeholder {
+    <mat-spinner></mat-spinner>
+    }
   </mat-expansion-panel>
 </div>

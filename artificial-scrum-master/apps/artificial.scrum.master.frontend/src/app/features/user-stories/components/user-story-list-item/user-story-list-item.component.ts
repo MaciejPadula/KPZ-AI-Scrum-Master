@@ -6,6 +6,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
+import { StoryTaskListComponent } from '../story-task-list/story-task-list.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-user-story-list-item',
@@ -20,6 +22,8 @@ import { AvatarComponent } from '../../../../shared/components/avatar/avatar.com
     MatTableModule,
     MatIconModule,
     AvatarComponent,
+    StoryTaskListComponent,
+    MatProgressSpinnerModule,
   ],
 })
 export class UserStoryListItemComponent {

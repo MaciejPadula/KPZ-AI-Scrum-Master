@@ -5,6 +5,7 @@ import { MaterialModule } from './shared/material.module';
 import { AsmLogoComponent } from './shared/components/asm-logo/asm-logo.component';
 import { LoginComponent } from './shared/components/login/login.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { ThemeSwitchComponent } from "./features/menu/components/theme-switch.component";
 
 @Component({
     standalone: true,
@@ -17,14 +18,10 @@ import { TranslateModule } from '@ngx-translate/core';
         MaterialModule,
         AsmLogoComponent,
         LoginComponent,
-        TranslateModule
+        TranslateModule,
+        ThemeSwitchComponent
     ]
 })
 export class AppComponent {
   title = 'Artificial Scrum Master';
-
-  changeTheme()
-  {
-    document.body.classList.toggle('dark-theme');
-  }
 }

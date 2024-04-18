@@ -29,9 +29,7 @@
             </div>
             <span class="flex flex-1"></span>
             <div mat-ripple class="cursor-pointer flex items-center space-x-1 py-4 px-2">
-                <mat-slide-toggle (change)="changeTheme()">
-                    <p class="text-lg">{{"Navigation.DarkTheme" | translate}}</p>
-                </mat-slide-toggle>
+                <app-theme-switch></app-theme-switch>
             </div>
         </div>
     </mat-sidenav>

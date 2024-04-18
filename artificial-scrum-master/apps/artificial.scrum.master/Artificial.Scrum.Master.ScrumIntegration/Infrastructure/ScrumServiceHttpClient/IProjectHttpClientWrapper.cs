@@ -4,8 +4,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHt
 
 internal interface IProjectHttpClientWrapper
 {
-    Task<TResponse> GetHttpRequest<TResponse>(string userId, UserTokens userTokens, string url);
+    Task<TResponse> GetHttpRequest<TResponse>(string userId, string refreshToken, Func<UserDetails, string> urlFactory);
 
-    Task<TResponse> PostHttpRequest<TRequest, TResponse>(
-        string userId, UserTokens userTokens, string url, TRequest payload);
+    Task<TResponse> PostHttpRequest<TRequest, TResponse>(string userId, string refreshToken, Func<UserDetails, string> urlFactory, TRequest payload);
 }

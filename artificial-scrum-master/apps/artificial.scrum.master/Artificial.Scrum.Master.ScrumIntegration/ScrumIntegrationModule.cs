@@ -7,6 +7,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Middleware;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Utilities;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +20,11 @@ public static class ScrumIntegrationModule
         IConfigurationSection scrumManagementServiceSettings)
     {
         services.AddHttpClient<IProjectHttpClientWrapper, ProjectHttpClientWrapper>(c =>
+        {
+            c.BaseAddress = new Uri(scrumManagementServiceSettings["BaseUrl"] ?? throw new
+                InvalidOperationException("Base Url for agile service integration required"));
+        });
+        services.AddHttpClient<ITokenRefresher, TokenRefresher>(c =>
         {
             c.BaseAddress = new Uri(scrumManagementServiceSettings["BaseUrl"] ?? throw new
                 InvalidOperationException("Base Url for agile service integration required"));

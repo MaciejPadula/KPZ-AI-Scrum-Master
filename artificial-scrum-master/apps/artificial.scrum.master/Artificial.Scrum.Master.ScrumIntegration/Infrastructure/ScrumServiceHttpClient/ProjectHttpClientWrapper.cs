@@ -1,84 +1,64 @@
 using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
-using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Models;
+using Artificial.Scrum.Master.ScrumIntegration.Utilities;
 using System.Net.Http.Json;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 
 internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
 {
-    private const string RefreshTokenUrl = "auth/refresh";
-
     private readonly HttpClient _httpClient;
-    private readonly IUserTokensRepository _userTokensRepository;
-    private readonly ITokenValidator _tokenValidator;
+    private readonly IJwtDecoder _jwtDecoder;
+    private readonly ITokenRefresher _tokenRefresher;
 
     public ProjectHttpClientWrapper(
         HttpClient httpClient,
-        IUserTokensRepository userTokensRepository,
-        ITokenValidator tokenValidator)
+        IJwtDecoder jwtDecoder,
+        ITokenRefresher tokenRefresher)
     {
         _httpClient = httpClient;
-        _userTokensRepository = userTokensRepository;
-        _tokenValidator = tokenValidator;
+        _jwtDecoder = jwtDecoder;
+        _tokenRefresher = tokenRefresher;
     }
 
     public async Task<TResponse> GetHttpRequest<TResponse>(
         string userId,
-        UserTokens userTokens,
-        string url) =>
+        string refreshToken,
+        Func<UserDetails, string> urlFactory) =>
             await SendRequest<TResponse>(
                 userId,
-                userTokens,
-                () => _httpClient.GetAsync(url));
+                refreshToken,
+                user => _httpClient.GetAsync(urlFactory(user)));
 
     public async Task<TResponse> PostHttpRequest<TRequest, TResponse>(
         string userId,
-        UserTokens userTokens,
-        string url,
+        string refreshToken,
+        Func<UserDetails, string> urlFactory,
         TRequest payload) =>
             await SendRequest<TResponse>(
                 userId,
-                userTokens,
-                () => _httpClient.PostAsJsonAsync(url, payload));
+                refreshToken,
+                user => _httpClient.PostAsJsonAsync(urlFactory(user), payload));
 
     private async Task<TResponse> SendRequest<TResponse>(
         string userId,
-        UserTokens userTokens,
-        Func<Task<HttpResponseMessage>> messageSender)
+        string refreshToken,
+        Func<UserDetails, Task<HttpResponseMessage>> messageSender)
     {
-        if (!_tokenValidator.ValidateAccessTokenExpirationTime(userTokens.AccessToken))
+        var userTokens = await _tokenRefresher.RefreshUserTokens(userId, refreshToken);
+
+        var memberId = _jwtDecoder.GetClaim(userTokens.AccessToken, "user_id");
+        if (string.IsNullOrEmpty(memberId))
         {
-            userTokens = await RefreshUserTokens(userId, userTokens);
+            throw new ProjectRequestForbidException("User id not found in token");
         }
 
         _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {userTokens.AccessToken}");
-        var httpResponse = await messageSender();
+        var httpResponse = await messageSender(new(memberId));
         await EnsureStatusSuccess(httpResponse);
 
         return await httpResponse.Content.ReadFromJsonAsync<TResponse>()
             ?? throw new ProjectRequestFailedException("Response deserialization failed");
-    }
-
-    private async Task<UserTokens> RefreshUserTokens(string userId, UserTokens currentUserTokens)
-    {
-        if (!_tokenValidator.ValidateAccessTokenExpirationTime(currentUserTokens.RefreshToken))
-        {
-            throw new RefreshTokenExpiredException("Refresh token is expired, please log in");
-        }
-
-        var httpResponse = await _httpClient.PostAsJsonAsync(RefreshTokenUrl, new { refresh = currentUserTokens.RefreshToken });
-        await EnsureStatusSuccess(httpResponse);
-
-        var result = await httpResponse.Content.ReadFromJsonAsync<RefreshResponse>()
-            ?? throw new ProjectRequestFailedException("Response deserialization failed");
-
-        var newTokens = new UserTokens(
-            result.AccessToken,
-            result.RefreshToken);
-
-        await _userTokensRepository.SaveAccessTokensWhenExists(userId, newTokens);
-        return newTokens;
     }
 
     private static async Task EnsureStatusSuccess(HttpResponseMessage httpResponse)

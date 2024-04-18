@@ -17,20 +17,17 @@ internal class GetProfileTimeLineService : IGetProfileTimeLineService
 {
     private readonly IAccessTokenProvider _accessTokenProvider;
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
-    private readonly IJwtDecoder _jwtDecoder;
     private readonly ITimeLineEventParser _timeLineElementParser;
     private readonly IUserAccessor _userAccessor;
 
     public GetProfileTimeLineService(
         IAccessTokenProvider accessTokenProvider,
         IProjectHttpClientWrapper projectHttpClientWrapper,
-        IJwtDecoder jwtDecoder,
         ITimeLineEventParser timeLineElementParser,
         IUserAccessor userAccessor)
     {
         _accessTokenProvider = accessTokenProvider;
         _projectHttpClientWrapper = projectHttpClientWrapper;
-        _jwtDecoder = jwtDecoder;
         _timeLineElementParser = timeLineElementParser;
         _userAccessor = userAccessor;
     }
@@ -38,19 +35,13 @@ internal class GetProfileTimeLineService : IGetProfileTimeLineService
     public async Task<GetProfileTimeLineResponse> Handle()
     {
         var userId = _userAccessor.UserId ?? throw new UnauthorizedAccessException();
-        var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
-
-        var memberId = _jwtDecoder.GetClaim(userTokens.AccessToken, "user_id");
-        if (string.IsNullOrEmpty(memberId))
-        {
-            throw new ProjectRequestForbidException("User id not found in token");
-        }
+        var refreshToken = await _accessTokenProvider.ProvideRefreshTokenOrThrow(userId);
 
         var profileTimeLineRequestResult =
             await _projectHttpClientWrapper.GetHttpRequest<List<TimeLineEventRoot>>(
                 userId,
-                userTokens,
-                $"timeline/profile/{memberId}");
+                refreshToken,
+                user => $"timeline/profile/{user.UserId}");
 
         return _timeLineElementParser.ParseProfileTimeLineElement(profileTimeLineRequestResult);
     }

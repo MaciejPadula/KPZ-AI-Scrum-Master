@@ -8,12 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 var sqlConnectionString = builder.Configuration.GetConnectionString("MS-SQL")
   ?? throw new ArgumentNullException("MS-SQL");
 
+builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(sqlConnectionString);
 builder.Services.AddUserSettingsModule();
 builder.Services.AddScrumIntegrationModule(
     builder.Configuration.GetSection("ScrumManagementService"));
-
 builder.Services.AddUserModule(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();

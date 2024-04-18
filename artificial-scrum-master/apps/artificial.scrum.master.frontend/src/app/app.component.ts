@@ -21,5 +21,10 @@ import { TranslateModule } from '@ngx-translate/core';
     ]
 })
 export class AppComponent {
-  title = 'artificial.scrum.master.frontend';
+  title = 'Artificial Scrum Master';
+
+  changeTheme()
+  {
+    document.body.classList.toggle('dark-theme');
+  }
 }

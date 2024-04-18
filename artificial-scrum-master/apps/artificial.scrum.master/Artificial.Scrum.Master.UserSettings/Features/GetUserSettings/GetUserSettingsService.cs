@@ -1,4 +1,4 @@
-using Artificial.Scrum.Master.UserSettings.Features.Shared;
+using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
 using Artificial.Scrum.Master.UserSettings.Infrastructure.Models;
 
@@ -6,30 +6,31 @@ namespace Artificial.Scrum.Master.UserSettings.Features.GetUserSettings;
 
 internal interface IGetUserSettingsService
 {
-    Task<Settings> Handle(string userId);
+    Task<GetUserSettingsResponse> Handle();
 }
 
 internal class GetUserSettingsService : IGetUserSettingsService
 {
     private readonly IUserSettingsRepository _userSettingsRepository;
+    private readonly IUserAccessor _userAccessor;
 
-    public GetUserSettingsService(IUserSettingsRepository userSettingsRepository)
+    public GetUserSettingsService(
+        IUserSettingsRepository userSettingsRepository,
+        IUserAccessor userAccessor)
     {
         _userSettingsRepository = userSettingsRepository;
+        _userAccessor = userAccessor;
     }
 
-    public async Task<Settings> Handle(string userId)
+    public async Task<GetUserSettingsResponse> Handle()
     {
-        var result = await _userSettingsRepository.GetUserSettings(userId);
+        var result = await _userSettingsRepository.GetUserSettings(_userAccessor.UserId);
         if (result is null)
         {
             return new();
         }
 
-        return new Settings
-        {
-            IsLoggedToTaiga = ValidateTaigaAccess(result)
-        };
+        return new GetUserSettingsResponse(ValidateTaigaAccess(result));
     }
 
     private bool ValidateTaigaAccess(UserSettingsEntity? userSettings)

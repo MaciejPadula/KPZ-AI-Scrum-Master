@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>{{ 'EstimationPoker.TaskDialogTitle' | translate }}</h2>
+<mat-dialog-content [formGroup]="formGroup">
+  <div class="flex flex-col justify-center items-center">
+    <mat-form-field>
+      <mat-label>{{ 'EstimationPoker.TaskName' | translate }}</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error>asfsdf</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field>
+      <mat-label>{{ 'EstimationPoker.TaskDescription' | translate }}</mat-label>
+      <input matInput formControlName="description" />
+      <mat-error>afsdf</mat-error>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="flex !justify-end">
+  <button mat-button (click)="onNoClick()">{{ 'Shared.Words.Cancel' | translate }}</button>
+  <button mat-raised-button cdkFocusInitial color="primary" [disabled]="formGroup.invalid || loading()" (click)="addTask()">
+    @if (loading()) {
+      <mat-spinner diameter="20"></mat-spinner>
+    }
+    <span>{{ 'Shared.Words.Save' | translate }}</span>
+  </button>
+</mat-dialog-actions>

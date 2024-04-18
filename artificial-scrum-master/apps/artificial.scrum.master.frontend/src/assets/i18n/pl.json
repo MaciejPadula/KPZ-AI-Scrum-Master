@@ -23,6 +23,9 @@
   "Shared.Words.No": "Nie",
   "Shared.Words.Private": "Prywatny",
   "Shared.Words.Public": "Publiczny",
+  "Shared.Words.Cancel": "Anuluj",
+  "Shared.Words.Save": "Zapisz",
+  "Shared.Words.Username": "Nazwa użytkownika",
   "UserSettings.Title": "Ustawienia profilu",
   "UserSettings.Tagia.Title": "Ustawienia serwisu Taiga",
   "UserSettings.Tagia.AlreadyLoggedIn": "Jesteś już zalogowany do taigi",
@@ -44,5 +47,16 @@
   "UserAccount.Settings": "Ustawienia",
   "Navigation.Projects": "Projekty",
   "Navigation.Home": "Strona główna",
-  "Navigation.DarkTheme": "Ciemny motyw"
+  "Navigation.DarkTheme": "Ciemny motyw",
+  "Project.Poker.Create": "Stwórz sesję pokera",
+  "Project.Poker.Title": "Istniejące sesje estymacyjnego pokera",
+  "EstimationPoker.Title": "Estymacyjny poker",
+  "EstimationPoker.TaskName": "Nazwa zadania",
+  "EstimationPoker.TaskDescription": "Opis zadania",
+  "EstimationPoker.TaskDialogTitle": "Dodaj zadanie do pokera",
+  "EstimationPoker.AddTask": "Dodaj zadanie",
+  "EstimationPoker.RevealEstimations": "Pokaż estymacje",
+  "EstimationPoker.NoTasks": "Nie dodano jeszcze żadnych zadań",
+  "EstimationPoker.UserNameNotSelected": "Nie wybrano nazwy użytkownika",
+  "EstimationPoker.AverageEstimation": "Średnia estymacja"
 }

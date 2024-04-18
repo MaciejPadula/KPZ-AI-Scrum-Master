@@ -1,2 +1,32 @@
-<app-menu></app-menu>
-<router-outlet></router-outlet>
+<mat-sidenav-container class="h-full">
+    <mat-toolbar class="self-center flex flex-grow-0 space-x-2">
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <app-asm-logo [routerLink]="'/'" class="cursor-pointer"></app-asm-logo>
+        <p [routerLink]="'/'" class="text-2xl cursor-pointer hidden sm:block">Artificial Scrum Master</p>
+        <span class="flex-grow flex-shrink basis-auto"></span>
+        <app-login></app-login>
+    </mat-toolbar>
+    <mat-sidenav #sidenav>
+        <div class="flex flex-col p-4 h-full">
+            <div class="flex space-x-2 mb-2">
+                <app-asm-logo></app-asm-logo>
+                <div class="text-2xl flex justify-center items-center">Artificial Scrum Master</div>
+            </div>
+            <div mat-ripple routerLink="/" class="cursor-pointer flex items-center space-x-1 py-4 px-2" (click)="sidenav.toggle()">
+                <mat-icon>home</mat-icon>
+                <p class="text-lg">{{"Navigation.Home" | translate}}</p>
+            </div>
+            <div mat-ripple routerLink="Projects" class="cursor-pointer flex items-center space-x-1 py-4 px-2" (click)="sidenav.toggle()">
+                <mat-icon>assignments</mat-icon>
+                <p class="text-lg">{{"Navigation.Projects" | translate}}</p>
+            </div>
+            <span class="flex flex-1"></span>
+            <div mat-ripple class="cursor-pointer flex items-center space-x-1 py-4 px-2">
+                <app-theme-switch></app-theme-switch>
+            </div>
+        </div>
+    </mat-sidenav>
+    <router-outlet></router-outlet>
+</mat-sidenav-container>

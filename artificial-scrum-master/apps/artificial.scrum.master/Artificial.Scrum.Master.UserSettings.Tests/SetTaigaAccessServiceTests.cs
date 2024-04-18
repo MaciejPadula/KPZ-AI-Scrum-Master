@@ -1,3 +1,4 @@
+using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.UserSettings.Features.SetTaigaAccess;
 using Artificial.Scrum.Master.UserSettings.Features.Shared;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
@@ -10,25 +11,27 @@ public class SetTaigaAccessServiceTests
 {
     private SetTaigaAccessService _sut;
     private IUserSettingsRepository _userSettingsRepository;
+    private IUserAccessor _userAccessor;
 
     [SetUp]
     public void SetUp()
     {
         _userSettingsRepository = Substitute.For<IUserSettingsRepository>();
-        _sut = new SetTaigaAccessService(_userSettingsRepository);
+        _userAccessor = Substitute.For<IUserAccessor>();
+        _sut = new SetTaigaAccessService(_userSettingsRepository, _userAccessor);
     }
 
     [Test]
     public async Task Handle_WhenSettingsAlreadyExists_ShouldCallUpdate()
     {
         // Arrange
-        var userId = "userid";
-        var taigaAccess = new TaigaAccess("some_key", "refresh");
+        _userAccessor.UserId.Returns("userid");
+        var request = new SetTaigaAccessRequest("some_key", "refresh");
         var expectedEntityCall = new UserSettingsEntity("userid", "some_key", "refresh");
-        _userSettingsRepository.GetUserSettings(userId).Returns(new UserSettingsEntity("userid", "some_key", "refresh"));
+        _userSettingsRepository.GetUserSettings("userid").Returns(new UserSettingsEntity("userid", "some_key", "refresh"));
 
         // Act
-        await _sut.Handle(userId, taigaAccess);
+        await _sut.Handle(request);
 
         // Assert
         await _userSettingsRepository.Received(1).UpdateUserSettings(Arg.Is(expectedEntityCall));
@@ -39,13 +42,13 @@ public class SetTaigaAccessServiceTests
     public async Task Handle_WhenSettingsDoesNotExists_ShouldCallAdd()
     {
         // Arrange
-        var userId = "userid";
-        var taigaAccess = new TaigaAccess("some_key", "refresh");
+        _userAccessor.UserId.Returns("userid");
+        var request = new SetTaigaAccessRequest("some_key", "refresh");
         var expectedEntityCall = new UserSettingsEntity("userid", "some_key", "refresh");
-        _userSettingsRepository.GetUserSettings(userId).Returns((UserSettingsEntity?)null);
+        _userSettingsRepository.GetUserSettings("userid").Returns((UserSettingsEntity?)null);
 
         // Act
-        await _sut.Handle(userId, taigaAccess);
+        await _sut.Handle(request);
 
         // Assert
         await _userSettingsRepository.Received(0).UpdateUserSettings(Arg.Any<UserSettingsEntity>());

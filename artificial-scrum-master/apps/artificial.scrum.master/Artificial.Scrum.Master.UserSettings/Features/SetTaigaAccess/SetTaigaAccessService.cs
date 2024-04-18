@@ -1,47 +1,46 @@
+using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.UserSettings.Features.Shared;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
 using Artificial.Scrum.Master.UserSettings.Infrastructure.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Artificial.Scrum.Master.UserSettings.Features.SetTaigaAccess;
 
 internal interface ISetTaigaAccessService
 {
-    Task Handle(string userId, TaigaAccess taigaAccess);
+    Task Handle(SetTaigaAccessRequest request);
 }
 
 internal class SetTaigaAccessService : ISetTaigaAccessService
 {
     private readonly IUserSettingsRepository _userSettingsRepository;
+    private readonly IUserAccessor _userAccessor;
 
-    public SetTaigaAccessService(IUserSettingsRepository userSettingsRepository)
+    public SetTaigaAccessService(
+        IUserSettingsRepository userSettingsRepository,
+        IUserAccessor userAccessor)
     {
         _userSettingsRepository = userSettingsRepository;
+        _userAccessor = userAccessor;
     }
 
-    public async Task Handle(string userId, TaigaAccess taigaAccess)
+    public async Task Handle(SetTaigaAccessRequest request)
     {
-        var entity = await _userSettingsRepository.GetUserSettings(userId);
+        var entity = await _userSettingsRepository.GetUserSettings(_userAccessor.UserId);
 
         if (entity is not null)
         {
             await _userSettingsRepository.UpdateUserSettings(entity with
             {
-                TaigaAccessToken = taigaAccess.AccessToken,
-                TaigaRefreshToken = taigaAccess.RefreshToken
+                TaigaAccessToken = request.AccessToken,
+                TaigaRefreshToken = request.RefreshToken
             });
         }
         else
         {
             await _userSettingsRepository.AddUserSettings(new UserSettingsEntity(
-                userId,
-                taigaAccess.AccessToken,
-                taigaAccess.RefreshToken));
+                _userAccessor.UserId,
+                request.AccessToken,
+                request.RefreshToken));
         }
     }
 }

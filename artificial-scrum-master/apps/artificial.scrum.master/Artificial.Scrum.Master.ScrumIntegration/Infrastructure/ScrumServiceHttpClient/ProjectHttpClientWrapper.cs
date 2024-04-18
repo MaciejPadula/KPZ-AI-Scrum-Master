@@ -79,12 +79,6 @@ internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
 
     private async Task<UserTokens> RefreshUserTokens(string userId, UserTokens currentUserTokens)
     {
-        var isValid = _tokenValidator.ValidateAccessTokenExpirationTime(currentUserTokens.RefreshToken);
-        if (!isValid)
-        {
-            throw new RefreshTokenExpiredException("Refresh token is expired, please log in");
-        }
-
         var httpResponse = await _httpClient.PostAsJsonAsync(RefreshTokenUrl, new
         {
             refresh = currentUserTokens.RefreshToken

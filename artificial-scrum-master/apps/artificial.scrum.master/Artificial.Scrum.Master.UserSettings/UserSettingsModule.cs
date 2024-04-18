@@ -31,8 +31,8 @@ public static class UserSettingsModule
                     return;
                 }
 
-                var result = await service.Handle(userId);
-                var response = new GerUserSettingsResponse(result.IsLoggedToTaiga);
+                var result = await service.Handle();
+                var response = new GetUserSettingsResponse(result.IsLoggedToTaiga);
 
                 await context.Response.WriteAsJsonAsync(response);
             });
@@ -49,11 +49,9 @@ public static class UserSettingsModule
                     return;
                 }
 
-                await service.Handle(
-                    userId,
-                    new TaigaAccess(
-                        settings.AccessToken,
-                        settings.RefreshToken));
+                await service.Handle(new(
+                    settings.AccessToken,
+                    settings.RefreshToken));
             });
     }
 }

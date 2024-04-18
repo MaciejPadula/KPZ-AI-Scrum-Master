@@ -25,6 +25,11 @@ export const appRoutes: Route[] = [
       import('./features/projects/routes').then((mod) => mod.ProjectsRoutes),
   },
   {
+    path: 'EstimationPoker',
+    loadChildren: () =>
+      import('./features/estimation-poker/routes').then((mod) => mod.EstimationPokerRoutes),
+  },
+  {
     path: 'UserStories',
     loadChildren: () =>
       import('./features/user-stories/routes').then(

@@ -1,4 +1,4 @@
-using Artificial.Scrum.Master.EstimationPoker.Features.Shared.Exceptions;
+using Artificial.Scrum.Master.EstimationPoker.Features.Shared;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
@@ -37,7 +37,7 @@ internal class GetUserProjectSessionsService : IGetUserProjectSessionsService
 
         return Result<GetUserProjectSessionsResponse>.OnSuccess(new GetUserProjectSessionsResponse(
             sessions
-                .Select(x => new Session(x.Id, x.Name, x.ProjectId))
+                .Select(x => new Session(x.Id, x.Name, x.ProjectId, x.OwnerId))
                 .ToList()));
     }
 }

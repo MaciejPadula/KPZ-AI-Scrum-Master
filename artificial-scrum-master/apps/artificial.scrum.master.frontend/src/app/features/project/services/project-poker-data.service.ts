@@ -24,7 +24,7 @@ export class ProjectPokerDataService {
 
   public getProjectSessions(projectId: number): Observable<Session[]> {
     return this.httpClient
-      .get<GetProjectSessionsResponse>(`${this.baseApiUrl}/${projectId}`)
+      .get<GetProjectSessionsResponse>(`${this.baseApiUrl}/project/${projectId}`)
       .pipe(map((response) => response.sessions));
   }
 }

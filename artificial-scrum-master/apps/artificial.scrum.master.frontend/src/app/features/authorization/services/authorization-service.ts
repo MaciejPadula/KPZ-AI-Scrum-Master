@@ -18,6 +18,7 @@ export class AuthorizationService {
     );
     public userData = this.#userData.asReadonly();
     public isAuthorized = computed(() => this.#userData().isAuthorized);
+    public userId = computed(() => this.#userData().userId);
 
     private googleAuthService = inject(SocialAuthService);
     private httpClient = inject(HttpClient);

@@ -4,6 +4,7 @@ using Artificial.Scrum.Master.EstimationPoker.Features.AddTaskEstimation.Validat
 using Artificial.Scrum.Master.EstimationPoker.Features.AddTaskEstimation.Validator.Estimation;
 using Artificial.Scrum.Master.EstimationPoker.Features.CreateSession;
 using Artificial.Scrum.Master.EstimationPoker.Features.GetCurrentTask;
+using Artificial.Scrum.Master.EstimationPoker.Features.GetSession;
 using Artificial.Scrum.Master.EstimationPoker.Features.GetTaskEstimations;
 using Artificial.Scrum.Master.EstimationPoker.Features.GetUserProjectSessions;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,7 @@ public static class EstimationPokerModule
         services.AddTransient<IAddTaskEstimationService, AddTaskEstimationService>();
         services.AddTransient<ICreateSessionService, CreateSessionService>();
         services.AddTransient<IGetCurrentTaskService, GetCurrentTaskService>();
+        services.AddTransient<IGetSessionService, GetSessionService>();
         services.AddTransient<IGetTaskEstimationsService, GetTaskEstimationsService>();
         services.AddTransient<ISessionKeyGenerator, SessionKeyGenerator>();
 

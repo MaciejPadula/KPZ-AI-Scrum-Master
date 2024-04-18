@@ -4,6 +4,8 @@ import { Observable, map } from 'rxjs';
 import { SessionTask } from '../models/session-task';
 import { GetCurrentTaskResponse } from '../models/get-curren-task-response';
 import { GetTaskEstimationsResponse } from '../models/get-task-estimations-response';
+import { Session } from '../../../shared/models/session';
+import { GetSessionResponse } from '../models/get-session-reponse';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +25,12 @@ export class EstimationPokerDataService {
       title: title,
       description: desctiption,
     });
+  }
+
+  public getSession(sessionId: string): Observable<Session> {
+    return this.httpClient
+      .get<GetSessionResponse>(`${this.baseApiUrl}/${sessionId}`)
+      .pipe(map((response) => response.session));
   }
 
   public addTaskEstimation(
@@ -45,7 +53,11 @@ export class EstimationPokerDataService {
       .pipe(map((response) => response.currentTask));
   }
 
-  public getSessionTaskEstimations(taskId: number): Observable<GetTaskEstimationsResponse> {
-    return this.httpClient.get<GetTaskEstimationsResponse>(`${this.baseApiUrl}/estimations/${taskId}`);
+  public getSessionTaskEstimations(
+    taskId: number
+  ): Observable<GetTaskEstimationsResponse> {
+    return this.httpClient.get<GetTaskEstimationsResponse>(
+      `${this.baseApiUrl}/estimations/${taskId}`
+    );
   }
 }

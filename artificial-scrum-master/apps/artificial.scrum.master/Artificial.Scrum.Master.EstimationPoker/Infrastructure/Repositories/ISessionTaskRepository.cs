@@ -9,6 +9,6 @@ public interface ISessionTaskRepository
     Task<List<SessionTaskEstimationEntity>> GetTaskEstimations(int taskId);
     Task<SessionTaskEntity?> GetLatestTask(string sessionId);
 
-    Task<bool> TaskExists(int taskId);
+    Task<SessionTaskEntity?> GetTaskById(int taskId);
     Task<bool> EstimationExists(string username, int taskId);
 }

@@ -17,9 +17,11 @@
 <mat-dialog-actions class="flex !justify-end">
   <button mat-button (click)="onNoClick()">{{ 'Shared.Words.Cancel' | translate }}</button>
   <button mat-raised-button cdkFocusInitial color="primary" [disabled]="formGroup.invalid || loading()" (click)="addTask()">
-    @if (loading()) {
-      <mat-spinner diameter="20"></mat-spinner>
-    }
-    <span>{{ 'Shared.Words.Save' | translate }}</span>
+    <span class="flex flex-row items-center justify-center gap-2">
+      <span>{{ 'Shared.Words.Save' | translate }}</span>
+      @if (loading()) {
+        <mat-spinner diameter="16"></mat-spinner>
+      }
+    </span>
   </button>
 </mat-dialog-actions>

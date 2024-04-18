@@ -36,8 +36,8 @@ public class GetUserProjectSessionsServiceTests
         ]);
         var expectedResult = new GetUserProjectSessionsResponse(
         [
-            new("21", "Session 1", 1),
-            new("37", "Session 2", 1)
+            new("21", "Session 1", 1, "2"),
+            new("37", "Session 2", 1, "3")
         ]);
 
         // Act

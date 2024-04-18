@@ -28,7 +28,7 @@ export class PokerSessionsListComponent implements OnInit {
   }
 
   public createSession() {
-    this.pokerDataService.createSession("some name xddd", this.projectId())
+    this.pokerDataService.createSession("Sesja pokera", this.projectId())
       .subscribe({
         next: () => {
           this.toastService.openSuccess('Session created');

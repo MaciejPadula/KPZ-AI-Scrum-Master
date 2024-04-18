@@ -1,25 +1,19 @@
-<div class="flex flex-col items-center justify-center gap-4">
+@if (!userData().isAuthorized) {
   <mat-form-field>
     <mat-label>{{ 'Shared.Words.Username' | translate }}</mat-label>
     <input matInput [formControl]="usernameControl" />
   </mat-form-field>
+}
 
-  @if (currentTask() !== null) {
-    <app-session-task [task]="currentTask()!" />
-  } @else {
-    <div>{{ "EstimationPoker.NoTasks" | translate }}</div>
+<div class="flex flex-row flex-wrap">
+  @for (estimation of estimationValues(); track $index) {
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="estimateCurrentTask(estimation)"
+      [disabled]="disableEstimationButtons()"
+    >
+      {{ estimation }}
+    </button>
   }
-  
-  <div class="flex flex-row flex-wrap">
-    @for (estimation of estimationValues(); track $index) {
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="estimateCurrentTask(estimation)"
-        [disabled]="disableEstimationButtons()"
-      >
-        {{ estimation }}
-      </button>
-    }
-  </div>
 </div>

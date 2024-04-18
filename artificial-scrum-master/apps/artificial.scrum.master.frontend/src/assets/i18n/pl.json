@@ -50,6 +50,12 @@
   "Navigation.DarkTheme": "Ciemny motyw",
   "Project.Poker.Create": "Stwórz sesję pokera",
   "Project.Poker.Title": "Istniejące sesje estymacyjnego pokera",
+  "Project.Poker.SessionDialogTitle": "Tworzenie sesji pokera",
+  "Project.Poker.SessionName": "Nazwa sesji",
+  "Project.Poker.RequiredAndThreeLetters": "Pole wymagane, minimum 3 znaki",
+  "Project.Poker.AddSession.Success": "Sesja pokera została dodana",
+  "Project.Poker.AddSession.Error": "Wystąpił problem z dodaniem sesji pokera",
+  "Project.Poker.LoadSessions.Error": "Wystąpił problem z załadowaniem sesji pokera",
   "EstimationPoker.Title": "Estymacyjny poker",
   "EstimationPoker.TaskName": "Nazwa zadania",
   "EstimationPoker.TaskDescription": "Opis zadania",
@@ -59,5 +65,10 @@
   "EstimationPoker.NoTasks": "Nie dodano jeszcze żadnych zadań",
   "EstimationPoker.UserNameNotSelected": "Nie wybrano nazwy użytkownika",
   "EstimationPoker.AverageEstimation": "Średnia estymacja",
-  "EstimationPoker.RequiredAndThreeLetters": "Pole wymagane, minimum 3 znaki"
+  "EstimationPoker.RequiredAndThreeLetters": "Pole wymagane, minimum 3 znaki",
+  "EstimationPoker.AddTask.Success": "Zadanie zostało dodane",
+  "EstimationPoker.AddTask.Error": "Wystąpił problem z dodaniem zadania",
+  "EstimationPoker.LoadTaskEstimations.Error": "Wystąpił problem z załadowaniem estymacji zadań",
+  "EstimationPoker.LoadTask.Error": "Wystąpił problem z załadowaniem zadań",
+  "EstimationPoker.LoadSession.Error": "Wystąpił problem z załadowaniem sesji pokera"
 }

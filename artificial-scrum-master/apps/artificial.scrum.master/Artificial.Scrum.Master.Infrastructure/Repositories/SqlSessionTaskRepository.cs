@@ -1,3 +1,4 @@
+using Artificial.Scrum.Master.EstimationPoker.Features.Shared;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Models;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
@@ -67,6 +68,24 @@ ORDER BY CreatedAt DESC
         return result == default ? null : result;
     }
 
+    public async Task<SessionTaskEntity?> GetTaskById(int taskId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+
+        var result = await connection.QueryFirstOrDefaultAsync<SessionTaskEntity>($@"
+SELECT TOP 1
+    Id AS {nameof(SessionTaskEntity.Id)},
+    Title AS {nameof(SessionTaskEntity.Title)},
+    Description AS {nameof(SessionTaskEntity.Description)},
+    SessionId AS {nameof(SessionTaskEntity.SessionId)},
+    CreatedAt AS {nameof(SessionTaskEntity.CreatedAt)}
+FROM [EstimationPoker].[SessionTasks]
+WHERE Id = @TaskId
+", new { taskId });
+
+        return result == default ? null : result;
+    }
+
     public async Task<List<SessionTaskEstimationEntity>> GetTaskEstimations(int taskId)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
@@ -81,16 +100,5 @@ WHERE TaskId = @TaskId
 ", new { taskId });
 
         return result.ToList();
-    }
-
-    public async Task<bool> TaskExists(int taskId)
-    {
-        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
-
-        return await connection.ExecuteScalarAsync<bool>(@"
-SELECT 1
-FROM [EstimationPoker].[SessionTasks]
-WHERE Id = @TaskId
-", new { taskId });
     }
 }

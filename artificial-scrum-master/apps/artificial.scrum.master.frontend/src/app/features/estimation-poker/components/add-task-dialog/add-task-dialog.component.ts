@@ -11,7 +11,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { finalize } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ToastService } from '../../../../shared/services/toast.service';
 @Component({
   selector: 'app-add-task-dialog',
   standalone: true,
@@ -24,6 +25,8 @@ export class AddTaskDialogComponent {
     EstimationPokerDataService
   );
   private readonly estimationPokerService = inject(EstimationPokerService);
+  private readonly toastService = inject(ToastService);
+  private readonly translateService = inject(TranslateService);
 
   #loading = signal<boolean>(false);
   public loading = this.#loading.asReadonly();
@@ -56,7 +59,11 @@ export class AddTaskDialogComponent {
         next: () => {
           this.estimationPokerService.loadSessionTask(this.sessionId);
           this.dialogRef.close();
+          this.toastService.openSuccess(this.translateService.instant("EstimationPoker.AddTask.Success"));
         },
+        error: () => {
+          this.toastService.openError(this.translateService.instant("EstimationPoker.AddTask.Error"));
+        }
       });
   }
 

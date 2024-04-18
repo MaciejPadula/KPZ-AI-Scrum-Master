@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   input,
   signal,
@@ -15,6 +16,7 @@ import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SessionTaskComponent } from "../session-task/session-task.component";
+import { AuthorizationService } from '../../../authorization/services/authorization-service';
 
 @Component({
     selector: 'app-developer-view',
@@ -28,6 +30,7 @@ export class DeveloperViewComponent {
   private readonly estimationPokerService = inject(EstimationPokerService);
   private readonly toastService = inject(ToastService);
   private readonly translationService = inject(TranslateService);
+  private readonly userDataService = inject(AuthorizationService);
 
   public sessionId = input.required<string>();
   public currentTask = this.estimationPokerService.sessionTask;
@@ -36,10 +39,18 @@ export class DeveloperViewComponent {
   public estimationValues = signal<number[]>([1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]);
   #disableEstiamtionButtons = signal<boolean>(false);
   public disableEstimationButtons = this.#disableEstiamtionButtons.asReadonly();
+  public userData = this.userDataService.userData;
 
   private readonly minUsernameLength = 3;
 
   constructor() {
+    effect(() => {
+      const data = this.userData();
+      if (data.isAuthorized) {
+        this.usernameControl.setValue(data.userName);
+      }
+    });
+
     timer(0, 5000)
       .pipe(
         takeUntilDestroyed(),

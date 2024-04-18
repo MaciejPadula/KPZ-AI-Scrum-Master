@@ -10,7 +10,7 @@ internal static class GetUserProjectSessionsEndpoint
     public static void MapGetUserProjectSessionsEndpoint(this IEndpointRouteBuilder routes)
     {
         routes.MapGet(
-            "/api/sessions/{projectId}",
+            "/api/sessions/project/{projectId}",
             async (HttpContext context, IGetUserProjectSessionsService service, int projectId) =>
             {
                 var response = await service.Handle(projectId);

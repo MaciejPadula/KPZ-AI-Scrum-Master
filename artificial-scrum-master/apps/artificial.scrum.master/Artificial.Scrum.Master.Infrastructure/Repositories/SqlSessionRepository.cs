@@ -26,6 +26,23 @@ VALUES
 ", new { session.Id, session.OwnerId, session.ProjectId, session.Name });
     }
 
+    public async Task<SessionEntity?> GetSession(string sessionId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+
+        var result = await connection.QueryFirstOrDefaultAsync<SessionEntity>($@"
+SELECT TOP 1
+    Id AS {nameof(SessionEntity.Id)},
+    Name AS {nameof(SessionEntity.Name)},
+    UserId AS {nameof(SessionEntity.OwnerId)},
+    ProjectId AS {nameof(SessionEntity.ProjectId)}
+FROM [EstimationPoker].[Sessions]
+WHERE Id = @SessionId
+", new { sessionId });
+
+        return result == default ? null : result;
+    }
+
     public async Task<List<SessionEntity>> GetUserProjectSessions(string userId, int projectId)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();

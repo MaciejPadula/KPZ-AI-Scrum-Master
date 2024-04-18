@@ -43,5 +43,6 @@
   "UserAccount.Logout": "Wyloguj",
   "UserAccount.Settings": "Ustawienia",
   "Navigation.Projects": "Projekty",
-  "Navigation.Home": "Strona główna"
+  "Navigation.Home": "Strona główna",
+  "Navigation.DarkTheme": "Ciemny motyw"
 }

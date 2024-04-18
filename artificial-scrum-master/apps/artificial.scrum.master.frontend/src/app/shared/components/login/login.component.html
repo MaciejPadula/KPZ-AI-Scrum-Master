@@ -8,7 +8,7 @@
             <img class="rounded-full max-h-16 max-w-16 cursor-pointer" imageLoader
                 [placeholderSrc]="'assets\\images\\user-placeholder.jpg'" src="{{userData().userPhotoUrl}}"
                 alt="{{userData().userName}}'s Profile Picture">
-            <h1 class="font-medium text-2xl">{{userData().userName}}</h1>
+            <h1 class="font-medium text-2xl stubborn-text">{{userData().userName}}</h1>
             <span class="flex space-x-1">
                 <button mat-stroked-button [routerLink]="'UserSettings'">{{"UserAccount.Settings" | translate}}</button>
                 <button mat-stroked-button (click)="logout()">{{"UserAccount.Logout" | translate}}</button>

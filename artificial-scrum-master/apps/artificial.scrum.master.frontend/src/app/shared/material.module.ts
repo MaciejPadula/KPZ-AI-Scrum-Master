@@ -11,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatRippleModule } from '@angular/material/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [],
@@ -26,7 +27,8 @@ import { MatRippleModule } from '@angular/material/core';
     MatMenuModule,
     MatCardModule,
     MatSidenavModule,
-    MatRippleModule
+    MatRippleModule,
+    MatSlideToggleModule
   ],
   exports: [
     MatButtonModule,
@@ -39,7 +41,8 @@ import { MatRippleModule } from '@angular/material/core';
     MatMenuModule,
     MatCardModule,
     MatSidenavModule,
-    MatRippleModule
+    MatRippleModule,
+    MatSlideToggleModule
   ],
 })
 export class MaterialModule {}

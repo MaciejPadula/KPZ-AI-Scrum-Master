@@ -65,13 +65,13 @@ public class GetTaskEstimationsServiceTests
         _sessionTaskRepository.TaskExists(taskId).Returns(true);
         _sessionTaskRepository.GetTaskEstimations(taskId).Returns(
         [
-            new(taskId, 2, estimation1),
-            new(taskId, 1, estimation2)
+            new(taskId, "user1", estimation1),
+            new(taskId, "user2", estimation2)
         ]);
         var expectedResult = new GetTaskEstimationsResponse(
         [
-            new(taskId, 2, estimation1),
-            new(taskId, 1, estimation2)
+            new(taskId, "user1", estimation1),
+            new(taskId, "user2", estimation2)
         ], expectedAverage);
 
         // Act

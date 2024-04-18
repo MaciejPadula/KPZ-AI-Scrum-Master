@@ -38,20 +38,21 @@ public class GetCurrentTaskServiceTests
     }
 
     [Test]
-    public async Task Handle_WhenSessionExistsAndNoTasks_ReturnsException()
+    public async Task Handle_WhenSessionExistsAndNoTasks_ReturnsNull()
     {
         // Arrange
         var sessionId = Guid.NewGuid().ToString();
         _sessionRepository.SessionExists(sessionId).Returns(true);
         _sessionTaskRepository.GetLatestTask(sessionId).Returns((SessionTaskEntity?)null);
+        var expectedResult = new GetCurrentTaskResponse(null);
 
         // Act
         var result = await _sut.Handle(sessionId);
 
         // Assert
-        result.IsSuccess.Should().BeFalse();
-        result.Error.Should().NotBeNull();
-        result.Error!.Exception.Should().BeOfType<NoTasksInSessionException>();
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeEquivalentTo(expectedResult);
+        result.Error.Should().BeNull();
     }
 
     [Test]
@@ -61,7 +62,7 @@ public class GetCurrentTaskServiceTests
         var sessionId = Guid.NewGuid().ToString();
         _sessionRepository.SessionExists(sessionId).Returns(true);
         _sessionTaskRepository.GetLatestTask(sessionId).Returns(new SessionTaskEntity(sessionId, "Title", "Description", DateTime.MinValue) { Id = 1 });
-        var expectedResult = new GetCurrentTaskResponse(1, "Title", "Description");
+        var expectedResult = new GetCurrentTaskResponse(new(1, "Title", "Description"));
 
         // Act
         var result = await _sut.Handle(sessionId);

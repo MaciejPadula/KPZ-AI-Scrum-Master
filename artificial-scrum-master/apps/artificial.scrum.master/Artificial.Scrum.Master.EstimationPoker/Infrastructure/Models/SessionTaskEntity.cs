@@ -7,4 +7,5 @@ public readonly record struct SessionTaskEntity(
     DateTime CreatedAt)
 {
     public int Id { get; init; }
+    public bool IsCompleted { get; init; }
 }

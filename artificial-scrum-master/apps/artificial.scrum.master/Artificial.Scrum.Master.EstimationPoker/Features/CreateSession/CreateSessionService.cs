@@ -40,7 +40,7 @@ internal class CreateSessionService : ICreateSessionService
             sessionId,
             request.Name,
             request.ProjectId,
-            _userAccessor.UserId));
+            userId));
 
         return Result<CreateSessionResponse>.OnSuccess(new CreateSessionResponse(sessionId));
     }

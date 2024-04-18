@@ -39,5 +39,9 @@
   "Projects.Title": "Moje projekty",
   "Projects.Item.Owner": "Właściciel: ",
   "Projects.Item.LastModified": "Ostatnio zmodyfikowany: ",
-  "Projects.Item.Visibility": "Widoczność: "
+  "Projects.Item.Visibility": "Widoczność: ",
+  "UserAccount.Logout": "Wyloguj",
+  "UserAccount.Settings": "Ustawienia",
+  "Navigation.Projects": "Projekty",
+  "Navigation.Home": "Strona główna"
 }

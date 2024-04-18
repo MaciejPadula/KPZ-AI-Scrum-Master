@@ -5,10 +5,10 @@ internal readonly record struct GetUserStories(
 );
 
 internal readonly record struct GetUserStoriesResponseElement(
-    int UserStoryId,
+    int? UserStoryId,
     string? UserStorySubject,
     string? StatusName,
-    int UserStoryRef,
+    int? UserStoryRef,
     bool IsClosed,
     string? AssignedToUsername,
     string? AssignedToFullNameDisplay,
@@ -19,5 +19,5 @@ internal readonly record struct GetUserStoriesResponseElement(
     int SprintId,
     string? SprintSlug,
     string? SprintName,
-    double TotalPoints
+    double? TotalPoints
 );

@@ -105,10 +105,18 @@ public static class ScrumIntegrationEndpoints
             });
 
         routes.MapGet(
-            "/api/projects/userStories/{userStoryId}/tasks",
+            "/api/projects/userStories/tasks",
             async (HttpContext context, IGetStoryTasksService service, IUserAccessor userAccessor,
-                string userStoryId) =>
+                [FromQuery] string? userStoryId, [FromQuery] string? sprintId) =>
             {
+                if (string.IsNullOrEmpty(userStoryId) == string.IsNullOrEmpty(sprintId))
+                {
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    await context.Response.WriteAsJsonAsync(new
+                        { Message = "Either userStoryId or sprintId is required" });
+                    return;
+                }
+
                 var userId = userAccessor.UserId;
                 if (string.IsNullOrEmpty(userId))
                 {
@@ -117,11 +125,9 @@ public static class ScrumIntegrationEndpoints
                     return;
                 }
 
-                var result = await service.Handle(userId, userStoryId);
+                var result = await service.Handle(userId, userStoryId, sprintId);
 
                 await context.Response.WriteAsJsonAsync(result);
             });
-
-        // todo: storyless tasks endpoint
     }
 }

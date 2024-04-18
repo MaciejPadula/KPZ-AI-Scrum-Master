@@ -1,26 +1,30 @@
 <div class="pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1">
   <div class="mat-headline-6">
-    #{{ userStory.userStoryRef }} {{ userStory.userStorySubject }}
+    @if(userStory.userStoryRef !==null){ #{{ userStory.userStoryRef }} }
+    {{ userStory.userStorySubject }}
   </div>
+  @if(userStory.userStoryId !== null){
+  <div>
+    <div class="grid grid-cols-4 items-stretch mb-4">
+      <div class="flex flex-row items-center">
+        <span class="mat-body-1"
+          >Created by: {{ userStory.ownerFullNameDisplay }}</span
+        >
+        <app-avatar [src]="userStory.ownerPhoto" class="ml-2" />
+      </div>
 
-  <div class="grid grid-cols-4 items-stretch mb-4">
-    <div class="flex flex-row items-center">
-      <span class="mat-body-1"
-        >Created by: {{ userStory.ownerFullNameDisplay }}</span
-      >
-      <app-avatar [src]="userStory.ownerPhoto" class="ml-2" />
+      <div class="flex flex-row items-center">
+        <span class="mat-body-1"
+          >Assigned to: {{ userStory.assignedToFullNameDisplay }}</span
+        >
+        <app-avatar [src]="userStory.assignedToPhoto" class="ml-2" />
+      </div>
+
+      <span class="mat-body-1">Status: {{ userStory.statusName }}</span>
+      <span class="mat-body-1">Total points: {{ userStory.totalPoints }}</span>
     </div>
-
-    <div class="flex flex-row items-center">
-      <span class="mat-body-1"
-        >Assigned to: {{ userStory.assignedToFullNameDisplay }}</span
-      >
-      <app-avatar [src]="userStory.assignedToPhoto" class="ml-2" />
-    </div>
-
-    <span class="mat-body-1">Status: {{ userStory.statusName }}</span>
-    <span class="mat-body-1">Total points: {{ userStory.totalPoints }}</span>
   </div>
+  }
 
   <mat-expansion-panel
     (opened)="panelOpenState = true"
@@ -45,7 +49,10 @@
     </mat-expansion-panel-header>
 
     @defer (on interaction(storyTasks)) {
-    <app-story-task-list [userStoryId]="userStory.userStoryId" />
+    <app-story-task-list
+      [userStoryId]="userStory.userStoryId"
+      [sprintId]="userStory.sprintId"
+    />
     } @placeholder {
     <mat-spinner></mat-spinner>
     }

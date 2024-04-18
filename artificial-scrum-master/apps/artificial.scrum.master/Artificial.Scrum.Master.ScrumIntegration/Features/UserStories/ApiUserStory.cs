@@ -4,8 +4,8 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
 
 public class UserStory
 {
-    public int Id { get; set; }
-    [JsonPropertyName("ref")] public int Ref { get; set; }
+    public int? Id { get; set; }
+    [JsonPropertyName("ref")] public int? Ref { get; set; }
     public string? Subject { get; set; }
     [JsonPropertyName("status_extra_info")] public StatusExtraInfo? StatusExtraInfo { get; set; }
     [JsonPropertyName("assigned_to_extra_info")] public UserInfo? AssignedToExtraInfo { get; set; }
@@ -13,7 +13,7 @@ public class UserStory
     public int Milestone { get; set; }
     [JsonPropertyName("milestone_slug")] public string? MilestoneSlug { get; set; }
     [JsonPropertyName("milestone_name")] public string? MilestoneName { get; set; }
-    [JsonPropertyName("total_points")] public double TotalPoints { get; set; }
+    [JsonPropertyName("total_points")] public double? TotalPoints { get; set; }
 }
 
 public class UserInfo

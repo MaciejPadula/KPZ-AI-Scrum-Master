@@ -1,4 +1,5 @@
 using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.UserStories;
@@ -42,6 +43,22 @@ internal class GetUserStoriesService : IGetUserStoriesService
             userId,
             userTokens,
             $"userstories?project={projectId}&milestone={sprintId}&is_closed=false");
+
+        var firstOrDefaultStory = userStoriesRequestResponse.FirstOrDefault();
+        var milestoneId = firstOrDefaultStory?.Milestone ?? (int.TryParse(sprintId, out var milestone) ? milestone : 0);
+        userStoriesRequestResponse.Add(new UserStory
+        {
+            Id = null,
+            Ref = null,
+            Subject = "Storyless tasks",
+            StatusExtraInfo = null,
+            AssignedToExtraInfo = null,
+            OwnerExtraInfo = null,
+            Milestone = milestoneId,
+            MilestoneSlug = firstOrDefaultStory?.MilestoneSlug,
+            MilestoneName = firstOrDefaultStory?.MilestoneName,
+            TotalPoints = null,
+        });
 
         return _userStoriesMapper.MapUserStoriesResponse(userStoriesRequestResponse);
     }

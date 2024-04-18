@@ -14,7 +14,9 @@ import { TaskRowComponent } from '../../../../shared/components/task-row/task-ro
 })
 export class StoryTaskListComponent implements OnInit {
   @Input()
-  public userStoryId: number;
+  public userStoryId: number | null;
+  @Input()
+  public sprintId: number | null;
 
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly sprintPreviewDataService = inject(StoryTasksService);
@@ -24,11 +26,13 @@ export class StoryTaskListComponent implements OnInit {
   public readonly storyTasks = this.#storyTasks.asReadonly();
 
   ngOnInit(): void {
-    this.sprintPreviewDataService.getStoryTasks(this.userStoryId).subscribe({
-      next: (stories) => {
-        this.#storyTasks.set(stories);
-      },
-      error: () => this.toastService.openError('Error fetching tasks'),
-    });
+    this.sprintPreviewDataService
+      .getStoryTasks(this.userStoryId, this.sprintId)
+      .subscribe({
+        next: (stories) => {
+          this.#storyTasks.set(stories);
+        },
+        error: () => this.toastService.openError('Error fetching tasks'),
+      });
   }
 }

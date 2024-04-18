@@ -8,7 +8,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 
 internal interface IGetStoryTasksService
 {
-    Task<GetStoryTasksResponse> Handle(string userId, string userStoryId);
+    Task<GetStoryTasksResponse> Handle(string userId, string? userStoryId, string? sprintId);
 }
 
 internal class GetStoryTasksService : IGetStoryTasksService
@@ -28,7 +28,7 @@ internal class GetStoryTasksService : IGetStoryTasksService
         _tasksResponseMapper = tasksResponseMapper;
     }
 
-    public async Task<GetStoryTasksResponse> Handle(string userId, string userStoryId)
+    public async Task<GetStoryTasksResponse> Handle(string userId, string? userStoryId, string? sprintId)
     {
         var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
 
@@ -38,10 +38,14 @@ internal class GetStoryTasksService : IGetStoryTasksService
             throw new ProjectRequestForbidException("User id not found in token");
         }
 
+        var urlSuffix = string.IsNullOrEmpty(userStoryId)
+            ? $"tasks?milestone={sprintId}&user_story=null"
+            : $"tasks?user_story={userStoryId}";
+
         var userStoriesRequestResponse = await _projectHttpClientWrapper.GetHttpRequest<List<StoryTask>>(
             userId,
             userTokens,
-            $"tasks?user_story={userStoryId}");
+            urlSuffix);
 
         return _tasksResponseMapper.MapUserStoriesResponse(userStoriesRequestResponse);
     }

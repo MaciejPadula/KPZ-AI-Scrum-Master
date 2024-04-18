@@ -3,6 +3,7 @@ import { EstimationPokerDataService } from './estimation-poker-data.service';
 import { SessionTask } from '../models/session-task';
 import { AuthorizationService } from '../../authorization/services/authorization-service';
 import { TaskEstimation } from '../models/task-estimation';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,14 @@ export class EstimationPokerService {
   #sessionTask = signal<SessionTask | null>(null);
   public sessionTask = this.#sessionTask.asReadonly();
 
+  private readonly newTaskLoadedSubject$ = new Subject<void>();
+  public newTaskLoaded$ = this.newTaskLoadedSubject$.asObservable(); 
+
+  public clearTaskEstimations() {
+    this.#taskEstimations.set([]);
+    this.#averageTaskEstimation.set(0);
+  }
+
   public loadTaskEstimations(taskId: number) {
     this.dataService.getSessionTaskEstimations(taskId).subscribe({
       next: (response) => {
@@ -33,7 +42,12 @@ export class EstimationPokerService {
 
   public loadSessionTask(sessionId: string) {
     this.dataService.getSessionTask(sessionId).subscribe((task) => {
-      this.#sessionTask.set(task);
+      this.#sessionTask.update(oldTask => {
+        if (JSON.stringify(oldTask) !== JSON.stringify(task)) {
+          this.newTaskLoadedSubject$.next();
+        }
+        return task;
+      });
     });
   }
 }

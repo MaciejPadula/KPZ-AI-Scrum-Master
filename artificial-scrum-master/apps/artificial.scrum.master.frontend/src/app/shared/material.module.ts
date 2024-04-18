@@ -8,6 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [],
@@ -21,6 +29,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatToolbarModule,
     MatProgressBarModule,
     MatFormFieldModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatProgressSpinner,
+    MatCardModule,
   ],
   exports: [
     MatButtonModule,
@@ -31,6 +45,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatToolbarModule,
     MatProgressBarModule,
     MatFormFieldModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatProgressSpinner,
+    MatCardModule,
   ],
 })
 export class MaterialModule {}

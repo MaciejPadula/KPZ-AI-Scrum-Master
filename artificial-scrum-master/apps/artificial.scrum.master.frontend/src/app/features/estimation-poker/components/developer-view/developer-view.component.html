@@ -1,25 +1,25 @@
-@if (currentTask() !== null) {
-  <div>
-    {{ currentTask()?.title }}
-    {{ currentTask()?.description }}
-  </div>
-} @else {
-  <div>No task selected</div>
-}
+<div class="flex flex-col items-center justify-center gap-4">
+  <mat-form-field>
+    <mat-label>{{ 'Shared.Words.Username' | translate }}</mat-label>
+    <input matInput [formControl]="usernameControl" />
+  </mat-form-field>
 
-@if (username().length > 0) {
-  @for (estimation of estimationValues(); track $index) {
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="estimateCurrentTask(estimation)"
-    >
-      {{ estimation }}
-    </button>
+  @if (currentTask() !== null) {
+    <app-session-task [task]="currentTask()!" />
+  } @else {
+    <div>{{ "EstimationPoker.NoTasks" | translate }}</div>
   }
-}
-
-<mat-form-field>
-  <mat-label>Username</mat-label>
-  <input matInput [formControl]="usernameControl" />
-</mat-form-field>
+  
+  <div class="flex flex-row flex-wrap">
+    @for (estimation of estimationValues(); track $index) {
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="estimateCurrentTask(estimation)"
+        [disabled]="disableEstimationButtons()"
+      >
+        {{ estimation }}
+      </button>
+    }
+  </div>
+</div>

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Input,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserProject } from '../../models/user-project';
@@ -41,6 +46,8 @@ export class ProjectListItemComponent {
   }
 
   public get visibilityKey(): string {
-    return this.userProject.isPrivate ? 'Shared.Words.Private' : 'Shared.Words.Public';
+    return this.userProject.isPrivate
+      ? 'Shared.Words.Private'
+      : 'Shared.Words.Public';
   }
 }

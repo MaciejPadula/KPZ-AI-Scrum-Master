@@ -1,0 +1,14 @@
+<div class="mat-headline-6">{{ 'Project.Poker.Title' | translate }}</div>
+<button mat-raised-button color="primary" (click)="createSession()">
+  <mat-icon>add</mat-icon>
+  <span>{{ 'Project.Poker.Create' | translate }}</span>
+</button>
+<div class="flex flex-col w-full overflow-y-scroll" style="max-height: 40vh;">
+  @for (session of sessions(); track $index) {
+    <div>
+        <app-link [href]="'EstimationPoker/' + session.id">
+            {{ session.name }}
+        </app-link>
+    </div>
+  }
+</div>

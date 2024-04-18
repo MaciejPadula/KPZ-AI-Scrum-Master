@@ -1,0 +1,19 @@
+@if (!userData().isAuthorized) {
+  <mat-form-field>
+    <mat-label>{{ 'Shared.Words.Username' | translate }}</mat-label>
+    <input matInput [formControl]="usernameControl" />
+  </mat-form-field>
+}
+
+<div class="flex flex-row flex-wrap">
+  @for (estimation of estimationValues(); track $index) {
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="estimateCurrentTask(estimation)"
+      [disabled]="disableEstimationButtons()"
+    >
+      {{ estimation }}
+    </button>
+  }
+</div>

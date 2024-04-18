@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuComponent } from "./features/menu/components/menu.component";
+import { MaterialModule } from './shared/material.module';
+import { AsmLogoComponent } from './shared/components/asm-logo/asm-logo.component';
+import { LoginComponent } from './shared/components/login/login.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { ThemeSwitchComponent } from "./features/menu/components/theme-switch.component";
 
 @Component({
     standalone: true,
@@ -9,9 +14,14 @@ import { MenuComponent } from "./features/menu/components/menu.component";
     styleUrl: './app.component.scss',
     imports: [
         RouterModule,
-        MenuComponent
+        MenuComponent,
+        MaterialModule,
+        AsmLogoComponent,
+        LoginComponent,
+        TranslateModule,
+        ThemeSwitchComponent
     ]
 })
 export class AppComponent {
-  title = 'artificial.scrum.master.frontend';
+  title = 'Artificial Scrum Master';
 }

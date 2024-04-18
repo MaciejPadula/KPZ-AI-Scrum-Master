@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectDataService } from '../../services/project-data.service';
-import { ActivatedRoute } from '@angular/router';
 import { finalize, map } from 'rxjs';
 import { ProfileTimelineEvent } from '../../models/profile-timeline-event';
 import { TimelineRow } from '../../../../shared/components/timeline-row/timeline-row';
@@ -13,14 +12,20 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-project-feed',
   standalone: true,
-  imports: [CommonModule, MaterialModule, TimelineRowComponent, TranslateModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    TimelineRowComponent,
+    TranslateModule,
+  ],
   templateUrl: './project-feed.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectFeedComponent implements OnInit {
-  private readonly activatedRoute = inject(ActivatedRoute);
   private readonly projectDataService = inject(ProjectDataService);
   private readonly toastService = inject(ToastService);
+
+  public projectId = input.required<number>();
 
   #isLoading = signal<boolean>(false);
   public isLoading = this.#isLoading.asReadonly();
@@ -29,16 +34,13 @@ export class ProjectFeedComponent implements OnInit {
   public readonly feeds = this.#feeds.asReadonly();
 
   public ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
-      const projectId = params['projectId'];
-      this.loadProject(projectId);
-    });
+    this.loadProject();
   }
 
-  private loadProject(projectId: number): void {
+  private loadProject(): void {
     this.#isLoading.set(true);
     this.projectDataService
-      .getProjectEvents(projectId)
+      .getProjectEvents(this.projectId())
       .pipe(
         map((events) => events.map((event) => this.mapToTimelineRow(event))),
         finalize(() => this.#isLoading.set(false))

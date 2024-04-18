@@ -1,6 +1,6 @@
 import { SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
 import { HttpClient, } from "@angular/common/http";
-import { inject, Injectable, signal } from "@angular/core";
+import { computed, inject, Injectable, signal } from "@angular/core";
 import { UserData } from "../models/user-data";
 
 @Injectable({
@@ -17,6 +17,8 @@ export class AuthorizationService {
         }
     );
     public userData = this.#userData.asReadonly();
+    public isAuthorized = computed(() => this.#userData().isAuthorized);
+    public userId = computed(() => this.#userData().userId);
 
     private googleAuthService = inject(SocialAuthService);
     private httpClient = inject(HttpClient);

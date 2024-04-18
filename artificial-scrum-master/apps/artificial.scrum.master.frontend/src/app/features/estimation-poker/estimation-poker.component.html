@@ -1,0 +1,14 @@
+<div class="mat-headline-5">{{ 'EstimationPoker.Title' | translate }}</div>
+<div class="flex flex-col items-center justify-center gap-4">
+  @if (currentTask() !== null) {
+    <app-session-task [task]="currentTask()!" />
+  } @else {
+  <div>{{ 'EstimationPoker.NoTasks' | translate }}</div>
+  }
+  
+  @if (showScrumMasterView()) {
+    <app-scrum-master-view [sessionId]="sessionId()" />
+  } @else {
+    <app-developer-view [sessionId]="sessionId()" />
+  }
+</div>

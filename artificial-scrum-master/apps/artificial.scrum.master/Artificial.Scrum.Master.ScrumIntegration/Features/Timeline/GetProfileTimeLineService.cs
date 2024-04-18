@@ -1,10 +1,8 @@
 using Artificial.Scrum.Master.Interfaces;
-using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
-using Artificial.Scrum.Master.ScrumIntegration.Utilities;
+using Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 
@@ -17,18 +15,18 @@ internal class GetProfileTimeLineService : IGetProfileTimeLineService
 {
     private readonly IAccessTokenProvider _accessTokenProvider;
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
-    private readonly ITimeLineEventParser _timeLineElementParser;
+    private readonly ITimeLineEventMapper _timeLineElementMapper;
     private readonly IUserAccessor _userAccessor;
 
     public GetProfileTimeLineService(
         IAccessTokenProvider accessTokenProvider,
         IProjectHttpClientWrapper projectHttpClientWrapper,
-        ITimeLineEventParser timeLineElementParser,
+        ITimeLineEventMapper timeLineElementMapper,
         IUserAccessor userAccessor)
     {
         _accessTokenProvider = accessTokenProvider;
         _projectHttpClientWrapper = projectHttpClientWrapper;
-        _timeLineElementParser = timeLineElementParser;
+        _timeLineElementMapper = timeLineElementMapper;
         _userAccessor = userAccessor;
     }
 
@@ -43,6 +41,6 @@ internal class GetProfileTimeLineService : IGetProfileTimeLineService
                 refreshToken,
                 user => $"timeline/profile/{user.UserId}");
 
-        return _timeLineElementParser.ParseProfileTimeLineElement(profileTimeLineRequestResult);
+        return _timeLineElementMapper.ParseProfileTimeLineElement(profileTimeLineRequestResult);
     }
 }

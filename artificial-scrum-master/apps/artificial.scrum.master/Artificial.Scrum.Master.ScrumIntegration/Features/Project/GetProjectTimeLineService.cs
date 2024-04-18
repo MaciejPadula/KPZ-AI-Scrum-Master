@@ -1,38 +1,36 @@
 using Artificial.Scrum.Master.Interfaces;
-using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
-using Artificial.Scrum.Master.ScrumIntegration.Utilities;
+using Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 
 internal interface IGetProjectTimeLineService
 {
-    Task<GetProjectTimeLineResponse> Handle(string projectId);
+    Task<GetProjectTimeLine> Handle(string projectId);
 }
 
 internal class GetProjectTimeLineService : IGetProjectTimeLineService
 {
     private readonly IAccessTokenProvider _accessTokenProvider;
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
-    private readonly ITimeLineEventParser _timeLineElementParser;
+    private readonly ITimeLineEventMapper _timeLineElementMapper;
     private readonly IUserAccessor _userAccessor;
 
     public GetProjectTimeLineService(
         IAccessTokenProvider accessTokenProvider,
         IProjectHttpClientWrapper projectHttpClientWrapper,
-        ITimeLineEventParser timeLineElementParser,
+        ITimeLineEventMapper timeLineElementMapper,
         IUserAccessor userAccessor)
     {
         _accessTokenProvider = accessTokenProvider;
         _projectHttpClientWrapper = projectHttpClientWrapper;
-        _timeLineElementParser = timeLineElementParser;
+        _timeLineElementMapper = timeLineElementMapper;
         _userAccessor = userAccessor;
     }
 
-    public async Task<GetProjectTimeLineResponse> Handle(string projectId)
+    public async Task<GetProjectTimeLine> Handle(string projectId)
     {
         var userId = _userAccessor.UserId ?? throw new UnauthorizedAccessException();
         var refreshToken = await _accessTokenProvider.ProvideRefreshTokenOrThrow(userId);
@@ -43,6 +41,6 @@ internal class GetProjectTimeLineService : IGetProjectTimeLineService
                 refreshToken,
                 _ => $"timeline/project/{projectId}");
 
-        return _timeLineElementParser.ParseProjectTimeLineElement(projectTimeLineRequestResult);
+        return _timeLineElementMapper.ParseProjectTimeLineElement(projectTimeLineRequestResult);
     }
 }

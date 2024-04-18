@@ -1,8 +1,6 @@
 using Artificial.Scrum.Master.Interfaces;
-using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
-using Artificial.Scrum.Master.ScrumIntegration.Utilities;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 
@@ -39,7 +37,7 @@ internal class GetUserProjectsService : IGetUserProjectsService
 
         return new GetUserProjectsResponse
         {
-            Projects = projectRequestResult.Select(project => new GetUserProjectsResponseElement
+            Projects = projectRequestResult.Select(project => new UserProject
             {
                 Id = project.Id,
                 Name = project.Name,

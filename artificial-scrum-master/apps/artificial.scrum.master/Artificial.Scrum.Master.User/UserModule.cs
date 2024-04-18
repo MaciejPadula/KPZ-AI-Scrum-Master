@@ -97,6 +97,27 @@ namespace Artificial.Scrum.Master.User
                     userPhotoUrl = userInfo.PhotoUrl
                 });
             });
+
+            routes.MapPost(
+                "api/user/set-dark-theme",
+                async (HttpContext context) =>
+                {
+                    var darkTheme = await context.Request.ReadFromJsonAsync<bool>();
+                    context.Response.Cookies.Append("DarkTheme", darkTheme.ToString(), new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict
+                    });
+                });
+
+            routes.MapGet(
+                "api/user/dark-theme-status",
+                async (HttpContext context) =>
+                {
+                    var darkTheme = context.Request.Cookies["DarkTheme"];
+                    await context.Response.WriteAsJsonAsync(darkTheme == "True");
+                });
         }
     }
 }

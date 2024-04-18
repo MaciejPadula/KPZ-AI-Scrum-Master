@@ -1,92 +1,30 @@
-using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.ResponseEnums;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared;
+namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
 
-internal class TimeLineEventParser : ITimeLineEventParser
+internal interface ITimeLineEventObjectsParser
 {
-    private readonly ILogger<TimeLineEventParser> _logger;
+    public (ScrumObjectType, ScrumObjectState) ParseEventTypeEnum(string eventType);
 
-    public TimeLineEventParser(ILogger<TimeLineEventParser> logger)
+    (int Id, string Subject) ParseScrumObject(ScrumObjectType scrumObjectType, PbiItem? task, Userstory? userStory,
+        Milestone? milestone, User user, Project? project);
+
+    List<KeyValuePair<string, string>> ParseValuesDiff(ValuesDiff? valuesDiff);
+}
+
+internal class TimeLineEventObjectsParser : ITimeLineEventObjectsParser
+{
+    private readonly ILogger<TimeLineEventMapper> _logger;
+
+    public TimeLineEventObjectsParser(ILogger<TimeLineEventMapper> logger)
     {
         _logger = logger;
     }
 
-    public GetProfileTimeLineResponse ParseProfileTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
-    {
-        var timelineEvents = elements.Select(elem =>
-        {
-            var parsedValuesDiff = ParseValuesDiff(elem.Data.ValuesDiff);
-            if (!string.IsNullOrEmpty(elem.Data.Comment))
-            {
-                parsedValuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
-            }
-
-            var (scrumObjectType, scrumObjectState) = ParseEventTypeEnum(elem.EventType);
-            var (objectId, objectName) = ParseScrumObject(scrumObjectType, elem.Data.Task,
-                elem.Data.Userstory, elem.Data.Milestone, elem.Data.User, elem.Data.Project);
-
-            return new GetTimeLineEvent
-            {
-                EventId = elem.Id,
-                ScrumObjectType = scrumObjectType,
-                ScrumObjectState = scrumObjectState,
-                Created = elem.Created,
-                ProjectId = elem.Project ?? -1,
-                ProjectName = elem.Data.Project?.Name ?? string.Empty,
-                ObjectId = objectId,
-                ObjectName = objectName,
-                UserId = elem.Data.User.Id,
-                UserName = elem.Data.User.Name,
-                UserPhoto = elem.Data.User.Photo,
-                UserNick = elem.Data.User.Username,
-                ValuesDiff = parsedValuesDiff
-            };
-        }).ToList();
-
-        return new GetProfileTimeLineResponse { TimeLineEvents = timelineEvents };
-    }
-
-    public GetProjectTimeLineResponse ParseProjectTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
-    {
-        var timelineEvents = elements.Select(elem =>
-        {
-            var parsedValuesDiff = ParseValuesDiff(elem.Data.ValuesDiff);
-            if (!string.IsNullOrEmpty(elem.Data.Comment))
-            {
-                parsedValuesDiff.Add(new KeyValuePair<string, string>("Comment", elem.Data.Comment));
-            }
-
-            var (scrumObjectType, scrumObjectState) = ParseEventTypeEnum(elem.EventType);
-            var (objectId, objectName) = ParseScrumObject(scrumObjectType, elem.Data.Task,
-                elem.Data.Userstory, elem.Data.Milestone, elem.Data.User, elem.Data.Project);
-
-            return new GetTimeLineEvent
-            {
-                EventId = elem.Id,
-                ScrumObjectType = scrumObjectType,
-                ScrumObjectState = scrumObjectState,
-                Created = elem.Created,
-                ProjectId = elem.Project ?? -1,
-                ObjectId = objectId,
-                ObjectName = objectName,
-                UserId = elem.Data.User.Id,
-                UserName = elem.Data.User.Name,
-                UserPhoto = elem.Data.User.Photo,
-                UserNick = elem.Data.User.Username,
-                ProjectName = elem.Data.Project?.Name ?? string.Empty,
-                ValuesDiff = parsedValuesDiff
-            };
-        }).ToList();
-
-        return new GetProjectTimeLineResponse { TimeLineEvents = timelineEvents };
-    }
-
-    private (ScrumObjectType, ScrumObjectState) ParseEventTypeEnum(string eventType)
+    public (ScrumObjectType, ScrumObjectState) ParseEventTypeEnum(string eventType)
     {
         var eventTypeSplit = eventType.Split(".");
         if (eventTypeSplit.Length != 3)
@@ -120,9 +58,9 @@ internal class TimeLineEventParser : ITimeLineEventParser
         return (scrumObjectType, scrumObjectState);
     }
 
-    private (int Id, string Subject) ParseScrumObject(
+    public (int Id, string Subject) ParseScrumObject(
         ScrumObjectType scrumObjectType, PbiItem? task, Userstory? userStory,
-        Milestone? milestone, User user, Models.Project? project)
+        Milestone? milestone, User user, Project? project)
     {
         return scrumObjectType switch
         {
@@ -146,7 +84,7 @@ internal class TimeLineEventParser : ITimeLineEventParser
         };
     }
 
-    private (int, string) ParseTaskObject(PbiItem task)
+    private (int Id, string Name) ParseTaskObject(PbiItem task)
     {
         if (!string.IsNullOrEmpty(task.Subject))
             return (task.Id, task.Subject);
@@ -157,13 +95,14 @@ internal class TimeLineEventParser : ITimeLineEventParser
         return HandleScrumObjectParsingFailure(ScrumObjectType.Task);
     }
 
-    private (int, string) HandleScrumObjectParsingFailure(ScrumObjectType scrumObjectType)
+    private (int FailedResponseId, string FailedResponseName) HandleScrumObjectParsingFailure(
+        ScrumObjectType scrumObjectType)
     {
         _logger.LogError("ScrumObjectType:{ScrumObjectType} is not supported", scrumObjectType.ToString());
         return (-1, string.Empty);
     }
 
-    private static List<KeyValuePair<string, string>> ParseValuesDiff(ValuesDiff? valuesDiff)
+    public List<KeyValuePair<string, string>> ParseValuesDiff(ValuesDiff? valuesDiff)
     {
         List<KeyValuePair<string, string>> keyValuePairs = [];
         if (valuesDiff is null)

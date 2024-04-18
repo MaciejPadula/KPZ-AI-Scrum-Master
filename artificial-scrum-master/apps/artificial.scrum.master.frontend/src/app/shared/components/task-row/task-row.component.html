@@ -8,13 +8,31 @@
     }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <p>
-      Assigned to:
-      {{
-        taskRow.assignedToFullName === undefined
-          ? 'None'
-          : taskRow.assignedToFullName
-      }}
-    </p>
+    <div class="flex flex-row items-center">
+      <span>
+        Assigned to:
+        {{
+          taskRow.assignedToFullName === null
+            ? 'Not assigned'
+            : taskRow.assignedToFullName
+        }}
+      </span>
+      @if(taskRow.assignedToPhoto !== null){
+      <app-avatar [src]="taskRow.assignedToPhoto" class="ml-2" />
+      }
+    </div>
+    <div class="flex flex-row items-center">
+      @if(taskRow.tags.length > 0){
+      <span class="mr-2">Tags: </span>
+      }
+
+      <mat-chip-set aria-label="Tags">
+        @for (tagColorPair of taskRow.tags; track $index) {
+        <mat-chip [style.background-color]="tagColorPair[1]">
+          {{ tagColorPair[0] }}
+        </mat-chip>
+        }
+      </mat-chip-set>
+    </div>
   </mat-card-content>
 </mat-card>

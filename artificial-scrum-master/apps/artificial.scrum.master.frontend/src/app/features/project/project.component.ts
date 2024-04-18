@@ -9,14 +9,21 @@ import { CommonModule } from '@angular/common';
 import { ProjectFeedComponent } from './components/project-feed/project-feed.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
-import { PokerSessionsListComponent } from "./components/poker-sessions-list/poker-sessions-list.component";
+import { PokerSessionsListComponent } from './components/poker-sessions-list/poker-sessions-list.component';
+import { SprintPreviewComponent } from './components/sprint-preview/sprint-preview.component';
 
 @Component({
-    selector: 'app-project',
-    standalone: true,
-    templateUrl: './project.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, ProjectFeedComponent, TranslateModule, PokerSessionsListComponent]
+  selector: 'app-project',
+  standalone: true,
+  templateUrl: './project.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    ProjectFeedComponent,
+    TranslateModule,
+    PokerSessionsListComponent,
+    SprintPreviewComponent,
+  ],
 })
 export class ProjectComponent implements OnInit {
   private readonly activatedRoute = inject(ActivatedRoute);

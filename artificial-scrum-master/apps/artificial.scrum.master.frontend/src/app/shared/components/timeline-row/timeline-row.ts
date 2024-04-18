@@ -1,5 +1,5 @@
-import { ScrumObjectState } from "../../models/scrum-object-state";
-import { ScrumObjectType } from "../../models/scrum-object-type";
+import { ScrumObjectState } from '../../models/scrum-object-state';
+import { ScrumObjectType } from '../../models/scrum-object-type';
 
 export interface TimelineRow {
   userName: string;

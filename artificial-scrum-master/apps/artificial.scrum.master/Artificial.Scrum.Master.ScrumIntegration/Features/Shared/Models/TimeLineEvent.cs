@@ -2,7 +2,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.ResponseEnums;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 
-internal readonly record struct GetTimeLineEvent(
+internal readonly record struct TimeLineEvent(
     int EventId,
     ScrumObjectType ScrumObjectType,
     ScrumObjectState ScrumObjectState,

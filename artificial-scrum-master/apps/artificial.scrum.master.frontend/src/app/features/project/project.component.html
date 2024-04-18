@@ -1,8 +1,12 @@
 <div class="w-full flex flex-col sm:flex-row">
-  <div class="w-full sm:w-3/5">
+  <div class="w-full sm:w-4/5">
     <p class="mat-headline-5">
       {{ 'Project.Title' | translate }}
     </p>
+
+    <div class="w-full sm:w-2/5">
+      <app-sprint-preview />
+    </div>
   </div>
   <div class="w-full sm:w-2/5 flex flex-col space-y-4">
     @if (projectId()) {

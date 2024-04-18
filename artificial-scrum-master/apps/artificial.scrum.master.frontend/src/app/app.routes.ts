@@ -30,6 +30,13 @@ export const appRoutes: Route[] = [
       import('./features/estimation-poker/routes').then((mod) => mod.EstimationPokerRoutes),
   },
   {
+    path: 'UserStories',
+    loadChildren: () =>
+      import('./features/user-stories/routes').then(
+        (mod) => mod.UserStoriesRoutes
+      ),
+  },
+  {
     path: '**',
     component: NotFoundComponent,
   },

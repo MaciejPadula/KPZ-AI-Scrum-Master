@@ -12,7 +12,12 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-project-feed',
   standalone: true,
-  imports: [CommonModule, MaterialModule, TimelineRowComponent, TranslateModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    TimelineRowComponent,
+    TranslateModule,
+  ],
   templateUrl: './project-feed.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,16 +1,23 @@
 <div class="flex flex-col divide-y mx-2">
   <div
-    class="flex flex-col p-4 outline outline-1 outline-gray-200 shadow-lg my-1 hover:bg-zinc-100 hover:cursor-pointer"
+    class="flex flex-col p-4 outline outline-1 outline-gray-200 shadow-lg my-1 hover:cursor-pointer"
     (click)="
       redirectToUserStories(sprintElement.projectId, sprintElement.sprintId)
     "
   >
-    <span class="mat-headline-8 dark:text-gray-700"
-      >{{ sprintElement.projectName }}
-    </span>
-    <span class="mat-headline-6 font-bold dark:text-gray-700"
-      >{{ sprintElement.sprintName }}
-    </span>
+    <div class="flex flex-row">
+      <div class="flex flex-col">
+        <span class="mat-headline-8">{{ sprintElement.projectName }} </span>
+        <span class="mat-headline-6 font-bold"
+          >{{ sprintElement.sprintName }}
+        </span>
+      </div>
+      <div class="items-end">
+        <a mat-stroked-button (click)="openLink($event)" target="_blank">
+          <mat-icon aria-label="Open sprint" fontIcon="open_in_new"></mat-icon
+        ></a>
+      </div>
+    </div>
 
     <span class="grid grid-cols-3 items-center pb-2">
       <span class="mat-caption ml-2"

@@ -1,13 +1,9 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserStory } from '../../models/user-story';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
 import { StoryTaskListComponent } from '../story-task-list/story-task-list.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MaterialModule } from 'apps/artificial.scrum.master.frontend/src/app/shared/material.module';
 
 @Component({
   selector: 'app-user-story-list-item',
@@ -16,14 +12,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
-    MatExpansionModule,
-    MatSort,
-    MatSortModule,
-    MatTableModule,
-    MatIconModule,
     AvatarComponent,
     StoryTaskListComponent,
-    MatProgressSpinnerModule,
+    MaterialModule,
   ],
 })
 export class UserStoryListItemComponent {

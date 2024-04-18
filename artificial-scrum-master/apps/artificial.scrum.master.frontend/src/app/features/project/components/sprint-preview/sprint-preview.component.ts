@@ -5,12 +5,12 @@ import { ToastService } from '../../../../shared/services/toast.service';
 import { SprintPreview } from '../../models/sprint-preview';
 import { ActivatedRoute } from '@angular/router';
 import { SprintPreviewItemComponent } from '../sprint-preview-item/sprint-preview-item.component';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MaterialModule } from 'apps/artificial.scrum.master.frontend/src/app/shared/material.module';
 
 @Component({
   selector: 'app-sprint-preview',
   standalone: true,
-  imports: [CommonModule, MatExpansionModule, SprintPreviewItemComponent],
+  imports: [CommonModule, SprintPreviewItemComponent, MaterialModule],
   templateUrl: './sprint-preview.component.html',
 })
 export class SprintPreviewComponent implements OnInit {

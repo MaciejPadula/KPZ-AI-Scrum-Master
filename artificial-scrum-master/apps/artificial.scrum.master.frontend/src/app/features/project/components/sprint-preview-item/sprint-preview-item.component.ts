@@ -6,15 +6,14 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { SprintPreview } from '../../models/sprint-preview';
-import { MatButtonModule } from '@angular/material/button';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
+import { MaterialModule } from 'apps/artificial.scrum.master.frontend/src/app/shared/material.module';
 
 @Component({
   selector: 'app-sprint-preview-item',
   standalone: true,
-  imports: [CommonModule, MatExpansionModule, MatButtonModule, AvatarComponent],
+  imports: [CommonModule, AvatarComponent, MaterialModule],
   templateUrl: './sprint-preview-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -32,9 +31,20 @@ export class SprintPreviewItemComponent {
     return `${day}.${month}.${year}`;
   }
 
-  redirectToUserStories(projectId: number, sprintId: number) {
+  public redirectToUserStories(projectId: number, sprintId: number) {
     this.router.navigate([`/UserStories/${sprintId}`], {
       queryParams: { project: projectId },
     });
+  }
+
+  openLink($event: MouseEvent) {
+    $event.stopPropagation();
+    const url = this.getExternalLink();
+    window.open(url, '_blank');
+  }
+
+  public getExternalLink(): string {
+    const base = 'https://tree.taiga.io/project';
+    return `${base}/${this.sprintElement.projectSlug}/taskboard/${this.sprintElement.sprintSlug}`;
   }
 }

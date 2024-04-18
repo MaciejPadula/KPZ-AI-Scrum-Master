@@ -58,5 +58,6 @@
   "EstimationPoker.RevealEstimations": "Pokaż estymacje",
   "EstimationPoker.NoTasks": "Nie dodano jeszcze żadnych zadań",
   "EstimationPoker.UserNameNotSelected": "Nie wybrano nazwy użytkownika",
-  "EstimationPoker.AverageEstimation": "Średnia estymacja"
+  "EstimationPoker.AverageEstimation": "Średnia estymacja",
+  "EstimationPoker.RequiredAndThreeLetters": "Pole wymagane, minimum 3 znaki"
 }

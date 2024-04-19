@@ -5,7 +5,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
 import { SprintPreview } from '../../models/sprint-preview';
 import { ActivatedRoute } from '@angular/router';
 import { SprintPreviewItemComponent } from '../sprint-preview-item/sprint-preview-item.component';
-import { MaterialModule } from 'apps/artificial.scrum.master.frontend/src/app/shared/material.module';
+import { MaterialModule } from '../../../../shared/material.module';
 
 @Component({
   selector: 'app-sprint-preview',

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SprintPreview } from '../../models/sprint-preview';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
-import { MaterialModule } from 'apps/artificial.scrum.master.frontend/src/app/shared/material.module';
+import { MaterialModule } from '../../../../shared/material.module';
 
 @Component({
   selector: 'app-sprint-preview-item',
@@ -37,13 +37,7 @@ export class SprintPreviewItemComponent {
     });
   }
 
-  openLink($event: MouseEvent) {
-    $event.stopPropagation();
-    const url = this.getExternalLink();
-    window.open(url, '_blank');
-  }
-
-  public getExternalLink(): string {
+  public get scrumServiceUrl() {
     const base = 'https://tree.taiga.io/project';
     return `${base}/${this.sprintElement.projectSlug}/taskboard/${this.sprintElement.sprintSlug}`;
   }

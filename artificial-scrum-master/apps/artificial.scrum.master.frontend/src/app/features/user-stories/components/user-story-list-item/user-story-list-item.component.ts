@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserStory } from '../../models/user-story';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
 import { StoryTaskListComponent } from '../story-task-list/story-task-list.component';
-import { MaterialModule } from 'apps/artificial.scrum.master.frontend/src/app/shared/material.module';
+import { MaterialModule } from '../../../../shared/material.module';
 
 @Component({
   selector: 'app-user-story-list-item',

@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { UserStory } from '../../models/user-story';
 import { UserStoryListItemComponent } from '../user-story-list-item/user-story-list-item.component';
-import { MaterialModule } from 'apps/artificial.scrum.master.frontend/src/app/shared/material.module';
+import { MaterialModule } from '../../../../shared/material.module';
 
 @Component({
   selector: 'app-user-story-list',

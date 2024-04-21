@@ -1,14 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
 import { TaskRow } from './task-row';
 import { AvatarComponent } from '../avatar/avatar.component';
-import { MatChipsModule } from '@angular/material/chips';
+import { MaterialModule } from '../../material.module';
 
 @Component({
   selector: 'app-task-row',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatChipsModule, AvatarComponent],
+  imports: [CommonModule, AvatarComponent, MaterialModule],
   templateUrl: './task-row.component.html',
 })
 export class TaskRowComponent {

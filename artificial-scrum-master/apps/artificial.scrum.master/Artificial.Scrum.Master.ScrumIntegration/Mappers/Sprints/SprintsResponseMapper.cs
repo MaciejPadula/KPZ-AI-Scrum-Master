@@ -18,6 +18,7 @@ internal class SprintsResponseMapper : ISprintsResponseMapper
             ProjectSlug = sprint.ProjectExtraInfo?.Slug,
             SprintId = sprint.Id,
             SprintName = sprint.Name,
+            SprintSlug = sprint.Slug,
             EstimatedStart = sprint.EstimatedStart,
             EstimatedFinish = sprint.EstimatedFinish,
             UserStories = sprint.UserStories?.Select(userStory => new ActiveSprintUserStory

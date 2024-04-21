@@ -5,12 +5,12 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { UserStory } from '../../models/user-story';
 import { UserStoryListItemComponent } from '../user-story-list-item/user-story-list-item.component';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MaterialModule } from '../../../../shared/material.module';
 
 @Component({
   selector: 'app-user-story-list',
   standalone: true,
-  imports: [CommonModule, MatExpansionModule, UserStoryListItemComponent],
+  imports: [CommonModule, UserStoryListItemComponent, MaterialModule],
   templateUrl: './user-story-list.component.html',
 })
 export class UserStoryListComponent implements OnInit {

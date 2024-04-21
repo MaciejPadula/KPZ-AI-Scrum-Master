@@ -20,16 +20,7 @@ public static class ScrumIntegrationEndpoints
             "/api/projects",
             async (HttpContext context, IGetUserProjectsService service, IUserAccessor userAccessor) =>
             {
-                var userId = userAccessor.UserId;
-                if (string.IsNullOrEmpty(userId))
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsJsonAsync(new { Message = "Unauthorized" });
-                    return;
-                }
-
-                var result = await service.Handle(userId);
-
+                var result = await service.Handle();
                 await context.Response.WriteAsJsonAsync(result);
             });
 
@@ -37,16 +28,7 @@ public static class ScrumIntegrationEndpoints
             "/api/projects/timeline",
             async (HttpContext context, IGetProfileTimeLineService service, IUserAccessor userAccessor) =>
             {
-                var userId = userAccessor.UserId;
-                if (string.IsNullOrEmpty(userId))
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsJsonAsync(new { Message = "Unauthorized" });
-                    return;
-                }
-
-                var result = await service.Handle(userId);
-
+                var result = await service.Handle();
                 await context.Response.WriteAsJsonAsync(result);
             });
 
@@ -55,16 +37,7 @@ public static class ScrumIntegrationEndpoints
             async (HttpContext context, IGetProjectTimeLineService service, IUserAccessor userAccessor,
                 string projectId) =>
             {
-                var userId = userAccessor.UserId;
-                if (string.IsNullOrEmpty(userId))
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsJsonAsync(new { Message = "Unauthorized" });
-                    return;
-                }
-
-                var result = await service.Handle(userId, projectId);
-
+                var result = await service.Handle(projectId);
                 await context.Response.WriteAsJsonAsync(result);
             });
 
@@ -73,16 +46,7 @@ public static class ScrumIntegrationEndpoints
             async (HttpContext context, IGetActiveSprintsService service, IUserAccessor userAccessor,
                 string projectId) =>
             {
-                var userId = userAccessor.UserId;
-                if (string.IsNullOrEmpty(userId))
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsJsonAsync(new { Message = "Unauthorized" });
-                    return;
-                }
-
-                var result = await service.Handle(userId, projectId);
-
+                var result = await service.Handle(projectId);
                 await context.Response.WriteAsJsonAsync(result);
             });
 
@@ -91,16 +55,7 @@ public static class ScrumIntegrationEndpoints
             async (HttpContext context, IGetUserStoriesService service, IUserAccessor userAccessor,
                 [FromQuery] string projectId, [FromQuery] string sprintId) =>
             {
-                var userId = userAccessor.UserId;
-                if (string.IsNullOrEmpty(userId))
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsJsonAsync(new { Message = "Unauthorized" });
-                    return;
-                }
-
-                var result = await service.Handle(userId, projectId, sprintId);
-
+                var result = await service.Handle(projectId, sprintId);
                 await context.Response.WriteAsJsonAsync(result);
             });
 
@@ -113,20 +68,11 @@ public static class ScrumIntegrationEndpoints
                 {
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
                     await context.Response.WriteAsJsonAsync(new
-                        { Message = "Either userStoryId or sprintId is required" });
+                    { Message = "Either userStoryId or sprintId is required" });
                     return;
                 }
 
-                var userId = userAccessor.UserId;
-                if (string.IsNullOrEmpty(userId))
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsJsonAsync(new { Message = "Unauthorized" });
-                    return;
-                }
-
-                var result = await service.Handle(userId, userStoryId, sprintId);
-
+                var result = await service.Handle(userStoryId, sprintId);
                 await context.Response.WriteAsJsonAsync(result);
             });
     }

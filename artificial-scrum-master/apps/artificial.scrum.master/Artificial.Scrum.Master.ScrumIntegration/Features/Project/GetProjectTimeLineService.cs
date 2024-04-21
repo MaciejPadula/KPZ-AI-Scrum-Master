@@ -1,51 +1,45 @@
-using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
+using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
-using Artificial.Scrum.Master.ScrumIntegration.Utilities;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 
 internal interface IGetProjectTimeLineService
 {
-    Task<GetProjectTimeLine> Handle(string userId, string projectId);
+    Task<GetProjectTimeLine> Handle(string projectId);
 }
 
 internal class GetProjectTimeLineService : IGetProjectTimeLineService
 {
     private readonly IAccessTokenProvider _accessTokenProvider;
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
-    private readonly IJwtDecoder _jwtDecoder;
     private readonly ITimeLineEventMapper _timeLineElementMapper;
+    private readonly IUserAccessor _userAccessor;
 
     public GetProjectTimeLineService(
         IAccessTokenProvider accessTokenProvider,
         IProjectHttpClientWrapper projectHttpClientWrapper,
-        IJwtDecoder jwtDecoder,
-        ITimeLineEventMapper timeLineElementMapper)
+        ITimeLineEventMapper timeLineElementMapper,
+        IUserAccessor userAccessor)
     {
         _accessTokenProvider = accessTokenProvider;
         _projectHttpClientWrapper = projectHttpClientWrapper;
-        _jwtDecoder = jwtDecoder;
         _timeLineElementMapper = timeLineElementMapper;
+        _userAccessor = userAccessor;
     }
 
-    public async Task<GetProjectTimeLine> Handle(string userId, string projectId)
+    public async Task<GetProjectTimeLine> Handle(string projectId)
     {
-        var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
-
-        var memberId = _jwtDecoder.GetClaim(userTokens.AccessToken, "user_id");
-        if (string.IsNullOrEmpty(memberId))
-        {
-            throw new ProjectRequestForbidException("User id not found in token");
-        }
+        var userId = _userAccessor.UserId ?? throw new UnauthorizedAccessException();
+        var refreshToken = await _accessTokenProvider.ProvideRefreshTokenOrThrow(userId);
 
         var projectTimeLineRequestResult =
             await _projectHttpClientWrapper.GetHttpRequest<List<TimeLineEventRoot>>(
                 userId,
-                userTokens,
-                $"timeline/project/{projectId}");
+                refreshToken,
+                _ => $"timeline/project/{projectId}");
 
         return _timeLineElementMapper.ParseProjectTimeLineElement(projectTimeLineRequestResult);
     }

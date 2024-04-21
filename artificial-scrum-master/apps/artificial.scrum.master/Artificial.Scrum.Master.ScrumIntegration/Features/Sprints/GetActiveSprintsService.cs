@@ -1,47 +1,43 @@
-using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
+using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.Sprints;
-using Artificial.Scrum.Master.ScrumIntegration.Utilities;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
 
 internal interface IGetActiveSprintsService
 {
-    Task<GetActiveSprintsResponse> Handle(string userId, string projectId);
+    Task<GetActiveSprintsResponse> Handle(string projectId);
 }
 
 internal class GetActiveSprintsService : IGetActiveSprintsService
 {
     private readonly IAccessTokenProvider _accessTokenProvider;
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
-    private readonly IJwtDecoder _jwtDecoder;
     private readonly ISprintsResponseMapper _sprintsResponseMapper;
+    private readonly IUserAccessor _userAccessor;
 
-    public GetActiveSprintsService(IAccessTokenProvider accessTokenProvider,
-        IProjectHttpClientWrapper projectHttpClientWrapper, IJwtDecoder jwtDecoder,
-        ISprintsResponseMapper sprintsResponseMapper)
+    public GetActiveSprintsService(
+        IAccessTokenProvider accessTokenProvider,
+        IProjectHttpClientWrapper projectHttpClientWrapper,
+        ISprintsResponseMapper sprintsResponseMapper,
+        IUserAccessor userAccessor)
     {
         _accessTokenProvider = accessTokenProvider;
         _projectHttpClientWrapper = projectHttpClientWrapper;
-        _jwtDecoder = jwtDecoder;
         _sprintsResponseMapper = sprintsResponseMapper;
+        _userAccessor = userAccessor;
     }
 
-    public async Task<GetActiveSprintsResponse> Handle(string userId, string projectId)
+    public async Task<GetActiveSprintsResponse> Handle(string projectId)
     {
-        var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
-
-        var memberId = _jwtDecoder.GetClaim(userTokens.AccessToken, "user_id");
-        if (string.IsNullOrEmpty(memberId))
-        {
-            throw new ProjectRequestForbidException("User id not found in token");
-        }
+        var userId = _userAccessor.UserId ?? throw new UnauthorizedAccessException();
+        var userTokens = await _accessTokenProvider.ProvideRefreshTokenOrThrow(userId);
 
         var sprintsRequestResponse = await _projectHttpClientWrapper.GetHttpRequest<List<Sprint>>(
             userId,
             userTokens,
-            $"milestones?project={projectId}&closed=false");
+            _ => $"milestones?project={projectId}&closed=false");
 
         return _sprintsResponseMapper.MapSprintsResponse(sprintsRequestResponse);
     }

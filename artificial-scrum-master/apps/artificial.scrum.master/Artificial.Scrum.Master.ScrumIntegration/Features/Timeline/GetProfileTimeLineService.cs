@@ -1,51 +1,45 @@
-using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
+using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
-using Artificial.Scrum.Master.ScrumIntegration.Utilities;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 
 internal interface IGetProfileTimeLineService
 {
-    Task<GetProfileTimeLineResponse> Handle(string userId);
+    Task<GetProfileTimeLineResponse> Handle();
 }
 
 internal class GetProfileTimeLineService : IGetProfileTimeLineService
 {
     private readonly IAccessTokenProvider _accessTokenProvider;
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
-    private readonly IJwtDecoder _jwtDecoder;
     private readonly ITimeLineEventMapper _timeLineElementMapper;
+    private readonly IUserAccessor _userAccessor;
 
     public GetProfileTimeLineService(
         IAccessTokenProvider accessTokenProvider,
         IProjectHttpClientWrapper projectHttpClientWrapper,
-        IJwtDecoder jwtDecoder,
-        ITimeLineEventMapper timeLineElementMapper)
+        ITimeLineEventMapper timeLineElementMapper,
+        IUserAccessor userAccessor)
     {
         _accessTokenProvider = accessTokenProvider;
         _projectHttpClientWrapper = projectHttpClientWrapper;
-        _jwtDecoder = jwtDecoder;
         _timeLineElementMapper = timeLineElementMapper;
+        _userAccessor = userAccessor;
     }
 
-    public async Task<GetProfileTimeLineResponse> Handle(string userId)
+    public async Task<GetProfileTimeLineResponse> Handle()
     {
-        var userTokens = await _accessTokenProvider.ProvideOrThrow(userId);
-
-        var memberId = _jwtDecoder.GetClaim(userTokens.AccessToken, "user_id");
-        if (string.IsNullOrEmpty(memberId))
-        {
-            throw new ProjectRequestForbidException("User id not found in token");
-        }
+        var userId = _userAccessor.UserId ?? throw new UnauthorizedAccessException();
+        var refreshToken = await _accessTokenProvider.ProvideRefreshTokenOrThrow(userId);
 
         var profileTimeLineRequestResult =
             await _projectHttpClientWrapper.GetHttpRequest<List<TimeLineEventRoot>>(
                 userId,
-                userTokens,
-                $"timeline/profile/{memberId}");
+                refreshToken,
+                user => $"timeline/profile/{user.UserId}");
 
         return _timeLineElementMapper.ParseProfileTimeLineElement(profileTimeLineRequestResult);
     }

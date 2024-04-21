@@ -12,13 +12,17 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatRippleModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
 import {
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import {
+  MatProgressSpinner,
+  MatProgressSpinnerModule,
+} from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
@@ -43,6 +47,8 @@ import { MatCardModule } from '@angular/material/card';
     MatDialogClose,
     MatProgressSpinner,
     MatCardModule,
+    MatChipsModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     MatButtonModule,
@@ -63,6 +69,8 @@ import { MatCardModule } from '@angular/material/card';
     MatDialogClose,
     MatProgressSpinner,
     MatCardModule,
+    MatChipsModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class MaterialModule {}

@@ -9,6 +9,7 @@ internal readonly record struct ActiveSprint(
     string? ProjectName,
     string? ProjectSlug,
     int SprintId,
+    string? SprintSlug,
     string? SprintName,
     string? EstimatedStart,
     string? EstimatedFinish,

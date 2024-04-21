@@ -4,6 +4,7 @@ export interface SprintPreview {
   projectSlug: string;
   sprintId: number;
   sprintName: string;
+  sprintSlug: string;
   estimatedStart: string;
   estimatedFinish: string;
   userStories: UserStoryPrweview[];

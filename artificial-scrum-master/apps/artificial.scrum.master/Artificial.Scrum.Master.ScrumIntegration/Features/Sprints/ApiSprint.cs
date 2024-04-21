@@ -8,6 +8,7 @@ internal class Sprint
     [JsonPropertyName("project_extra_info")] public ProjectExtraInfo? ProjectExtraInfo { get; set; }
     public int Id { get; set; }
     public string? Name { get; set; }
+    public string? Slug { get; set; }
     [JsonPropertyName("estimated_start")] public string? EstimatedStart { get; set; }
     [JsonPropertyName("estimated_finish")] public string? EstimatedFinish { get; set; }
     [JsonPropertyName("user_stories")] public List<UserStory>? UserStories { get; set; }

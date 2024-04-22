@@ -1,10 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  Input,
-} from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SprintPreview } from '../../models/sprint-preview';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
@@ -13,15 +8,13 @@ import { MaterialModule } from '../../../../shared/material.module';
 @Component({
   selector: 'app-sprint-preview-item',
   standalone: true,
-  imports: [CommonModule, AvatarComponent, MaterialModule],
+  imports: [CommonModule, AvatarComponent, MaterialModule, RouterModule],
   templateUrl: './sprint-preview-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SprintPreviewItemComponent {
   @Input()
   public sprintElement: SprintPreview;
-
-  private readonly router = inject(Router);
 
   public formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -31,10 +24,8 @@ export class SprintPreviewItemComponent {
     return `${day}.${month}.${year}`;
   }
 
-  public redirectToUserStories(projectId: number, sprintId: number) {
-    this.router.navigate([`/UserStories/${sprintId}`], {
-      queryParams: { project: projectId },
-    });
+  public get storiesUrl() {
+    return `/UserStories/${this.sprintElement.sprintId}?project=${this.sprintElement.projectId}`;
   }
 
   public get scrumServiceUrl() {

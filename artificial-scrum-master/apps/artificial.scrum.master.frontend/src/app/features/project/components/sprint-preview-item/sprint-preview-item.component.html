@@ -1,9 +1,7 @@
 <div class="flex flex-col divide-y mx-2">
-  <div
+  <a
     class="flex flex-col p-4 outline outline-1 outline-gray-200 shadow-lg my-1 hover:cursor-pointer"
-    (click)="
-      redirectToUserStories(sprintElement.projectId, sprintElement.sprintId)
-    "
+    [href]="storiesUrl"
   >
     <div class="flex flex-row justify-between">
       <div class="flex flex-col">
@@ -27,7 +25,7 @@
         >End: {{ formatDate(sprintElement.estimatedFinish) }}</span
       >
     </span>
-  </div>
+  </a>
 
   <div>
     <div class="space-x-1 mat-body-1">

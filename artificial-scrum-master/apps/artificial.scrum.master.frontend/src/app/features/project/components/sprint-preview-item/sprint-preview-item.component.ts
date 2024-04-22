@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SprintPreview } from '../../models/sprint-preview';
@@ -13,8 +18,19 @@ import { MaterialModule } from '../../../../shared/material.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SprintPreviewItemComponent {
-  @Input()
-  public sprintElement: SprintPreview;
+  public sprintElement = input.required<SprintPreview>();
+  public storiesUrl = computed(
+    () =>
+      `/UserStories/${this.sprintElement().sprintId}?project=${
+        this.sprintElement().projectId
+      }`
+  );
+  public sprintUrl = computed(() => {
+    const base = 'https://tree.taiga.io/project';
+    return `${base}/${this.sprintElement().projectSlug}/taskboard/${
+      this.sprintElement().sprintSlug
+    }`;
+  });
 
   public formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -22,14 +38,5 @@ export class SprintPreviewItemComponent {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     return `${day}.${month}.${year}`;
-  }
-
-  public get storiesUrl() {
-    return `/UserStories/${this.sprintElement.sprintId}?project=${this.sprintElement.projectId}`;
-  }
-
-  public get scrumServiceUrl() {
-    const base = 'https://tree.taiga.io/project';
-    return `${base}/${this.sprintElement.projectSlug}/taskboard/${this.sprintElement.sprintSlug}`;
   }
 }

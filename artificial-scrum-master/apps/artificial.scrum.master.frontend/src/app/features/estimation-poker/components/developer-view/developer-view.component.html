@@ -1,8 +1,10 @@
 @if (!userData().isAuthorized) {
-  <mat-form-field>
-    <mat-label>{{ 'Shared.Words.Username' | translate }}</mat-label>
-    <input matInput [formControl]="usernameControl" />
-  </mat-form-field>
+  <div class="flex items-center justify-center">
+    <mat-form-field>
+      <mat-label>{{ 'Shared.Words.Username' | translate }}</mat-label>
+      <input matInput [formControl]="usernameControl" />
+    </mat-form-field>
+  </div>
 }
 
 <div class="flex flex-row flex-wrap">

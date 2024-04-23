@@ -52,7 +52,7 @@ internal class GetSuggestedEstimationService : IGetSuggestedEstimationService
 
         if (!estimation.HasValue)
         {
-            return Result<GetSuggestedEstimationResponse>.OnError(new NullReferenceException(task.Value.Title));
+            return Result<GetSuggestedEstimationResponse>.OnError(new SuggestionServiceErrorException());
         }
 
         return Result<GetSuggestedEstimationResponse>.OnSuccess(new(

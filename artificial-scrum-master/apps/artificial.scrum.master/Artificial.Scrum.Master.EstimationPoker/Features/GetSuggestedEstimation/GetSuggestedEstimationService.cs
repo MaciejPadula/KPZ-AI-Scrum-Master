@@ -43,10 +43,10 @@ internal class GetSuggestedEstimationService : IGetSuggestedEstimationService
             return Result<GetSuggestedEstimationResponse>.OnError(new TaskNotFoundException(request.TaskId));
         }
 
-        //if (!await _sessionRepository.ValidateUserAccess(userId, task.Value.SessionId))
-        //{
-        //    return Result<GetSuggestedEstimationResponse>.OnError(new UserNotAuthorizedException(userId, task.Value.SessionId));
-        //}
+        if (!await _sessionRepository.ValidateUserAccess(userId, task.Value.SessionId))
+        {
+            return Result<GetSuggestedEstimationResponse>.OnError(new UserNotAuthorizedException(userId, task.Value.SessionId));
+        }
 
         var estimation = await _pokerSuggestionService.GetSuggestedEstimation(task.Value.Title, task.Value.Description, request.Estimations);
 

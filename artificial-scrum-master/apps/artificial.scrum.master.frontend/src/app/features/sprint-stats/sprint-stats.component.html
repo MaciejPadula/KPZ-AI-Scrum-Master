@@ -1,0 +1,69 @@
+<div>
+  <div>
+    @if(stats().totalRolePoints){
+    <p class="mat-subtitle-2">Statistics of: {{ stats().sprintName }}</p>
+    }
+    <mat-tab-group>
+      <mat-tab label="Statistics">
+        <mat-card>
+          <mat-card-content>
+            @if(stats().totalRolePoints){
+            <div class="flex flex-row flex-wrap justify-around divide-x">
+              <div class="flex flex-row px-4">
+                <p>
+                  Total <br />
+                  points
+                </p>
+                <p class="text-5xl pl-4">{{ totalPoints() }}</p>
+              </div>
+
+              <div class="flex flex-row px-4">
+                <p>
+                  Completed <br />
+                  points
+                </p>
+                <p class="text-5xl pl-4">{{ stats().completedRolePoints }}</p>
+              </div>
+
+              <div class="flex flex-row px-4">
+                <p>
+                  Open <br />
+                  tasks
+                </p>
+                <p class="text-5xl pl-4">
+                  {{ stats().totalTasks - stats().completedTasks }}
+                </p>
+              </div>
+
+              <div class="flex flex-row px-4">
+                <p>
+                  Closed <br />
+                  tasks
+                </p>
+                <p class="text-5xl pl-4">{{ stats().completedTasks }}</p>
+              </div>
+            </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="Points per role">
+        <mat-card>
+          <mat-card-content>
+            <div class="flex flex-row flex-wrap justify-around divide-x">
+              @for (item of stats().totalRolePoints; track $index) {
+              <div class="flex flex-row mr-4">
+                <p class="pl-4 text-xl">{{ item.key }}</p>
+                <p class="pl-4 text-5xl">{{ item.value }}</p>
+              </div>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  @if(stats().totalRolePoints){
+  <app-burndown-chart [sprintDayStats]="stats().sprintDayStats" />
+  }
+</div>

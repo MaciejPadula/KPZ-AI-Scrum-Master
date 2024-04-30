@@ -1,1 +1,61 @@
-<p>Stats works!</p>
+<div>
+  <mat-tab-group>
+    <mat-tab label="{{ 'Stats.Title' | translate }}">
+      <mat-card>
+        <mat-card-content>
+          @if(stats().totalRolePoints){
+          <div class="grid grid-cols-2 md:grid-cols-4 divide-x justify-around">
+            <div class="flex flex-row px-4">
+              <p class="text-5xl">{{ totalPoints() }}</p>
+              <p class="pl-4">
+                {{ 'Stats.PointsTotal' | translate }} <br />
+                {{ 'Stats.Points' | translate }}
+              </p>
+            </div>
+
+            <div class="flex flex-row px-4">
+              <p class="text-5xl">{{ stats().completedRolePoints }}</p>
+              <p class="pl-4">
+                {{ 'Stats.PointsCompleted' | translate }} <br />
+                {{ 'Stats.Points' | translate }}
+              </p>
+            </div>
+
+            <div class="flex flex-row px-4">
+              <p class="text-5xl">
+                {{ stats().totalTasks - stats().completedTasks }}
+              </p>
+              <p class="pl-4">
+                {{ 'Stats.OpenTasks' | translate }} <br />
+                {{ 'Stats.Tasks' | translate }}
+              </p>
+            </div>
+
+            <div class="flex flex-row px-4">
+              <p class="text-5xl">{{ stats().completedTasks }}</p>
+              <p class="pl-4">
+                {{ 'Stats.ClosedTasks' | translate }} <br />
+                {{ 'Stats.Tasks' | translate }}
+              </p>
+            </div>
+          </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+    <mat-tab label="{{ 'Stats.PointsPerRole' | translate }}">
+      <mat-card>
+        <mat-card-content>
+          <div class="grid grid-cols-2 md:grid-cols-4 divide-x justify-around">
+            @for (item of stats().totalRolePoints; track $index) {
+            <div class="flex flex-row">
+              <p class="pl-4 text-5xl">{{ item.value }}</p>
+              <p class="pl-4 text-xl">{{ item.key }}</p>
+            </div>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+</div>

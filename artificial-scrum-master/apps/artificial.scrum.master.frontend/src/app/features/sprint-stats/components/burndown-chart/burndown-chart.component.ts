@@ -1,6 +1,7 @@
-import { Component, computed, input, Signal } from '@angular/core';
+import { Component, computed, inject, input, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SprintDayStats } from '../../models/GetSprintStats';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   NgApexchartsModule,
   ApexAxisChartSeries,
@@ -33,10 +34,12 @@ export type ChartOptions = {
 @Component({
   selector: 'app-burndown-chart',
   standalone: true,
-  imports: [CommonModule, NgApexchartsModule],
+  imports: [CommonModule, TranslateModule, NgApexchartsModule],
   templateUrl: './burndown-chart.component.html',
 })
 export class BurndownChartComponent {
+  private readonly translateService = inject(TranslateService);
+
   sprintDayStats = input.required<SprintDayStats[]>();
 
   realPendingPoints = computed(() =>
@@ -57,21 +60,21 @@ export class BurndownChartComponent {
     return {
       series: [
         {
-          name: 'Real pending points',
-          data: this.realPendingPoints(),
+          name: this.translateService.instant('Stats.BurndownChart.Optimal'),
+          data: this.optimalPendingPoints(),
         },
         {
-          name: 'Optimal pending points',
-          data: this.optimalPendingPoints(),
+          name: this.translateService.instant('Stats.BurndownChart.Real'),
+          data: this.realPendingPoints(),
         },
       ],
       chart: {
-        id: 'yt',
+        id: 'burn-down-chart',
         group: 'social',
         type: 'area',
         height: 240,
       },
-      colors: ['#0078d4', 'lightgray'],
+      colors: ['lightgray', '#0078d4'],
     };
   });
 
@@ -108,6 +111,9 @@ export class BurndownChartComponent {
     },
     xaxis: {
       type: 'datetime',
+      labels: {
+        format: 'dd.MM',
+      },
     },
   };
 }

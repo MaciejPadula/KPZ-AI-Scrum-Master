@@ -3,6 +3,7 @@ using Artificial.Scrum.Master.EstimationPoker.Features.AddTaskEstimation;
 using Artificial.Scrum.Master.EstimationPoker.Features.CreateSession;
 using Artificial.Scrum.Master.EstimationPoker.Features.GetCurrentTask;
 using Artificial.Scrum.Master.EstimationPoker.Features.GetSession;
+using Artificial.Scrum.Master.EstimationPoker.Features.GetSuggestedEstimation;
 using Artificial.Scrum.Master.EstimationPoker.Features.GetTaskEstimations;
 using Artificial.Scrum.Master.EstimationPoker.Features.GetUserProjectSessions;
 using Microsoft.AspNetCore.Routing;
@@ -22,5 +23,7 @@ public static class EstimationPokerEndpoints
 
         routes.MapAddTaskEstimationEndpoint();
         routes.MapGetTaskEstimationsEndpoint();
+
+        routes.MapGetSuggestedEstimationEndpoint();
     }
 }

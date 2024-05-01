@@ -25,7 +25,13 @@ internal class SetTaigaAccessService : ISetTaigaAccessService
 
     public async Task Handle(SetTaigaAccessRequest request)
     {
-        var entity = await _userSettingsRepository.GetUserSettings(_userAccessor.UserId);
+        var userId = _userAccessor.UserId;
+        if (string.IsNullOrEmpty(userId))
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        var entity = await _userSettingsRepository.GetUserSettings(userId);
 
         if (entity is not null)
         {

@@ -1,7 +1,7 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { HttpBackend, provideHttpClient } from '@angular/common/http';
+import { HttpBackend, provideHttpClient, withFetch } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   SocialAuthServiceConfig,
@@ -18,7 +18,7 @@ export function HttpLoaderFactory(_httpBackend: HttpBackend) {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoutes),
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
     provideAnimationsAsync(),
     {
       provide: 'SocialAuthServiceConfig',

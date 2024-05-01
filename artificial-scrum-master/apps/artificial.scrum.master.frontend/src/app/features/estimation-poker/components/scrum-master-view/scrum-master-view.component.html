@@ -1,28 +1,37 @@
-@if (estimations().length > 0) {
-  <div>
-    @for (estimation of estimations(); track $index) {
-      <div>
-        <span class="font-bold">{{ estimation.username }}: </span>
-        <span>{{ estimation.estimation }}</span>
-      </div>
-    }
-
+<div>
+  @if (currentTask() !== null && estimations().length > 0) {
     <div>
-      <span class="font-bold">{{ 'EstimationPoker.AverageEstimation' | translate }}: </span>
-      <span>{{averageEstimation()}}</span>
+      @for (estimation of estimations(); track $index) {
+        <div>
+          <span class="font-bold">{{ estimation.username }}: </span>
+          <span>{{ estimation.estimation }}</span>
+        </div>
+      }
+  
+      <div>
+        <span class="font-bold"
+          >{{ 'EstimationPoker.AverageEstimation' | translate }}:
+        </span>
+        <span>{{ averageEstimation() }}</span>
+      </div>
     </div>
-  </div>
-}
-
-@if (currentTask() === null || estimations().length !== 0) {
-  <button mat-raised-button color="primary" (click)="addTask()">
-    <mat-icon>add</mat-icon>
-    <span>{{ 'EstimationPoker.AddTask' | translate }}</span>
-  </button>
-}
-
-@if (currentTask() !== null && estimations().length == 0) {
-  <button mat-raised-button color="primary" (click)="revealEstimations()">
-    <span>{{ 'EstimationPoker.RevealEstimations' | translate }}</span>
-  </button>
-}
+  
+    <div class="my-4">
+      <app-suggest-estimation
+        [taskId]="taskId()"
+        [teamEstimations]="estimationValues()"
+      />
+    </div>
+  }
+  @if (currentTask() === null || estimations().length !== 0) {
+    <button mat-raised-button color="primary" (click)="addTask()">
+      <mat-icon>add</mat-icon>
+      <span>{{ 'EstimationPoker.AddTask' | translate }}</span>
+    </button>
+  }
+  @if (currentTask() !== null && estimations().length == 0) {
+    <button mat-raised-button color="primary" (click)="revealEstimations()">
+      <span>{{ 'EstimationPoker.RevealEstimations' | translate }}</span>
+    </button>
+  }
+</div>

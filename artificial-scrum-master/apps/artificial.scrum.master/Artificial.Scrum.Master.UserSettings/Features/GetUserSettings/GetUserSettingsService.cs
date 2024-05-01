@@ -24,7 +24,13 @@ internal class GetUserSettingsService : IGetUserSettingsService
 
     public async Task<GetUserSettingsResponse> Handle()
     {
-        var result = await _userSettingsRepository.GetUserSettings(_userAccessor.UserId);
+        var userId = _userAccessor.UserId;
+        if (string.IsNullOrEmpty(userId))
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        var result = await _userSettingsRepository.GetUserSettings(userId);
         if (result is null)
         {
             return new();

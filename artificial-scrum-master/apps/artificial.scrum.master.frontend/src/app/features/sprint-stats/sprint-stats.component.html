@@ -1,0 +1,19 @@
+<div>
+  <div>
+    <div>
+      @if(stats().totalRolePoints){
+      <p class="mat-subtitle-2">
+        {{ 'Stats.Title' | translate }}: {{ stats().sprintName }}
+      </p>
+      }
+    </div>
+    <div>
+      @if(stats().totalRolePoints){
+      <app-stats [stats]="stats()" />
+      }
+    </div>
+  </div>
+  @if(stats().totalRolePoints){
+  <app-burndown-chart [sprintDayStats]="stats().sprintDayStats" />
+  }
+</div>

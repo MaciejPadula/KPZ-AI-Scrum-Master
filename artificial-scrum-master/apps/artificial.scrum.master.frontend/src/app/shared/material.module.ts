@@ -24,6 +24,8 @@ import {
   MatProgressSpinnerModule,
 } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
+import { NgScrollbarModule } from 'ngx-scrollbar';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [],
@@ -49,6 +51,8 @@ import { MatCardModule } from '@angular/material/card';
     MatCardModule,
     MatChipsModule,
     MatProgressSpinnerModule,
+    NgScrollbarModule,
+    MatTabsModule,
   ],
   exports: [
     MatButtonModule,
@@ -71,6 +75,8 @@ import { MatCardModule } from '@angular/material/card';
     MatCardModule,
     MatChipsModule,
     MatProgressSpinnerModule,
+    NgScrollbarModule,
+    MatTabsModule,
   ],
 })
 export class MaterialModule {}

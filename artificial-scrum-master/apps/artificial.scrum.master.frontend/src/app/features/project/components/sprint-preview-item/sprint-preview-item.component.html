@@ -19,10 +19,12 @@
 
     <span class="grid grid-cols-3 items-center pb-2">
       <span class="mat-caption ml-2"
-        >Start: {{ formatDate(sprintElement().estimatedStart) }}</span
+        >{{ 'Project.SprintPreview.Start' | translate }}:
+        {{ formatDate(sprintElement().estimatedStart) }}</span
       >
       <span class="mat-caption ml-2"
-        >End: {{ formatDate(sprintElement().estimatedFinish) }}</span
+        >{{ 'Project.SprintPreview.End' | translate }}:
+        {{ formatDate(sprintElement().estimatedFinish) }}</span
       >
     </span>
   </a>
@@ -39,8 +41,14 @@
             >
           </mat-expansion-panel-header>
           <span class="grid grid-cols-3 items-center">
-            <span class="mat-body">Status: {{ story.statusName }}</span>
-            <span class="mat-body">Total points: {{ story.totalPoints }}</span>
+            <span class="mat-body"
+              >{{ 'Project.SprintPreview.Story.Status' | translate }}:
+              {{ story.statusName }}</span
+            >
+            <span class="mat-body"
+              >{{ 'Project.SprintPreview.Story.TotalPoints' | translate }}:
+              {{ story.totalPoints }}</span
+            >
           </span>
         </mat-expansion-panel>
         }

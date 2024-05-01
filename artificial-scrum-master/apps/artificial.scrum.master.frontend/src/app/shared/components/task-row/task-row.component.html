@@ -10,20 +10,21 @@
   <mat-card-content>
     <div class="flex flex-row items-center">
       <span>
-        Assigned to:
+        {{ 'Tasks.AssignedTo' | translate }}:
+        <br />
         {{
           taskRow.assignedToFullName === null
-            ? 'Not assigned'
+            ? ('Tasks.NotAssigned' | translate)
             : taskRow.assignedToFullName
         }}
       </span>
       @if(taskRow.assignedToPhoto !== null){
-      <app-avatar [src]="taskRow.assignedToPhoto" class="ml-2" />
+      <app-avatar [src]="taskRow.assignedToPhoto" class="ml-1.5" />
       }
     </div>
     <div class="flex flex-row items-center">
       @if(taskRow.tags.length > 0){
-      <span class="mr-2">Tags: </span>
+      <span class="mr-2">{{ 'Tasks.Tags' | translate }}: </span>
       }
 
       <mat-chip-set aria-label="Tags">

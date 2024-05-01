@@ -5,7 +5,15 @@
     </p>
 
     <div class="w-full">
-      <app-sprint-preview />
+      <app-sprint-preview [sprints]="sprints()" />
+      @if (projectId() && topSprintId()!==topSprintIdNotSet) {
+      <div class="mx-4">
+        <app-sprint-stats
+          [projectId]="projectId()"
+          [sprintId]="topSprintId()"
+        />
+      </div>
+      }
     </div>
   </div>
   <div class="w-full sm:w-2/5 flex flex-col space-y-4">

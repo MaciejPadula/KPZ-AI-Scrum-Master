@@ -7,16 +7,16 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHt
 
 internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
 {
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly IJwtDecoder _jwtDecoder;
     private readonly ITokenRefresher _tokenRefresher;
 
     public ProjectHttpClientWrapper(
-        HttpClient httpClient,
+        IHttpClientFactory httpClientFactory,
         IJwtDecoder jwtDecoder,
         ITokenRefresher tokenRefresher)
     {
-        _httpClient = httpClient;
+        _httpClientFactory = httpClientFactory;
         _jwtDecoder = jwtDecoder;
         _tokenRefresher = tokenRefresher;
     }
@@ -25,25 +25,25 @@ internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
         string userId,
         string refreshToken,
         Func<UserDetails, string> urlFactory) =>
-            await SendRequest<TResponse>(
-                userId,
-                refreshToken,
-                user => _httpClient.GetAsync(urlFactory(user)));
+        await SendRequest<TResponse>(
+            userId,
+            refreshToken,
+            (httpClient, user) => httpClient.GetAsync(urlFactory(user)));
 
     public async Task<TResponse> PostHttpRequest<TRequest, TResponse>(
         string userId,
         string refreshToken,
         Func<UserDetails, string> urlFactory,
         TRequest payload) =>
-            await SendRequest<TResponse>(
-                userId,
-                refreshToken,
-                user => _httpClient.PostAsJsonAsync(urlFactory(user), payload));
+        await SendRequest<TResponse>(
+            userId,
+            refreshToken,
+            (httpClient, user) => httpClient.PostAsJsonAsync(urlFactory(user), payload));
 
     private async Task<TResponse> SendRequest<TResponse>(
         string userId,
         string refreshToken,
-        Func<UserDetails, Task<HttpResponseMessage>> messageSender)
+        Func<HttpClient, UserDetails, Task<HttpResponseMessage>> messageSender)
     {
         var userTokens = await _tokenRefresher.RefreshUserTokens(userId, refreshToken);
 
@@ -53,12 +53,14 @@ internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
             throw new ProjectRequestForbidException("User id not found in token");
         }
 
-        _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {userTokens.AccessToken}");
-        var httpResponse = await messageSender(new(memberId));
+        using var httpClient = _httpClientFactory.CreateClient(Consts.TaigaClient);
+        httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {userTokens.AccessToken}");
+
+        var httpResponse = await messageSender(httpClient, new(memberId));
         await EnsureStatusSuccess(httpResponse);
 
         return await httpResponse.Content.ReadFromJsonAsync<TResponse>()
-            ?? throw new ProjectRequestFailedException("Response deserialization failed");
+               ?? throw new ProjectRequestFailedException("Response deserialization failed");
     }
 
     private static async Task EnsureStatusSuccess(HttpResponseMessage httpResponse)
@@ -67,7 +69,7 @@ internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
         {
             var errorContent = await httpResponse.Content.ReadAsStringAsync();
             throw new ProjectRequestFailedException(
-                               $"Request failed with status code {httpResponse.StatusCode}: {errorContent}");
+                $"Request failed with status code {httpResponse.StatusCode}: {errorContent}");
         }
     }
 }

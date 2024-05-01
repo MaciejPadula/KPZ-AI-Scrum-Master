@@ -2,7 +2,6 @@ using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Models;
 using Microsoft.Extensions.Caching.Memory;
-using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
@@ -54,7 +53,7 @@ internal class TokenRefresher : ITokenRefresher
         await EnsureStatusSuccess(httpResponse);
 
         var result = await httpResponse.Content.ReadFromJsonAsync<RefreshResponse>()
-            ?? throw new ProjectRequestFailedException("Response deserialization failed");
+                     ?? throw new ProjectRequestFailedException("Response deserialization failed");
 
         var newTokens = new UserTokens(
             result.AccessToken,
@@ -70,7 +69,7 @@ internal class TokenRefresher : ITokenRefresher
         {
             var errorContent = await httpResponse.Content.ReadAsStringAsync();
             throw new ProjectRequestFailedException(
-                               $"Request failed with status code {httpResponse.StatusCode}: {errorContent}");
+                $"Request failed with status code {httpResponse.StatusCode}: {errorContent}");
         }
     }
 }

@@ -6,6 +6,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
 import { UserStory } from '../../models/user-story';
 import { UserStoryListItemComponent } from '../user-story-list-item/user-story-list-item.component';
 import { MaterialModule } from '../../../../shared/material.module';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-story-list',
@@ -17,6 +18,7 @@ export class UserStoryListComponent implements OnInit {
   private projectId: number;
   private sprintId: number;
 
+  private readonly translateService = inject(TranslateService);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly sprintPreviewDataService = inject(UserStoriesService);
   private readonly toastService = inject(ToastService);
@@ -45,7 +47,10 @@ export class UserStoryListComponent implements OnInit {
           this.sprintName =
             stories.length > 0 ? stories[0].sprintName : 'Sprint';
         },
-        error: () => this.toastService.openError('Error fetching user stories'),
+        error: () =>
+          this.toastService.openError(
+            this.translateService.instant('UserStories.Error')
+          ),
       });
   }
 }

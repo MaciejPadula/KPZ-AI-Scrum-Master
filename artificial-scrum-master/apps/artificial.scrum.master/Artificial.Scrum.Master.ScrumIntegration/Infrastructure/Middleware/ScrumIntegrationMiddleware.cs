@@ -43,6 +43,11 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Middleware
                 await context.Response.WriteAsJsonAsync(ex.Message);
                 _logger.LogError(ex, ex.Message);
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                context.Response.StatusCode = 401;
+                await context.Response.WriteAsJsonAsync(ex.Message);
+            }
         }
     }
 }

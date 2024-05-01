@@ -9,11 +9,18 @@ import { CommonModule } from '@angular/common';
 import { SprintPreview } from '../../models/sprint-preview';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
 import { MaterialModule } from '../../../../shared/material.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sprint-preview-item',
   standalone: true,
-  imports: [CommonModule, AvatarComponent, MaterialModule, RouterModule],
+  imports: [
+    CommonModule,
+    AvatarComponent,
+    MaterialModule,
+    RouterModule,
+    TranslateModule,
+  ],
   templateUrl: './sprint-preview-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

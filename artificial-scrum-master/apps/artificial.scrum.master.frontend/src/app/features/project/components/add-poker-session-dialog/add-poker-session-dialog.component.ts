@@ -25,7 +25,7 @@ export class AddPokerSessionDialogComponent {
   );
   private readonly pokerDataService = inject(ProjectPokerDataService);
   private readonly toastService = inject(ToastService);
-  private readonly tranlateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
   public nameControl = new FormControl('', [
     Validators.required,
@@ -48,10 +48,15 @@ export class AddPokerSessionDialogComponent {
       .pipe(finalize(() => this.#loading.set(false)))
       .subscribe({
         next: () => {
-          this.toastService.openSuccess(this.tranlateService.instant('Project.Poker.AddSession.Success'));
+          this.toastService.openSuccess(
+            this.translateService.instant('Project.Poker.AddSession.Success')
+          );
           this.dialogRef.close();
         },
-        error: () => this.toastService.openError(this.tranlateService.instant('Project.Poker.AddSession.Error')),
+        error: () =>
+          this.toastService.openError(
+            this.translateService.instant('Project.Poker.AddSession.Error')
+          ),
       });
   }
 

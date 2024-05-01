@@ -15,6 +15,6 @@ public class UserStoryDetails
     public string? StatusColor { get; set; }
     public bool IsStatusClosed { get; set; }
     public string? StatusName { get; set; }
-
     public string? Title { get; set; }
+    public int ? Number { get; set; }
 }

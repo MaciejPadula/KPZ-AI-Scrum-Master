@@ -7,4 +7,5 @@ export interface UserStoryDetails {
     isStatusClosed: boolean;
     statusName: string;
     title: string;
+    number: number;
 }

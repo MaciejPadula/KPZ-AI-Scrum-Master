@@ -35,7 +35,8 @@ internal class UserStoryDetailsService(
             IsStatusClosed = userStoryRequestResult.StatusInfo?.Closed ?? false,
             StatusColor = userStoryRequestResult.StatusInfo?.Color,
             StatusName = userStoryRequestResult.StatusInfo?.Name,
-            Title = userStoryRequestResult.Title
+            Title = userStoryRequestResult.Title,
+            Number = userStoryRequestResult.Number
         };
     }
 

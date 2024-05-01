@@ -11,8 +11,9 @@ internal class UserStoryDetailsResponse
     [JsonPropertyName("assigned_to_extra_info")] public AssignedToExtraInfo? AssignedToInfo { get; set; }
     [JsonPropertyName("status_extra_info")] public StatusExtraInfo? StatusInfo { get; set; }
     [JsonPropertyName("created_date")] public DateTime? Created { get; set; }
-    [JsonPropertyName("description")] public string? Description { get; set; }
+    [JsonPropertyName("description_html")] public string? Description { get; set; }
     [JsonPropertyName("subject")] public string? Title { get; set; }
+    [JsonPropertyName("ref")] public int? Number { get; set; }
 
 }
 

@@ -4,12 +4,14 @@ import { MaterialModule } from 'apps/artificial.scrum.master.frontend/src/app/sh
 import { UserStoryDetails } from '../../models/user-story-details';
 import { HttpClient } from '@angular/common/http';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-story-details',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, TranslateModule],
   templateUrl: './user-story-details.component.html',
+  styleUrls: ['./user-story-details.component.scss']
 })
 export class UserStoryDetailsComponent implements OnInit {
 

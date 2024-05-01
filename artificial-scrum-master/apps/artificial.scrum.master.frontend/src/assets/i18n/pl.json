@@ -113,6 +113,7 @@
   "UserStories.Points": "Punkty",
   "UserStories.Error": "Wystąpił problem z załadowaniem historyjek użytkownika",
   "UserStories.Tasks.Error": "Wystąpił problem z załadowaniem zadań",
+  "UserStories.Description": "Opis",
   "Tasks.AssignedTo": "Przypisane do",
   "Tasks.NotAssigned": "Nie przypisano",
   "Tasks.Tags": "Tagi"

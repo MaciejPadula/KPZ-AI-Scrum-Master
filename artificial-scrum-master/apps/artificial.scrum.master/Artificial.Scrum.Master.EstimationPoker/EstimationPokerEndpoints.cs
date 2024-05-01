@@ -6,6 +6,8 @@ using Artificial.Scrum.Master.EstimationPoker.Features.GetSession;
 using Artificial.Scrum.Master.EstimationPoker.Features.GetSuggestedEstimation;
 using Artificial.Scrum.Master.EstimationPoker.Features.GetTaskEstimations;
 using Artificial.Scrum.Master.EstimationPoker.Features.GetUserProjectSessions;
+using Artificial.Scrum.Master.EstimationPoker.Features.UsersList;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
 namespace Artificial.Scrum.Master.EstimationPoker;
@@ -25,5 +27,7 @@ public static class EstimationPokerEndpoints
         routes.MapGetTaskEstimationsEndpoint();
 
         routes.MapGetSuggestedEstimationEndpoint();
+
+        routes.MapHub<UsersListHub>("/hub/users-list");
     }
 }

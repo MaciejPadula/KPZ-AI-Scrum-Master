@@ -11,6 +11,15 @@ html {
   color: white;
 }
 
+.dark-theme .stubborn-icon {
+  filter: invert(1);
+}
+
+.dark-theme .stubborn-icon-inverted {
+  filter: invert(0) !important;
+}
+
+
 .img-loading {
   border-radius: 10px;
   background-color: rgb(224, 224, 224);

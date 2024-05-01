@@ -6,6 +6,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
+using Artificial.Scrum.Master.ScrumIntegration.Features.UserStoryDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -67,11 +68,21 @@ public static class ScrumIntegrationEndpoints
                 {
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
                     await context.Response.WriteAsJsonAsync(new
-                        { Message = "Either userStoryId or sprintId is required" });
+                    { Message = "Either userStoryId or sprintId is required" });
                     return;
                 }
 
                 var result = await service.Handle(userStoryId, sprintId);
+                await context.Response.WriteAsJsonAsync(result);
+            });
+
+        routes.MapGet("/api/userStories/{storyId}",
+            async (HttpContext context,
+            IUserStoryDetailsService userStoryDetailsService,
+            string storyId) =>
+            {
+                var result = await userStoryDetailsService.Handle(storyId);
+
                 await context.Response.WriteAsJsonAsync(result);
             });
 

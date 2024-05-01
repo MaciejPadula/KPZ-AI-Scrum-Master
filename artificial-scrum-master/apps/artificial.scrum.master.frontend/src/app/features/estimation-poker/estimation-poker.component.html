@@ -6,9 +6,12 @@
     <div>{{ 'EstimationPoker.NoTasks' | translate }}</div>
   }
   
-  @if (showScrumMasterView()) {
-    <app-scrum-master-view [sessionId]="sessionId()" />
-  } @else {
-    <app-developer-view [sessionId]="sessionId()" />
+  @if (showAnything()) {
+    @if (showScrumMasterView()) {
+      <app-scrum-master-view [sessionId]="sessionId()" />
+    } @else {
+      <app-developer-view [sessionId]="sessionId()" />
+    }
   }
+  
 </div>

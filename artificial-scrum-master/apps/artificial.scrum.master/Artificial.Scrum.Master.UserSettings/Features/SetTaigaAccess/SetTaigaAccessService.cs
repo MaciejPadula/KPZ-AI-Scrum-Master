@@ -44,7 +44,7 @@ internal class SetTaigaAccessService : ISetTaigaAccessService
         else
         {
             await _userSettingsRepository.AddUserSettings(new UserSettingsEntity(
-                _userAccessor.UserId,
+                userId,
                 request.AccessToken,
                 request.RefreshToken));
         }

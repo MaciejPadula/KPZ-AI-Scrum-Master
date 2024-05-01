@@ -41,12 +41,12 @@ internal class OpenAIPokerSuggestionService : IPokerSuggestionService
             Messages =
             [
                 ChatMessage.FromSystem(@"
-Estimate time that is required to complete following task and return it in json format:
+Estimate time that is required to complete the following task and return it in json format:
 {
     'Value': 5,
     'Reason': 'I chose this value because...'
-}"),
-                ChatMessage.FromSystem($"Language: Polish"),
+}
+Please translate Reason to Polish"),
                 ChatMessage.FromSystem($"Task title: {taskTitle}"),
                 ChatMessage.FromSystem($"Task description: {taskDescription}"),
                 ChatMessage.FromSystem("Estimations:"),

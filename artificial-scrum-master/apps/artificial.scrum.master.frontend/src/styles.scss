@@ -38,3 +38,20 @@ html {
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
   }
 }
+
+//scrollbar
+* {
+  /* Scrollbar settings for Firefox */
+  scrollbar-width: thin; /* Makes the scrollbar thinner */
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* Styles the scrollbar thumb and track */
+}
+
+ng-scrollbar {
+  --scrollbar-thickness: 8 !important;
+  --scrollbar-border-radius: 8px !important;
+
+  @media (max-width: 600px) {
+    --scrollbar-thickness: 5 !important;
+    --scrollbar-border-radius: 8px !important;
+  }
+}

@@ -24,6 +24,7 @@ import {
   MatProgressSpinnerModule,
 } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
+import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
@@ -50,6 +51,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatCardModule,
     MatChipsModule,
     MatProgressSpinnerModule,
+    NgScrollbarModule,
     MatTabsModule,
   ],
   exports: [
@@ -73,7 +75,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatCardModule,
     MatChipsModule,
     MatProgressSpinnerModule,
+    NgScrollbarModule
     MatTabsModule,
   ],
 })
-export class MaterialModule {}
+export class MaterialModule { }

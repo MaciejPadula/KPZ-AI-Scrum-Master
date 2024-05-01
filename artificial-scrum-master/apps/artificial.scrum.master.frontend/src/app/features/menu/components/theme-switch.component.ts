@@ -12,7 +12,7 @@ import { TranslateModule } from "@ngx-translate/core";
     imports: [CommonModule, MaterialModule, TranslateModule]
 })
 export class ThemeSwitchComponent implements OnInit {
-    private darkTheme: boolean = false;
+    darkTheme: boolean = false;
     private httpClient: HttpClient = inject(HttpClient);
 
     ngOnInit(): void {
@@ -20,8 +20,7 @@ export class ThemeSwitchComponent implements OnInit {
             next: (darkTheme: boolean) => {
                 this.darkTheme = darkTheme;
                 document.body.classList.toggle('dark-theme', this.darkTheme);
-            },
-            error: () => { console.log('Failed to get dark theme status') }
+            }
         });
     }
 
@@ -31,8 +30,7 @@ export class ThemeSwitchComponent implements OnInit {
                 next: () => {
                     this.darkTheme = !this.darkTheme;
                     document.body.classList.toggle('dark-theme', this.darkTheme);
-                },
-                error: () => { console.log('Failed to change dark theme status') }
+                }
             }
         );
     }

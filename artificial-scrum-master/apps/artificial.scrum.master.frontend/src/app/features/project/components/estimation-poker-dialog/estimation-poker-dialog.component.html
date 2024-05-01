@@ -1,0 +1,7 @@
+<h2 mat-dialog-title>{{ 'Project.Poker.Title' | translate }}</h2>
+<mat-dialog-content>
+  <app-poker-sessions-list [projectId]="projectId" />
+</mat-dialog-content>
+<mat-dialog-actions class="flex !justify-end">
+  <button mat-button (click)="onNoClick()">{{ 'Shared.Words.Close' | translate }}</button>
+</mat-dialog-actions>

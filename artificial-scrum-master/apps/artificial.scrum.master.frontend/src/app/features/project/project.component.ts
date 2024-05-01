@@ -10,12 +10,12 @@ import { CommonModule } from '@angular/common';
 import { ProjectFeedComponent } from './components/project-feed/project-feed.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
-import { PokerSessionsListComponent } from './components/poker-sessions-list/poker-sessions-list.component';
 import { SprintPreviewComponent } from './components/sprint-preview/sprint-preview.component';
 import { SprintStatsComponent } from '../sprint-stats/sprint-stats.component';
 import { SprintPreviewDataService } from './services/sprint-preview.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { SprintPreview } from './models/sprint-preview';
+import { EstimationPokerButtonComponent } from './components/estimation-poker-button/estimation-poker-button.component';
 
 @Component({
   selector: 'app-project',
@@ -26,9 +26,9 @@ import { SprintPreview } from './models/sprint-preview';
     CommonModule,
     ProjectFeedComponent,
     TranslateModule,
-    PokerSessionsListComponent,
     SprintPreviewComponent,
     SprintStatsComponent,
+    EstimationPokerButtonComponent,
   ],
 })
 export class ProjectComponent implements OnInit {

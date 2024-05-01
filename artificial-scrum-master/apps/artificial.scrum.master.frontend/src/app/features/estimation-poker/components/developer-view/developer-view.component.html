@@ -1,11 +1,13 @@
-@if (!userData().isAuthorized && !isRegistered()) {
+@if (!userData().isAuthorized) {
   <div class="flex items-center justify-center">
     <mat-form-field>
       <mat-label>{{ 'Shared.Words.Username' | translate }}</mat-label>
       <input matInput [formControl]="usernameControl" />
     </mat-form-field>
   </div>
+}
 
+@if (!isRegistered()) {
   <button mat-raised-button color="primary" (click)="register()">
     {{ 'EstimationPoker.Register' | translate }}
   </button>

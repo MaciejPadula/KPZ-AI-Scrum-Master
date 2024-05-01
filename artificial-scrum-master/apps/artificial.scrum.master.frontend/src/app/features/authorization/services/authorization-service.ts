@@ -2,6 +2,7 @@ import { SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
 import { HttpClient, } from "@angular/common/http";
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { UserData } from "../models/user-data";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +23,7 @@ export class AuthorizationService {
 
     private googleAuthService = inject(SocialAuthService);
     private httpClient = inject(HttpClient);
+    private router = inject(Router);
 
     constructor() {
         this.getServerAuthorizationStatus();
@@ -38,6 +40,7 @@ export class AuthorizationService {
                                 userName: user.name,
                                 userPhotoUrl: user.photoUrl
                             });
+                            this.router.navigate(["/Home"]);
                         },
                         error: () => {
                             this.#userData.set({
@@ -61,6 +64,7 @@ export class AuthorizationService {
                         userName: null,
                         userPhotoUrl: null
                     });
+                    this.router.navigate(["/"]);
                 }
             });
 

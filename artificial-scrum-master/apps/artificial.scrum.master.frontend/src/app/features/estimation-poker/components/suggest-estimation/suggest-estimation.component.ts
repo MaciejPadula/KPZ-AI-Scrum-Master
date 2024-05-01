@@ -4,6 +4,7 @@ import { EstimationPokerDataService } from '../../services/estimation-poker-data
 import { MaterialModule } from '../../../../shared/material.module';
 import { GetSuggestedEstimationResponse } from '../../models/get-suggested-estimation-response';
 import { TranslateModule } from '@ngx-translate/core';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-suggest-estimation',
@@ -23,9 +24,14 @@ export class SuggestEstimationComponent {
   public reason = computed(() => this.estimationResult()?.reason ?? '');
   public estimation = computed(() => this.estimationResult()?.estimation ?? 0);
 
+  #loading = signal<boolean>(false);
+  public loading = this.#loading.asReadonly();
+
   public suggestEstimation() {
+    this.#loading.set(true);
     this.dataService
       .getSuggestedEstimation(this.taskId(), this.teamEstimations())
+      .pipe(finalize(() => this.#loading.set(false)))
       .subscribe({
         next: (response) => this.#estimationResult.set(response),
       });

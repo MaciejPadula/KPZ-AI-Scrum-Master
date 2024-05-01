@@ -1,6 +1,11 @@
 @if (!estimationResult()) {
-  <button mat-raised-button color="primary" (click)="suggestEstimation()">
-    {{ 'Project.Poker.Suggestion.Button' | translate }}
+  <button mat-raised-button color="primary" [disabled]="loading()" (click)="suggestEstimation()">
+    <span class="flex flex-row items-center justify-center gap-2">
+      <span>{{ 'Project.Poker.Suggestion.Button' | translate }}</span>
+      @if (loading()) {
+        <mat-spinner diameter="16"></mat-spinner>
+      }
+    </span>
     <mat-icon>auto_fix_high</mat-icon>
   </button>
 } @else {

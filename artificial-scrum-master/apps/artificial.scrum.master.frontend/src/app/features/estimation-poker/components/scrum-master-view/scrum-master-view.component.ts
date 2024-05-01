@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  OnInit,
   computed,
   inject,
   input,
@@ -15,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.component';
 import { SessionTaskComponent } from '../session-task/session-task.component';
 import { SuggestEstimationComponent } from "../suggest-estimation/suggest-estimation.component";
+import { UsersListService } from '../../services/users-list.service';
 
 @Component({
     selector: 'app-scrum-master-view',
@@ -29,8 +31,9 @@ import { SuggestEstimationComponent } from "../suggest-estimation/suggest-estima
         SuggestEstimationComponent
     ]
 })
-export class ScrumMasterViewComponent {
+export class ScrumMasterViewComponent implements OnInit{
   private readonly estimationPokerService = inject(EstimationPokerService);
+  private readonly usersListService = inject(UsersListService);
   private readonly dialog = inject(MatDialog);
 
   public sessionId = input.required<string>();
@@ -39,6 +42,7 @@ export class ScrumMasterViewComponent {
   public averageEstimation = computed(() => this.estimationPokerService.averageTaskEstimation().toFixed(2));
   public estimationValues = computed(() => this.estimations().map(x => x.estimation));
   public taskId = computed(() => this.currentTask()?.id ?? 0);
+  public users = this.usersListService.users;
 
   constructor() {
     timer(0, 5000)
@@ -47,6 +51,10 @@ export class ScrumMasterViewComponent {
         map(() => this.estimationPokerService.loadSessionTask(this.sessionId()))
       )
       .subscribe();
+  }
+
+  public ngOnInit(): void {
+    this.usersListService.connectScrumMaster(this.sessionId());
   }
 
   public addTask() {

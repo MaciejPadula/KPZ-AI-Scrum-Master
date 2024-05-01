@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  OnInit,
   effect,
   inject,
   input,
@@ -17,6 +18,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SessionTaskComponent } from "../session-task/session-task.component";
 import { AuthorizationService } from '../../../authorization/services/authorization-service';
+import { UsersListService } from '../../services/users-list.service';
 
 @Component({
     selector: 'app-developer-view',
@@ -25,13 +27,16 @@ import { AuthorizationService } from '../../../authorization/services/authorizat
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, MaterialModule, TranslateModule, ReactiveFormsModule, SessionTaskComponent]
 })
-export class DeveloperViewComponent {
+export class DeveloperViewComponent implements OnInit {
   private readonly estimationPokerDataService = inject(EstimationPokerDataService);
   private readonly estimationPokerService = inject(EstimationPokerService);
   private readonly toastService = inject(ToastService);
   private readonly translationService = inject(TranslateService);
   private readonly userDataService = inject(AuthorizationService);
+  private readonly usersListService = inject(UsersListService);
 
+  #isRegistered = signal<boolean>(false);
+  public isRegistered = this.#isRegistered.asReadonly();
   public sessionId = input.required<string>();
   public currentTask = this.estimationPokerService.sessionTask;
   public username = signal<string>('');
@@ -71,6 +76,20 @@ export class DeveloperViewComponent {
           this.username.set('');
         }
       });
+  }
+
+  public ngOnInit(): void {
+    this.usersListService.connectDeveloper(this.sessionId());
+  }
+
+  public register() {
+    if (!this.usernameControl.value || this.usernameControl.value.length < this.minUsernameLength) {
+      this.toastService.openError(this.translationService.instant("EstimationPoker.UserNameTooShort"));
+      return;
+    }
+
+    this.usersListService.registerUser(this.usernameControl.value);
+    this.#isRegistered.set(true);
   }
 
   public estimateCurrentTask(value: number) {

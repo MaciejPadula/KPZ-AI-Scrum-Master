@@ -29,5 +29,6 @@ public static class EstimationPokerModule
         services.AddTransient<IRequestValidator, RequestValidator>();
         services.AddTransient<IEstimationValidator, MinEstimationValidator>();
         services.AddTransient<IEstimationValidator, ModuloEstimationValidator>();
+        services.AddSignalR();
     }
 }

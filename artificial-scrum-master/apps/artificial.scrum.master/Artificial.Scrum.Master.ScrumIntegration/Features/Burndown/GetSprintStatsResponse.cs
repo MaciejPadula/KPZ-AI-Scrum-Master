@@ -15,7 +15,6 @@ internal readonly record struct GetSprintStatsResponse(
 
 internal readonly record struct SprintDayStats(
     string Day,
-    int Name,
     decimal OpenPoints,
     decimal OptimalPoints
 );

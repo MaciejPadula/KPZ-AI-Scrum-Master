@@ -20,7 +20,6 @@ internal class SprintStatsResponseMapper : ISprintStatsResponseMapper
     {
         var sprintDayStats = sprintStats.Days?.Select(day => new SprintDayStats(
             Day: day.Day ?? string.Empty,
-            Name: day.Name,
             OpenPoints: day.OpenPoints,
             OptimalPoints: day.OptimalPoints
         )).ToList();

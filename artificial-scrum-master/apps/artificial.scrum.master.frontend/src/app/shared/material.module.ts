@@ -75,8 +75,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatCardModule,
     MatChipsModule,
     MatProgressSpinnerModule,
-    NgScrollbarModule
+    NgScrollbarModule,
     MatTabsModule,
   ],
 })
-export class MaterialModule { }
+export class MaterialModule {}

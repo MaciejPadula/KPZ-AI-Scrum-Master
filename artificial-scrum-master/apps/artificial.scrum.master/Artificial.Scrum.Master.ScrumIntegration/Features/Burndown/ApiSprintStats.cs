@@ -19,7 +19,6 @@ public class SprintStats
 public class DayData
 {
     public string? Day { get; set; }
-    public int Name { get; set; }
     [JsonPropertyName("open_points")] public decimal OpenPoints { get; set; }
     [JsonPropertyName("optimal_points")] public decimal OptimalPoints { get; set; }
 }

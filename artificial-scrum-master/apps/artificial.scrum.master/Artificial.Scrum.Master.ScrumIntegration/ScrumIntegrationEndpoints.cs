@@ -2,6 +2,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.Burndown;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
+using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
@@ -79,6 +80,13 @@ public static class ScrumIntegrationEndpoints
                 [FromQuery] string sprintId) =>
             {
                 var result = await service.Handle(projectId, sprintId);
+                await context.Response.WriteAsJsonAsync(result);
+            });
+
+        routes.MapGet("/api/task/{taskId}",
+            async (HttpContext context, IGetTaskDetailsService service, [FromRoute] string taskId) =>
+            {
+                var result = await service.Handle(taskId);
                 await context.Response.WriteAsJsonAsync(result);
             });
     }

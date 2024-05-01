@@ -25,6 +25,8 @@ public static class InfrastructureModule
         services.AddTransient<IPokerSuggestionService, OpenAIPokerSuggestionService>();
 
         services.AddTransient<IUserAccessor, JwtUserAccessor>();
+
+        services.AddSingleton<IActiveUserRepository, InMemorySessionUserRepository>();
         return services;
     }
 }

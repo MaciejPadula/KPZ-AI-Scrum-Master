@@ -70,6 +70,8 @@
   "EstimationPoker.TaskName": "Nazwa zadania",
   "EstimationPoker.TaskDescription": "Opis zadania",
   "EstimationPoker.TaskDialogTitle": "Dodaj zadanie do pokera",
+  "EstimationPoker.Register": "Zarejestruj się",
+  "EstimationPoker.UsersList": "Lista użytkowników",
   "EstimationPoker.AddTask": "Dodaj zadanie",
   "EstimationPoker.RevealEstimations": "Pokaż estymacje",
   "EstimationPoker.NoTasks": "Nie dodano jeszcze żadnych zadań",

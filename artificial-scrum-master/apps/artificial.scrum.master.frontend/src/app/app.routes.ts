@@ -34,7 +34,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'EstimationPoker',
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
     loadChildren: () =>
       import('./features/estimation-poker/routes').then((mod) => mod.EstimationPokerRoutes),
   },

@@ -1,21 +1,27 @@
-@if (!userData().isAuthorized) {
+@if (!userData().isAuthorized && !isRegistered()) {
   <div class="flex items-center justify-center">
     <mat-form-field>
       <mat-label>{{ 'Shared.Words.Username' | translate }}</mat-label>
       <input matInput [formControl]="usernameControl" />
     </mat-form-field>
   </div>
+
+  <button mat-raised-button color="primary" (click)="register()">
+    {{ 'EstimationPoker.Register' | translate }}
+  </button>
 }
 
-<div class="flex flex-row flex-wrap">
-  @for (estimation of estimationValues(); track $index) {
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="estimateCurrentTask(estimation)"
-      [disabled]="disableEstimationButtons()"
-    >
-      {{ estimation }}
-    </button>
-  }
-</div>
+@if (isRegistered()) {
+  <div class="flex flex-row flex-wrap">
+    @for (estimation of estimationValues(); track $index) {
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="estimateCurrentTask(estimation)"
+        [disabled]="disableEstimationButtons()"
+      >
+        {{ estimation }}
+      </button>
+    }
+  </div>
+}

@@ -17,6 +17,9 @@ export class EstimationPokerService {
   private readonly toastService = inject(ToastService);
   private readonly translateService = inject(TranslateService);
 
+  public isSessionLoaded = computed(() => {
+    return this.session() !== null;
+  });
   public showScrumMasterView = computed(() => {
     return (
       this.authorizationService.isAuthorized() &&

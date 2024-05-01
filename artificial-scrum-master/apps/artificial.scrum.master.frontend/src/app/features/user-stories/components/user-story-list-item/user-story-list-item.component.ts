@@ -4,6 +4,7 @@ import { UserStory } from '../../models/user-story';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
 import { StoryTaskListComponent } from '../story-task-list/story-task-list.component';
 import { MaterialModule } from '../../../../shared/material.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-story-list-item',
@@ -15,6 +16,7 @@ import { MaterialModule } from '../../../../shared/material.module';
     AvatarComponent,
     StoryTaskListComponent,
     MaterialModule,
+    TranslateModule,
   ],
 })
 export class UserStoryListItemComponent {

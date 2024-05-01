@@ -11,6 +11,7 @@ import { ProjectListItemComponent } from '../project-list-item/project-list-item
 import { UserProject } from '../../models/user-project';
 import { ProjectsListDataService } from '../../services/projects-list-data.service';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-projects-list',
@@ -20,6 +21,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsListComponent implements OnInit {
+  private readonly translateService = inject(TranslateService);
   private readonly projectListDataService = inject(ProjectsListDataService);
   private readonly toastService = inject(ToastService);
 
@@ -31,7 +33,10 @@ export class ProjectsListComponent implements OnInit {
       next: (project) => {
         this.#projects.set(project);
       },
-      error: () => this.toastService.openError('Error fetching projects'),
+      error: () =>
+        this.toastService.openError(
+          this.translateService.instant('Projects.Error')
+        ),
     });
   }
 }

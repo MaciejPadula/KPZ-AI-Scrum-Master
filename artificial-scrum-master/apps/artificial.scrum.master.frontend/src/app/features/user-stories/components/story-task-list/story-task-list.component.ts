@@ -1,10 +1,10 @@
 import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { StoryTasksService } from '../../services/story-tasks.service';
 import { TaskRow } from '../../../../shared/components/task-row/task-row';
 import { TaskRowComponent } from '../../../../shared/components/task-row/task-row.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-story-task-list',
@@ -18,7 +18,7 @@ export class StoryTaskListComponent implements OnInit {
   @Input()
   public sprintId: number | null;
 
-  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly translateService = inject(TranslateService);
   private readonly sprintPreviewDataService = inject(StoryTasksService);
   private readonly toastService = inject(ToastService);
 
@@ -32,7 +32,10 @@ export class StoryTaskListComponent implements OnInit {
         next: (stories) => {
           this.#storyTasks.set(stories);
         },
-        error: () => this.toastService.openError('Error fetching tasks'),
+        error: () =>
+          this.toastService.openError(
+            this.translateService.instant('UserStories.Tasks.Error')
+          ),
       });
   }
 }

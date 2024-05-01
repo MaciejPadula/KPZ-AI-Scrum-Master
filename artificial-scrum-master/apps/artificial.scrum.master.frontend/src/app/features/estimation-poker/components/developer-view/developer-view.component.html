@@ -1,4 +1,4 @@
-@if (!userData().isAuthorized) {
+@if (!userData().isAuthorized && !isRegistered()) {
   <div class="flex items-center justify-center">
     <mat-form-field>
       <mat-label>{{ 'Shared.Words.Username' | translate }}</mat-label>

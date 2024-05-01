@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectFeedComponent } from './components/project-feed/project-feed.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { PokerSessionsListComponent } from './components/poker-sessions-list/poker-sessions-list.component';
 import { SprintPreviewComponent } from './components/sprint-preview/sprint-preview.component';
@@ -32,6 +32,7 @@ import { SprintPreview } from './models/sprint-preview';
   ],
 })
 export class ProjectComponent implements OnInit {
+  private readonly translateService = inject(TranslateService);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly sprintPreviewDataService = inject(SprintPreviewDataService);
   private readonly toastService = inject(ToastService);
@@ -42,8 +43,9 @@ export class ProjectComponent implements OnInit {
   #projectId = signal<number>(0);
   public projectId = this.#projectId.asReadonly();
 
+  readonly topSprintIdNotSet = -1;
   public topSprintId = computed(() => {
-    return this.sprints()[0]?.sprintId ?? 0;
+    return this.sprints()[0]?.sprintId ?? this.topSprintIdNotSet;
   });
 
   public ngOnInit(): void {
@@ -61,7 +63,9 @@ export class ProjectComponent implements OnInit {
         this.#sprints.set(sprints);
       },
       error: () =>
-        this.toastService.openError('Error fetching sprint previews'),
+        this.toastService.openError(
+          this.translateService.instant('Project.SprintPreview.Error')
+        ),
     });
   }
 }

@@ -13,10 +13,11 @@ import { TranslateModule } from '@ngx-translate/core';
 export class StatsComponent {
   stats = input.required<GetSprintStats>();
 
+  private readonly rolePointsNotSet = -1;
+
   public totalPoints = computed(() => {
-    console.log('totalPoints computed');
     if (!this.stats().totalRolePoints) {
-      return -1;
+      return this.rolePointsNotSet;
     }
     return this.stats().totalRolePoints.reduce(
       (p, rolePointsPair) => p + rolePointsPair.value,

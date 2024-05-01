@@ -7,6 +7,7 @@
   "Project.SprintPreview.Story.TotalPoints": "Suma punktów",
   "Project.SprintPreview.Start": "Start",
   "Project.SprintPreview.End": "Koniec",
+  "Project.SprintPreview.Error": "Wystąpił problem z załadowaniem podglądu sprintu",
   "Shared.Timeline.Row.ScrumObjectType.Task": "Zadanie",
   "Shared.Timeline.Row.HasBeen.Task": "zostało",
   "Shared.Timeline.Row.ScrumObjectState.Created.Task": "stworzone",

@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { GetSprintStats } from '../models/GetSprintStats';
 import { Observable } from 'rxjs';
@@ -15,12 +15,8 @@ export class SprintStatsService {
     projectId: number,
     sprintId: number
   ): Observable<GetSprintStats> {
-    let params = new HttpParams();
-    params = params.set('sprintId', sprintId.toString());
-
     return this.httpClient.get<GetSprintStats>(
-      `${this.baseApiUrl}/${projectId}/stats`,
-      { params }
+      `${this.baseApiUrl}/${projectId}/stats?sprintId=${sprintId}`
     );
   }
 }

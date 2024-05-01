@@ -6,7 +6,7 @@
 
     <div class="w-full">
       <app-sprint-preview [sprints]="sprints()" />
-      @if (projectId() && topSprintId()!=0) {
+      @if (projectId() && topSprintId()!==topSprintIdNotSet) {
       <div class="mx-4">
         <app-sprint-stats
           [projectId]="projectId()"

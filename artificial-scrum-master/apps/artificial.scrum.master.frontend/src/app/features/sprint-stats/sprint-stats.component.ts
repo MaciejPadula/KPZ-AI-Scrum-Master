@@ -33,7 +33,6 @@ export class SprintStatsComponent {
     effect(() => {
       this.loadSprintStats(this.projectId(), this.sprintId());
     });
-    console.log('SprintStatsComponent created');
   }
 
   private loadSprintStats(projectId: number, sprintId: number): void {

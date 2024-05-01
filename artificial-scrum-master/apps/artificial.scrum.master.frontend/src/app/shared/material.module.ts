@@ -18,6 +18,7 @@ import {
   MatDialogContent,
   MatDialogActions,
   MatDialogClose,
+  MatDialogModule,
 } from '@angular/material/dialog';
 import {
   MatProgressSpinner,
@@ -52,6 +53,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatChipsModule,
     MatProgressSpinnerModule,
     NgScrollbarModule,
+    MatDialogModule,
     MatTabsModule,
   ],
   exports: [
@@ -76,6 +78,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatChipsModule,
     MatProgressSpinnerModule,
     NgScrollbarModule,
+    MatDialogModule,
     MatTabsModule,
   ],
 })

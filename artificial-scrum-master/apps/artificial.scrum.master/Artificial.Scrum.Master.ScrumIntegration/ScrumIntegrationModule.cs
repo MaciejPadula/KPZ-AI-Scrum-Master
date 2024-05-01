@@ -6,6 +6,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
+using Artificial.Scrum.Master.ScrumIntegration.Features.UserStoryDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Middleware;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
@@ -55,6 +56,7 @@ public static class ScrumIntegrationModule
         services.AddTransient<IGetActiveSprintsService, GetActiveSprintsService>();
         services.AddTransient<IGetUserStoriesService, GetUserStoriesService>();
         services.AddTransient<IGetStoryTasksService, GetStoryTasksService>();
+        services.AddTransient<IUserStoryDetailsService, UserStoryDetailsService>();
         services.AddTransient<IGetSprintStatsService, GetSprintStatsService>();
 
         services.AddTransient<ScrumIntegrationMiddleware>();

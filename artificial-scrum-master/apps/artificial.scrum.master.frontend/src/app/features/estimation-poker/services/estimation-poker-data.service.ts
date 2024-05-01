@@ -6,6 +6,7 @@ import { GetCurrentTaskResponse } from '../models/get-curren-task-response';
 import { GetTaskEstimationsResponse } from '../models/get-task-estimations-response';
 import { Session } from '../../../shared/models/session';
 import { GetSessionResponse } from '../models/get-session-reponse';
+import { GetSuggestedEstimationResponse } from '../models/get-suggested-estimation-response';
 
 @Injectable({
   providedIn: 'root',
@@ -58,6 +59,19 @@ export class EstimationPokerDataService {
   ): Observable<GetTaskEstimationsResponse> {
     return this.httpClient.get<GetTaskEstimationsResponse>(
       `${this.baseApiUrl}/estimations/${taskId}`
+    );
+  }
+
+  public getSuggestedEstimation(
+    taskId: number,
+    teamEstimations: number[]
+  ): Observable<GetSuggestedEstimationResponse> {
+    return this.httpClient.post<GetSuggestedEstimationResponse>(
+      `${this.baseApiUrl}/estimations/suggestions`,
+      {
+        taskId: taskId,
+        estimations: teamEstimations,
+      }
     );
   }
 }

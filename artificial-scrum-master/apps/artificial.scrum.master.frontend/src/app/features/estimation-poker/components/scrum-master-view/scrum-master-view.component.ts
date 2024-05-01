@@ -14,18 +14,20 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.component';
 import { SessionTaskComponent } from '../session-task/session-task.component';
+import { SuggestEstimationComponent } from "../suggest-estimation/suggest-estimation.component";
 
 @Component({
-  selector: 'app-scrum-master-view',
-  standalone: true,
-  templateUrl: './scrum-master-view.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    MaterialModule,
-    TranslateModule,
-    SessionTaskComponent,
-  ],
+    selector: 'app-scrum-master-view',
+    standalone: true,
+    templateUrl: './scrum-master-view.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        MaterialModule,
+        TranslateModule,
+        SessionTaskComponent,
+        SuggestEstimationComponent
+    ]
 })
 export class ScrumMasterViewComponent {
   private readonly estimationPokerService = inject(EstimationPokerService);
@@ -35,6 +37,8 @@ export class ScrumMasterViewComponent {
   public currentTask = this.estimationPokerService.sessionTask;
   public estimations = this.estimationPokerService.taskEstimations;
   public averageEstimation = computed(() => this.estimationPokerService.averageTaskEstimation().toFixed(2));
+  public estimationValues = computed(() => this.estimations().map(x => x.estimation));
+  public taskId = computed(() => this.currentTask()?.id ?? 0);
 
   constructor() {
     timer(0, 5000)

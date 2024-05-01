@@ -46,6 +46,7 @@ Estimate time that is required to complete following task and return it in json 
     'Value': 5,
     'Reason': 'I chose this value because...'
 }"),
+                ChatMessage.FromSystem($"Language: Polish"),
                 ChatMessage.FromSystem($"Task title: {taskTitle}"),
                 ChatMessage.FromSystem($"Task description: {taskDescription}"),
                 ChatMessage.FromSystem("Estimations:"),

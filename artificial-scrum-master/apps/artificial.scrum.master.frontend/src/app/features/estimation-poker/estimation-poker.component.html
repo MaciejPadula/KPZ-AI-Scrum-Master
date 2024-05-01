@@ -3,7 +3,7 @@
   @if (currentTask() !== null) {
     <app-session-task [task]="currentTask()!" />
   } @else {
-  <div>{{ 'EstimationPoker.NoTasks' | translate }}</div>
+    <div>{{ 'EstimationPoker.NoTasks' | translate }}</div>
   }
   
   @if (showScrumMasterView()) {

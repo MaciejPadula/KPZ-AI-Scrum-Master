@@ -1,0 +1,21 @@
+@if (!estimationResult()) {
+  <button mat-raised-button color="primary" (click)="suggestEstimation()">
+    {{ 'Project.Poker.Suggestion.Button' | translate }}
+    <mat-icon>auto_fix_high</mat-icon>
+  </button>
+} @else {
+  <div>
+    <p>
+      <span class="font-bold"
+        >{{ 'Project.Poker.Suggestion.Title' | translate }}
+      </span>
+      <span>{{ reason() }}</span>
+    </p>
+    <p>
+      <span class="font-bold"
+        >{{ 'Project.Poker.Suggestion.Estimation' | translate }}
+      </span>
+      <span>{{ estimation() }}</span>
+    </p>
+  </div>
+}

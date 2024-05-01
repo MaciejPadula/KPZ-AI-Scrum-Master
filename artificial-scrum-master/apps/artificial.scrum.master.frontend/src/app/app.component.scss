@@ -1,0 +1,18 @@
+.main {
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(100dvh - 4rem);
+  overflow-y: auto;
+
+  .content {
+    margin: 0 16rem 0 16rem;
+    min-height: calc(100dvh - 4rem); 
+
+    @media (max-width: 1250px) {
+      margin: auto;
+    }
+  }
+}

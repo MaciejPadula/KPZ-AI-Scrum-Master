@@ -70,5 +70,16 @@
   "EstimationPoker.AddTask.Error": "Wystąpił problem z dodaniem zadania",
   "EstimationPoker.LoadTaskEstimations.Error": "Wystąpił problem z załadowaniem estymacji zadań",
   "EstimationPoker.LoadTask.Error": "Wystąpił problem z załadowaniem zadań",
-  "EstimationPoker.LoadSession.Error": "Wystąpił problem z załadowaniem sesji pokera"
+  "EstimationPoker.LoadSession.Error": "Wystąpił problem z załadowaniem sesji pokera",
+  "LandingPage.Title": "Witaj w aplikacji Artificial Scrum Master",
+  "LandingPage.Description": "To narzędzie pomoże Ci zarządzać projektami i zespołami Scrum oraz umożliwi Ci śledzenie zadań i postępu. Wszystko w jednym miejscu, zasilane sztuczną inteligencją.",
+  "LandingPage.GetStarted": "Aby rozpocząć:",
+  "LandingPage.Features": "Funkcje:",
+  "LandingPage.Features.TaskManagement": "Zarządzanie zadaniami",
+  "LandingPage.Features.TaskManagement.Description": "Uporządkuj zadania i śledź ich postęp.",
+  "LandingPage.Features.TeamManagement": "Zarządzanie projektami",
+  "LandingPage.Features.TeamManagement.Description": "Zarządzaj członkami zespołu oraz ich rolami.",
+  "LandingPage.Features.ProgressTracking": "Śledzenie postępu",
+  "LandingPage.Features.ProgressTracking.Description": "Śledź postęp projektu i zobacz jak idzie zespołowi.",
+  "LandingPage.Integrations": "Integracje:"
 }

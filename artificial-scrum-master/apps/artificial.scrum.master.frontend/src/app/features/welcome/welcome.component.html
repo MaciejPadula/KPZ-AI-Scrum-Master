@@ -1,0 +1,79 @@
+<div class="flex flex-col items-center">
+    <div class="banner">
+
+        <div class="min-h-64 text-white bg-gradient-to-r from-cyan-900 to-cyan-600 w-full p-8 md:px-16 drop-shadow-xl">
+            <h1 class="font-bold text-3xl md:text-5xl">{{"LandingPage.Title" | translate}}</h1>
+            <p class="md:w-3/5 p-4">
+                {{"LandingPage.Description" | translate}}
+            </p>
+            @if(!isLoggedIn()){
+            <span class="ml-4 flex items-center">
+                {{"LandingPage.GetStarted" | translate}}
+                <asl-google-signin-button class="ml-4" type="standard" shape="pill" theme="outline"
+                    size="large"></asl-google-signin-button>
+            </span>
+            }
+        </div>
+    </div>
+    <div class="px-8 w-4/5">
+        <h2 class="font-bold text-2xl md:text-3xl p-4">{{"LandingPage.Features" | translate}}</h2>
+        <div class="flex justify-center flex-col space-y-4 md:flex-row md:space-x-8 md:space-y-0">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>
+                        {{"LandingPage.Features.TaskManagement" | translate}}
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>
+                        {{"LandingPage.Features.TaskManagement.Description" | translate}}
+                    </p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>
+                        {{"LandingPage.Features.TeamManagement" | translate}}
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>
+                        {{"LandingPage.Features.TeamManagement.Description" | translate}}
+                    </p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>
+                        {{"LandingPage.Features.ProgressTracking" | translate}}
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>
+                        {{"LandingPage.Features.ProgressTracking.Description" | translate}}
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <div class="px-8 w-4/5">
+        <h2 class="font-bold text-2xl md:text-3xl p-4">{{"LandingPage.Integrations" | translate}}</h2>
+        <div class="flex justify-center flex-col space-y-4 md:flex-row md:space-x-8 md:space-y-0">
+            <mat-card class="overflow-hidden">
+                <div class="bg-white">
+                    <mat-card-content>
+                        <img imageLoader class="h-20"
+                            src="https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg" alt="">
+                    </mat-card-content>
+                </div>
+            </mat-card>
+            <mat-card class="overflow-hidden">
+                <div class="bg-white">
+                    <mat-card-content>
+                        <img imageLoader class="h-20" src="https://docs.taiga.io/imgs/logo.png" alt="">
+                    </mat-card-content>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

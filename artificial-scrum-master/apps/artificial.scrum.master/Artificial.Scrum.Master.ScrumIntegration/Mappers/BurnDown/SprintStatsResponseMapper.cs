@@ -1,5 +1,4 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Burndown;
-using System.Text.RegularExpressions;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.BurnDown;
 
@@ -10,7 +9,12 @@ internal interface ISprintStatsResponseMapper
 
 internal class SprintStatsResponseMapper : ISprintStatsResponseMapper
 {
-    private static readonly Regex RoleRegex = new(@"\D");
+    private readonly IRolePointsMapper _rolePointsMapper;
+
+    public SprintStatsResponseMapper(IRolePointsMapper rolePointsMapper)
+    {
+        _rolePointsMapper = rolePointsMapper;
+    }
 
     public GetSprintStatsResponse MapSprintStatsResponse(SprintStats sprintStats, SprintData sprintData)
     {
@@ -21,7 +25,7 @@ internal class SprintStatsResponseMapper : ISprintStatsResponseMapper
             OptimalPoints: day.OptimalPoints
         )).ToList();
 
-        var totalRolePoints = MapTotalRolePoints(sprintStats.TotalPoints, sprintData);
+        var totalRolePoints = _rolePointsMapper.MapTotalRolePoints(sprintStats.TotalPoints, sprintData);
         var completedPoints = sprintStats.CompletedPoints?.Sum() ?? 0;
 
         return new GetSprintStatsResponse(
@@ -36,42 +40,5 @@ internal class SprintStatsResponseMapper : ISprintStatsResponseMapper
             TotalRolePoints: totalRolePoints,
             CompletedRolePoints: completedPoints
         );
-    }
-
-    private static List<KeyValuePair<string, double>> MapTotalRolePoints(
-        TotalPoints? totalPoints,
-        SprintData sprintData)
-    {
-        List<KeyValuePair<string, double>> rolePoints = [];
-        if (totalPoints is null)
-        {
-            return rolePoints;
-        }
-
-        var roleIds = new Dictionary<string, double>
-        {
-            { nameof(TotalPoints.RoleId9262869), totalPoints.RoleId9262869 },
-            { nameof(TotalPoints.RoleId9262870), totalPoints.RoleId9262870 },
-            { nameof(TotalPoints.RoleId9262871), totalPoints.RoleId9262871 },
-            { nameof(TotalPoints.RoleId9262872), totalPoints.RoleId9262872 }
-        };
-
-        foreach (var roleId in roleIds)
-        {
-            var extractedId = RoleRegex.Replace(roleId.Key, "");
-            var success = int.TryParse(extractedId, out var id);
-            if (!success)
-            {
-                continue;
-            }
-
-            var roleMatch = sprintData.Roles?.FirstOrDefault(role => role.Id == id);
-            if (roleMatch is not null)
-            {
-                rolePoints.Add(new KeyValuePair<string, double>(roleMatch.Name ?? string.Empty, roleId.Value));
-            }
-        }
-
-        return rolePoints;
     }
 }

@@ -42,6 +42,7 @@ public static class ScrumIntegrationModule
         services.AddTransient<ISprintsResponseMapper, SprintsResponseMapper>();
         services.AddTransient<IUserStoriesMapper, UserStoriesMapper>();
         services.AddTransient<ITasksResponseMapper, TasksResponseMapper>();
+        services.AddTransient<IRolePointsMapper, RolePointsMapper>();
         services.AddTransient<ISprintStatsResponseMapper, SprintStatsResponseMapper>();
 
         services.AddTransient<IJwtDecoder, JwtDecoder>();

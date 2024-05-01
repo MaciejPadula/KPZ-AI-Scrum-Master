@@ -9,13 +9,13 @@ internal readonly record struct GetSprintStatsResponse(
     int TotalTasks,
     int CompletedTasks,
     List<SprintDayStats> SprintDayStats,
-    List<KeyValuePair<string, double>> TotalRolePoints,
-    double CompletedRolePoints
+    List<KeyValuePair<string, decimal>> TotalRolePoints,
+    decimal CompletedRolePoints
 );
 
 internal readonly record struct SprintDayStats(
     string Day,
     int Name,
-    double OpenPoints,
-    double OptimalPoints
+    decimal OpenPoints,
+    decimal OptimalPoints
 );

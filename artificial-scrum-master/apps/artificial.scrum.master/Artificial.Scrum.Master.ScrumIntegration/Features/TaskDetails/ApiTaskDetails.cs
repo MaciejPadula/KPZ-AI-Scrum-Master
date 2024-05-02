@@ -10,7 +10,6 @@ public class TaskSpecifics
     [JsonPropertyName("owner_extra_info")] public UserInfo? OwnerExtraInfo { get; set; }
     public int Id { get; set; }
     [JsonPropertyName("ref")] public int Ref { get; set; }
-    [JsonPropertyName("milestone_slug")] public string? MilestoneSlug { get; set; }
     [JsonPropertyName("created_date")] public DateTime? CreatedDate { get; set; }
     [JsonPropertyName("finished_date")] public DateTime? FinishedDate { get; set; }
     public string? Subject { get; set; }

@@ -8,7 +8,6 @@ internal readonly record struct GetTaskDetailsResponse(
     string? DescriptionHtml,
     DateTime? CreatedDate,
     DateTime? FinishedDate,
-    string? MilestoneSlug,
     string? StatusName,
     string? StatusColor,
     string? OwnerUsername,

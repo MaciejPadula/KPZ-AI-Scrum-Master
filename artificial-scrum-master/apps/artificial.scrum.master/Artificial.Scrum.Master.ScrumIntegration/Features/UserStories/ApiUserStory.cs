@@ -27,4 +27,5 @@ public class StatusExtraInfo
 {
     public string? Name { get; set; }
     [JsonPropertyName("is_closed")] public bool IsClosed { get; set; }
+    public string? Color { get; set; }
 }

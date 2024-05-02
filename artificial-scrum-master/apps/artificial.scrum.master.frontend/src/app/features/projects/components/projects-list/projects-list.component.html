@@ -1,4 +1,7 @@
 <div class="w-full flex flex-col">
+  @if(isLoading()){
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
   <div class="flex flex-col mx-2">
     @for (project of projects(); track $index) {
     <app-project-list-item [userProject]="project" />

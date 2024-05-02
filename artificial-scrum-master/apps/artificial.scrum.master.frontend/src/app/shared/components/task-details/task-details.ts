@@ -6,7 +6,6 @@ export interface TaskDetails {
   descriptionHtml: string | null;
   createdDate: Date;
   finishedDate: Date | null;
-  milestoneSlug: string;
   statusName: string;
   statusColor: string;
   ownerUsername: string;

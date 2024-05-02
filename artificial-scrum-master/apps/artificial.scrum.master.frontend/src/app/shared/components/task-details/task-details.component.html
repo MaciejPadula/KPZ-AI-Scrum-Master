@@ -20,7 +20,7 @@
       </mat-card-subtitle>
       <mat-card-subtitle>
         <p>
-          <span> {{ 'Tasks.Edit.Status' | translate }}: </span>
+          <span> {{ 'Tasks.Status' | translate }}: </span>
           <span mat-button [style.color]="details()?.statusColor">
             {{ details()?.statusName }}
           </span>
@@ -41,21 +41,56 @@
         }
       </mat-card-subtitle>
       <mat-card-subtitle>
-        <div class="flex items-center">
-          {{ 'UserStories.AssignedTo' | translate }}:
-          @if(details()?.assignedToFullName != null){
-          <div
-            style="margin: 0 0.5rem 0 1rem"
-            mat-card-avatar
-            [ngStyle]="{
-              'background-image': 'url(' + details()?.assignedToPhoto + ')',
-              'background-size': 'cover'
-            }"
-          ></div>
-          {{ details()?.assignedToFullName }}
-          }@else {
-          <span> {{ 'Tasks.NotAssigned' | translate }} </span>
-          }
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 w-full items-start justify-around"
+        >
+          <div class="flex items-start">
+            <span>
+              {{ 'Tasks.AssignedTo' | translate }}:
+              {{ details()?.assignedToFullName }}
+            </span>
+
+            @if(details()?.assignedToFullName != null){
+            <div
+              style="margin: 0 0.5rem 0 1rem"
+              mat-card-avatar
+              [ngStyle]="{
+                'background-image': 'url(' + details()?.assignedToPhoto + ')',
+                'background-size': 'cover'
+              }"
+            ></div>
+
+            }@else {
+            <span> {{ 'Tasks.NotAssigned' | translate }} </span>
+            }
+          </div>
+          <div class="flex items-center">
+            <div class="flex flex-col items-start">
+              <span>
+                {{ 'Tasks.Edit.CreatedBy' | translate }}:
+                {{ details()?.ownerFullName }}
+              </span>
+
+              <span class="text-xs"
+                >{{ 'Tasks.Edit.CreatedDate' | translate }}:
+                {{ formattedDate() }}</span
+              >
+            </div>
+            <div class="flex flex-row items-center">
+              @if(details()?.ownerFullName != null){
+              <div
+                style="margin: 0 0.5rem 0 1rem"
+                mat-card-avatar
+                [ngStyle]="{
+                  'background-image': 'url(' + details()?.ownerPhoto + ')',
+                  'background-size': 'cover'
+                }"
+              ></div>
+              }@else {
+              <span> {{ 'Tasks.NotAssigned' | translate }} </span>
+              }
+            </div>
+          </div>
         </div>
       </mat-card-subtitle>
     </mat-card-header>
@@ -66,6 +101,7 @@
       <mat-card-title>{{ 'Tasks.Description' | translate }}:</mat-card-title>
       <span class="flex space-x-3">
         <button
+          class="my-2"
           title="{{ 'Tasks.GenerateImprovementSuggestion' | translate }}"
           mat-mini-fab
           color="primary"

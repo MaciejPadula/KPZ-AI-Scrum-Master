@@ -19,7 +19,6 @@ internal class TaskDetailsResponseMapper : ITaskDetailsResponseMapper
             DescriptionHtml: taskSpecifics.DescriptionHtml,
             CreatedDate: taskSpecifics.CreatedDate,
             FinishedDate: taskSpecifics.FinishedDate,
-            MilestoneSlug: taskSpecifics.MilestoneSlug,
             StatusName: taskSpecifics.StatusExtraInfo?.Name,
             StatusColor: taskSpecifics.StatusExtraInfo?.Color,
             OwnerUsername: taskSpecifics.OwnerExtraInfo?.Username,

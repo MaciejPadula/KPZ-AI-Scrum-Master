@@ -12,6 +12,7 @@ import { UserProject } from '../../models/user-project';
 import { ProjectsListDataService } from '../../services/projects-list-data.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-projects-list',
@@ -28,15 +29,23 @@ export class ProjectsListComponent implements OnInit {
   #projects = signal<UserProject[]>([]);
   public readonly projects = this.#projects.asReadonly();
 
+  #isLoading = signal<boolean>(false);
+  public isLoading = this.#isLoading.asReadonly();
+
   public ngOnInit(): void {
-    this.projectListDataService.getProjects().subscribe({
-      next: (project) => {
-        this.#projects.set(project);
-      },
-      error: () =>
-        this.toastService.openError(
-          this.translateService.instant('Projects.Error')
-        ),
-    });
+    this.#isLoading.set(true);
+
+    this.projectListDataService
+      .getProjects()
+      .pipe(finalize(() => this.#isLoading.set(false)))
+      .subscribe({
+        next: (project) => {
+          this.#projects.set(project);
+        },
+        error: () =>
+          this.toastService.openError(
+            this.translateService.instant('Projects.Error')
+          ),
+      });
   }
 }

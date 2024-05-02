@@ -37,7 +37,7 @@ internal class GetUserStoriesService : IGetUserStoriesService
         var userStoriesRequestResponse = await _projectHttpClientWrapper.GetHttpRequest<List<UserStory>>(
             userId,
             userTokens,
-            _ => $"userstories?project={projectId}&milestone={sprintId}&is_closed=false");
+            _ => $"userstories?project={projectId}&milestone={sprintId}");
 
         var firstOrDefaultStory = userStoriesRequestResponse.FirstOrDefault();
         var milestoneId = firstOrDefaultStory?.Milestone ?? (int.TryParse(sprintId, out var milestone) ? milestone : 0);

@@ -1,45 +1,77 @@
 <div class="flex items-center justify-center popup">
-    @if(details() != null){
-    <mat-card class="h-full w-full" style="max-height: 80dvh;">
-        <mat-card-header>
-            <mat-card-title class="stubborn-text">#{{details()?.number}} {{ details()?.title }}</mat-card-title>
-            <span class="absolute right-0 top-0">
-                <button mat-icon-button mat-dialog-close>
-                    <mat-icon class="stubborn-icon">close</mat-icon>
-                </button>
-            </span>
-            <mat-card-subtitle>
-                <span mat-button *ngIf="!details()?.isStatusClosed" style="color: {{details()?.statusColor}}">{{
-                    details()?.statusName }}</span>
-                <span mat-button *ngIf="details()?.isStatusClosed">Closed</span>
-            </mat-card-subtitle>
-            <mat-card-subtitle>
-                <div class="flex items-center">
-                    {{"UserStories.AssignedTo" | translate}}:
-                    <div style="margin:0 0.5rem 0 1rem" mat-card-avatar
-                        [ngStyle]="{'background-image': 'url(' + details()?.assignedToPhotoUrl + ')', 'background-size': 'cover'}">
-                    </div>
-                    {{ details()?.assignedToName }}
-                </div>
-            </mat-card-subtitle>
-
-        </mat-card-header>
-        <div class="ml-4 mr-6 flex flex-row items-center stubborn-text" style="justify-content: space-between;">
-            <mat-card-title>{{"UserStories.Description" | translate}}:</mat-card-title>
-            <span class="flex space-x-3">
-                <button mat-mini-fab><mat-icon style="filter:invert(1)" class="stubborn-icon-inverted">psychology</mat-icon></button>
-                <button mat-mini-fab color="primary"><mat-icon>auto_fix_high</mat-icon></button>
-            </span>
+  @if(details() != null){
+  <mat-card class="h-full w-full" style="max-height: 80dvh">
+    <mat-card-header>
+      <mat-card-title class="stubborn-text"
+        >#{{ details()?.number }} {{ details()?.title }}</mat-card-title
+      >
+      <span class="absolute right-0 top-0">
+        <button mat-icon-button mat-dialog-close>
+          <mat-icon class="stubborn-icon">close</mat-icon>
+        </button>
+      </span>
+      <mat-card-subtitle>
+        <span
+          mat-button
+          [style.color]="
+            !details()?.isStatusClosed ? details()?.statusColor : null
+          "
+        >
+          {{
+            details()?.isStatusClosed
+              ? ('Shared.Words.Closed' | translate)
+              : details()?.statusName
+          }}
+        </span>
+      </mat-card-subtitle>
+      <mat-card-subtitle>
+        <div class="flex items-center">
+          {{ 'UserStories.AssignedTo' | translate }}:
+          <div
+            style="margin: 0 0.5rem 0 1rem"
+            mat-card-avatar
+            [ngStyle]="{
+              'background-image': 'url(' + details()?.assignedToPhotoUrl + ')',
+              'background-size': 'cover'
+            }"
+          ></div>
+          {{ details()?.assignedToName }}
         </div>
-        <ng-scrollbar>
-            <mat-card-content class="stubborn-text" style="padding: 0 0 2rem 1rem">
-                <p [innerHTML]="details()?.description"></p>
-            </mat-card-content>
-        </ng-scrollbar>
-    </mat-card>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <div
+      class="ml-4 mr-6 flex flex-row items-center stubborn-text"
+      style="justify-content: space-between"
+    >
+      <mat-card-title
+        >{{ 'UserStories.Description' | translate }}:</mat-card-title
+      >
+      <span class="flex space-x-3">
+        <button
+          mat-mini-fab
+          title="{{ 'UserStories.GenerateSuggestedTasks' | translate }}"
+        >
+          <mat-icon style="filter: invert(1)" class="stubborn-icon-inverted"
+            >psychology</mat-icon
+          >
+        </button>
+        <button
+          mat-mini-fab
+          title="{{ 'UserStories.GenerateImprovementSuggestion' | translate }}"
+          color="primary"
+        >
+          <mat-icon>auto_fix_high</mat-icon>
+        </button>
+      </span>
+    </div>
+    <ng-scrollbar>
+      <mat-card-content class="stubborn-text" style="padding: 0 0 2rem 1rem">
+        <p [innerHTML]="details()?.description"></p>
+      </mat-card-content>
+    </ng-scrollbar>
+  </mat-card>
 
-    }
-    @else {
-    <mat-spinner></mat-spinner>
-    }
+  } @else {
+  <mat-spinner></mat-spinner>
+  }
 </div>

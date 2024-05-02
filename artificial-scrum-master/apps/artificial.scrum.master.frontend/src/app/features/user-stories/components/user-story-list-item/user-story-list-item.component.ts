@@ -1,4 +1,9 @@
-import { Component, Input, ChangeDetectionStrategy, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserStory } from '../../models/user-story';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
@@ -30,10 +35,8 @@ export class UserStoryListItemComponent {
   #dialog = inject(MatDialog);
 
   public openDetails(): void {
-    this.#dialog.open(UserStoryDetailsComponent,
-      {
-        data: this.userStory.userStoryId,
-      }
-    );
+    this.#dialog.open(UserStoryDetailsComponent, {
+      data: this.userStory.userStoryId,
+    });
   }
 }

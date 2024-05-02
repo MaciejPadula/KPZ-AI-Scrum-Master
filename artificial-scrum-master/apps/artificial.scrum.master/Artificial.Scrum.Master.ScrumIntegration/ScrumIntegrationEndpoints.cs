@@ -82,7 +82,6 @@ public static class ScrumIntegrationEndpoints
             string storyId) =>
             {
                 var result = await userStoryDetailsService.Handle(storyId);
-
                 await context.Response.WriteAsJsonAsync(result);
             });
 

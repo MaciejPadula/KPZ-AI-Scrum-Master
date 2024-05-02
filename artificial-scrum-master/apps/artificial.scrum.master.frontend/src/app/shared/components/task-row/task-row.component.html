@@ -1,8 +1,18 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title
-      >#{{ taskRow.taskRef }} {{ taskRow.subject }}</mat-card-title
-    >
+    <mat-card-title>
+      <span> #{{ taskRow.taskRef }} {{ taskRow.subject }} </span>
+
+      <span class="absolute top-0 right-0">
+        <button
+          mat-icon-button
+          (click)="openDetails()"
+          title="{{ 'Tasks.Edit.Title' | translate }}"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </span>
+    </mat-card-title>
     <mat-card-subtitle [style.color]="taskRow.statusColor">{{
       taskRow.statusName
     }}</mat-card-subtitle>
@@ -25,8 +35,6 @@
     <div class="flex flex-row items-center">
       @if(taskRow.tags.length > 0){
       <span class="mr-2">{{ 'Tasks.Tags' | translate }}: </span>
-      }
-
       <mat-chip-set aria-label="Tags">
         @for (tagColorPair of taskRow.tags; track $index) {
         <mat-chip [style.background-color]="tagColorPair[1]">
@@ -34,6 +42,7 @@
         </mat-chip>
         }
       </mat-chip-set>
+      }
     </div>
   </mat-card-content>
 </mat-card>

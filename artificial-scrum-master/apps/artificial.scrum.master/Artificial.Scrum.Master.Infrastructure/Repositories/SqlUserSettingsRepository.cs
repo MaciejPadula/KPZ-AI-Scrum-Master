@@ -11,6 +11,8 @@ internal class SqlUserSettingsRepository : IUserSettingsRepository, IUserTokensR
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
+    private const int BatchSize = 2000;
+
     public SqlUserSettingsRepository(IDbConnectionFactory dbConnectionFactory)
     {
         _dbConnectionFactory = dbConnectionFactory;
@@ -25,7 +27,7 @@ INSERT INTO [ScrumMaster].[UserSettings]
 (UserId, TaigaAccessToken, TaigaRefreshToken)
 VALUES
 (@UserId, @TaigaAccessToken, @TaigaRefreshToken)
-", new { userSettings.UserId, userSettings.TaigaAccessToken, userSettings.TaigaRefreshToken});
+", new { userSettings.UserId, userSettings.TaigaAccessToken, userSettings.TaigaRefreshToken });
     }
 
     public async Task<UserTokens?> GetUserAccessTokens(string userId)
@@ -34,6 +36,7 @@ VALUES
 
         var result = await connection.QueryFirstOrDefaultAsync<UserTokens>(@$"
 SELECT TOP 1
+    UserId AS {nameof(UserTokens.UserId)},
     TaigaAccessToken AS {nameof(UserTokens.AccessToken)},
     TaigaRefreshToken AS {nameof(UserTokens.RefreshToken)}
 FROM [ScrumMaster].[UserSettings]
@@ -84,6 +87,36 @@ SET
     TaigaAccessToken = @TaigaAccessToken,
     TaigaRefreshToken = @TaigaRefreshToken
 WHERE UserId = @UserId
-", new { userSettings.UserId, userSettings.TaigaAccessToken, userSettings.TaigaRefreshToken});
+", new { userSettings.UserId, userSettings.TaigaAccessToken, userSettings.TaigaRefreshToken });
+    }
+
+    public async Task<List<UserTokens>> GetAllAccessTokens()
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+
+        var result = new List<UserTokens>();
+        List<UserTokens> currentTokens;
+        var page = 0;
+
+        do
+        {
+            var response = await connection.QueryAsync<UserTokens>(@$"
+SELECT
+    UserId AS {nameof(UserTokens.UserId)},
+    TaigaAccessToken AS {nameof(UserTokens.AccessToken)},
+    TaigaRefreshToken AS {nameof(UserTokens.RefreshToken)}
+FROM [ScrumMaster].[UserSettings]
+ORDER BY UserId
+OFFSET @Offset ROWS
+FETCH NEXT @BatchSize ROWS ONLY
+", new { BatchSize, Offset = BatchSize * page });
+
+            currentTokens = response.ToList();
+            result.AddRange(currentTokens);
+            page += 1;
+        }
+        while (currentTokens.Count != 0);
+
+        return result;
     }
 }

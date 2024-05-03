@@ -61,6 +61,8 @@ public static class ScrumIntegrationModule
 
         services.AddTransient<ScrumIntegrationMiddleware>();
 
+        services.AddHostedService<TokenRefreshingHostedService>();
+
         return services;
     }
 

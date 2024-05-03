@@ -5,7 +5,7 @@
 <div class="w-full flex flex-col">
   <div class="w-full flex flex-col overflow-auto" style="height: 50vh">
     @for (event of feeds(); track $index) {
-    <app-timeline-row [timelineRow]="event" />
+    <app-timeline-row [timelineRow]="event" [showProjectLink]="false" />
     }
   </div>
 </div>

@@ -1,38 +1,31 @@
 <div class="flex flex-col p-4">
   <div class="flex flex-row">
-    <app-avatar [src]="timelineRow.userAvatar" class="mr-4" />
+    <app-avatar [src]="timelineRow().userAvatar" class="mr-4" />
     <div class="flex flex-col">
       <p>
         <span class="mat-subtitle-2 sm:mat-subtitle-1">{{
-          timelineRow.userName
+          timelineRow().userName
         }}</span>
-        <span class="mat-caption ml-2">({{ timelineRow.userNick }})</span>
+        <span class="mat-caption ml-2">({{ timelineRow().userNick }})</span>
       </p>
       <p class="space-x-1 mat-body-2 sm:mat-body-1">
-        <span>{{ getScrumObjectTypeText(timelineRow.scrumObjectType) }}</span>
-        <app-link
-          [href]="
-            getObjectUrl(timelineRow.scrumObjectType, timelineRow.scrumObjectId)
-          "
-          >{{ timelineRow.scrumObjectName }}</app-link
-        >
-        <span>{{ getHasBeenText(timelineRow.scrumObjectType) }}</span>
-        <span>{{
+        {{ getScrumObjectTypeText(timelineRow().scrumObjectType) }}
+        <span class="font-bold">{{ timelineRow().scrumObjectName }}</span>
+        {{ getHasBeenText(timelineRow().scrumObjectType) }}
+        {{
           getStateText(
-            timelineRow.scrumObjectType,
-            timelineRow.scrumObjectState
+            timelineRow().scrumObjectType,
+            timelineRow().scrumObjectState
           )
-        }}</span>
+        }}
       </p>
     </div>
   </div>
-  @if (timelineRow.projectId) {
+  @if (showProjectLink()) {
   <div class="flex justify-end">
-    <app-link
-      [href]="'Project/' + timelineRow.projectId"
-      class="mat-caption sm:mat-body-1"
-      >{{ timelineRow.projectName }}</app-link
-    >
+    <a class="link" [routerLink]="'/Project/' + timelineRow().projectId">
+      {{ timelineRow().projectName }}
+    </a>
   </div>
   }
   <mat-divider />

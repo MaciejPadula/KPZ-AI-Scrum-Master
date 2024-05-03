@@ -26,12 +26,13 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class SprintPreviewItemComponent {
   public sprintElement = input.required<SprintPreview>();
-  public storiesUrl = computed(
-    () =>
-      `/UserStories/${this.sprintElement().sprintId}?project=${
-        this.sprintElement().projectId
-      }`
-  );
+  public storiesUrl = computed(() => ['/UserStories', this.sprintElement().sprintId]);
+  public storiesQueryParams = computed(() => {
+    return {
+      project: this.sprintElement().projectId
+    };
+  });
+
   public sprintUrl = computed(() => {
     const base = 'https://tree.taiga.io/project';
     return `${base}/${this.sprintElement().projectSlug}/taskboard/${

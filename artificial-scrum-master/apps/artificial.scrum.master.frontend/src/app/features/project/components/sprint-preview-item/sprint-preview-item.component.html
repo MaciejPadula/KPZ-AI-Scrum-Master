@@ -1,7 +1,8 @@
 <div class="flex flex-col divide-y mx-2">
   <a
     class="flex flex-col p-4 outline outline-1 outline-gray-200 shadow-lg my-1 hover:cursor-pointer"
-    [href]="storiesUrl()"
+    [routerLink]="storiesUrl()"
+    [queryParams]="storiesQueryParams()"
   >
     <div class="flex flex-row justify-between">
       <div class="flex flex-col">

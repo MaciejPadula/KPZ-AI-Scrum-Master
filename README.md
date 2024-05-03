@@ -1,18 +1,19 @@
 # KPZ-AI-Scrum-Master
 An application that supports the work of a Scrum Master, utilizing artificial intelligence tools.
+<br/>
+The app is hosted on Azure: [https://aiscrummaster.azurewebsites.net](https://aiscrummaster.azurewebsites.net/)
 
 ## Authors
-- Maciej Padula
-- Filip Murawski
 - Łukasz Gawron
+- Filip Murawski
+- Maciej Padula
 
 ## Tech Stack
+- Nx Monorepo
 - Backend
-  - NX
   - ASP.NET Core
   - Dapper
   - Microsoft SQL Server
-
 - Frontend
   - Angular
   - TypeScript
@@ -36,4 +37,3 @@ An application that supports the work of a Scrum Master, utilizing artificial in
     </li>
   </ul>
 </div>
-

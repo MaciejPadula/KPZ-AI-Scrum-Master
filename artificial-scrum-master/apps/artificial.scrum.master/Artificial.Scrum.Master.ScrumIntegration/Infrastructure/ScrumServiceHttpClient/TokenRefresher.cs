@@ -56,6 +56,7 @@ internal class TokenRefresher : ITokenRefresher
                      ?? throw new ProjectRequestFailedException("Response deserialization failed");
 
         var newTokens = new UserTokens(
+            userId,
             result.AccessToken,
             result.RefreshToken);
 

@@ -10,12 +10,24 @@ export const cacheInterceptor: HttpInterceptorFn = (
   req: HttpRequest<any>,
   next: HttpHandlerFn
 ) => {
+  const oldHeaders = req.headers;
+  let newHeaders = new HttpHeaders({
+    'Cache-Control': 'no-cache',
+    Pragma: 'no-cache',
+    Expires: 'Sat, 01 Jan 2000 00:00:00 GMT',
+  });
+
+  oldHeaders.keys().forEach((key) => {
+    const value = oldHeaders.get(key);
+    if (value === null || newHeaders.has(key)) {
+      return;
+    }
+    newHeaders = newHeaders.append(key, value);
+  });
+
+
   const httpRequest = req.clone({
-    headers: new HttpHeaders({
-      'Cache-Control': 'no-cache',
-      Pragma: 'no-cache',
-      Expires: 'Sat, 01 Jan 2000 00:00:00 GMT',
-    }),
+    headers: newHeaders
   });
 
   return next(httpRequest);

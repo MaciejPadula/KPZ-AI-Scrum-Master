@@ -16,6 +16,7 @@ internal class UserStoriesMapper : IUserStoriesMapper
             UserStoryId = us.Id,
             UserStorySubject = us.Subject,
             UserStoryRef = us.Ref,
+            StatusColor = us.StatusExtraInfo?.Color,
             StatusName = us.StatusExtraInfo?.Name,
             IsClosed = us.StatusExtraInfo?.IsClosed ?? false,
             AssignedToUsername = us.AssignedToExtraInfo?.Username,

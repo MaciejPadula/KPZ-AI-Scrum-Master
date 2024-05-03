@@ -2,6 +2,7 @@ export interface UserStory {
   userStoryId: number;
   userStorySubject: string;
   statusName: string;
+  statusColor: string;
   userStoryRef: number;
   isClosed: boolean;
   assignedToUsername: string;

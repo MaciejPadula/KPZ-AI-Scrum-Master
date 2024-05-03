@@ -1,39 +1,61 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title
-      >#{{ taskRow.taskRef }} {{ taskRow.subject }}</mat-card-title
-    >
-    <mat-card-subtitle [style.color]="taskRow.statusColor">{{
-      taskRow.statusName
-    }}</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    <div class="flex flex-row items-center">
-      <span>
-        {{ 'Tasks.AssignedTo' | translate }}:
-        <br />
-        {{
-          taskRow.assignedToFullName === null
-            ? ('Tasks.NotAssigned' | translate)
-            : taskRow.assignedToFullName
-        }}
-      </span>
-      @if(taskRow.assignedToPhoto !== null){
-      <app-avatar [src]="taskRow.assignedToPhoto" class="ml-1.5" />
-      }
-    </div>
-    <div class="flex flex-row items-center">
-      @if(taskRow.tags.length > 0){
-      <span class="mr-2">{{ 'Tasks.Tags' | translate }}: </span>
-      }
+    <mat-card-title>
+      <div class="flex flex-row items-start">
+        <span class="w-11/12 md:w-full">
+          #{{ taskRow.taskRef }} {{ taskRow.subject }}
+        </span>
 
-      <mat-chip-set aria-label="Tags">
-        @for (tagColorPair of taskRow.tags; track $index) {
-        <mat-chip [style.background-color]="tagColorPair[1]">
-          {{ tagColorPair[0] }}
-        </mat-chip>
+        <span class="absolute top-0 right-0">
+          <button
+            mat-icon-button
+            (click)="openDetails()"
+            title="{{ 'Tasks.Edit.Title' | translate }}"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </span>
+      </div>
+    </mat-card-title>
+
+    <mat-card-subtitle>
+      <span> {{ 'Tasks.Status' | translate }}:</span>
+      <span [style.color]="taskRow.statusColor">
+        {{ taskRow.statusName }}
+      </span>
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="flex flex-row items-center justify-between">
+      <div class="flex flex-row items-center">
+        <p>
+          <span class="text-xs"> {{ 'Tasks.AssignedTo' | translate }}:</span>
+          <br />
+          <span class="font-bold">
+            {{
+              taskRow.assignedToFullName === null
+                ? ('Tasks.NotAssigned' | translate)
+                : taskRow.assignedToFullName
+            }}
+          </span>
+        </p>
+        @if(taskRow.assignedToPhoto !== null){
+        <app-avatar [src]="taskRow.assignedToPhoto" class="ml-1.5" />
         }
-      </mat-chip-set>
+      </div>
+      <div class="flex flex-row items-center">
+        @if(taskRow.tags.length > 0){
+        <span class="mr-2">{{ 'Tasks.Tags' | translate }}: </span>
+        <mat-chip-set aria-label="Tags">
+          @for (tagColorPair of taskRow.tags; track $index) {
+          <mat-chip [style.background-color]="tagColorPair[1]">
+            {{ tagColorPair[0] }}
+          </mat-chip>
+          }
+        </mat-chip-set>
+        }
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

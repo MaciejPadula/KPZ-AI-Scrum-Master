@@ -1,0 +1,126 @@
+<div class="flex items-center justify-center popup">
+  @if(details() != null){
+  <mat-card class="h-full w-full" style="max-height: 80dvh">
+    <mat-card-header>
+      <mat-card-title class="stubborn-text"
+        >#{{ details()?.taskRef }} {{ details()?.subject }}</mat-card-title
+      >
+      <span class="absolute right-0 top-0">
+        <button mat-icon-button mat-dialog-close>
+          <mat-icon class="stubborn-icon">close</mat-icon>
+        </button>
+      </span>
+      <mat-card-subtitle>
+        <p>
+          <span> {{ 'Tasks.Edit.Story' | translate }}: </span>
+          <span mat-button>
+            #{{ details()?.userStoryRef }} {{ details()?.userStorySubject }}
+          </span>
+        </p>
+      </mat-card-subtitle>
+      <mat-card-subtitle>
+        <p>
+          <span> {{ 'Tasks.Status' | translate }}: </span>
+          <span mat-button [style.color]="details()?.statusColor">
+            {{ details()?.statusName }}
+          </span>
+        </p>
+      </mat-card-subtitle>
+      <mat-card-subtitle>
+        @if(details()?.tags && details()?.tags?.length ?? 0 > 0){
+        <p class="flex flex-row items-center">
+          <span class="mr-2">{{ 'Tasks.Tags' | translate }}: </span>
+          <mat-chip-set aria-label="Tags">
+            @for (tagColorPair of details()?.tags; track $index) {
+            <mat-chip [style.background-color]="tagColorPair[1]">
+              {{ tagColorPair[0] }}
+            </mat-chip>
+            }
+          </mat-chip-set>
+        </p>
+        }
+      </mat-card-subtitle>
+      <mat-card-subtitle>
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 w-full items-start justify-between"
+        >
+          <div class="flex items-center">
+            <div class="flex flex-col items-start">
+              <span>
+                {{ 'Tasks.Edit.CreatedBy' | translate }}:
+                {{ details()?.ownerFullName }}
+              </span>
+              <span class="text-xs"
+                >{{ 'Tasks.Edit.CreatedDate' | translate }}:
+                {{ formattedDate() }}</span
+              >
+            </div>
+            <div class="flex flex-row items-center">
+              @if(details()?.ownerFullName != null){
+              <div
+                style="margin: 0 0.5rem 0 1rem"
+                mat-card-avatar
+                [ngStyle]="{
+                  'background-image': 'url(' + details()?.ownerPhoto + ')',
+                  'background-size': 'cover'
+                }"
+              ></div>
+              }@else {
+              <span> {{ 'Tasks.NotAssigned' | translate }} </span>
+              }
+            </div>
+          </div>
+          <div class="flex items-start">
+            <span>
+              {{ 'Tasks.AssignedTo' | translate }}:
+              {{ details()?.assignedToFullName }}
+            </span>
+
+            @if(details()?.assignedToFullName != null){
+            <div
+              style="margin: 0 0.5rem 0 1rem"
+              mat-card-avatar
+              [ngStyle]="{
+                'background-image': 'url(' + details()?.assignedToPhoto + ')',
+                'background-size': 'cover'
+              }"
+            ></div>
+
+            }@else {
+            <span> {{ 'Tasks.NotAssigned' | translate }} </span>
+            }
+          </div>
+        </div>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <div
+      class="ml-4 mr-6 flex flex-row items-center stubborn-text"
+      style="justify-content: space-between"
+    >
+      <mat-card-title>{{ 'Tasks.Description' | translate }}:</mat-card-title>
+      <span class="flex space-x-3">
+        <button
+          class="my-2"
+          title="{{ 'Tasks.GenerateImprovementSuggestion' | translate }}"
+          mat-mini-fab
+          color="primary"
+        >
+          <mat-icon>auto_fix_high</mat-icon>
+        </button>
+      </span>
+    </div>
+    <ng-scrollbar>
+      <mat-card-content class="stubborn-text" style="padding: 0 0 2rem 1rem">
+        @if(details()?.descriptionHtml){
+        <p [innerHTML]="details()?.descriptionHtml"></p>
+        }@else {
+        <p>{{ 'Tasks.Edit.NoDescription' | translate }}</p>
+        }
+      </mat-card-content>
+    </ng-scrollbar>
+  </mat-card>
+
+  } @else {
+  <mat-spinner></mat-spinner>
+  }
+</div>

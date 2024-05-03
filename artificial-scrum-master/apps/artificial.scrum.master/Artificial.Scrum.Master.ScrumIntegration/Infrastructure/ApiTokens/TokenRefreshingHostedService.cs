@@ -7,7 +7,6 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 
 internal class TokenRefreshingHostedService : IHostedService
 {
-    private readonly PeriodicTimer _timer;
     private static readonly TimeSpan _refreshTimeout = TimeSpan.FromHours(24);
     private readonly ITokenRefresher _tokenRefresher;
     private readonly IUserTokensRepository _userTokensRepository;
@@ -20,7 +19,6 @@ internal class TokenRefreshingHostedService : IHostedService
         IUserTokensRepository userTokensRepository,
         TelemetryClient telemetryClient)
     {
-        _timer = new PeriodicTimer(_refreshTimeout);
         _tokenRefresher = tokenRefresher;
         _userTokensRepository = userTokensRepository;
         _telemetryClient = telemetryClient;
@@ -34,7 +32,9 @@ internal class TokenRefreshingHostedService : IHostedService
 
     private async Task HandleRefresh(CancellationToken cancellationToken)
     {
-        while (await _timer.WaitForNextTickAsync(cancellationToken))
+        using var timer = new PeriodicTimer(_refreshTimeout);
+
+        while (await timer.WaitForNextTickAsync(cancellationToken))
         {
             using var operation = _telemetryClient.StartOperation<RequestTelemetry>("TokenRefreshing");
             var tokens = await _userTokensRepository.GetAllAccessTokens();

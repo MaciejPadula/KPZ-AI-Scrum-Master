@@ -1,1 +1,24 @@
 # KPZ-AI-Scrum-Master
+An application that supports the work of a Scrum Master, utilizing artificial intelligence tools.
+
+## Authors
+- Maciej Padula
+- Filip Murawski
+- Łukasz Gawron
+
+## Tech Stack
+- Backend
+  - NX
+  - ASP.NET Core 8.0 Web API
+  - Dapper
+  - Microsoft SQL Server
+
+- Frontend
+  - Angular
+  - TypeScript
+  - Angular Material UI
+  - Tailwind CSS
+
+## Integrations
+- ![Chat GPT](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAXVBMVEV1qZxxp5lupZeqyMDC19Kbv7ZoopRtpZf////3+vn0+PeItKmXvLPi7Ol9rqJloZKBsKTb5+SUu7Hr8vDH2tVpo5Siw7u70sytysOyzcbV49++1M7p8O5enY3R4NyNarGBAAABK0lEQVR4Aa2SV2LEIAxEwUUMYCxjU9b1/sfMNtJ7Mr9PXSP+RbKq5IeobpqW3sWqBTRgLJGSr/M6uJ54MNDaj+olY+1YqsFhCsGgic9YrCdYWQXoxKQ44/RUmTwMqAcy8TiTpAVUmAoYa3CnJQsPmJEtrCwUK8+gcdtXNGw3eIv2DmVCX12g1n5BYk4AhjJpDXWFGCmOmCxTQCqZI6y6lmUhyAUcgheUVQmeZcDhrrBjZPWsaYtD8eDQEY1oCbmip00HADVzq73X5gznqkd6yhyWy3oN8u4ukFeIIouR7QQsgoU+w1OHoAqMl4m4HplWYCAYeCrssunKii7bh0pabPXzr1CGPsIE1yvJTrN86QO7GANtmS4byTcOutrgolaJ9xTHvCYlf2bOn+sB5MkR1bjopDwAAAAASUVORK5CYII=) Chat GPT
+- ![Taiga.io](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAwFBMVEVHcEyW5J6i9Kyi9Kyi9Kyi9ayi9KyM1ZKEvIuRr5qX36CSnZySgqCila6ila6N15Oe8Kif7ami46yi56yhlK2M1ZKilK6Dt4qAroeitq2Id5iNfJ2AroeHxo6izq1uan5+poVNWleDcpNrcnZ+poV+poV9poQ4L0NGQVGDcZODcZNGRFE8NUd5noF3moBCPk19bYx+bo6DcZNdb21mXnRecW5EQFBkXXJraXo8Nkc8NUdhZnBhZnA6M0U8Nkc8Nkf+A78hAAAAQHRSTlMAPwjWr8x2iG0mM0Fvio/X9uP1+djLzO3z2vfu+NrnQNb72wevzOL/8c2y///47/fr96zMy9jk2CbVy2eLNnWvKV1lUgAAAT5JREFUeAF0z8UBAzEMAEEfoxlzzP2XGDmM+x2DhN4KAvS3MIrCvxgnSfzP0ihJohR9lGV5UKASDLRERVVj8kTqY4wnCRdS+Z6YU601g5JEQMYYVT83+MbqgYVHrxGgNB4L9IhapzUFjIQ8GdO06mlFB/WaM87lYFQDjY95Jtc511nN5lmYtvEt14nWbdqPzmfPdc5FAoMwEEDRWbd3KO7uxOD+t+oMrh/nQRLD8/zFAjO0AL66M6XrbuTFcRyZZjBnaq+IacuwCZVmcZzlBYXDltayoBQlSSs/jv160nxZEP77of+aqs1a3OuOtIetJk2rqskyxrKsq+si73brmwrLZiStu/1PjdDH95zjySfUNhR3FBvKhor8lvPWjzpK7iiF1oNiHGMKek3IBfcGVDbASyPjI7xlMWbBa0rBsT/ihD0vmT1VcAAAAABJRU5ErkJggg==) Taiga.io

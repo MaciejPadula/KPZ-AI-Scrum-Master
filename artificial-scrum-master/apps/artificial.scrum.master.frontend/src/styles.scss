@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  ul, ol {
+    list-style: revert;
+    padding: revert;
+    margin: revert;
+  }
+}
+
 body,
 html {
   height: 100vh;

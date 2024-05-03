@@ -3,6 +3,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.Burndown;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
+using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
@@ -45,6 +46,7 @@ public static class ScrumIntegrationModule
         services.AddTransient<ITasksResponseMapper, TasksResponseMapper>();
         services.AddTransient<IRolePointsMapper, RolePointsMapper>();
         services.AddTransient<ISprintStatsResponseMapper, SprintStatsResponseMapper>();
+        services.AddTransient<ITaskDetailsResponseMapper, TaskDetailsResponseMapper>();
 
         services.AddTransient<IJwtDecoder, JwtDecoder>();
         services.AddTransient<ITokenValidator, TokenValidator>();
@@ -58,6 +60,7 @@ public static class ScrumIntegrationModule
         services.AddTransient<IGetStoryTasksService, GetStoryTasksService>();
         services.AddTransient<IUserStoryDetailsService, UserStoryDetailsService>();
         services.AddTransient<IGetSprintStatsService, GetSprintStatsService>();
+        services.AddTransient<IGetTaskDetailsService, GetTaskDetailsService>();
 
         services.AddTransient<ScrumIntegrationMiddleware>();
 

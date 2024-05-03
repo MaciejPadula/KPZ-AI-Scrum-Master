@@ -8,6 +8,7 @@ internal readonly record struct GetUserStoriesResponseElement(
     int? UserStoryId,
     string? UserStorySubject,
     string? StatusName,
+    string? StatusColor,
     int? UserStoryRef,
     bool IsClosed,
     string? AssignedToUsername,

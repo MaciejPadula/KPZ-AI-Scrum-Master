@@ -1,6 +1,16 @@
-<div class="pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1 relative">
+<div
+  class="pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1 relative"
+>
   <span class="absolute top-0 right-0">
-    <button mat-icon-button (click)="openDetails()"><mat-icon>edit_note</mat-icon></button>
+    @if(userStory.userStoryId !== null){
+    <button
+      mat-icon-button
+      (click)="openDetails()"
+      title="{{ 'UserStories.Edit.Title' | translate }}"
+    >
+      <mat-icon>edit_note</mat-icon>
+    </button>
+    }
   </span>
   <div class="mat-headline-6">
     @if(userStory.userStoryRef !==null){ #{{ userStory.userStoryRef }} }
@@ -8,49 +18,86 @@
   </div>
   @if(userStory.userStoryId !== null){
   <div>
-    <div class="grid grid-cols-2 md:grid-cols-4 justify-around mb-4">
+    <div
+      class="grid grid-cols-2 md:grid-cols-4 justify-around mb-4 items-center"
+    >
       <div class="flex flex-row items-center">
-        <span class="mat-body-1">{{ 'UserStories.CreatedBy' | translate }}:
+        <p class="mat-body-1">
+          <span class="text-xs">
+            {{ 'UserStories.CreatedBy' | translate }}:
+          </span>
           <br />
-          {{ userStory.ownerFullNameDisplay }}</span>
+          <span class="font-bold"> {{ userStory.ownerFullNameDisplay }}</span>
+        </p>
+
         <app-avatar [src]="userStory.ownerPhoto" class="ml-1.5" />
       </div>
 
       <div class="flex flex-row items-center">
-        <span class="mat-body-1">{{ 'UserStories.AssignedTo' | translate }}:
+        <p class="mat-body-1">
+          <span class="text-xs">
+            {{ 'UserStories.AssignedTo' | translate }}:
+          </span>
           <br />
-          {{
-          userStory.assignedToFullNameDisplay === null
-          ? ('UserStories.NotAssigned' | translate)
-          : userStory.assignedToFullNameDisplay
-          }}</span>
+          <span class="font-bold">
+            {{
+              userStory.assignedToFullNameDisplay === null
+                ? ('UserStories.NotAssigned' | translate)
+                : userStory.assignedToFullNameDisplay
+            }}
+          </span>
+        </p>
         @if(userStory.assignedToPhoto !== null){
         <app-avatar [src]="userStory.assignedToPhoto" class="ml-1.5" />
         }
       </div>
 
-      <span class="mat-body-1">{{ 'UserStories.Status' | translate }}:
-        {{ userStory.statusName }}</span>
-      <span class="mat-body-1">{{ 'UserStories.Points' | translate }}:
-        {{ userStory.totalPoints }}</span>
+      <p class="mat-body-1">
+        {{ 'UserStories.Status' | translate }}:
+        <span class="font-bold" [style.color]="userStory.statusColor">{{
+          userStory.statusName
+        }}</span>
+      </p>
+      <p class="mat-body-1">
+        {{ 'UserStories.Points' | translate }}:
+        <span class="font-bold">
+          {{ userStory.totalPoints }}
+        </span>
+      </p>
     </div>
   </div>
   }
 
-  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" #storyTasks>
+  <mat-expansion-panel
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+    #storyTasks
+  >
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{ 'UserStories.Tasks' | translate }} @if (!panelOpenState) {<mat-icon aria-hidden="false"
-          aria-label="Example home icon" fontIcon="expand_more"></mat-icon>}@else{
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="expand_less"></mat-icon>
+        {{ 'UserStories.Tasks' | translate }}
+        @if (!panelOpenState) {<mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="expand_more"
+        ></mat-icon
+        >}@else{
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="expand_less"
+        ></mat-icon>
         }
       </mat-panel-title>
     </mat-expansion-panel-header>
 
     @defer (on interaction(storyTasks)) {
-    <app-story-task-list [userStoryId]="userStory.userStoryId" [sprintId]="userStory.sprintId" />
+    <app-story-task-list
+      [userStoryId]="userStory.userStoryId"
+      [sprintId]="userStory.sprintId"
+    />
     } @loading {
-    <mat-spinner></mat-spinner>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
   </mat-expansion-panel>
 </div>

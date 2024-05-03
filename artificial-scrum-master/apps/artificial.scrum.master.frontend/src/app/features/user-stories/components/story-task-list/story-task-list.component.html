@@ -6,7 +6,7 @@
   <app-task-row [taskRow]="task" />
 </div>
 } 
-@if(!storyTasks().length || storyTasks().length === 0) {
+@if(!isLoading() && (!storyTasks() || storyTasks().length === 0)) {
 <div class="flex justify-center items-center h-24">
   <p class="text-lg">{{ 'UserStories.NoTasks' | translate }}</p>
 </div>

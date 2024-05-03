@@ -1,4 +1,7 @@
 <div class="w-full flex flex-col overflow-auto px-2 space-y-2 mb-1">
+  @if (isLoading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
   <div class="mat-headline-6">{{ sprintName }}</div>
   <mat-accordion>
     @for (story of userStories(); track $index) {

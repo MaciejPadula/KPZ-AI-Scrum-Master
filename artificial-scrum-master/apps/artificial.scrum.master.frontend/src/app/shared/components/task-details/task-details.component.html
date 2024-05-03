@@ -42,35 +42,14 @@
       </mat-card-subtitle>
       <mat-card-subtitle>
         <div
-          class="grid grid-cols-1 md:grid-cols-2 w-full items-start justify-around"
+          class="grid grid-cols-1 md:grid-cols-2 w-full items-start justify-between"
         >
-          <div class="flex items-start">
-            <span>
-              {{ 'Tasks.AssignedTo' | translate }}:
-              {{ details()?.assignedToFullName }}
-            </span>
-
-            @if(details()?.assignedToFullName != null){
-            <div
-              style="margin: 0 0.5rem 0 1rem"
-              mat-card-avatar
-              [ngStyle]="{
-                'background-image': 'url(' + details()?.assignedToPhoto + ')',
-                'background-size': 'cover'
-              }"
-            ></div>
-
-            }@else {
-            <span> {{ 'Tasks.NotAssigned' | translate }} </span>
-            }
-          </div>
           <div class="flex items-center">
             <div class="flex flex-col items-start">
               <span>
                 {{ 'Tasks.Edit.CreatedBy' | translate }}:
                 {{ details()?.ownerFullName }}
               </span>
-
               <span class="text-xs"
                 >{{ 'Tasks.Edit.CreatedDate' | translate }}:
                 {{ formattedDate() }}</span
@@ -90,6 +69,26 @@
               <span> {{ 'Tasks.NotAssigned' | translate }} </span>
               }
             </div>
+          </div>
+          <div class="flex items-start">
+            <span>
+              {{ 'Tasks.AssignedTo' | translate }}:
+              {{ details()?.assignedToFullName }}
+            </span>
+
+            @if(details()?.assignedToFullName != null){
+            <div
+              style="margin: 0 0.5rem 0 1rem"
+              mat-card-avatar
+              [ngStyle]="{
+                'background-image': 'url(' + details()?.assignedToPhoto + ')',
+                'background-size': 'cover'
+              }"
+            ></div>
+
+            }@else {
+            <span> {{ 'Tasks.NotAssigned' | translate }} </span>
+            }
           </div>
         </div>
       </mat-card-subtitle>

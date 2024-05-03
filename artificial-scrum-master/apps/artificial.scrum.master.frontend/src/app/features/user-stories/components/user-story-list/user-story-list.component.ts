@@ -7,6 +7,7 @@ import { UserStory } from '../../models/user-story';
 import { UserStoryListItemComponent } from '../user-story-list-item/user-story-list-item.component';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-user-story-list',
@@ -27,7 +28,12 @@ export class UserStoryListComponent implements OnInit {
   public readonly userStories = this.#userStories.asReadonly();
   public sprintName: string;
 
+  #isLoading = signal<boolean>(false);
+  public isLoading = this.#isLoading.asReadonly();
+
   ngOnInit(): void {
+    this.#isLoading.set(true);
+
     this.activatedRoute.params.subscribe((params) => {
       this.sprintId = +params['sprintId'];
     });
@@ -41,6 +47,7 @@ export class UserStoryListComponent implements OnInit {
   private loadUserStories(projectId: number, sprintId: number) {
     this.sprintPreviewDataService
       .getUserStories(projectId, sprintId)
+      .pipe(finalize(() => this.#isLoading.set(false)))
       .subscribe({
         next: (stories) => {
           this.#userStories.set(stories);

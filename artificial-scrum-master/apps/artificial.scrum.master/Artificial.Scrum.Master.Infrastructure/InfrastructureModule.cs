@@ -1,3 +1,4 @@
+using Artificial.Scrum.Master.EditTextSuggestions.Infrastructure.BusinessLogic;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Infrastructure.ExternalServices;
 using Artificial.Scrum.Master.Infrastructure.Repositories;
@@ -23,6 +24,7 @@ public static class InfrastructureModule
 
         services.AddOpenAIService();
         services.AddTransient<IPokerSuggestionService, OpenAIPokerSuggestionService>();
+        services.AddTransient<ITaskSuggestionService, OpenAITaskSuggestionService>();
 
         services.AddTransient<IUserAccessor, JwtUserAccessor>();
 

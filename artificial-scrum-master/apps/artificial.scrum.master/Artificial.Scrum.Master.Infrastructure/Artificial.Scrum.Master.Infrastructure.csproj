@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Artificial.Scrum.Master.EditTextSuggestions\Artificial.Scrum.Master.EditTextSuggestions.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.EstimationPoker\Artificial.Scrum.Master.EstimationPoker.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.Interfaces\Artificial.Scrum.Master.Interfaces.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.ScrumIntegration\Artificial.Scrum.Master.ScrumIntegration.csproj" />

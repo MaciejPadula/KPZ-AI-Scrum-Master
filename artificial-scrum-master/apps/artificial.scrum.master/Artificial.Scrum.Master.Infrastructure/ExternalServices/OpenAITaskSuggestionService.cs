@@ -1,9 +1,9 @@
-using Artificial.Scrum.Master.EditTextSuggestions.Infrastructure.BusinessLogic;
 using Artificial.Scrum.Master.EditTextSuggestions.Infrastructure.Models;
 using Microsoft.Extensions.Caching.Memory;
 using OpenAI.Interfaces;
 using OpenAI.ObjectModels.RequestModels;
 using System.Text.Json;
+using Artificial.Scrum.Master.EditTextSuggestions.Infrastructure;
 using OpenAI.ObjectModels;
 
 namespace Artificial.Scrum.Master.Infrastructure.ExternalServices;

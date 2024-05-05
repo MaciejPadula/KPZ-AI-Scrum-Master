@@ -16,6 +16,6 @@ public static class EditSuggestionEndpoints
             {
                 var result = await service.Handle(request);
                 await context.Response.WriteAsJsonAsync(result);
-            });
+            }).RequireAuthorization("UserLoggedInPolicy");
     }
 }

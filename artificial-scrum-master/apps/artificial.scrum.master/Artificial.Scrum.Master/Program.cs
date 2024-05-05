@@ -18,7 +18,6 @@ builder.Services.AddScrumIntegrationModule(
     builder.Configuration.GetSection("ScrumManagementService"));
 builder.Services.AddEstimationPokerModule();
 builder.Services.AddEditSuggestionsModule();
-
 builder.Services.AddUserModule(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();

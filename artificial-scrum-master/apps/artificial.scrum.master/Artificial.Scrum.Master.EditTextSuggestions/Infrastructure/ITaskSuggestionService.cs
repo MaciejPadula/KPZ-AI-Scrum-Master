@@ -1,6 +1,6 @@
 using Artificial.Scrum.Master.EditTextSuggestions.Infrastructure.Models;
 
-namespace Artificial.Scrum.Master.EditTextSuggestions.Infrastructure.BusinessLogic;
+namespace Artificial.Scrum.Master.EditTextSuggestions.Infrastructure;
 
 public interface ITaskSuggestionService
 {

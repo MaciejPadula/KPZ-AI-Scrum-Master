@@ -1,5 +1,6 @@
-using Artificial.Scrum.Master.EditTextSuggestions.Infrastructure.BusinessLogic;
+using Artificial.Scrum.Master.EditTextSuggestions.Infrastructure;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
+using Artificial.Scrum.Master.Infrastructure.Authorization.Requirements;
 using Artificial.Scrum.Master.Infrastructure.ExternalServices;
 using Artificial.Scrum.Master.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
@@ -29,6 +30,13 @@ public static class InfrastructureModule
         services.AddTransient<IUserAccessor, JwtUserAccessor>();
 
         services.AddSingleton<IActiveUserRepository, InMemorySessionUserRepository>();
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("UserLoggedInPolicy",
+                policy => policy.Requirements.Add(new LoggedInRequirement(["UserId", "UserName"])));
+        });
+
         return services;
     }
 }

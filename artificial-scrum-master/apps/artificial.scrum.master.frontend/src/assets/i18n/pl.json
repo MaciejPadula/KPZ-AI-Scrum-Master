@@ -124,6 +124,7 @@
   "UserStories.GenerateSuggestedTasks": "Wygeneruj sugestie zadań",
   "Tasks.AssignedTo": "Przypisane do",
   "Tasks.NotAssigned": "Nie przypisano",
+  "Tasks.Storyless": "Bez historyjki",
   "Tasks.Tags": "Tagi",
   "Tasks.Description": "Opis",
   "Tasks.Status": "Status",

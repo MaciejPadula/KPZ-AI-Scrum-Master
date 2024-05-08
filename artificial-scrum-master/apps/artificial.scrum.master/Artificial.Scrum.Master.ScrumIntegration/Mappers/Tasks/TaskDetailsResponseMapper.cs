@@ -16,6 +16,7 @@ internal class TaskDetailsResponseMapper : ITaskDetailsResponseMapper
             Subject: taskSpecifics.Subject,
             TaskRef: taskSpecifics.Ref,
             Tags: taskSpecifics.Tags,
+            Description: taskSpecifics.Description,
             DescriptionHtml: taskSpecifics.DescriptionHtml,
             CreatedDate: taskSpecifics.CreatedDate,
             FinishedDate: taskSpecifics.FinishedDate,

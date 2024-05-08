@@ -14,6 +14,7 @@ public class TaskSpecifics
     [JsonPropertyName("finished_date")] public DateTime? FinishedDate { get; set; }
     public string? Subject { get; set; }
     [JsonPropertyName("user_story_extra_info")] public UserStoryExtraInfo? UserStoryExtraInfo { get; set; }
+    public string? Description { get; set; }
     [JsonPropertyName("description_html")] public string? DescriptionHtml { get; set; }
     public int Version { get; set; }
 }

@@ -5,6 +5,7 @@ internal readonly record struct GetTaskDetailsResponse(
     string? Subject,
     int TaskRef,
     List<List<string>>? Tags,
+    string? Description,
     string? DescriptionHtml,
     DateTime? CreatedDate,
     DateTime? FinishedDate,

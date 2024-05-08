@@ -24,17 +24,22 @@ internal class OpenAITaskSuggestionService : ITaskSuggestionService
         _openAIService = openAiService;
     }
 
-    public async Task<GetEditTaskSuggestionResult?> GetEditTaskSuggestion(string taskTitle, string taskDescription)
+    public async Task<GetEditTaskSuggestionResult?> GetEditTaskSuggestion(
+        string userStoryTitle,
+        string taskTitle,
+        string taskDescription)
     {
         var cacheKey = $"{nameof(GetEditTaskSuggestion)}_{taskTitle}_{taskDescription}";
         return await _memoryCache.GetOrCreateAsync(cacheKey, async entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = CacheTTL;
-            return await GetEditTaskSuggestionInternal(taskTitle, taskDescription);
+            return await GetEditTaskSuggestionInternal(userStoryTitle, taskTitle, taskDescription);
         });
     }
 
-    private async Task<GetEditTaskSuggestionResult?> GetEditTaskSuggestionInternal(string taskTitle,
+    private async Task<GetEditTaskSuggestionResult?> GetEditTaskSuggestionInternal(
+        string userStoryTitle,
+        string taskTitle,
         string taskDescription)
     {
         var chat = await _openAIService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest
@@ -42,12 +47,13 @@ internal class OpenAITaskSuggestionService : ITaskSuggestionService
             Messages =
             [
                 ChatMessage.FromSystem(@"
-Improve the description of the following task or write one if none was provided. The description must be in Markdown format.
+Improve the description of the following task or write one if none was provided. The description must be written in Markdown.
 Please return the description in json format:
 {
     'TaskDescriptionSuggestion': 'We need ...'
 }
 Please translate TaskDescriptionSuggestion content to Polish and keep the Markdown format"),
+                ChatMessage.FromSystem($"Task belongs to User Story: {userStoryTitle}"),
                 ChatMessage.FromSystem($"Task title: {taskTitle}"),
                 ChatMessage.FromSystem($"Task description: {taskDescription}"),
             ],

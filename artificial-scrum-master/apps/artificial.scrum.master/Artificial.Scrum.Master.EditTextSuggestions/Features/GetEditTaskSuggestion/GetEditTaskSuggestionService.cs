@@ -22,6 +22,7 @@ internal class GetEditTaskSuggestionService : IGetEditTaskSuggestionService
     {
         var suggestion =
             await _taskSuggestionService.GetEditTaskSuggestion(
+                request.UserStoryTitle,
                 request.TaskTitle,
                 request.TaskDescription ?? string.Empty);
 

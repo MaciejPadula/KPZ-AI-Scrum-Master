@@ -42,11 +42,12 @@ internal class OpenAITaskSuggestionService : ITaskSuggestionService
             Messages =
             [
                 ChatMessage.FromSystem(@"
-Correct and improve the description of the following task or write one if none was provided and return it in json format:
+Improve the description of the following task or write one if none was provided. The description must be in Markdown format.
+Please return the description in json format:
 {
-    'TaskDescriptionSuggestion': 'Implement a new functionality...'
+    'TaskDescriptionSuggestion': 'We need ...'
 }
-Please translate TaskDescriptionSuggestion to Polish"),
+Please translate TaskDescriptionSuggestion content to Polish and keep the Markdown format"),
                 ChatMessage.FromSystem($"Task title: {taskTitle}"),
                 ChatMessage.FromSystem($"Task description: {taskDescription}"),
             ],

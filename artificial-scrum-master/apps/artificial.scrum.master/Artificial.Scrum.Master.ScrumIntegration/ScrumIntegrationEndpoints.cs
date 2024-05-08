@@ -1,6 +1,8 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Burndown;
+using Artificial.Scrum.Master.ScrumIntegration.Features.EditTaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
 using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
@@ -68,7 +70,7 @@ public static class ScrumIntegrationEndpoints
                 {
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
                     await context.Response.WriteAsJsonAsync(new
-                    { Message = "Either userStoryId or sprintId is required" });
+                        { Message = "Either userStoryId or sprintId is required" });
                     return;
                 }
 
@@ -78,8 +80,8 @@ public static class ScrumIntegrationEndpoints
 
         routes.MapGet("/api/userStories/{storyId}",
             async (HttpContext context,
-            IUserStoryDetailsService userStoryDetailsService,
-            string storyId) =>
+                IUserStoryDetailsService userStoryDetailsService,
+                string storyId) =>
             {
                 var result = await userStoryDetailsService.Handle(storyId);
                 await context.Response.WriteAsJsonAsync(result);
@@ -97,6 +99,14 @@ public static class ScrumIntegrationEndpoints
             async (HttpContext context, IGetTaskDetailsService service, [FromRoute] string taskId) =>
             {
                 var result = await service.Handle(taskId);
+                await context.Response.WriteAsJsonAsync(result);
+            });
+
+        routes.MapPatch("/api/task/{taskId}",
+            async (HttpContext context, IPatchTaskService service, [FromRoute] string taskId,
+                [FromBody] PatchTaskRequest request) =>
+            {
+                var result = await service.Handle(taskId, request);
                 await context.Response.WriteAsJsonAsync(result);
             });
     }

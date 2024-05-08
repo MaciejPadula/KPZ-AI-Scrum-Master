@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TaskDetails;
 
 public class TaskSpecifics
 {
@@ -15,6 +15,7 @@ public class TaskSpecifics
     public string? Subject { get; set; }
     [JsonPropertyName("user_story_extra_info")] public UserStoryExtraInfo? UserStoryExtraInfo { get; set; }
     [JsonPropertyName("description_html")] public string? DescriptionHtml { get; set; }
+    public int Version { get; set; }
 }
 
 public class UserInfo

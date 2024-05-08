@@ -1,4 +1,4 @@
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TaskDetails;
 
 internal readonly record struct GetTaskDetailsResponse(
     int TaskId,
@@ -17,5 +17,6 @@ internal readonly record struct GetTaskDetailsResponse(
     string? AssignedToFullName,
     string? AssignedToPhoto,
     int UserStoryRef,
-    string? UserStorySubject
+    string? UserStorySubject,
+    int Version
 );

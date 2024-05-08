@@ -30,15 +30,30 @@ internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
             refreshToken,
             (httpClient, user) => httpClient.GetAsync(urlFactory(user)));
 
-    public async Task<TResponse> PostHttpRequest<TRequest, TResponse>(
+    public async Task<TResponse> ResourceUpdateHttpRequest<TRequest, TResponse>(
+        ResourceUpdateHttpMethod httpMethod,
         string userId,
         string refreshToken,
         Func<UserDetails, string> urlFactory,
-        TRequest payload) =>
-        await SendRequest<TResponse>(
+        TRequest payload)
+    {
+        var request = httpMethod switch
+        {
+            ResourceUpdateHttpMethod.POST =>
+                new Func<HttpClient, UserDetails, Task<HttpResponseMessage>>(
+                    (httpClient, user) => httpClient.PostAsJsonAsync(urlFactory(user), payload)),
+            ResourceUpdateHttpMethod.PUT =>
+                (httpClient, user) => httpClient.PutAsJsonAsync(urlFactory(user), payload),
+            ResourceUpdateHttpMethod.PATCH =>
+                (httpClient, user) => httpClient.PatchAsJsonAsync(urlFactory(user), payload),
+            _ => throw new ProjectRequestFailedException("Unsupported http method")
+        };
+
+        return await SendRequest<TResponse>(
             userId,
             refreshToken,
-            (httpClient, user) => httpClient.PostAsJsonAsync(urlFactory(user), payload));
+            request);
+    }
 
     private async Task<TResponse> SendRequest<TResponse>(
         string userId,

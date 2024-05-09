@@ -13,13 +13,18 @@ export class DescriptionDiffComponent {
   modifiedData = input.required<string | null | undefined>();
 
   private readonly language = 'markdown';
-  public readonly options = {
-    theme: 'vs-light',
-    readOnly: true,
-    lineNumbers: 'off',
-    wordWrap: 'on',
-    wrappingIndent: 'indent',
-  };
+
+  options = computed(() => {
+    return {
+      theme: document.body.classList.contains('dark-theme')
+        ? 'vs-dark'
+        : 'vs-light',
+      readOnly: true,
+      lineNumbers: 'off',
+      wordWrap: 'on',
+      wrappingIndent: 'indent',
+    };
+  });
 
   originalModel = computed(
     () =>

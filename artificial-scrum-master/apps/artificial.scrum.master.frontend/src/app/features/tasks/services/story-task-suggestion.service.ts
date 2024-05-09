@@ -11,9 +11,9 @@ export class StoryTaskSuggestionService {
   private readonly baseApiUrl = 'api/task/suggestions';
 
   public getTaskDescriptionSuggestion(
-    userStoryTitle: string,
     TaskTitle: string,
-    TaskDescription: string | null | undefined
+    userStoryTitle: string | null,
+    TaskDescription: string | null
   ): Observable<GetStoryTaskSuggestion> {
     return this.httpClient.post<GetStoryTaskSuggestion>(`${this.baseApiUrl}`, {
       userStoryTitle,

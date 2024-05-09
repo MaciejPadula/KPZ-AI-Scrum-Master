@@ -52,7 +52,7 @@ Please return the description in json format:
 {
     'TaskDescriptionSuggestion': 'We need ...'
 }
-Please translate TaskDescriptionSuggestion content to Polish and keep the Markdown format"),
+Please translate TaskDescriptionSuggestion to Polish and keep the Markdown format. Try not to remove any information from the original description."),
                 ChatMessage.FromSystem($"Task belongs to User Story: {userStoryTitle}"),
                 ChatMessage.FromSystem($"Task title: {taskTitle}"),
                 ChatMessage.FromSystem($"Task description: {taskDescription}"),

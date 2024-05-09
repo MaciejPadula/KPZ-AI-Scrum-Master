@@ -8,15 +8,16 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TaskDetails } from './task-details';
+import { TaskDetails } from '../../models/task-details';
 import { HttpClient } from '@angular/common/http';
-import { MaterialModule } from '../../material.module';
+import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { FormatDateService } from '../../services/format-date.service';
-import { DescriptionDiffComponent } from '../description-diff/description-diff.component';
-import { GetStoryTaskSuggestion } from '../../../features/user-stories/models/get-story-task-suggestion';
-import { StoryTaskSuggestionService } from '../../../features/user-stories/services/story-task-suggestion.service';
+import { FormatDateService } from '../../../../shared/services/format-date.service';
+import { DescriptionDiffComponent } from '../../../../shared/components/description-diff/description-diff.component';
+import { GetStoryTaskSuggestion } from '../../models/get-story-task-suggestion';
+import { StoryTaskSuggestionService } from '../../services/story-task-suggestion.service';
 import { finalize } from 'rxjs';
+import { MarkdownEditorComponent } from '../../../../shared/components/markdown-editor/markdown-editor.component';
 
 @Component({
   selector: 'app-task-details',
@@ -28,6 +29,7 @@ import { finalize } from 'rxjs';
     MaterialModule,
     TranslateModule,
     DescriptionDiffComponent,
+    MarkdownEditorComponent,
   ],
 })
 export class TaskDetailsComponent implements OnInit {
@@ -64,14 +66,18 @@ export class TaskDetailsComponent implements OnInit {
     }
     this.storyTaskSuggestionService
       .getTaskDescriptionSuggestion(
-        this.details()?.userStorySubject ?? 'Storyless',
         this.details()?.subject ?? '',
-        this.details()?.description
+        this.details()?.userStorySubject ?? null,
+        this.details()?.description ?? null
       )
       .pipe(finalize(() => this.isSuggestionsVisible.set(true)))
       .subscribe({
         next: (response) => this.suggestion.set(response),
         error: () => this.error.set(true),
       });
+  }
+
+  updateDescription(newValue: string) {
+    console.log(newValue);
   }
 }

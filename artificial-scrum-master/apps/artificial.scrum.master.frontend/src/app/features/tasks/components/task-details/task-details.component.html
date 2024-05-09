@@ -136,6 +136,10 @@
           </div>
         </div>
         }
+        <app-markdown-editor
+          [editorContent]="details()?.description ?? ''"
+          (contentChange)="updateDescription($event)"
+        ></app-markdown-editor>
       </mat-card-content>
     </ng-scrollbar>
   </mat-card>

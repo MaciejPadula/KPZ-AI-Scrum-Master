@@ -22,7 +22,7 @@ internal class GetEditTaskSuggestionService : IGetEditTaskSuggestionService
     {
         var suggestion =
             await _taskSuggestionService.GetEditTaskSuggestion(
-                request.UserStoryTitle,
+                request.UserStoryTitle ?? "This is a storyless task",
                 request.TaskTitle,
                 request.TaskDescription ?? string.Empty);
 

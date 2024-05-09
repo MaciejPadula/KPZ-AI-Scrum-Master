@@ -1,11 +1,11 @@
 @if (isLoading()) {
 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-} 
+}
 @for (task of storyTasks(); track $index) {
 <div class="my-2">
   <app-task-row [taskRow]="task" />
 </div>
-} 
+}
 @if(!isLoading() && (!storyTasks() || storyTasks().length === 0)) {
 <div class="flex justify-center items-center h-24">
   <p class="text-lg">{{ 'UserStories.NoTasks' | translate }}</p>

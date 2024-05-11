@@ -142,7 +142,7 @@
           <div class="shadow mx-px">
             <app-description-diff
               #descriptionDiff
-              [originalData]="details()?.description"
+              [originalData]="descriptionEditorValue()"
               [modifiedData]="
                 suggestion()?.descriptionEditSuggestion ??
                 'Could not generate suggestion'
@@ -181,14 +181,14 @@
             </button>
           </div>
         </div>
-        }@else if (!isEditorVisible() && isLoading()) {
+        }@else if (!isSuggestionsVisible() && isLoading()) {
         <p class="flex flex-row justify-center">
           <mat-spinner></mat-spinner>
         </p>
         } @if(isEditorVisible()){
         <app-markdown-editor
           #editor
-          [editorContent]="details()?.description ?? ''"
+          [editorContent]="descriptionEditorValue()"
           (contentChange)="updateDescription($event)"
         ></app-markdown-editor>
         <div class="flex flex-row justify-around">

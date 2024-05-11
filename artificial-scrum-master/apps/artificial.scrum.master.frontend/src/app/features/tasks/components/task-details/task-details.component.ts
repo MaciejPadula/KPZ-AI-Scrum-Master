@@ -20,6 +20,8 @@ import { GetStoryTaskSuggestion } from '../../models/get-story-task-suggestion';
 import { StoryTaskSuggestionService } from '../../services/story-task-suggestion.service';
 import { finalize } from 'rxjs';
 import { MarkdownEditorComponent } from '../../../../shared/components/markdown-editor/markdown-editor.component';
+import { StoryTaskEditService } from '../../services/story-task-edit.service';
+import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-task-details',
@@ -45,6 +47,8 @@ export class TaskDetailsComponent implements OnInit {
   private readonly storyTaskSuggestionService = inject(
     StoryTaskSuggestionService
   );
+  private readonly storyTaskEditService = inject(StoryTaskEditService);
+  private readonly toastService = inject(ToastService);
 
   details = signal<TaskDetails | null>(null);
   error = signal<boolean>(false);
@@ -105,7 +109,7 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   updateDescription(newValue: string) {
-    console.log(newValue);
+    this.descriptionEditorValue.set(newValue);
   }
 
   openDescriptionEditor() {
@@ -124,25 +128,10 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   replaceWithSuggestion() {
-    const details = this.details();
-    if (details == null) {
+    if (this.details() == null) {
       return;
     }
-    details.description = this.suggestion()?.descriptionEditSuggestion ?? '';
-
-    this.isSuggestionsVisible.set(false);
-    if (!this.isEditorVisible()) {
-      this.isEditorVisible.set(true);
-    }
-  }
-
-  appendSuggestionToBack() {
-    const details = this.details();
-    if (details == null) {
-      return;
-    }
-    details.description = (details.description ?? '').concat(
-      '\n',
+    this.descriptionEditorValue.set(
       this.suggestion()?.descriptionEditSuggestion ?? ''
     );
 
@@ -152,14 +141,33 @@ export class TaskDetailsComponent implements OnInit {
     }
   }
 
-  appendSuggestionToFront() {
-    const details = this.details();
-    if (details == null) {
+  appendSuggestionToBack() {
+    if (this.details() == null) {
       return;
     }
-    details.description = (
-      this.suggestion()?.descriptionEditSuggestion ?? ''
-    ).concat('\n', details.description ?? '');
+    this.descriptionEditorValue.set(
+      this.descriptionEditorValue().concat(
+        '\n',
+        this.suggestion()?.descriptionEditSuggestion ?? ''
+      )
+    );
+
+    this.isSuggestionsVisible.set(false);
+    if (!this.isEditorVisible()) {
+      this.isEditorVisible.set(true);
+    }
+  }
+
+  appendSuggestionToFront() {
+    if (this.details() == null) {
+      return;
+    }
+    this.descriptionEditorValue.set(
+      (this.suggestion()?.descriptionEditSuggestion ?? '').concat(
+        '\n',
+        this.descriptionEditorValue()
+      )
+    );
 
     this.isSuggestionsVisible.set(false);
     if (!this.isEditorVisible()) {
@@ -168,10 +176,38 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   resetDescription() {
-    throw new Error('Method not implemented.');
+    this.isEditorVisible.set(false);
+    this.descriptionEditorValue.set(this.details()?.description ?? '');
+    setTimeout(() => this.scrollToElement(this.taskDescription), 50);
   }
+
   saveDescriptionChanges() {
-    throw new Error('Method not implemented.');
+    if (this.details()?.description === this.descriptionEditorValue()) {
+      this.toastService.openError('No changes detected!');
+      return;
+    }
+
+    this.storyTaskEditService
+      .patchTaskDescription(
+        this.#taskId,
+        this.details()?.version ?? 0,
+        this.descriptionEditorValue()
+      )
+      .subscribe({
+        next: (response) => {
+          this.details.set(response);
+          this.descriptionEditorValue.set(response.description ?? '');
+          this.toastService.openSuccess(
+            'Task description updated successfully!'
+          );
+          this.isEditorVisible.set(false);
+          setTimeout(() => this.scrollToElement(this.taskDescription), 50);
+        },
+        error: () =>
+          this.toastService.openError(
+            'An error occurred while updating task description!'
+          ),
+      });
   }
 
   private scrollToElement(element: ElementRef) {

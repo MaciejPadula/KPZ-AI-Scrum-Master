@@ -106,6 +106,15 @@
       <mat-card-title>{{ 'Tasks.Description' | translate }}:</mat-card-title>
       <span class="flex space-x-3">
         <button
+          (click)="openDescriptionEditor()"
+          class="my-2"
+          title="{{ 'Shared.OpenEditor' | translate }}"
+          mat-mini-fab
+          color="primary"
+        >
+          <mat-icon>edit_document</mat-icon>
+        </button>
+        <button
           (click)="generateSuggestion()"
           class="my-2"
           title="{{ 'Tasks.GenerateImprovementSuggestion' | translate }}"
@@ -118,15 +127,21 @@
     </div>
     <ng-scrollbar>
       <mat-card-content class="stubborn-text" style="padding: 0 0 2rem 1rem">
-        @if(details()?.descriptionHtml){
-        <p [innerHTML]="details()?.descriptionHtml"></p>
-        }@else {
-        <p>{{ 'Tasks.Edit.NoDescription' | translate }}</p>
-        } @if(isSuggestionsVisible()){
+        <div #taskDescription>
+          @if(details()?.descriptionHtml){
+          <p [innerHTML]="details()?.descriptionHtml"></p>
+          }@else {
+          <p>{{ 'Tasks.Edit.NoDescription' | translate }}</p>
+          } @if(isSuggestionsVisible() || isEditorVisible()){
+          <p class=".mat-headline-3">Editing:</p>
+          }
+        </div>
+        @if(isSuggestionsVisible()){
         <div>
           <p>Suggestion by AI:</p>
           <div class="shadow mx-px">
             <app-description-diff
+              #descriptionDiff
               [originalData]="details()?.description"
               [modifiedData]="
                 suggestion()?.descriptionEditSuggestion ??
@@ -134,12 +149,61 @@
               "
             ></app-description-diff>
           </div>
+          <div class="flex flex-row justify-around">
+            <button
+              (click)="appendSuggestionToFront()"
+              mat-flat-button
+              color="primary"
+            >
+              Append to front
+              <mat-icon>done</mat-icon>
+            </button>
+            <button
+              (click)="appendSuggestionToBack()"
+              mat-flat-button
+              color="primary"
+            >
+              Append to back
+              <mat-icon>done</mat-icon>
+            </button>
+            <button
+              (click)="replaceWithSuggestion()"
+              mat-flat-button
+              color="primary"
+            >
+              Replace
+              <mat-icon>done</mat-icon>
+            </button>
+
+            <button (click)="rejectSuggestion()" mat-flat-button color="warn">
+              Reject
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
         </div>
-        }
+        }@else if (!isEditorVisible() && isLoading()) {
+        <p class="flex flex-row justify-center">
+          <mat-spinner></mat-spinner>
+        </p>
+        } @if(isEditorVisible()){
         <app-markdown-editor
+          #editor
           [editorContent]="details()?.description ?? ''"
           (contentChange)="updateDescription($event)"
         ></app-markdown-editor>
+        <div class="flex flex-row justify-around">
+          <button
+            (click)="saveDescriptionChanges()"
+            mat-flat-button
+            color="primary"
+          >
+            Save
+          </button>
+          <button (click)="resetDescription()" mat-flat-button color="warn">
+            Cancel
+          </button>
+        </div>
+        }
       </mat-card-content>
     </ng-scrollbar>
   </mat-card>

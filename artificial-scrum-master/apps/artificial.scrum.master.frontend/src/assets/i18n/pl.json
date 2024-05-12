@@ -138,6 +138,7 @@
   "Tasks.Description": "Opis",
   "Tasks.Status": "Status",
   "Tasks.GenerateImprovementSuggestion": "Wygeneruj sugestię poprawy opisu",
+  "Tasks.GenerateSugestionFailed": "Wystąpił problem z generowaniem sugestii",
   "Tasks.UpdatedSuccessfully": "Zadanie zostało zaktualizowane",
   "Tasks.ErrorWhileUpdate": "Wystąpił problem z aktualizacją zadania",
   "Tasks.Edit.NoChanges": "Nie dokonano zmian w zadaniu",

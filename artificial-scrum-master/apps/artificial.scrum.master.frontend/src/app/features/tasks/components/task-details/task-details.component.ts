@@ -13,15 +13,14 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TaskDetails } from '../../models/task-details';
 import { HttpClient } from '@angular/common/http';
 import { MaterialModule } from '../../../../shared/material.module';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { FormatDateService } from '../../../../shared/services/format-date.service';
 import { DescriptionDiffComponent } from '../../../../shared/components/description-diff/description-diff.component';
 import { GetStoryTaskSuggestion } from '../../models/get-story-task-suggestion';
 import { StoryTaskSuggestionService } from '../../services/story-task-suggestion.service';
 import { finalize } from 'rxjs';
 import { MarkdownEditorComponent } from '../../../../shared/components/markdown-editor/markdown-editor.component';
-import { StoryTaskEditService } from '../../services/story-task-edit.service';
-import { ToastService } from '../../../../shared/services/toast.service';
+import { EditTaskDetailsComponent } from '../edit-task-details/edit-task-details.component';
 
 @Component({
   selector: 'app-task-details',
@@ -34,29 +33,25 @@ import { ToastService } from '../../../../shared/services/toast.service';
     TranslateModule,
     DescriptionDiffComponent,
     MarkdownEditorComponent,
+    EditTaskDetailsComponent,
   ],
 })
 export class TaskDetailsComponent implements OnInit {
   @ViewChild('taskDescription', { read: ElementRef })
   taskDescription: ElementRef;
-  @ViewChild('descriptionDiff', { read: ElementRef })
-  descriptionDiff: ElementRef;
-  @ViewChild('editor', { read: ElementRef }) editor: ElementRef;
+  @ViewChild('taskEditor', { read: ElementRef })
+  taskEditor: ElementRef;
 
-  private readonly translateService = inject(TranslateService);
   private readonly formatDateService = inject(FormatDateService);
   private readonly storyTaskSuggestionService = inject(
     StoryTaskSuggestionService
   );
-  private readonly storyTaskEditService = inject(StoryTaskEditService);
-  private readonly toastService = inject(ToastService);
 
   details = signal<TaskDetails | null>(null);
   error = signal<boolean>(false);
 
   isSuggestionsVisible = signal(false);
   suggestion = signal<GetStoryTaskSuggestion | null>(null);
-
   isEditorVisible = signal(false);
   descriptionEditorValue = signal<string>('');
 
@@ -69,9 +64,11 @@ export class TaskDetailsComponent implements OnInit {
 
   #httpClient = inject(HttpClient);
   #taskId: number;
+  public readonly taskId: number;
 
   constructor(@Inject(MAT_DIALOG_DATA) taskId: number) {
     this.#taskId = taskId;
+    this.taskId = taskId;
   }
 
   ngOnInit(): void {
@@ -89,7 +86,6 @@ export class TaskDetailsComponent implements OnInit {
       return;
     }
     this.#isLoading.set(true);
-
     this.storyTaskSuggestionService
       .getTaskDescriptionSuggestion(
         this.details()?.subject ?? '',
@@ -100,18 +96,13 @@ export class TaskDetailsComponent implements OnInit {
         finalize(() => {
           this.#isLoading.set(false);
           this.isSuggestionsVisible.set(true);
-          setTimeout(() => this.scrollToElement(this.descriptionDiff), 50);
+          setTimeout(() => this.scrollToElement(this.taskEditor), 50);
         })
       )
       .subscribe({
         next: (response) => this.suggestion.set(response),
         error: () => this.error.set(true),
       });
-  }
-
-  updateDescription(newValue: string) {
-    console.log(newValue);
-    this.descriptionEditorValue.set(newValue);
   }
 
   openDescriptionEditor() {
@@ -121,96 +112,7 @@ export class TaskDetailsComponent implements OnInit {
       return;
     }
     setTimeout(() => this.isEditorVisible.set(true), 50);
-    setTimeout(() => this.scrollToElement(this.editor), 100);
-  }
-
-  rejectSuggestion() {
-    this.isSuggestionsVisible.set(false);
-  }
-
-  replaceWithSuggestion() {
-    if (this.details() == null) {
-      return;
-    }
-    this.descriptionEditorValue.set(
-      this.suggestion()?.descriptionEditSuggestion ?? ''
-    );
-
-    this.isSuggestionsVisible.set(false);
-    if (!this.isEditorVisible()) {
-      this.isEditorVisible.set(true);
-    }
-  }
-
-  appendSuggestionToBack() {
-    if (this.details() == null) {
-      return;
-    }
-    this.descriptionEditorValue.set(
-      this.descriptionEditorValue().concat(
-        '\n',
-        this.suggestion()?.descriptionEditSuggestion ?? ''
-      )
-    );
-
-    this.isSuggestionsVisible.set(false);
-    if (!this.isEditorVisible()) {
-      this.isEditorVisible.set(true);
-    }
-  }
-
-  appendSuggestionToFront() {
-    if (this.details() == null) {
-      return;
-    }
-    this.descriptionEditorValue.set(
-      (this.suggestion()?.descriptionEditSuggestion ?? '').concat(
-        '\n',
-        this.descriptionEditorValue()
-      )
-    );
-
-    this.isSuggestionsVisible.set(false);
-    if (!this.isEditorVisible()) {
-      this.isEditorVisible.set(true);
-    }
-  }
-
-  resetDescription() {
-    this.isEditorVisible.set(false);
-    this.descriptionEditorValue.set(this.details()?.description ?? '');
-    setTimeout(() => this.scrollToElement(this.taskDescription), 50);
-  }
-
-  saveDescriptionChanges() {
-    if (this.details()?.description === this.descriptionEditorValue()) {
-      this.toastService.openError(
-        this.translateService.instant('Tasks.Edit.NoChanges')
-      );
-      return;
-    }
-
-    this.storyTaskEditService
-      .patchTaskDescription(
-        this.#taskId,
-        this.details()?.version ?? 0,
-        this.descriptionEditorValue()
-      )
-      .subscribe({
-        next: (response) => {
-          this.details.set(response);
-          this.descriptionEditorValue.set(response.description ?? '');
-          this.toastService.openSuccess(
-            this.translateService.instant('Tasks.UpdatedSuccessfully')
-          );
-          this.isEditorVisible.set(false);
-          setTimeout(() => this.scrollToElement(this.taskDescription), 50);
-        },
-        error: () =>
-          this.toastService.openError(
-            this.translateService.instant('Tasks.ErrorWhileUpdate')
-          ),
-      });
+    setTimeout(() => this.scrollToElement(this.taskEditor), 100);
   }
 
   private scrollToElement(element: ElementRef) {
@@ -219,8 +121,6 @@ export class TaskDetailsComponent implements OnInit {
         behavior: 'smooth',
         block: 'start',
       });
-      // nie działa
-      element.nativeElement.focus();
     }
   }
 }

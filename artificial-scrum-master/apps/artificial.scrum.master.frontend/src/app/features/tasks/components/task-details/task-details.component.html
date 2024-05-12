@@ -127,84 +127,25 @@
     </div>
     <ng-scrollbar>
       <mat-card-content class="stubborn-text" style="padding: 0 0 2rem 1rem">
-        <div #taskDescription>
+        <div #taskDescription class="pb-2">
           @if(details()?.descriptionHtml){
           <p [innerHTML]="details()?.descriptionHtml"></p>
           }@else {
           <p>{{ 'Tasks.Edit.NoDescription' | translate }}</p>
           }
         </div>
-        @if(isSuggestionsVisible()){
-        <div>
-          <p class="mat-subtitle-2 sm:mat-subtitle-1">
-            {{ 'Shared.SuggestionByAI' | translate }}
-          </p>
-          <div class="shadow mx-px">
-            <app-description-diff
-              #descriptionDiff
-              [originalData]="descriptionEditorValue()"
-              [modifiedData]="
-                suggestion()?.descriptionEditSuggestion ??
-                'Could not generate suggestion'
-              "
-            ></app-description-diff>
-          </div>
-          <div class="flex flex-row justify-around">
-            <button
-              (click)="appendSuggestionToFront()"
-              mat-flat-button
-              color="primary"
-            >
-              {{ 'Shared.AI.AppendToFront' | translate }}
-              <mat-icon>done</mat-icon>
-            </button>
-            <button
-              (click)="appendSuggestionToBack()"
-              mat-flat-button
-              color="primary"
-            >
-              {{ 'Shared.AI.AppendToBack' | translate }}
-              <mat-icon>done</mat-icon>
-            </button>
-            <button
-              (click)="replaceWithSuggestion()"
-              mat-flat-button
-              color="primary"
-            >
-              {{ 'Shared.AI.Replace' | translate }}
-              <mat-icon>done</mat-icon>
-            </button>
-
-            <button (click)="rejectSuggestion()" mat-flat-button color="warn">
-              {{ 'Shared.AI.Reject' | translate }}
-              <mat-icon>clear</mat-icon>
-            </button>
-          </div>
-        </div>
-        }@else if (!isSuggestionsVisible() && isLoading()) {
-        <p class="flex flex-row justify-center">
-          <mat-spinner></mat-spinner>
-        </p>
-        } @if(isEditorVisible()){
-        <p class="mat-subtitle-2 sm:mat-subtitle-1">
-          {{ 'Shared.Editor' | translate }}
-        </p>
-        <app-markdown-editor
-          #editor
-          [editorContent]="descriptionEditorValue()"
-          (contentChange)="updateDescription($event)"
-        ></app-markdown-editor>
-        <div class="flex flex-row justify-around">
-          <button
-            (click)="saveDescriptionChanges()"
-            mat-flat-button
-            color="primary"
-          >
-            {{ 'Shared.Save' | translate }}
-          </button>
-          <button (click)="resetDescription()" mat-flat-button color="warn">
-            {{ 'Shared.Cancel' | translate }}
-          </button>
+        @if(isSuggestionsVisible()|| isEditorVisible()){
+        <div class="shadow-xl my-0.5 hover:cursor-pointer">
+          <app-edit-task-details
+            #taskEditor
+            [(details)]="details"
+            [taskId]="taskId"
+            [isLoading]="isLoading()"
+            [suggestion]="suggestion()"
+            [(isSuggestionsVisible)]="isSuggestionsVisible"
+            [(isEditorVisible)]="isEditorVisible"
+            [(descriptionEditorValue)]="descriptionEditorValue"
+          />
         </div>
         }
       </mat-card-content>

@@ -9,9 +9,9 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-user-story-details',
   standalone: true,
-  imports: [CommonModule, MaterialModule, TranslateModule],
   templateUrl: './user-story-details.component.html',
   styleUrls: ['./user-story-details.component.scss'],
+  imports: [CommonModule, MaterialModule, TranslateModule],
 })
 export class UserStoryDetailsComponent implements OnInit {
   details = signal<UserStoryDetails | null>(null);

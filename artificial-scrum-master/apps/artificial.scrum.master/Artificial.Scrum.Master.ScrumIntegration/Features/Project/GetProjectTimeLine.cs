@@ -1,4 +1,4 @@
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TimeLine;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 

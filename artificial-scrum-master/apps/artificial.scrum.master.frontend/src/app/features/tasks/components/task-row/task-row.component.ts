@@ -1,10 +1,10 @@
 import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TaskRow } from './task-row';
-import { AvatarComponent } from '../avatar/avatar.component';
-import { MaterialModule } from '../../material.module';
+import { TaskRow } from '../../models/task-row';
+import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MaterialModule } from '../../../../shared/material.module';
 import { TaskDetailsComponent } from '../task-details/task-details.component';
 
 @Component({

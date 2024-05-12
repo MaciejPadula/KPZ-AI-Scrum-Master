@@ -1,6 +1,6 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.ResponseEnums;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TimeLine;
 
 internal readonly record struct TimeLineEvent(
     int EventId,

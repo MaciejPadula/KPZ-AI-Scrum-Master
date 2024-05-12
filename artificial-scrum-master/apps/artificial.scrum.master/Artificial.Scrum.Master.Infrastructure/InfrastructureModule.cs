@@ -1,9 +1,13 @@
+using Artificial.Scrum.Master.EditTextSuggestions.Infrastructure;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
+using Artificial.Scrum.Master.Infrastructure.Authorization.Handlers;
+using Artificial.Scrum.Master.Infrastructure.Authorization.Requirements;
 using Artificial.Scrum.Master.Infrastructure.ExternalServices;
 using Artificial.Scrum.Master.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using OpenAI.Extensions;
 
@@ -23,10 +27,19 @@ public static class InfrastructureModule
 
         services.AddOpenAIService();
         services.AddTransient<IPokerSuggestionService, OpenAIPokerSuggestionService>();
+        services.AddTransient<ITaskSuggestionService, OpenAITaskSuggestionService>();
 
         services.AddTransient<IUserAccessor, JwtUserAccessor>();
 
         services.AddSingleton<IActiveUserRepository, InMemorySessionUserRepository>();
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("UserLoggedInPolicy",
+                policy => policy.Requirements.Add(new LoggedInRequirement(["UserId", "UserName"])));
+        });
+        services.AddScoped<IAuthorizationHandler, UserLoggedInRequirementHandler>();
+
         return services;
     }
 }

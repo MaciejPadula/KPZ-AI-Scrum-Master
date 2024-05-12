@@ -1,5 +1,6 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TimeLine;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;

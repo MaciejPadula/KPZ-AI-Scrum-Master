@@ -10,6 +10,7 @@ import {
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { AppSecrets } from './app.secrets';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 export function HttpLoaderFactory(_httpBackend: HttpBackend) {
   return new MultiTranslateHttpLoader(_httpBackend, ['/assets/i18n/']);
@@ -50,5 +51,6 @@ export const appConfig: ApplicationConfig = {
         defaultLanguage: 'pl',
       })
     ),
+    importProvidersFrom(MonacoEditorModule.forRoot()),
   ],
 };

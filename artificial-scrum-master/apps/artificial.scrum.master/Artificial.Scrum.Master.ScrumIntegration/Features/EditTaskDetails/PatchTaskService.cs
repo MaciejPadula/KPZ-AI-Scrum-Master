@@ -36,8 +36,7 @@ internal class PatchTaskService : IPatchTaskService
         var refreshToken = await _accessTokenProvider.ProvideRefreshTokenOrThrow(userId);
 
         var taskDetailsRequestResponse =
-            await _projectHttpClientWrapper.ResourceUpdateHttpRequest<PatchTaskRequest, TaskSpecifics>(
-                ResourceUpdateHttpMethod.PATCH,
+            await _projectHttpClientWrapper.PatchHttpRequest<PatchTaskRequest, TaskSpecifics>(
                 userId,
                 refreshToken,
                 _ => $"tasks/{taskId}",

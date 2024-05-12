@@ -6,7 +6,7 @@ internal interface IProjectHttpClientWrapper
 {
     Task<TResponse> GetHttpRequest<TResponse>(string userId, string refreshToken, Func<UserDetails, string> urlFactory);
 
-    Task<TResponse> ResourceUpdateHttpRequest<TRequest, TResponse>(
-        ResourceUpdateHttpMethod httpMethod, string userId,
-        string refreshToken, Func<UserDetails, string> urlFactory, TRequest payload);
+    Task<TResponse> PostHttpRequest<TRequest, TResponse>(string userId, string refreshToken, Func<UserDetails, string> urlFactory, TRequest payload);
+
+    Task<TResponse> PatchHttpRequest<TRequest, TResponse>(string userId, string refreshToken, Func<UserDetails, string> urlFactory, TRequest payload);
 }

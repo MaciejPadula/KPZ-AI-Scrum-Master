@@ -14,7 +14,7 @@ internal class OpenAITaskSuggestionService : ITaskSuggestionService
     private readonly IOpenAIService _openAIService;
 
     private readonly TimeSpan CacheTTL = TimeSpan.FromMinutes(45);
-    private const int MaxTokens = 250;
+    private const int MaxTokens = 1000;
 
     public OpenAITaskSuggestionService(
         IMemoryCache memoryCache,
@@ -47,12 +47,14 @@ internal class OpenAITaskSuggestionService : ITaskSuggestionService
             Messages =
             [
                 ChatMessage.FromSystem(@"
-Improve the description of the following task or write one if none was provided. The description must be written in Markdown.
+Improve the description of the following task or write one if none was provided.
+The description must be written in Markdown.
 Please return the description in json format:
 {
     'TaskDescriptionSuggestion': 'We need ...'
 }
-Please translate TaskDescriptionSuggestion to Polish and keep the Markdown format. Try not to remove any information from the original description."),
+Please translate TaskDescriptionSuggestion to Polish and keep the Markdown format.
+Try not to remove any information from the original description, especially URLs."),
                 ChatMessage.FromSystem($"Task belongs to User Story: {userStoryTitle}"),
                 ChatMessage.FromSystem($"Task title: {taskTitle}"),
                 ChatMessage.FromSystem($"Task description: {taskDescription}"),

@@ -8,6 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { FormsModule } from '@angular/forms';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-markdown-editor',
@@ -16,6 +17,14 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './markdown-editor.component.html',
 })
 export class MarkdownEditorComponent {
+  private contentChangeSubject = new Subject<string>();
+
+  constructor() {
+    this.contentChangeSubject.pipe(debounceTime(500)).subscribe((newValue) => {
+      this.contentChange.emit(newValue);
+    });
+  }
+
   editorOptions = computed(() => {
     return {
       theme: document.body.classList.contains('dark-theme')
@@ -32,6 +41,6 @@ export class MarkdownEditorComponent {
   @Output() contentChange = new EventEmitter<string>();
 
   onContentChange(newValue: string) {
-    this.contentChange.emit(newValue);
+    this.contentChangeSubject.next(newValue);
   }
 }

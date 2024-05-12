@@ -132,13 +132,13 @@
           <p [innerHTML]="details()?.descriptionHtml"></p>
           }@else {
           <p>{{ 'Tasks.Edit.NoDescription' | translate }}</p>
-          } @if(isSuggestionsVisible() || isEditorVisible()){
-          <p class=".mat-headline-3">Editing:</p>
           }
         </div>
         @if(isSuggestionsVisible()){
         <div>
-          <p>Suggestion by AI:</p>
+          <p class="mat-subtitle-2 sm:mat-subtitle-1">
+            {{ 'Shared.SuggestionByAI' | translate }}
+          </p>
           <div class="shadow mx-px">
             <app-description-diff
               #descriptionDiff
@@ -155,7 +155,7 @@
               mat-flat-button
               color="primary"
             >
-              Append to front
+              {{ 'Shared.AI.AppendToFront' | translate }}
               <mat-icon>done</mat-icon>
             </button>
             <button
@@ -163,7 +163,7 @@
               mat-flat-button
               color="primary"
             >
-              Append to back
+              {{ 'Shared.AI.AppendToBack' | translate }}
               <mat-icon>done</mat-icon>
             </button>
             <button
@@ -171,12 +171,12 @@
               mat-flat-button
               color="primary"
             >
-              Replace
+              {{ 'Shared.AI.Replace' | translate }}
               <mat-icon>done</mat-icon>
             </button>
 
             <button (click)="rejectSuggestion()" mat-flat-button color="warn">
-              Reject
+              {{ 'Shared.AI.Reject' | translate }}
               <mat-icon>clear</mat-icon>
             </button>
           </div>
@@ -186,6 +186,9 @@
           <mat-spinner></mat-spinner>
         </p>
         } @if(isEditorVisible()){
+        <p class="mat-subtitle-2 sm:mat-subtitle-1">
+          {{ 'Shared.Editor' | translate }}
+        </p>
         <app-markdown-editor
           #editor
           [editorContent]="descriptionEditorValue()"
@@ -197,10 +200,10 @@
             mat-flat-button
             color="primary"
           >
-            Save
+            {{ 'Shared.Save' | translate }}
           </button>
           <button (click)="resetDescription()" mat-flat-button color="warn">
-            Cancel
+            {{ 'Shared.Cancel' | translate }}
           </button>
         </div>
         }

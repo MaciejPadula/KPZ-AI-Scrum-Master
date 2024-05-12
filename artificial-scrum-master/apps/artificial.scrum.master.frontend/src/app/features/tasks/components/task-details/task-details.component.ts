@@ -13,7 +13,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TaskDetails } from '../../models/task-details';
 import { HttpClient } from '@angular/common/http';
 import { MaterialModule } from '../../../../shared/material.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormatDateService } from '../../../../shared/services/format-date.service';
 import { DescriptionDiffComponent } from '../../../../shared/components/description-diff/description-diff.component';
 import { GetStoryTaskSuggestion } from '../../models/get-story-task-suggestion';
@@ -43,6 +43,7 @@ export class TaskDetailsComponent implements OnInit {
   descriptionDiff: ElementRef;
   @ViewChild('editor', { read: ElementRef }) editor: ElementRef;
 
+  private readonly translateService = inject(TranslateService);
   private readonly formatDateService = inject(FormatDateService);
   private readonly storyTaskSuggestionService = inject(
     StoryTaskSuggestionService
@@ -109,6 +110,7 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   updateDescription(newValue: string) {
+    console.log(newValue);
     this.descriptionEditorValue.set(newValue);
   }
 
@@ -123,7 +125,6 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   rejectSuggestion() {
-    setTimeout(() => this.scrollToElement(this.taskDescription), 50);
     this.isSuggestionsVisible.set(false);
   }
 
@@ -183,7 +184,9 @@ export class TaskDetailsComponent implements OnInit {
 
   saveDescriptionChanges() {
     if (this.details()?.description === this.descriptionEditorValue()) {
-      this.toastService.openError('No changes detected!');
+      this.toastService.openError(
+        this.translateService.instant('Tasks.Edit.NoChanges')
+      );
       return;
     }
 
@@ -198,14 +201,14 @@ export class TaskDetailsComponent implements OnInit {
           this.details.set(response);
           this.descriptionEditorValue.set(response.description ?? '');
           this.toastService.openSuccess(
-            'Task description updated successfully!'
+            this.translateService.instant('Tasks.UpdatedSuccessfully')
           );
           this.isEditorVisible.set(false);
           setTimeout(() => this.scrollToElement(this.taskDescription), 50);
         },
         error: () =>
           this.toastService.openError(
-            'An error occurred while updating task description!'
+            this.translateService.instant('Tasks.ErrorWhileUpdate')
           ),
       });
   }

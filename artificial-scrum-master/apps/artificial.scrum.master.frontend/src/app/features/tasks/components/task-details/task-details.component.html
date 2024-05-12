@@ -134,20 +134,16 @@
           <p>{{ 'Tasks.Edit.NoDescription' | translate }}</p>
           }
         </div>
-        @if(isSuggestionsVisible()|| isEditorVisible()){
-        <div class="shadow-xl my-0.5 hover:cursor-pointer">
-          <app-edit-task-details
-            #taskEditor
-            [(details)]="details"
-            [taskId]="taskId"
-            [isLoading]="isLoading()"
-            [suggestion]="suggestion()"
-            [(isSuggestionsVisible)]="isSuggestionsVisible"
-            [(isEditorVisible)]="isEditorVisible"
-            [(descriptionEditorValue)]="descriptionEditorValue"
-          />
-        </div>
-        }
+        <app-edit-task-details
+          #taskEditor
+          [(details)]="details"
+          [taskId]="taskId"
+          [isLoading]="isLoading()"
+          [suggestion]="suggestion()"
+          [(isSuggestionsVisible)]="isSuggestionsVisible"
+          [(isEditorVisible)]="isEditorVisible"
+          [(descriptionEditorValue)]="descriptionEditorValue"
+        />
       </mat-card-content>
     </ng-scrollbar>
   </mat-card>

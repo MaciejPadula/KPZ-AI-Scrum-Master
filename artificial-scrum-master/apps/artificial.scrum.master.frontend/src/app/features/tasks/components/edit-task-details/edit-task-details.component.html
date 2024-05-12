@@ -1,5 +1,5 @@
 @if(isSuggestionsVisible()){
-<div>
+<div class="shadow-xl my-0.5">
   <p class="mat-subtitle-2 sm:mat-subtitle-1">
     {{ 'Shared.SuggestionByAI' | translate }}
   </p>
@@ -37,21 +37,24 @@
 <p class="flex flex-row justify-center">
   <mat-spinner></mat-spinner>
 </p>
-} @if(isEditorVisible()){
-<p class="mat-subtitle-2 sm:mat-subtitle-1">
-  {{ 'Shared.Editor' | translate }}
-</p>
-<app-markdown-editor
-  #editor
-  [editorContent]="descriptionEditorValue()"
-  (contentChange)="updateDescription($event)"
-></app-markdown-editor>
-<div class="flex flex-row justify-around">
-  <button (click)="saveDescriptionChanges()" mat-flat-button color="primary">
-    {{ 'Shared.Save' | translate }}
-  </button>
-  <button (click)="resetDescription()" mat-flat-button color="warn">
-    {{ 'Shared.Cancel' | translate }}
-  </button>
+} 
+@if(isEditorVisible()){
+<div class="shadow-xl my-0.5">
+  <p class="mat-subtitle-2 sm:mat-subtitle-1">
+    {{ 'Shared.Editor' | translate }}
+  </p>
+  <app-markdown-editor
+    #editor
+    [editorContent]="descriptionEditorValue()"
+    (contentChange)="updateDescription($event)"
+  ></app-markdown-editor>
+  <div class="flex flex-row justify-around">
+    <button (click)="saveDescriptionChanges()" mat-flat-button color="primary">
+      {{ 'Shared.Save' | translate }}
+    </button>
+    <button (click)="resetDescription()" mat-flat-button color="warn">
+      {{ 'Shared.Cancel' | translate }}
+    </button>
+  </div>
 </div>
 }

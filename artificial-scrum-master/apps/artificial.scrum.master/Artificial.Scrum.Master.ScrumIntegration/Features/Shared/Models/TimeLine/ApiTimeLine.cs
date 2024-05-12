@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TimeLine;
 
 internal class TimeLineEventRoot
 {

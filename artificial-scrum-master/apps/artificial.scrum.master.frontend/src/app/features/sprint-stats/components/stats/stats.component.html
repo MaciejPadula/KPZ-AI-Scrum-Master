@@ -4,7 +4,7 @@
       <mat-card>
         <mat-card-content>
           @if(stats().totalRolePoints){
-          <div class="grid grid-cols-2 xl:grid-cols-4 divide-x justify-around">
+          <div class="grid grid-cols-2 2xl:grid-cols-4 divide-x justify-around">
             <div class="flex flex-row px-4">
               <p class="text-5xl">{{ totalPoints() }}</p>
               <p class="pl-4">
@@ -46,7 +46,7 @@
     <mat-tab label="{{ 'Stats.PointsPerRole' | translate }}">
       <mat-card>
         <mat-card-content>
-          <div class="grid grid-cols-2 md:grid-cols-4 divide-x justify-around">
+          <div class="grid grid-cols-2 2xl:grid-cols-4 divide-x justify-around">
             @for (item of stats().totalRolePoints; track $index) {
             <div class="flex flex-row">
               <p class="pl-4 text-5xl">{{ item.value }}</p>

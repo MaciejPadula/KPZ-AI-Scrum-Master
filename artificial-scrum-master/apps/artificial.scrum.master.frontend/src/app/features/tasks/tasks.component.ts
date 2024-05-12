@@ -1,20 +1,20 @@
 import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastService } from '../../../../shared/services/toast.service';
-import { StoryTasksService } from '../../services/story-tasks.service';
-import { TaskRow } from '../../../../shared/components/task-row/task-row';
-import { TaskRowComponent } from '../../../../shared/components/task-row/task-row.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { StoryTasksService } from './services/story-tasks.service';
+import { ToastService } from '../../shared/services/toast.service';
+import { TaskRow } from './models/task-row';
 import { finalize } from 'rxjs';
-import { MaterialModule } from '../../../..//shared/material.module';
+import { TaskRowComponent } from './components/task-row/task-row.component';
+import { MaterialModule } from '../../shared/material.module';
 
 @Component({
-  selector: 'app-story-task-list',
+  selector: 'app-tasks',
   standalone: true,
   imports: [CommonModule, TaskRowComponent, MaterialModule, TranslateModule],
-  templateUrl: './story-task-list.component.html',
+  templateUrl: './tasks.component.html',
 })
-export class StoryTaskListComponent implements OnInit {
+export class TasksComponent implements OnInit {
   @Input()
   public userStoryId: number | null;
   @Input()

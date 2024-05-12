@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { TaskRow } from '../../../shared/components/task-row/task-row';
 import { map, Observable, of } from 'rxjs';
 import { GetStoryTasksResponse } from '../models/get-story-tasks-response';
+import { TaskRow } from '../models/task-row';
 
 @Injectable({
   providedIn: 'root',

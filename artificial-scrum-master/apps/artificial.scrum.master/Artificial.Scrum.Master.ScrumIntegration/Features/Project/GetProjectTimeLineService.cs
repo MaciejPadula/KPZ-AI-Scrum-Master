@@ -1,5 +1,5 @@
 using Artificial.Scrum.Master.Interfaces;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TimeLine;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;

@@ -1,4 +1,4 @@
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TimeLine;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.ResponseEnums;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;

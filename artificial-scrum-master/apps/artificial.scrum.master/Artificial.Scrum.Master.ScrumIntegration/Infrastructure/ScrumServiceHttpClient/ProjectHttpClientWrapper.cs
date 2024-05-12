@@ -40,6 +40,16 @@ internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
             refreshToken,
             (httpClient, user) => httpClient.PostAsJsonAsync(urlFactory(user), payload));
 
+    public async Task<TResponse> PatchHttpRequest<TRequest, TResponse>(
+        string userId,
+        string refreshToken,
+        Func<UserDetails, string> urlFactory,
+        TRequest payload) =>
+        await SendRequest<TResponse>(
+            userId,
+            refreshToken,
+            (httpClient, user) => httpClient.PatchAsJsonAsync(urlFactory(user), payload));
+
     private async Task<TResponse> SendRequest<TResponse>(
         string userId,
         string refreshToken,

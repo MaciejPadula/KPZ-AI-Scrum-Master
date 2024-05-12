@@ -22,10 +22,10 @@ namespace Artificial.Scrum.Master.User
             services.AddTransient<IJwtAuthorizationService, JwtAuthorizationService>();
             services.AddTransient<IAuthorizationService, AuthorizationService>();
             services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(x =>
                 {
                     x.RequireHttpsMetadata = false;
@@ -57,11 +57,10 @@ namespace Artificial.Scrum.Master.User
                 {
                     var tokenResponse = await externalSignInService.Handle(
                         context.Request.Headers.Authorization.ToString().Replace("Bearer ", "")
-                            );
+                    );
 
                     if (!string.IsNullOrEmpty(tokenResponse.Token))
                     {
-
                         context.Response.Cookies.Append("AuthToken", tokenResponse.Token, new CookieOptions
                         {
                             HttpOnly = true,
@@ -73,30 +72,26 @@ namespace Artificial.Scrum.Master.User
                     {
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     }
-
                 });
 
             routes.MapPost(
                 "/api/user/logout",
-                (HttpContext context) =>
-                {
-                    context.Response.Cookies.Delete("AuthToken");
-                });
+                (HttpContext context) => { context.Response.Cookies.Delete("AuthToken"); });
 
             routes.MapGet(
-            "/api/user/user-info",
-            async (HttpContext context, IAuthorizationService service) =>
-            {
-                var userInfo = service.Handle();
-
-                await context.Response.WriteAsJsonAsync(new
+                "/api/user/user-info",
+                async (HttpContext context, IAuthorizationService service) =>
                 {
-                    isAuthorized = !string.IsNullOrEmpty(userInfo.UserId),
-                    userId = userInfo.UserId,
-                    userName = userInfo.UserName,
-                    userPhotoUrl = userInfo.PhotoUrl
+                    var userInfo = service.Handle();
+
+                    await context.Response.WriteAsJsonAsync(new
+                    {
+                        isAuthorized = !string.IsNullOrEmpty(userInfo.UserId),
+                        userId = userInfo.UserId,
+                        userName = userInfo.UserName,
+                        userPhotoUrl = userInfo.PhotoUrl
+                    });
                 });
-            });
 
             routes.MapPost(
                 "api/user/set-dark-theme",

@@ -3,6 +3,7 @@ export interface TaskDetails {
   subject: string;
   taskRef: number;
   tags: string[][];
+  description: string | null;
   descriptionHtml: string | null;
   createdDate: Date;
   finishedDate: Date | null;
@@ -16,4 +17,5 @@ export interface TaskDetails {
   assignedToPhoto: string | null;
   userStoryRef: number;
   userStorySubject: string;
+  version: number;
 }

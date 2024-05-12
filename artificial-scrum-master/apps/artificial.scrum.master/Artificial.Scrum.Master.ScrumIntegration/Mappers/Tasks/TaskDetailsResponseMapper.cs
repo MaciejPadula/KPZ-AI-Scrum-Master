@@ -1,4 +1,4 @@
-using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TaskDetails;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.Tasks;
 
@@ -16,6 +16,7 @@ internal class TaskDetailsResponseMapper : ITaskDetailsResponseMapper
             Subject: taskSpecifics.Subject,
             TaskRef: taskSpecifics.Ref,
             Tags: taskSpecifics.Tags,
+            Description: taskSpecifics.Description,
             DescriptionHtml: taskSpecifics.DescriptionHtml,
             CreatedDate: taskSpecifics.CreatedDate,
             FinishedDate: taskSpecifics.FinishedDate,
@@ -28,7 +29,8 @@ internal class TaskDetailsResponseMapper : ITaskDetailsResponseMapper
             AssignedToFullName: taskSpecifics.AssignedToExtraInfo?.FullNameDisplay,
             AssignedToPhoto: taskSpecifics.AssignedToExtraInfo?.Photo,
             UserStoryRef: taskSpecifics.UserStoryExtraInfo?.Ref ?? 0,
-            UserStorySubject: taskSpecifics.UserStoryExtraInfo?.Subject
+            UserStorySubject: taskSpecifics.UserStoryExtraInfo?.Subject,
+            Version: taskSpecifics.Version
         );
     }
 }

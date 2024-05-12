@@ -14,7 +14,13 @@
         <p>
           <span> {{ 'Tasks.Edit.Story' | translate }}: </span>
           <span mat-button>
-            #{{ details()?.userStoryRef }} {{ details()?.userStorySubject }}
+            @if(details()?.userStorySubject != null){ #{{
+              details()?.userStoryRef
+            }}
+            {{ details()?.userStorySubject }}
+            }@else {
+            {{ 'Tasks.Storyless' | translate }}
+            }
           </span>
         </p>
       </mat-card-subtitle>
@@ -100,6 +106,16 @@
       <mat-card-title>{{ 'Tasks.Description' | translate }}:</mat-card-title>
       <span class="flex space-x-3">
         <button
+          (click)="openDescriptionEditor()"
+          class="my-2"
+          title="{{ 'Shared.OpenEditor' | translate }}"
+          mat-mini-fab
+          color="primary"
+        >
+          <mat-icon>edit_document</mat-icon>
+        </button>
+        <button
+          (click)="generateSuggestion()"
           class="my-2"
           title="{{ 'Tasks.GenerateImprovementSuggestion' | translate }}"
           mat-mini-fab
@@ -111,11 +127,23 @@
     </div>
     <ng-scrollbar>
       <mat-card-content class="stubborn-text" style="padding: 0 0 2rem 1rem">
-        @if(details()?.descriptionHtml){
-        <p [innerHTML]="details()?.descriptionHtml"></p>
-        }@else {
-        <p>{{ 'Tasks.Edit.NoDescription' | translate }}</p>
-        }
+        <div #taskDescription class="pb-2">
+          @if(details()?.descriptionHtml){
+          <p [innerHTML]="details()?.descriptionHtml"></p>
+          }@else {
+          <p>{{ 'Tasks.Edit.NoDescription' | translate }}</p>
+          }
+        </div>
+        <app-edit-task-details
+          #taskEditor
+          [(details)]="details"
+          [taskId]="taskId"
+          [isLoading]="isLoading()"
+          [suggestion]="suggestion()"
+          [(isSuggestionsVisible)]="isSuggestionsVisible"
+          [(isEditorVisible)]="isEditorVisible"
+          [(descriptionEditorValue)]="descriptionEditorValue"
+        />
       </mat-card-content>
     </ng-scrollbar>
   </mat-card>

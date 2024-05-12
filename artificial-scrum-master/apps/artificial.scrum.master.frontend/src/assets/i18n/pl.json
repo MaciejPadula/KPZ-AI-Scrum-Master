@@ -147,5 +147,14 @@
   "Tasks.Edit.Story": "To zadanie jest częścią historyjki",
   "Tasks.Edit.Tags": "Tagi",
   "Tasks.Edit.CreatedBy": "Utworzone przez",
-  "Tasks.Edit.CreatedDate": "Data utworzenia"
+  "Tasks.Edit.CreatedDate": "Data utworzenia",
+  "Retrospective.Button.Tooltip": "Przejdź do retrospetywy",
+  "Retrospective.Error.SessionNotFound": "Nie znaleziono sesji o podanym identyfikatorze",
+  "Retrospective.Table.Goods": "Pozytywy",
+  "Retrospective.Table.Bads": "Negatywy",
+  "Retrospective.Table.Ideas": "Pomysły",
+  "Retrospective.Table.Add": "Dodaj kartkę",
+  "Retrospective.Table.AddDialog.Title": "Dodwanie kartki",
+  "Retrospective.Table.AddDialog.CardText": "Opinia",
+  "Retrospective.RequiredAndThreeLetters":"Pole wymagane, minimum 3 znaki"
 }

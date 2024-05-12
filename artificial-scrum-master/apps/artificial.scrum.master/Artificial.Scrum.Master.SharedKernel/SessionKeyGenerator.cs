@@ -1,6 +1,6 @@
-namespace Artificial.Scrum.Master.EstimationPoker.Features.CreateSession;
+namespace Artificial.Scrum.Master.SharedKernel;
 
-internal interface ISessionKeyGenerator
+public interface ISessionKeyGenerator
 {
     string Key { get; }
 }

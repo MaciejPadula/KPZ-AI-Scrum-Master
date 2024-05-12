@@ -1,0 +1,7 @@
+@if (sessionId()) {
+  <a mat-icon-button [routerLink]="linkToSession()" [matTooltip]="'Retrospective.Button.Tooltip' | translate" (click)="$event.stopPropagation()">
+    <mat-icon aria-label="Open sprint">summarize</mat-icon></a
+  >
+} @else {
+  <mat-spinner diameter="24" />
+}

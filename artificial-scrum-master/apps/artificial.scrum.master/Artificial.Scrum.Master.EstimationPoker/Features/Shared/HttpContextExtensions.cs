@@ -1,6 +1,6 @@
 using Artificial.Scrum.Master.EstimationPoker.Features.AddTaskEstimation.Exceptions;
 using Artificial.Scrum.Master.EstimationPoker.Features.Shared.Exceptions;
-using Artificial.Scrum.Master.EstimationPoker.Infrastructure;
+using Artificial.Scrum.Master.SharedKernel;
 using Microsoft.AspNetCore.Http;
 
 namespace Artificial.Scrum.Master.EstimationPoker.Features.Shared;
@@ -34,7 +34,7 @@ internal static class HttpContextExtensions
             await httpContext.Response.WriteAsJsonAsync(result.Value);
             return;
         }
-        
+
         await httpContext.HandleResult((Result)result);
     }
 }

@@ -32,7 +32,7 @@ internal class CreateSessionIfNotExistsHandler : ICreateSessionIfNotExistsHandle
         var userId = _userAccessor.UserId;
         if (userId is null)
         {
-            return new UserNotAuthenticatedException();
+            return new UnauthorizedAccessException();
         }
 
         var session = await _retroSessionRepository.GetSession(request.SprintId);

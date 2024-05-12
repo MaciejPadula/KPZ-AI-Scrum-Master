@@ -19,7 +19,7 @@ internal static class HttpContextExtensions
         httpContext.Response.StatusCode = exception switch
         {
             SessionNotFoundException => StatusCodes.Status404NotFound,
-            UserNotAuthenticatedException => StatusCodes.Status401Unauthorized,
+            UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
             InvalidCardTypeException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };

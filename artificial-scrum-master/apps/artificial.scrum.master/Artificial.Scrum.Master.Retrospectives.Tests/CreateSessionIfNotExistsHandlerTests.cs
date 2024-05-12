@@ -41,7 +41,7 @@ public class CreateSessionIfNotExistsHandlerTests
 
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().NotBeNull();
-        result.Error!.Exception.Should().BeOfType<UserNotAuthenticatedException>();
+        result.Error!.Exception.Should().BeOfType<UnauthorizedAccessException>();
         await _retroSessionRepository.Received(0).CreateSession(Arg.Any<RetroSession>());
     }
 

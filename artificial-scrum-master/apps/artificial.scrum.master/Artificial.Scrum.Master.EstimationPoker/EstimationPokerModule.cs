@@ -23,7 +23,6 @@ public static class EstimationPokerModule
         services.AddTransient<IGetCurrentTaskService, GetCurrentTaskService>();
         services.AddTransient<IGetSessionService, GetSessionService>();
         services.AddTransient<IGetTaskEstimationsService, GetTaskEstimationsService>();
-        services.AddTransient<ISessionKeyGenerator, SessionKeyGenerator>();
         services.AddTransient<IGetSuggestedEstimationService, GetSuggestedEstimationService>();
 
         services.AddTransient<IRequestValidator, RequestValidator>();

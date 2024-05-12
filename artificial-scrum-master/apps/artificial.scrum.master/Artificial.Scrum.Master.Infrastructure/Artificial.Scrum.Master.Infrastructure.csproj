@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Artificial.Scrum.Master.EstimationPoker\Artificial.Scrum.Master.EstimationPoker.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.Interfaces\Artificial.Scrum.Master.Interfaces.csproj" />
+    <ProjectReference Include="..\Artificial.Scrum.Master.Retrospectives\Artificial.Scrum.Master.Retrospectives.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.ScrumIntegration\Artificial.Scrum.Master.ScrumIntegration.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.UserSettings\Artificial.Scrum.Master.UserSettings.csproj" />
   </ItemGroup>

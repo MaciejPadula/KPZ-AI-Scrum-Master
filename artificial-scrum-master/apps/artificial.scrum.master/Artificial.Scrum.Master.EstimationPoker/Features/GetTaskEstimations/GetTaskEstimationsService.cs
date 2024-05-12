@@ -2,6 +2,7 @@ using Artificial.Scrum.Master.EstimationPoker.Features.Shared.Exceptions;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
+using Artificial.Scrum.Master.SharedKernel;
 
 namespace Artificial.Scrum.Master.EstimationPoker.Features.GetTaskEstimations;
 

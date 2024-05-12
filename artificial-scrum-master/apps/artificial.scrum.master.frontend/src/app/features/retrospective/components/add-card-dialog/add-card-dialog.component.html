@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>{{ 'Retrospective.Table.AddDialog.Title' | translate }}</h2>
+<mat-dialog-content>
+  <div class="flex flex-col justify-center items-center">
+    <mat-form-field>
+      <mat-label>{{ 'Retrospective.Table.AddDialog.CardText' | translate }}</mat-label>
+      <textarea matInput [formControl]="formControl"></textarea>
+      <mat-error>{{ 'Retrospective.RequiredAndThreeLetters' | translate }}</mat-error>
+    </mat-form-field>
+    
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="flex !justify-end">
+  <button mat-button (click)="onNoClick()">{{ 'Shared.Words.Cancel' | translate }}</button>
+  <button mat-raised-button color="primary" [disabled]="formControl.invalid || loading()" (click)="onSaveClick()">
+    <span class="flex flex-row items-center justify-center gap-2">
+      <span>{{ 'Shared.Words.Save' | translate }}</span>
+      @if (loading()) {
+        <mat-spinner diameter="16"></mat-spinner>
+      }
+    </span>
+  </button>
+</mat-dialog-actions>

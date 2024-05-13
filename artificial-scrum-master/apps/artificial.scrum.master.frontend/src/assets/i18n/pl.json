@@ -39,6 +39,7 @@
   "Shared.SuggestionByAI": "Sugestia od AI:",
   "Shared.Save": "Zapisz",
   "Shared.Cancel": "Anuluj",
+  "Shared.Edit.NoDescription": "Brak opisu",
   "Shared.AI.Reject": "Odrzuć",
   "Shared.AI.Replace": "Zastąp",
   "Shared.AI.AppendToBack": "Dodaj na końcu",
@@ -131,6 +132,9 @@
   "UserStories.Description": "Opis",
   "UserStories.GenerateImprovementSuggestion": "Wygeneruj sugestię poprawy opisu",
   "UserStories.GenerateSuggestedTasks": "Wygeneruj sugestie zadań",
+  "UserStories.UpdatedSuccessfully": "Historyjka użytkownika została zaktualizowana",
+  "UserStories.ErrorWhileUpdate": "Wystąpił problem z aktualizacją historyjki użytkownika",
+  "UserStories.Edit.NoChanges": "Nie dokonano zmian w historyjce użytkownika",
   "Tasks.AssignedTo": "Przypisane do",
   "Tasks.NotAssigned": "Nie przypisano",
   "Tasks.Storyless": "Bez historyjki",
@@ -143,7 +147,6 @@
   "Tasks.ErrorWhileUpdate": "Wystąpił problem z aktualizacją zadania",
   "Tasks.Edit.NoChanges": "Nie dokonano zmian w zadaniu",
   "Tasks.Edit.Title": "Edytuj zadanie",
-  "Tasks.Edit.NoDescription": "Brak opisu",
   "Tasks.Edit.Story": "To zadanie jest częścią historyjki",
   "Tasks.Edit.Tags": "Tagi",
   "Tasks.Edit.CreatedBy": "Utworzone przez",
@@ -156,5 +159,5 @@
   "Retrospective.Table.Add": "Dodaj kartkę",
   "Retrospective.Table.AddDialog.Title": "Dodwanie kartki",
   "Retrospective.Table.AddDialog.CardText": "Opinia",
-  "Retrospective.RequiredAndThreeLetters":"Pole wymagane, minimum 3 znaki"
+  "Retrospective.RequiredAndThreeLetters": "Pole wymagane, minimum 3 znaki"
 }

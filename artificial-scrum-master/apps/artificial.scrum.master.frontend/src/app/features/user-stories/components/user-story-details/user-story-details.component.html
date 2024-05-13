@@ -56,6 +56,15 @@
           >
         </button>
         <button
+          (click)="openDescriptionEditor()"
+          mat-mini-fab
+          title="{{ 'Shared.OpenEditor' | translate }}"
+          color="primary"
+        >
+          <mat-icon>edit_document</mat-icon>
+        </button>
+        <button
+          (click)="generateSuggestion()"
           mat-mini-fab
           title="{{ 'UserStories.GenerateImprovementSuggestion' | translate }}"
           color="primary"
@@ -66,7 +75,23 @@
     </div>
     <ng-scrollbar>
       <mat-card-content class="stubborn-text" style="padding: 0 0 2rem 1rem">
-        <p [innerHTML]="details()?.descriptionHtml"></p>
+        <div #description class="pb-2">
+          @if(details()?.descriptionHtml){
+          <p [innerHTML]="details()?.descriptionHtml"></p>
+          }@else {
+          <p>{{ 'Shared.Edit.NoDescription' | translate }}</p>
+          }
+        </div>
+        <app-edit-story-details
+          #editor
+          [(details)]="details"
+          [storyId]="storyId"
+          [isLoading]="isLoading()"
+          [suggestion]="suggestion()"
+          [(isSuggestionsVisible)]="isSuggestionsVisible"
+          [(isEditorVisible)]="isEditorVisible"
+          [(descriptionEditorValue)]="descriptionEditorValue"
+        />
       </mat-card-content>
     </ng-scrollbar>
   </mat-card>

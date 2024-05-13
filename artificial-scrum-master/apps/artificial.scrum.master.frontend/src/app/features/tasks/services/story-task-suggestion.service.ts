@@ -11,14 +11,14 @@ export class StoryTaskSuggestionService {
   private readonly baseApiUrl = 'api/task/suggestions';
 
   public getTaskDescriptionSuggestion(
-    TaskTitle: string,
+    taskTitle: string,
     userStoryTitle: string | null,
-    TaskDescription: string | null
+    taskDescription: string | null
   ): Observable<GetStoryTaskSuggestion> {
     return this.httpClient.post<GetStoryTaskSuggestion>(`${this.baseApiUrl}`, {
-      userStoryTitle,
-      TaskTitle,
-      TaskDescription,
+      userStoryTitle: userStoryTitle,
+      taskTitle: taskTitle,
+      taskDescription: taskDescription,
     });
   }
 }

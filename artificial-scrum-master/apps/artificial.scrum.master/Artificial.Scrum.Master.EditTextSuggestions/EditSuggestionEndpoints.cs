@@ -1,3 +1,4 @@
+using Artificial.Scrum.Master.EditTextSuggestions.Features.GetEditStorySuggestion;
 using Artificial.Scrum.Master.EditTextSuggestions.Features.GetEditTaskSuggestion;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +14,14 @@ public static class EditSuggestionEndpoints
         routes.MapPost("/api/task/suggestions",
             async (HttpContext context, IGetEditTaskSuggestionService service,
                 [FromBody] GetEditTaskSuggestionRequest request) =>
+            {
+                var result = await service.Handle(request);
+                await context.Response.WriteAsJsonAsync(result);
+            }).RequireAuthorization("UserLoggedInPolicy");
+
+        routes.MapPost("/api/userStory/suggestions",
+            async (HttpContext context, IGetEditStorySuggestionService service,
+                [FromBody] GetEditStorySuggestionRequest request) =>
             {
                 var result = await service.Handle(request);
                 await context.Response.WriteAsJsonAsync(result);

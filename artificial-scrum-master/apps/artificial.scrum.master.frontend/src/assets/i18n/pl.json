@@ -40,6 +40,7 @@
   "Shared.Save": "Zapisz",
   "Shared.Cancel": "Anuluj",
   "Shared.Edit.NoDescription": "Brak opisu",
+  "Shared.Edit.CouldNotLoadDescription": "Nie udało się załadować opisu",
   "Shared.AI.Reject": "Odrzuć",
   "Shared.AI.Replace": "Zastąp",
   "Shared.AI.AppendToBack": "Dodaj na końcu",

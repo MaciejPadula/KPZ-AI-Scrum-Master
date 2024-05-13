@@ -16,11 +16,11 @@ import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormatDateService } from '../../../../shared/services/format-date.service';
 import { DescriptionDiffComponent } from '../../../../shared/components/description-diff/description-diff.component';
-import { GetStoryTaskSuggestion } from '../../models/get-story-task-suggestion';
 import { StoryTaskSuggestionService } from '../../services/story-task-suggestion.service';
 import { finalize } from 'rxjs';
 import { MarkdownEditorComponent } from '../../../../shared/components/markdown-editor/markdown-editor.component';
 import { EditTaskDetailsComponent } from '../edit-task-details/edit-task-details.component';
+import { EditorStateServiceService } from '../../../../shared/services/editor-state-service.service';
 
 @Component({
   selector: 'app-task-details',
@@ -46,14 +46,10 @@ export class TaskDetailsComponent implements OnInit {
   private readonly storyTaskSuggestionService = inject(
     StoryTaskSuggestionService
   );
+  readonly editorStateServiceService = new EditorStateServiceService();
 
   details = signal<TaskDetails | null>(null);
   error = signal<boolean>(false);
-
-  isSuggestionsVisible = signal(false);
-  suggestion = signal<GetStoryTaskSuggestion | null>(null);
-  isEditorVisible = signal(false);
-  descriptionEditorValue = signal<string>('');
 
   #isLoading = signal<boolean>(false);
   public isLoading = this.#isLoading.asReadonly();
@@ -75,7 +71,9 @@ export class TaskDetailsComponent implements OnInit {
     this.#httpClient.get<TaskDetails>(`/api/task/${this.#taskId}`).subscribe({
       next: (response) => {
         this.details.set(response);
-        this.descriptionEditorValue.set(response.description ?? '');
+        this.editorStateServiceService.descriptionEditorValue.set(
+          response.description ?? ''
+        );
       },
       error: () => this.error.set(true),
     });
@@ -86,6 +84,8 @@ export class TaskDetailsComponent implements OnInit {
       return;
     }
     this.#isLoading.set(true);
+    setTimeout(() => this.scrollToElement(this.taskEditor), 50);
+
     this.storyTaskSuggestionService
       .getTaskDescriptionSuggestion(
         this.details()?.subject ?? '',
@@ -95,24 +95,34 @@ export class TaskDetailsComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          this.isSuggestionsVisible.set(true);
-          setTimeout(() => this.scrollToElement(this.taskEditor), 50);
+          this.editorStateServiceService.suggestionsVisible = true;
+          setTimeout(() => this.scrollToElement(this.taskEditor), 10);
         })
       )
       .subscribe({
-        next: (response) => this.suggestion.set(response),
+        next: (response) =>
+          this.editorStateServiceService.suggestionString.set(
+            response.descriptionEditSuggestion
+          ),
         error: () => this.error.set(true),
       });
   }
 
   openDescriptionEditor() {
-    if (this.isEditorVisible()) {
-      setTimeout(() => this.isEditorVisible.set(false), 100);
+    if (this.editorStateServiceService.isEditorVisible()) {
+      setTimeout(
+        () => (this.editorStateServiceService.editorVisible = false),
+        100
+      );
       setTimeout(() => this.scrollToElement(this.taskDescription), 50);
       return;
     }
-    setTimeout(() => this.isEditorVisible.set(true), 50);
+    setTimeout(() => (this.editorStateServiceService.editorVisible = true), 50);
     setTimeout(() => this.scrollToElement(this.taskEditor), 100);
+  }
+
+  updateTaskDetails($event: TaskDetails) {
+    this.details.set($event);
   }
 
   private scrollToElement(element: ElementRef) {

@@ -14,9 +14,9 @@ import { HttpClient } from '@angular/common/http';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { EditStoryDetailsComponent } from '../edit-story-details/edit-story-details.component';
-import { GetStorySuggestion } from '../../models/get-story-suggestion';
 import { StorySuggestionService } from '../../services/story-suggestion.service';
 import { finalize } from 'rxjs';
+import { EditorStateServiceService } from '../../../../shared/services/editor-state-service.service';
 
 @Component({
   selector: 'app-user-story-details',
@@ -37,14 +37,10 @@ export class UserStoryDetailsComponent implements OnInit {
   storyEditor: ElementRef;
 
   private readonly storySuggestionService = inject(StorySuggestionService);
+  readonly editorStateServiceService = new EditorStateServiceService();
 
   details = signal<UserStoryDetails | null>(null);
   error = signal<boolean>(false);
-
-  isSuggestionsVisible = signal(false);
-  suggestion = signal<GetStorySuggestion | null>(null);
-  isEditorVisible = signal(false);
-  descriptionEditorValue = signal<string>('');
 
   #isLoading = signal<boolean>(false);
   public isLoading = this.#isLoading.asReadonly();
@@ -64,7 +60,9 @@ export class UserStoryDetailsComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.details.set(response);
-          this.descriptionEditorValue.set(response.description ?? '');
+          this.editorStateServiceService.descriptionEditorValue.set(
+            response.description ?? ''
+          );
         },
         error: () => this.error.set(true),
       });
@@ -74,8 +72,9 @@ export class UserStoryDetailsComponent implements OnInit {
     if (this.details() == null || !this.details()?.title) {
       return;
     }
-    
     this.#isLoading.set(true);
+    setTimeout(() => this.scrollToElement(this.storyEditor), 50);
+
     this.storySuggestionService
       .getStorykDescriptionSuggestion(
         this.details()?.title ?? '',
@@ -84,24 +83,34 @@ export class UserStoryDetailsComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          this.isSuggestionsVisible.set(true);
-          setTimeout(() => this.scrollToElement(this.storyEditor), 50);
+          this.editorStateServiceService.suggestionsVisible = true;
+          setTimeout(() => this.scrollToElement(this.storyEditor), 10);
         })
       )
       .subscribe({
-        next: (response) => this.suggestion.set(response),
+        next: (response) =>
+          this.editorStateServiceService.suggestionString.set(
+            response.descriptionEditSuggestion
+          ),
         error: () => this.error.set(true),
       });
   }
 
   openDescriptionEditor() {
-    if (this.isEditorVisible()) {
-      setTimeout(() => this.isEditorVisible.set(false), 100);
+    if (this.editorStateServiceService.isEditorVisible()) {
+      setTimeout(
+        () => (this.editorStateServiceService.editorVisible = false),
+        100
+      );
       setTimeout(() => this.scrollToElement(this.storyDescription), 50);
       return;
     }
-    setTimeout(() => this.isEditorVisible.set(true), 50);
+    setTimeout(() => (this.editorStateServiceService.editorVisible = true), 50);
     setTimeout(() => this.scrollToElement(this.storyEditor), 100);
+  }
+
+  updateStoryDetails($event: UserStoryDetails) {
+    this.details.set($event);
   }
 
   private scrollToElement(element: ElementRef) {

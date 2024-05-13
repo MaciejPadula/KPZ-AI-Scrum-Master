@@ -84,13 +84,11 @@
         </div>
         <app-edit-story-details
           #editor
-          [(details)]="details"
+          [details]="details()"
           [storyId]="storyId"
           [isLoading]="isLoading()"
-          [suggestion]="suggestion()"
-          [(isSuggestionsVisible)]="isSuggestionsVisible"
-          [(isEditorVisible)]="isEditorVisible"
-          [(descriptionEditorValue)]="descriptionEditorValue"
+          [editorStateServiceService]="editorStateServiceService"
+          (storyDetailsUpdate)="updateStoryDetails($event)"
         />
       </mat-card-content>
     </ng-scrollbar>

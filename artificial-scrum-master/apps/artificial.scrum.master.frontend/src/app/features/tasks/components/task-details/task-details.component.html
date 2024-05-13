@@ -136,13 +136,11 @@
         </div>
         <app-edit-task-details
           #taskEditor
-          [(details)]="details"
+          [details]="details()"
           [taskId]="taskId"
           [isLoading]="isLoading()"
-          [suggestion]="suggestion()"
-          [(isSuggestionsVisible)]="isSuggestionsVisible"
-          [(isEditorVisible)]="isEditorVisible"
-          [(descriptionEditorValue)]="descriptionEditorValue"
+          [editorStateServiceService]="editorStateServiceService"
+          (taskDetailsUpdate)="updateTaskDetails($event)"
         />
       </mat-card-content>
     </ng-scrollbar>

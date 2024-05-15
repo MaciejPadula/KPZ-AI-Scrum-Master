@@ -1,4 +1,4 @@
-@if(editorStateServiceService.isSuggestionsVisible()){
+@if(isSuggestionsVisible()){
 <div class="shadow-xl my-0.5">
   <p class="mat-subtitle-2 sm:mat-subtitle-1">
     {{ 'Shared.SuggestionByAI' | translate }}
@@ -6,9 +6,9 @@
   <div>
     <app-description-diff
       #descriptionDiff
-      [originalData]="editorStateServiceService.descriptionEditorValue()"
+      [originalData]="descriptionEditorValue()"
       [modifiedData]="
-        editorStateServiceService.suggestionString() ??
+        suggestionString() ??
         ('Shared.Edit.CouldNotLoadDescription' | translate)
       "
     ></app-description-diff>
@@ -33,19 +33,18 @@
     </button>
   </div>
 </div>
-}@else if (!editorStateServiceService.isSuggestionsVisible() && isLoading()) {
+}@else if (!isSuggestionsVisible() && isLoading()) {
 <p class="flex flex-row justify-center">
   <mat-spinner></mat-spinner>
 </p>
-}
-@if(editorStateServiceService.isEditorVisible()){
+} @if(isEditorVisible()){
 <div class="shadow-xl my-0.5">
   <p class="mat-subtitle-2 sm:mat-subtitle-1">
     {{ 'Shared.Editor' | translate }}
   </p>
   <app-markdown-editor
     #editor
-    [editorContent]="editorStateServiceService.descriptionEditorValue()"
+    [editorContent]="descriptionEditorValue()"
     (contentChange)="updateDescription($event)"
   ></app-markdown-editor>
   <div class="flex flex-row justify-around">

@@ -106,7 +106,7 @@
       <mat-card-title>{{ 'Tasks.Description' | translate }}:</mat-card-title>
       <span class="flex space-x-3">
         <button
-          (click)="openDescriptionEditor()"
+          (click)="toggleDescriptionEditor()"
           class="my-2"
           title="{{ 'Shared.OpenEditor' | translate }}"
           mat-mini-fab
@@ -139,7 +139,6 @@
           [details]="details()"
           [taskId]="taskId"
           [isLoading]="isLoading()"
-          [editorStateServiceService]="editorStateServiceService"
           (taskDetailsUpdate)="updateTaskDetails($event)"
         />
       </mat-card-content>

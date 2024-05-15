@@ -56,7 +56,7 @@
           >
         </button>
         <button
-          (click)="openDescriptionEditor()"
+          (click)="toggleDescriptionEditor()"
           mat-mini-fab
           title="{{ 'Shared.OpenEditor' | translate }}"
           color="primary"
@@ -87,7 +87,6 @@
           [details]="details()"
           [storyId]="storyId"
           [isLoading]="isLoading()"
-          [editorStateServiceService]="editorStateServiceService"
           (storyDetailsUpdate)="updateStoryDetails($event)"
         />
       </mat-card-content>

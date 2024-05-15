@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, inject, input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -32,9 +25,17 @@ export class EditTaskDetailsComponent {
   private readonly translateService = inject(TranslateService);
   private readonly storyTaskEditService = inject(StoryTaskEditService);
   private readonly toastService = inject(ToastService);
+  private readonly editorStateServiceService = inject(
+    EditorStateServiceService
+  );
 
-  @Input() editorStateServiceService: EditorStateServiceService;
   @Output() taskDetailsUpdate: EventEmitter<TaskDetails> = new EventEmitter();
+
+  isEditorVisible = this.editorStateServiceService.isEditorVisible;
+  isSuggestionsVisible = this.editorStateServiceService.isSuggestionsVisible;
+  descriptionEditorValue =
+    this.editorStateServiceService.descriptionEditorValue;
+  suggestionString = this.editorStateServiceService.suggestionString;
 
   details = input.required<TaskDetails | null>();
   taskId = input.required<number>();
@@ -95,9 +96,8 @@ export class EditTaskDetailsComponent {
       .subscribe({
         next: (response) => {
           this.taskDetailsUpdate.emit(response);
-          this.editorStateServiceService.descriptionEditorValue.set(
-            response.description ?? ''
-          );
+          this.editorStateServiceService.setDescriptionEditorValue =
+            response.description ?? '';
           this.toastService.openSuccess(
             this.translateService.instant('Tasks.UpdatedSuccessfully')
           );

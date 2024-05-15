@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, inject, input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -32,17 +25,25 @@ export class EditStoryDetailsComponent {
   private readonly translateService = inject(TranslateService);
   private readonly storyTaskEditService = inject(StoryEditService);
   private readonly toastService = inject(ToastService);
+  private readonly editorStateServiceService = inject(
+    EditorStateServiceService
+  );
 
-  @Input() editorStateServiceService: EditorStateServiceService;
   @Output() storyDetailsUpdate: EventEmitter<UserStoryDetails> =
     new EventEmitter();
+
+  isEditorVisible = this.editorStateServiceService.isEditorVisible;
+  isSuggestionsVisible = this.editorStateServiceService.isSuggestionsVisible;
+  descriptionEditorValue =
+    this.editorStateServiceService.descriptionEditorValue;
+  suggestionString = this.editorStateServiceService.suggestionString;
 
   details = input.required<UserStoryDetails | null>();
   storyId = input.required<number>();
   isLoading = input.required<boolean>();
 
   updateDescription(newValue: string) {
-    this.editorStateServiceService.descriptionEditorValue.set(newValue);
+    this.editorStateServiceService.updateDescription(newValue);
   }
 
   rejectSuggestion() {
@@ -96,9 +97,8 @@ export class EditStoryDetailsComponent {
       .subscribe({
         next: (response) => {
           this.storyDetailsUpdate.emit(response);
-          this.editorStateServiceService.descriptionEditorValue.set(
-            response.description ?? ''
-          );
+          this.editorStateServiceService.descriptionEditorValue;
+          response.description ?? '';
           this.toastService.openSuccess(
             this.translateService.instant('UserStories.UpdatedSuccessfully')
           );

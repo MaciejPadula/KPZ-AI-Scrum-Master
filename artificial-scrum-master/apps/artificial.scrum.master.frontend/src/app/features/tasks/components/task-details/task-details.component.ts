@@ -46,7 +46,9 @@ export class TaskDetailsComponent implements OnInit {
   private readonly storyTaskSuggestionService = inject(
     StoryTaskSuggestionService
   );
-  readonly editorStateServiceService = new EditorStateServiceService();
+  private readonly editorStateServiceService = inject(
+    EditorStateServiceService
+  );
 
   details = signal<TaskDetails | null>(null);
   error = signal<boolean>(false);
@@ -71,9 +73,8 @@ export class TaskDetailsComponent implements OnInit {
     this.#httpClient.get<TaskDetails>(`/api/task/${this.#taskId}`).subscribe({
       next: (response) => {
         this.details.set(response);
-        this.editorStateServiceService.descriptionEditorValue.set(
-          response.description ?? ''
-        );
+        this.editorStateServiceService.setDescriptionEditorValue =
+          response.description ?? '';
       },
       error: () => this.error.set(true),
     });
@@ -96,40 +97,37 @@ export class TaskDetailsComponent implements OnInit {
         finalize(() => {
           this.#isLoading.set(false);
           this.editorStateServiceService.suggestionsVisible = true;
-          setTimeout(() => this.scrollToElement(this.taskEditor), 10);
+          setTimeout(() => this.scrollToElement(this.taskEditor), 50);
         })
       )
       .subscribe({
         next: (response) =>
-          this.editorStateServiceService.suggestionString.set(
-            response.descriptionEditSuggestion
-          ),
+          (this.editorStateServiceService.setSuggestionString =
+            response.descriptionEditSuggestion),
         error: () => this.error.set(true),
       });
   }
 
-  openDescriptionEditor() {
+  toggleDescriptionEditor() {
     if (this.editorStateServiceService.isEditorVisible()) {
-      setTimeout(
-        () => (this.editorStateServiceService.editorVisible = false),
-        100
-      );
-      setTimeout(() => this.scrollToElement(this.taskDescription), 50);
+      this.editorStateServiceService.editorVisible = false;
+      this.scrollToElement(this.taskDescription, 'start');
       return;
     }
-    setTimeout(() => (this.editorStateServiceService.editorVisible = true), 50);
-    setTimeout(() => this.scrollToElement(this.taskEditor), 100);
+    this.editorStateServiceService.editorVisible = true;
+    setTimeout(() => this.scrollToElement(this.taskEditor), 50);
   }
 
   updateTaskDetails($event: TaskDetails) {
     this.details.set($event);
   }
 
-  private scrollToElement(element: ElementRef) {
+  private scrollToElement(element: ElementRef, block: 'end' | 'start' = 'end') {
     if (element && element.nativeElement) {
       element.nativeElement.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: block,
+        inline: 'nearest',
       });
     }
   }

@@ -1,14 +1,28 @@
-import { signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class EditorStateServiceService {
-  suggestionString = signal<string | null>(null);
-  descriptionEditorValue = signal<string>('');
+  #suggestionString = signal<string | null>(null);
+  suggestionString = this.#suggestionString.asReadonly();
+
+  #descriptionEditorValue = signal<string>('');
+  descriptionEditorValue = this.#descriptionEditorValue.asReadonly();
 
   #isSuggestionsVisible = signal(false);
   public isSuggestionsVisible = this.#isSuggestionsVisible.asReadonly();
 
   #isEditorVisible = signal(false);
   public isEditorVisible = this.#isEditorVisible.asReadonly();
+
+  set setDescriptionEditorValue(value: string) {
+    this.#descriptionEditorValue.set(value);
+  }
+
+  set setSuggestionString(value: string | null) {
+    this.#suggestionString.set(value);
+  }
 
   set suggestionsVisible(value: boolean) {
     this.#isSuggestionsVisible.set(value);
@@ -19,7 +33,7 @@ export class EditorStateServiceService {
   }
 
   updateDescription(newValue: string) {
-    this.descriptionEditorValue.set(newValue);
+    this.#descriptionEditorValue.set(newValue);
   }
 
   rejectSuggestion() {
@@ -27,7 +41,7 @@ export class EditorStateServiceService {
   }
 
   replaceWithSuggestion() {
-    this.descriptionEditorValue.set(this.suggestionString() ?? '');
+    this.#descriptionEditorValue.set(this.suggestionString() ?? '');
     this.#isSuggestionsVisible.set(false);
     if (!this.#isEditorVisible()) {
       this.#isEditorVisible.set(true);
@@ -35,7 +49,7 @@ export class EditorStateServiceService {
   }
 
   appendSuggestionToBack() {
-    this.descriptionEditorValue.set(
+    this.#descriptionEditorValue.set(
       this.descriptionEditorValue().concat('\n', this.suggestionString() ?? '')
     );
     this.#isSuggestionsVisible.set(false);
@@ -45,7 +59,7 @@ export class EditorStateServiceService {
   }
 
   appendSuggestionToFront() {
-    this.descriptionEditorValue.set(
+    this.#descriptionEditorValue.set(
       (this.suggestionString() ?? '').concat(
         '\n',
         this.descriptionEditorValue()
@@ -59,6 +73,13 @@ export class EditorStateServiceService {
 
   resetDescription(originalValue: string) {
     this.#isEditorVisible.set(false);
-    this.descriptionEditorValue.set(originalValue);
+    this.#descriptionEditorValue.set(originalValue);
+  }
+
+  resetEditorState() {
+    this.#isSuggestionsVisible.set(false);
+    this.#isEditorVisible.set(false);
+    this.#suggestionString.set(null);
+    this.#descriptionEditorValue.set('');
   }
 }

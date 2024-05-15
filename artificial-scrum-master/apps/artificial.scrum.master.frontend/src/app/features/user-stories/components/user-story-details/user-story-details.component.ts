@@ -37,7 +37,9 @@ export class UserStoryDetailsComponent implements OnInit {
   storyEditor: ElementRef;
 
   private readonly storySuggestionService = inject(StorySuggestionService);
-  readonly editorStateServiceService = new EditorStateServiceService();
+  private readonly editorStateServiceService = inject(
+    EditorStateServiceService
+  );
 
   details = signal<UserStoryDetails | null>(null);
   error = signal<boolean>(false);
@@ -60,9 +62,8 @@ export class UserStoryDetailsComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.details.set(response);
-          this.editorStateServiceService.descriptionEditorValue.set(
-            response.description ?? ''
-          );
+          this.editorStateServiceService.setDescriptionEditorValue =
+            response.description ?? '';
         },
         error: () => this.error.set(true),
       });
@@ -84,40 +85,37 @@ export class UserStoryDetailsComponent implements OnInit {
         finalize(() => {
           this.#isLoading.set(false);
           this.editorStateServiceService.suggestionsVisible = true;
-          setTimeout(() => this.scrollToElement(this.storyEditor), 10);
+          setTimeout(() => this.scrollToElement(this.storyEditor), 50);
         })
       )
       .subscribe({
         next: (response) =>
-          this.editorStateServiceService.suggestionString.set(
-            response.descriptionEditSuggestion
-          ),
+          (this.editorStateServiceService.setSuggestionString =
+            response.descriptionEditSuggestion),
         error: () => this.error.set(true),
       });
   }
 
-  openDescriptionEditor() {
+  toggleDescriptionEditor() {
     if (this.editorStateServiceService.isEditorVisible()) {
-      setTimeout(
-        () => (this.editorStateServiceService.editorVisible = false),
-        100
-      );
-      setTimeout(() => this.scrollToElement(this.storyDescription), 50);
+      this.editorStateServiceService.editorVisible = false;
+      this.scrollToElement(this.storyDescription, 'start');
       return;
     }
-    setTimeout(() => (this.editorStateServiceService.editorVisible = true), 50);
-    setTimeout(() => this.scrollToElement(this.storyEditor), 100);
+    this.editorStateServiceService.editorVisible = true;
+    setTimeout(() => this.scrollToElement(this.storyEditor), 50);
   }
 
   updateStoryDetails($event: UserStoryDetails) {
     this.details.set($event);
   }
 
-  private scrollToElement(element: ElementRef) {
+  private scrollToElement(element: ElementRef, block: 'end' | 'start' = 'end') {
     if (element && element.nativeElement) {
       element.nativeElement.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: block,
+        inline: 'nearest',
       });
     }
   }

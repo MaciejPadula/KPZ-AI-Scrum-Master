@@ -52,7 +52,7 @@ Please translate Reason to Polish"),
                 ChatMessage.FromSystem("Estimations:"),
                 ChatMessage.FromUser(string.Join(", ", estimations))
             ],
-            Model = OpenAI.ObjectModels.Models.Gpt_3_5_Turbo,
+            Model = OpenAIConsts.AIModel,
             MaxTokens = MaxTokens,
             ResponseFormat = new()
             {

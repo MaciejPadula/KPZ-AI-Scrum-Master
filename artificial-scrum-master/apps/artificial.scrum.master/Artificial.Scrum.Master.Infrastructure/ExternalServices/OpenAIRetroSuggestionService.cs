@@ -48,11 +48,11 @@ internal class OpenAIRetroSuggestionService : IRetroSuggestionService
             [
                 ChatMessage.FromSystem(@"
 You are participating in a retrospective meeting. You have the following cards:"),
-                ChatMessage.FromSystem($"Good Cards: {string.Join(" ,", cardsByType.GetValueOrDefault(CardType.Good, []))}"),
-                ChatMessage.FromSystem($"Bad Cards: {string.Join(" ,", cardsByType.GetValueOrDefault(CardType.Bad, []))}"),
-                ChatMessage.FromSystem($"Idea Cards: {string.Join(" ,", cardsByType.GetValueOrDefault(CardType.Ideas, []))}"),
+                ChatMessage.FromSystem($"Good Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Good, []))}"),
+                ChatMessage.FromSystem($"Bad Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Bad, []))}"),
+                ChatMessage.FromSystem($"Idea Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Ideas, []))}"),
                 ChatMessage.FromSystem(@"
-Please provide ideas on how to improve the following tasks.
+Please provide ideas on how to improve development process in future.
 Please return response in json format:
 {
     'Ideas': ['idea1', 'idea2', ...]

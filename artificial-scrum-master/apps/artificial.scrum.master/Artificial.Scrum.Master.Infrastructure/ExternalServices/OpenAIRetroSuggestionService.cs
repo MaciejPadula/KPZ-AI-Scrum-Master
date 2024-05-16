@@ -47,17 +47,17 @@ internal class OpenAIRetroSuggestionService : IRetroSuggestionService
             Messages =
             [
                 ChatMessage.FromSystem(@"
-You are participating in a retrospective meeting. You have the following cards:"),
-                ChatMessage.FromSystem($"Good Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Good, []))}"),
-                ChatMessage.FromSystem($"Bad Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Bad, []))}"),
-                ChatMessage.FromSystem($"Idea Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Ideas, []))}"),
-                ChatMessage.FromSystem(@"
+You are participating in a retrospective meeting.
 Please provide ideas on how to improve development process in future.
 Please return response in json format:
 {
     'Ideas': ['idea1', 'idea2', ...]
 }
-Please translate Ideas to Polish.")
+Please translate Ideas to Polish.
+You have the following cards:"),
+                ChatMessage.FromUser($"Good Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Good, []))}"),
+                ChatMessage.FromUser($"Bad Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Bad, []))}"),
+                ChatMessage.FromUser($"Idea Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Ideas, []))}")
             ],
             Model = OpenAIConsts.AIModel,
             MaxTokens = MaxTokens,

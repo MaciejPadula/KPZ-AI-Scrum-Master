@@ -31,6 +31,7 @@ public static class InfrastructureModule
         services.AddTransient<IPokerSuggestionService, OpenAIPokerSuggestionService>();
         services.AddTransient<IStorySuggestionService, OpenAIStorySuggestionService>();
         services.AddTransient<ITaskSuggestionService, OpenAITaskSuggestionService>();
+        services.AddTransient<IRetroSuggestionService, OpenAIRetroSuggestionService>();
 
         services.AddTransient<IUserAccessor, JwtUserAccessor>();
 

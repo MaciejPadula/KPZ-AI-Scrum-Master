@@ -23,11 +23,14 @@ public class GetSessionCardsHandlerTests
     [Test]
     public async Task Handle_WhenSessionDoesNotExist_ShouldReturnSessionNotFoundException()
     {
+        // Arrange
         var sessionId = Guid.NewGuid().ToString();
         _retroSessionRepository.SessionExists(sessionId).Returns(false);
 
+        // Act
         var result = await _sut.Handle(sessionId);
 
+        // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().NotBeNull();
         result.Error!.Exception.Should().BeOfType<SessionNotFoundException>();

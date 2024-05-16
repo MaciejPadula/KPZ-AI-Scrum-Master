@@ -48,6 +48,7 @@ public class CreateSessionIfNotExistsHandlerTests
     [Test]
     public async Task Handle_WhenSessionDoesNotExist_ReturnsValidResult()
     {
+        // Arrange
         var userId = Guid.NewGuid().ToString();
         var sessionKey = Guid.NewGuid().ToString();
         var name = "name";
@@ -57,11 +58,13 @@ public class CreateSessionIfNotExistsHandlerTests
         _sessionKeyGenerator.Key.Returns(sessionKey);
         _retroSessionRepository.GetSession(sprintId).Returns((RetroSession?)null);
 
+        // Act
         var result = await _sut.Handle(new CreateSessionIfNotExistsRequest(
             name,
             sprintId,
             projectId));
 
+        // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(new CreateSessionIfNotExistsResponse(sessionKey));
         await _retroSessionRepository.Received(1).CreateSession(Arg.Any<RetroSession>());
@@ -70,6 +73,7 @@ public class CreateSessionIfNotExistsHandlerTests
     [Test]
     public async Task Handle_WhenSessionExists_ReturnsValidResult()
     {
+        // Arrange
         var userId = Guid.NewGuid().ToString();
         var sessionKey = Guid.NewGuid().ToString();
         var name = "name";
@@ -82,11 +86,13 @@ public class CreateSessionIfNotExistsHandlerTests
             sprintId,
             projectId));
 
+        // Act
         var result = await _sut.Handle(new CreateSessionIfNotExistsRequest(
             name,
             sprintId,
             projectId));
 
+        // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(new CreateSessionIfNotExistsResponse(sessionKey));
         await _retroSessionRepository.Received(0).CreateSession(Arg.Any<RetroSession>());

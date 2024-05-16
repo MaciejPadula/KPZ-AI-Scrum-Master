@@ -7,7 +7,7 @@ import { MarkdownEditorComponent } from '../../../../shared/components/markdown-
 import { StoryTaskEditService } from '../../services/story-task-edit.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { TaskDetails } from '../../models/task-details';
-import { EditorStateServiceService } from '../../../../shared/services/editor-state-service.service';
+import { EditorStateService } from '../../../../shared/services/editor-state.service';
 
 @Component({
   selector: 'app-edit-task-details',
@@ -25,83 +25,78 @@ export class EditTaskDetailsComponent {
   private readonly translateService = inject(TranslateService);
   private readonly storyTaskEditService = inject(StoryTaskEditService);
   private readonly toastService = inject(ToastService);
-  private readonly editorStateServiceService = inject(
-    EditorStateServiceService
-  );
+  private readonly editorStateService = inject(EditorStateService);
 
   @Output() taskDetailsUpdate: EventEmitter<TaskDetails> = new EventEmitter();
 
-  isEditorVisible = this.editorStateServiceService.isEditorVisible;
-  isSuggestionsVisible = this.editorStateServiceService.isSuggestionsVisible;
-  descriptionEditorValue =
-    this.editorStateServiceService.descriptionEditorValue;
-  suggestionString = this.editorStateServiceService.suggestionString;
+  isEditorVisible = this.editorStateService.isEditorVisible;
+  isSuggestionsVisible = this.editorStateService.isSuggestionsVisible;
+  descriptionEditorValue = this.editorStateService.descriptionEditorValue;
+  suggestionString = this.editorStateService.suggestionString;
 
   details = input.required<TaskDetails | null>();
   taskId = input.required<number>();
   isLoading = input.required<boolean>();
 
   updateDescription(newValue: string) {
-    this.editorStateServiceService.updateDescription(newValue);
+    this.editorStateService.updateDescription(newValue);
   }
 
   rejectSuggestion() {
-    this.editorStateServiceService.suggestionsVisible = false;
+    this.editorStateService.setSuggestionsVisible(false);
   }
 
   replaceWithSuggestion() {
     if (this.details() == null) {
       return;
     }
-    this.editorStateServiceService.replaceWithSuggestion();
+    this.editorStateService.replaceWithSuggestion();
   }
 
   appendSuggestionToBack() {
     if (this.details() == null) {
       return;
     }
-    this.editorStateServiceService.appendSuggestionToBack();
+    this.editorStateService.appendSuggestionToBack();
   }
 
   appendSuggestionToFront() {
     if (this.details() == null) {
       return;
     }
-    this.editorStateServiceService.appendSuggestionToFront();
+    this.editorStateService.appendSuggestionToFront();
   }
 
   resetDescription() {
-    this.editorStateServiceService.resetDescription(
-      this.details()?.description ?? ''
-    );
+    this.editorStateService.resetDescription(this.details()?.description ?? '');
   }
 
   saveDescriptionChanges() {
     if (
       this.details()?.description ===
-      this.editorStateServiceService.descriptionEditorValue()
+      this.editorStateService.descriptionEditorValue()
     ) {
       this.toastService.openError(
         this.translateService.instant('Tasks.Edit.NoChanges')
       );
       return;
     }
-
     this.storyTaskEditService
-      .patchTaskDescription(
+      .patchDescription(
         this.taskId(),
         this.details()?.version ?? 0,
-        this.editorStateServiceService.descriptionEditorValue()
+        this.editorStateService.descriptionEditorValue()
       )
       .subscribe({
         next: (response) => {
           this.taskDetailsUpdate.emit(response);
-          this.editorStateServiceService.setDescriptionEditorValue =
-            response.description ?? '';
+          this.editorStateService.setDescriptionEditorValue(
+            response.description ?? ''
+          );
           this.toastService.openSuccess(
             this.translateService.instant('Tasks.UpdatedSuccessfully')
           );
-          this.editorStateServiceService.editorVisible = false;
+          this.editorStateService.setEditorVisible(false);
         },
         error: () =>
           this.toastService.openError(

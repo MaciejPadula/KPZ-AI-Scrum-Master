@@ -1,5 +1,5 @@
 <div class="flex items-center justify-center popup">
-  @if(details() != null){
+  @if(details() != null && !error()){
   <mat-card class="h-full w-full" style="max-height: 80dvh">
     <mat-card-header>
       <mat-card-title class="stubborn-text"
@@ -144,8 +144,18 @@
       </mat-card-content>
     </ng-scrollbar>
   </mat-card>
-
-  } @else {
+  } 
+  @else {
   <mat-spinner></mat-spinner>
+  } 
+  @if(error()){
+  <mat-card class="h-full w-full">
+    <mat-card-header>
+      <mat-card-title>{{ 'Tasks.Error' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ 'Tasks.ErrorLoadingTask' | translate }}</p>
+    </mat-card-content>
+  </mat-card>
   }
 </div>

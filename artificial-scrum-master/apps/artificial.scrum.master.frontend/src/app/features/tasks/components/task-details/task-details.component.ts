@@ -11,7 +11,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TaskDetails } from '../../models/task-details';
-import { HttpClient } from '@angular/common/http';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormatDateService } from '../../../../shared/services/format-date.service';
@@ -20,7 +19,8 @@ import { StoryTaskSuggestionService } from '../../services/story-task-suggestion
 import { finalize } from 'rxjs';
 import { MarkdownEditorComponent } from '../../../../shared/components/markdown-editor/markdown-editor.component';
 import { EditTaskDetailsComponent } from '../edit-task-details/edit-task-details.component';
-import { EditorStateServiceService } from '../../../../shared/services/editor-state-service.service';
+import { EditorStateService } from '../../../../shared/services/editor-state.service';
+import { TaskDetailsDataService } from '../../services/task-details-data.service';
 
 @Component({
   selector: 'app-task-details',
@@ -42,13 +42,10 @@ export class TaskDetailsComponent implements OnInit {
   @ViewChild('taskEditor', { read: ElementRef })
   taskEditor: ElementRef;
 
+  private readonly taskDetailsDataService = inject(TaskDetailsDataService);
   private readonly formatDateService = inject(FormatDateService);
-  private readonly storyTaskSuggestionService = inject(
-    StoryTaskSuggestionService
-  );
-  private readonly editorStateServiceService = inject(
-    EditorStateServiceService
-  );
+  private readonly taskSuggestionService = inject(StoryTaskSuggestionService);
+  private readonly editorStateService = inject(EditorStateService);
 
   details = signal<TaskDetails | null>(null);
   error = signal<boolean>(false);
@@ -60,7 +57,6 @@ export class TaskDetailsComponent implements OnInit {
     this.formatDateService.formatDate(this.details()?.createdDate)
   );
 
-  #httpClient = inject(HttpClient);
   #taskId: number;
   public readonly taskId: number;
 
@@ -70,11 +66,12 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.#httpClient.get<TaskDetails>(`/api/task/${this.#taskId}`).subscribe({
+    this.taskDetailsDataService.getTaskDetails(this.#taskId).subscribe({
       next: (response) => {
         this.details.set(response);
-        this.editorStateServiceService.setDescriptionEditorValue =
-          response.description ?? '';
+        this.editorStateService.setDescriptionEditorValue(
+          response.description ?? ''
+        );
       },
       error: () => this.error.set(true),
     });
@@ -87,7 +84,7 @@ export class TaskDetailsComponent implements OnInit {
     this.#isLoading.set(true);
     setTimeout(() => this.scrollToElement(this.taskEditor), 50);
 
-    this.storyTaskSuggestionService
+    this.taskSuggestionService
       .getTaskDescriptionSuggestion(
         this.details()?.subject ?? '',
         this.details()?.userStorySubject ?? null,
@@ -96,30 +93,31 @@ export class TaskDetailsComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          this.editorStateServiceService.suggestionsVisible = true;
+          this.editorStateService.setSuggestionsVisible(true);
           setTimeout(() => this.scrollToElement(this.taskEditor), 50);
         })
       )
       .subscribe({
         next: (response) =>
-          (this.editorStateServiceService.setSuggestionString =
-            response.descriptionEditSuggestion),
+          this.editorStateService.setSuggestionString(
+            response.descriptionEditSuggestion
+          ),
         error: () => this.error.set(true),
       });
   }
 
   toggleDescriptionEditor() {
-    if (this.editorStateServiceService.isEditorVisible()) {
-      this.editorStateServiceService.editorVisible = false;
+    if (this.editorStateService.isEditorVisible()) {
+      this.editorStateService.setEditorVisible(false);
       this.scrollToElement(this.taskDescription, 'start');
       return;
     }
-    this.editorStateServiceService.editorVisible = true;
+    this.editorStateService.setEditorVisible(true);
     setTimeout(() => this.scrollToElement(this.taskEditor), 50);
   }
 
-  updateTaskDetails($event: TaskDetails) {
-    this.details.set($event);
+  updateTaskDetails(detailsUpdate: TaskDetails) {
+    this.details.set(detailsUpdate);
   }
 
   private scrollToElement(element: ElementRef, block: 'end' | 'start' = 'end') {

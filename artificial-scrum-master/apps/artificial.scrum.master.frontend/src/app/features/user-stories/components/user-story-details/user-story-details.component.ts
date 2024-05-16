@@ -10,13 +10,13 @@ import {
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './../../../../shared/material.module';
 import { UserStoryDetails } from '../../models/user-story-details';
-import { HttpClient } from '@angular/common/http';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { EditStoryDetailsComponent } from '../edit-story-details/edit-story-details.component';
 import { StorySuggestionService } from '../../services/story-suggestion.service';
 import { finalize } from 'rxjs';
-import { EditorStateServiceService } from '../../../../shared/services/editor-state-service.service';
+import { EditorStateService } from '../../../../shared/services/editor-state.service';
+import { StoryDetailsDataService } from '../../services/story-details-data.service';
 
 @Component({
   selector: 'app-user-story-details',
@@ -36,10 +36,9 @@ export class UserStoryDetailsComponent implements OnInit {
   @ViewChild('editor', { read: ElementRef })
   storyEditor: ElementRef;
 
+  private readonly storyDetailsDataService = inject(StoryDetailsDataService);
   private readonly storySuggestionService = inject(StorySuggestionService);
-  private readonly editorStateServiceService = inject(
-    EditorStateServiceService
-  );
+  private readonly editorStateServiceService = inject(EditorStateService);
 
   details = signal<UserStoryDetails | null>(null);
   error = signal<boolean>(false);
@@ -47,7 +46,6 @@ export class UserStoryDetailsComponent implements OnInit {
   #isLoading = signal<boolean>(false);
   public isLoading = this.#isLoading.asReadonly();
 
-  #httpClient = inject(HttpClient);
   #storyId: number;
   public readonly storyId: number;
 
@@ -57,16 +55,15 @@ export class UserStoryDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.#httpClient
-      .get<UserStoryDetails>(`/api/userStories/${this.#storyId}`)
-      .subscribe({
-        next: (response) => {
-          this.details.set(response);
-          this.editorStateServiceService.setDescriptionEditorValue =
-            response.description ?? '';
-        },
-        error: () => this.error.set(true),
-      });
+    this.storyDetailsDataService.getStoryDetails(this.#storyId).subscribe({
+      next: (response) => {
+        this.details.set(response);
+        this.editorStateServiceService.setDescriptionEditorValue(
+          response.description ?? ''
+        );
+      },
+      error: () => this.error.set(true),
+    });
   }
 
   generateSuggestion() {
@@ -84,30 +81,31 @@ export class UserStoryDetailsComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          this.editorStateServiceService.suggestionsVisible = true;
+          this.editorStateServiceService.setSuggestionsVisible(true);
           setTimeout(() => this.scrollToElement(this.storyEditor), 50);
         })
       )
       .subscribe({
         next: (response) =>
-          (this.editorStateServiceService.setSuggestionString =
-            response.descriptionEditSuggestion),
+          this.editorStateServiceService.setSuggestionString(
+            response.descriptionEditSuggestion
+          ),
         error: () => this.error.set(true),
       });
   }
 
   toggleDescriptionEditor() {
     if (this.editorStateServiceService.isEditorVisible()) {
-      this.editorStateServiceService.editorVisible = false;
+      this.editorStateServiceService.setEditorVisible(false);
       this.scrollToElement(this.storyDescription, 'start');
       return;
     }
-    this.editorStateServiceService.editorVisible = true;
+    this.editorStateServiceService.setEditorVisible(true);
     setTimeout(() => this.scrollToElement(this.storyEditor), 50);
   }
 
-  updateStoryDetails($event: UserStoryDetails) {
-    this.details.set($event);
+  updateStoryDetails(detailsUpdate: UserStoryDetails) {
+    this.details.set(detailsUpdate);
   }
 
   private scrollToElement(element: ElementRef, block: 'end' | 'start' = 'end') {

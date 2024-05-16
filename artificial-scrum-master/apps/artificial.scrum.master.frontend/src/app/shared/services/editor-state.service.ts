@@ -3,7 +3,7 @@ import { Injectable, signal } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class EditorStateServiceService {
+export class EditorStateService {
   #suggestionString = signal<string | null>(null);
   suggestionString = this.#suggestionString.asReadonly();
 
@@ -16,19 +16,19 @@ export class EditorStateServiceService {
   #isEditorVisible = signal(false);
   public isEditorVisible = this.#isEditorVisible.asReadonly();
 
-  set setDescriptionEditorValue(value: string) {
+  setDescriptionEditorValue(value: string) {
     this.#descriptionEditorValue.set(value);
   }
 
-  set setSuggestionString(value: string | null) {
+  setSuggestionString(value: string | null) {
     this.#suggestionString.set(value);
   }
 
-  set suggestionsVisible(value: boolean) {
+  setSuggestionsVisible(value: boolean) {
     this.#isSuggestionsVisible.set(value);
   }
 
-  set editorVisible(value: boolean) {
+  setEditorVisible(value: boolean) {
     this.#isEditorVisible.set(value);
   }
 

@@ -10,7 +10,7 @@ export class StoryEditService {
   private readonly httpClient = inject(HttpClient);
   private readonly baseApiUrl = 'api/userStories';
 
-  public patchStoryDescription(
+  public patchDescription(
     storyId: number,
     version: number,
     description: string

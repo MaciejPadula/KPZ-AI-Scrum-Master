@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserStoryDetailsComponent } from '../user-story-details/user-story-details.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { TasksComponent } from '../../../tasks/tasks.component';
-import { EditorStateServiceService } from 'apps/artificial.scrum.master.frontend/src/app/shared/services/editor-state-service.service';
+import { EditorStateService } from 'apps/artificial.scrum.master.frontend/src/app/shared/services/editor-state.service';
 
 @Component({
   selector: 'app-user-story-list-item',
@@ -35,7 +35,7 @@ export class UserStoryListItemComponent {
 
   #dialog = inject(MatDialog);
   private readonly editorStateServiceService = inject(
-    EditorStateServiceService
+    EditorStateService
   );
 
   public openDetails(): void {

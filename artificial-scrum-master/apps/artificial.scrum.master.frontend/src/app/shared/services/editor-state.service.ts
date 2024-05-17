@@ -16,31 +16,31 @@ export class EditorStateService {
   #isEditorVisible = signal(false);
   public isEditorVisible = this.#isEditorVisible.asReadonly();
 
-  setDescriptionEditorValue(value: string) {
+  public setDescriptionEditorValue(value: string) {
     this.#descriptionEditorValue.set(value);
   }
 
-  setSuggestionString(value: string | null) {
+  public setSuggestionString(value: string | null) {
     this.#suggestionString.set(value);
   }
 
-  setSuggestionsVisible(value: boolean) {
+  public setSuggestionsVisible(value: boolean) {
     this.#isSuggestionsVisible.set(value);
   }
 
-  setEditorVisible(value: boolean) {
+  public setEditorVisible(value: boolean) {
     this.#isEditorVisible.set(value);
   }
 
-  updateDescription(newValue: string) {
+  public updateDescription(newValue: string) {
     this.#descriptionEditorValue.set(newValue);
   }
 
-  rejectSuggestion() {
+  public rejectSuggestion() {
     this.#isSuggestionsVisible.set(false);
   }
 
-  replaceWithSuggestion() {
+  public replaceWithSuggestion() {
     this.#descriptionEditorValue.set(this.suggestionString() ?? '');
     this.#isSuggestionsVisible.set(false);
     if (!this.#isEditorVisible()) {
@@ -48,7 +48,7 @@ export class EditorStateService {
     }
   }
 
-  appendSuggestionToBack() {
+  public appendSuggestionToBack() {
     this.#descriptionEditorValue.set(
       this.descriptionEditorValue().concat('\n', this.suggestionString() ?? '')
     );
@@ -58,7 +58,7 @@ export class EditorStateService {
     }
   }
 
-  appendSuggestionToFront() {
+  public appendSuggestionToFront() {
     this.#descriptionEditorValue.set(
       (this.suggestionString() ?? '').concat(
         '\n',
@@ -71,12 +71,12 @@ export class EditorStateService {
     }
   }
 
-  resetDescription(originalValue: string) {
+  public resetDescription(originalValue: string) {
     this.#isEditorVisible.set(false);
     this.#descriptionEditorValue.set(originalValue);
   }
 
-  resetEditorState() {
+  public resetEditorState() {
     this.#isSuggestionsVisible.set(false);
     this.#isEditorVisible.set(false);
     this.#suggestionString.set(null);

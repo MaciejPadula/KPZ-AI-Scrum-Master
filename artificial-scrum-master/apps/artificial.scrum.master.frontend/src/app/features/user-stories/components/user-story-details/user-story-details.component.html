@@ -75,7 +75,7 @@
     </div>
     <ng-scrollbar>
       <mat-card-content class="stubborn-text" style="padding: 0 0 2rem 1rem">
-        <div #description class="pb-2">
+        <div #userStoryDescription class="pb-2">
           @if(details()?.descriptionHtml){
           <p [innerHTML]="details()?.descriptionHtml"></p>
           }@else {
@@ -83,7 +83,7 @@
           }
         </div>
         <app-edit-story-details
-          #editor
+          #userStoryEditor
           [details]="details()"
           [storyId]="storyId"
           [isLoading]="isLoading()"
@@ -100,7 +100,7 @@
   @if(error()){
   <mat-card class="h-full w-full">
     <mat-card-header>
-      <mat-card-title>{{'UserStories.Error' | translate }}</mat-card-title>
+      <mat-card-title>{{ 'UserStories.Error' | translate }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <p>{{ 'UserStories.ErrorLoadingStory' | translate }}</p>

@@ -17,6 +17,7 @@ import { StorySuggestionService } from '../../services/story-suggestion.service'
 import { finalize } from 'rxjs';
 import { EditorStateService } from '../../../../shared/services/editor-state.service';
 import { StoryDetailsDataService } from '../../services/story-details-data.service';
+import { ScrollService } from '../../../../shared/services/scroll.service';
 
 @Component({
   selector: 'app-user-story-details',
@@ -31,14 +32,15 @@ import { StoryDetailsDataService } from '../../services/story-details-data.servi
   ],
 })
 export class UserStoryDetailsComponent implements OnInit {
-  @ViewChild('description', { read: ElementRef })
+  @ViewChild('userStoryDescription', { read: ElementRef })
   storyDescription: ElementRef;
-  @ViewChild('editor', { read: ElementRef })
+  @ViewChild('userStoryEditor', { read: ElementRef })
   storyEditor: ElementRef;
 
   private readonly storyDetailsDataService = inject(StoryDetailsDataService);
   private readonly storySuggestionService = inject(StorySuggestionService);
   private readonly editorStateServiceService = inject(EditorStateService);
+  private readonly scrollService = inject(ScrollService);
 
   details = signal<UserStoryDetails | null>(null);
   error = signal<boolean>(false);
@@ -71,8 +73,10 @@ export class UserStoryDetailsComponent implements OnInit {
       return;
     }
     this.#isLoading.set(true);
-    setTimeout(() => this.scrollToElement(this.storyEditor), 50);
-
+    this.scrollService.scrollToElement({
+      element: this.storyEditor,
+      timeout: 100,
+    });
     this.storySuggestionService
       .getStorykDescriptionSuggestion(
         this.details()?.title ?? '',
@@ -82,7 +86,10 @@ export class UserStoryDetailsComponent implements OnInit {
         finalize(() => {
           this.#isLoading.set(false);
           this.editorStateServiceService.setSuggestionsVisible(true);
-          setTimeout(() => this.scrollToElement(this.storyEditor), 50);
+          this.scrollService.scrollToElement({
+            element: this.storyEditor,
+            timeout: 100,
+          });
         })
       )
       .subscribe({
@@ -97,24 +104,20 @@ export class UserStoryDetailsComponent implements OnInit {
   toggleDescriptionEditor() {
     if (this.editorStateServiceService.isEditorVisible()) {
       this.editorStateServiceService.setEditorVisible(false);
-      this.scrollToElement(this.storyDescription, 'start');
+      this.scrollService.scrollToElement({
+        element: this.storyDescription,
+        block: 'start',
+      });
       return;
     }
     this.editorStateServiceService.setEditorVisible(true);
-    setTimeout(() => this.scrollToElement(this.storyEditor), 50);
+    this.scrollService.scrollToElement({
+      element: this.storyEditor,
+      timeout: 100,
+    });
   }
 
   updateStoryDetails(detailsUpdate: UserStoryDetails) {
     this.details.set(detailsUpdate);
-  }
-
-  private scrollToElement(element: ElementRef, block: 'end' | 'start' = 'end') {
-    if (element && element.nativeElement) {
-      element.nativeElement.scrollIntoView({
-        behavior: 'smooth',
-        block: block,
-        inline: 'nearest',
-      });
-    }
   }
 }

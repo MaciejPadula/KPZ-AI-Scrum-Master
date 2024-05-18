@@ -21,7 +21,12 @@
       [sessionId]="sessionId()"
       [columnType]="CardType.Idea"
       [content]="ideas()"
-    />
+    >
+      <button mat-raised-button color="primary" (click)="addSuggestions()">
+        <mat-icon>psychology</mat-icon>
+        <span>{{'Retrospective.Suggestions.Button' | translate}}</span>
+      </button>
+    </app-retro-table-column>
   </div>
 } @else {
   <mat-progress-bar mode="indeterminate" />

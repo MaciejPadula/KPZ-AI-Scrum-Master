@@ -11,32 +11,15 @@ namespace Artificial.Scrum.Master.Infrastructure.ExternalServices;
 
 internal class OpenAIRetroSuggestionService : IRetroSuggestionService
 {
-    private readonly IMemoryCache _memoryCache;
     private readonly IOpenAIService _openAIService;
-
-    private readonly TimeSpan CacheTTL = TimeSpan.FromMinutes(45);
     private const int MaxTokens = 250;
 
-    public OpenAIRetroSuggestionService(
-        IMemoryCache memoryCache,
-        IOpenAIService openAIService)
+    public OpenAIRetroSuggestionService(IOpenAIService openAIService)
     {
-        _memoryCache = memoryCache;
         _openAIService = openAIService;
     }
 
     public async Task<GetSuggestedIdeasResult?> GetSuggestedIdeas(IEnumerable<SessionCard> cards)
-    {
-        var cacheKey = $"{nameof(GetSuggestedIdeas)}_[{string.Join(",", cards.Select(x => $"{x.Content}:{x.Type}"))}]";
-        return await _memoryCache.GetOrCreateAsync(cacheKey, async entry =>
-        {
-            entry.AbsoluteExpirationRelativeToNow = CacheTTL;
-            return await GetSuggestedIdeasInternal(cards);
-        });
-    }
-
-
-    public async Task<GetSuggestedIdeasResult?> GetSuggestedIdeasInternal(IEnumerable<SessionCard> cards)
     {
         var cardsByType = cards
             .GroupBy(x => x.Type)
@@ -47,17 +30,20 @@ internal class OpenAIRetroSuggestionService : IRetroSuggestionService
             Messages =
             [
                 ChatMessage.FromSystem(@"
+You are participating in a retrospective meeting. You have the following cards:"),
+                ChatMessage.FromUser($"Good Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Good, []))}"),
+                ChatMessage.FromUser($"Bad Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Bad, []))}"),
+                ChatMessage.FromSystem(@"
 You are participating in a retrospective meeting.
 Please provide ideas on how to improve development process in future.
 Please return response in json format:
 {
     'Ideas': ['idea1', 'idea2', ...]
 }
-Please translate Ideas to Polish.
-You have the following cards:"),
-                ChatMessage.FromUser($"Good Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Good, []))}"),
-                ChatMessage.FromUser($"Bad Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Bad, []))}"),
-                ChatMessage.FromUser($"Idea Cards: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Ideas, []))}")
+Return only few the most important ideas and try not to repeat ideas that are already in the list!!!!!!!!"),
+                ChatMessage.FromUser($"Idea Cards To Avoid!!!!!!: {string.Join(", ", cardsByType.GetValueOrDefault(CardType.Ideas, []))}"),
+                ChatMessage.FromSystem("Please try to return always at least three new unique ideas that are not present in the list."),
+                ChatMessage.FromSystem("Please translate Ideas to Polish.")
             ],
             Model = OpenAIConsts.AIModel,
             MaxTokens = MaxTokens,

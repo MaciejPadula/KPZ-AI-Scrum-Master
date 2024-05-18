@@ -156,5 +156,10 @@
   "Retrospective.Table.Add": "Dodaj kartkę",
   "Retrospective.Table.AddDialog.Title": "Dodwanie kartki",
   "Retrospective.Table.AddDialog.CardText": "Opinia",
-  "Retrospective.RequiredAndThreeLetters":"Pole wymagane, minimum 3 znaki"
+  "Retrospective.RequiredAndThreeLetters":"Pole wymagane, minimum 3 znaki",
+  "Retrospective.Suggestions.Button": "Zaproponuj sugestie",
+  "Retrospective.Suggestions.Title": "Pomysły zasugerowane przez sztuczną inteligencję",
+  "Retrospective.Suggestions.GetError": "Wystąpił błąd z pobraniem sugestii",
+  "Retrospective.Suggestions.SetError": "Wystąpił błąd z tworzeniem kartki z sugestii",
+  "Retrospective.Suggestions.Load": "Załaduj sugestie"
 }

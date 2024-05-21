@@ -1,13 +1,15 @@
 using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Models;
+using Artificial.Scrum.Master.TokenRefresher;
+using Artificial.Scrum.Master.TokenRefresher.Interfaces;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
 using Artificial.Scrum.Master.UserSettings.Infrastructure.Models;
 using Dapper;
 
 namespace Artificial.Scrum.Master.Infrastructure.Repositories;
 
-internal class SqlUserSettingsRepository : IUserSettingsRepository, IUserTokensRepository
+internal class SqlUserSettingsRepository : IUserSettingsRepository, IUserTokensRepository, ITokenRepository
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
@@ -90,7 +92,7 @@ WHERE UserId = @UserId
 ", new { userSettings.UserId, userSettings.TaigaAccessToken, userSettings.TaigaRefreshToken });
     }
 
-    public async Task<List<UserTokens>> GetAllAccessTokens()
+    public async Task<Dictionary<string, string>> GetAllAccessTokens()
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
 
@@ -117,6 +119,14 @@ FETCH NEXT @BatchSize ROWS ONLY
         }
         while (currentTokens.Count != 0);
 
-        return result;
+        return result
+            .ToDictionary(
+                x => x.UserId,
+                x => x.RefreshToken);
     }
+
+    public async Task UpdateToken(string userId, RefreshResponse result) =>
+        await SaveAccessTokensWhenExists(
+            userId,
+            new UserTokens(userId, result.AccessToken, result.RefreshToken));
 }

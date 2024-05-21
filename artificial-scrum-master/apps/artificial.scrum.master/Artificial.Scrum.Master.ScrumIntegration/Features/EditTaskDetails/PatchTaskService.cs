@@ -8,7 +8,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.EditTaskDetails;
 
 internal interface IPatchTaskService
 {
-    Task<GetTaskDetailsResponse> Handle(string taskId, PatchTaskRequest editTaskRequest);
+    Task<GetTaskDetailsResponse> Handle(string taskId, PatchTaskRequest patchTaskRequest);
 }
 
 internal class PatchTaskService : IPatchTaskService
@@ -30,7 +30,7 @@ internal class PatchTaskService : IPatchTaskService
         _userAccessor = userAccessor;
     }
 
-    public async Task<GetTaskDetailsResponse> Handle(string taskId, PatchTaskRequest editTaskRequest)
+    public async Task<GetTaskDetailsResponse> Handle(string taskId, PatchTaskRequest patchTaskRequest)
     {
         var userId = _userAccessor.UserId ?? throw new UnauthorizedAccessException();
         var refreshToken = await _accessTokenProvider.ProvideRefreshTokenOrThrow(userId);
@@ -40,7 +40,7 @@ internal class PatchTaskService : IPatchTaskService
                 userId,
                 refreshToken,
                 _ => $"tasks/{taskId}",
-                editTaskRequest);
+                patchTaskRequest);
 
         return _taskDetailsResponseMapper.MapTaskDetailsResponse(taskDetailsRequestResponse);
     }

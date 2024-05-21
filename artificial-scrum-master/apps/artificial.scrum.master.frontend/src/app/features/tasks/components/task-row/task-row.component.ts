@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TaskDetailsComponent } from '../task-details/task-details.component';
+import { EditorStateService } from 'apps/artificial.scrum.master.frontend/src/app/shared/services/editor-state.service';
 
 @Component({
   selector: 'app-task-row',
@@ -24,10 +25,17 @@ export class TaskRowComponent {
   public taskRow: TaskRow;
 
   #dialog = inject(MatDialog);
+  private readonly editorStateServiceService = inject(
+    EditorStateService
+  );
 
   public openDetails(): void {
-    this.#dialog.open(TaskDetailsComponent, {
+    const dialogRef = this.#dialog.open(TaskDetailsComponent, {
       data: this.taskRow.taskId,
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.editorStateServiceService.resetEditorState();
     });
   }
 }

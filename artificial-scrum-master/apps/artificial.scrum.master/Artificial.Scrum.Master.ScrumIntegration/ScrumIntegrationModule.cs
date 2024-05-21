@@ -1,6 +1,7 @@
 using Artificial.Scrum.Master.ScrumIntegration;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Burndown;
 using Artificial.Scrum.Master.ScrumIntegration.Features.EditTaskDetails;
+using Artificial.Scrum.Master.ScrumIntegration.Features.EditUserStoryDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
@@ -59,7 +60,8 @@ public static class ScrumIntegrationModule
         services.AddTransient<IGetActiveSprintsService, GetActiveSprintsService>();
         services.AddTransient<IGetUserStoriesService, GetUserStoriesService>();
         services.AddTransient<IGetStoryTasksService, GetStoryTasksService>();
-        services.AddTransient<IUserStoryDetailsService, UserStoryDetailsService>();
+        services.AddTransient<IGetUserStoryDetailsService, GetUserStoryDetailsService>();
+        services.AddTransient<IPatchStoryService, PatchStoryService>();
         services.AddTransient<IGetSprintStatsService, GetSprintStatsService>();
         services.AddTransient<IGetTaskDetailsService, GetTaskDetailsService>();
         services.AddTransient<IPatchTaskService, PatchTaskService>();

@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardType } from '../add-card-dialog/add-card-dialog-data';
 import { MaterialModule } from '../../../../shared/material.module';
@@ -11,6 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [CommonModule, MaterialModule, TranslateModule],
   templateUrl: './retro-table-column.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RetroTableColumnComponent {
   private readonly dialog = inject(MatDialog);

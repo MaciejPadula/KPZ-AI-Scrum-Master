@@ -12,8 +12,7 @@ internal class GetEditTaskSuggestionService : IGetEditTaskSuggestionService
 {
     private readonly ITaskSuggestionService _taskSuggestionService;
 
-    public GetEditTaskSuggestionService(
-        ITaskSuggestionService taskSuggestionService)
+    public GetEditTaskSuggestionService(ITaskSuggestionService taskSuggestionService)
     {
         _taskSuggestionService = taskSuggestionService;
     }

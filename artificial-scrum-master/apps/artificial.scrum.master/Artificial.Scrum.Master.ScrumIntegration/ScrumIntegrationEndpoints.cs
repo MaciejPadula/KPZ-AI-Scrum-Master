@@ -1,8 +1,10 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Burndown;
 using Artificial.Scrum.Master.ScrumIntegration.Features.EditTaskDetails;
+using Artificial.Scrum.Master.ScrumIntegration.Features.EditUserStoryDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TaskDetails;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.UserStoryDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
 using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
@@ -80,10 +82,18 @@ public static class ScrumIntegrationEndpoints
 
         routes.MapGet("/api/userStories/{storyId}",
             async (HttpContext context,
-                IUserStoryDetailsService userStoryDetailsService,
+                IGetUserStoryDetailsService userStoryDetailsService,
                 string storyId) =>
             {
                 var result = await userStoryDetailsService.Handle(storyId);
+                await context.Response.WriteAsJsonAsync(result);
+            });
+
+        routes.MapPatch("/api/userStories/{storyId}",
+            async (HttpContext context, IPatchStoryService service, [FromRoute] string storyId,
+                [FromBody] PatchStoryRequest request) =>
+            {
+                var result = await service.Handle(storyId, request);
                 await context.Response.WriteAsJsonAsync(result);
             });
 

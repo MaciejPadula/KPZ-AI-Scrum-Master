@@ -11,16 +11,17 @@ import {
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TaskDetails } from '../../models/task-details';
-import { HttpClient } from '@angular/common/http';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormatDateService } from '../../../../shared/services/format-date.service';
 import { DescriptionDiffComponent } from '../../../../shared/components/description-diff/description-diff.component';
-import { GetStoryTaskSuggestion } from '../../models/get-story-task-suggestion';
 import { StoryTaskSuggestionService } from '../../services/story-task-suggestion.service';
 import { finalize } from 'rxjs';
 import { MarkdownEditorComponent } from '../../../../shared/components/markdown-editor/markdown-editor.component';
 import { EditTaskDetailsComponent } from '../edit-task-details/edit-task-details.component';
+import { EditorStateService } from '../../../../shared/services/editor-state.service';
+import { TaskDetailsDataService } from '../../services/task-details-data.service';
+import { ScrollService } from '../../../../shared/services/scroll.service';
 
 @Component({
   selector: 'app-task-details',
@@ -42,18 +43,14 @@ export class TaskDetailsComponent implements OnInit {
   @ViewChild('taskEditor', { read: ElementRef })
   taskEditor: ElementRef;
 
+  private readonly taskDetailsDataService = inject(TaskDetailsDataService);
   private readonly formatDateService = inject(FormatDateService);
-  private readonly storyTaskSuggestionService = inject(
-    StoryTaskSuggestionService
-  );
+  private readonly taskSuggestionService = inject(StoryTaskSuggestionService);
+  private readonly editorStateService = inject(EditorStateService);
+  private readonly scrollService = inject(ScrollService);
 
   details = signal<TaskDetails | null>(null);
   error = signal<boolean>(false);
-
-  isSuggestionsVisible = signal(false);
-  suggestion = signal<GetStoryTaskSuggestion | null>(null);
-  isEditorVisible = signal(false);
-  descriptionEditorValue = signal<string>('');
 
   #isLoading = signal<boolean>(false);
   public isLoading = this.#isLoading.asReadonly();
@@ -62,7 +59,6 @@ export class TaskDetailsComponent implements OnInit {
     this.formatDateService.formatDate(this.details()?.createdDate)
   );
 
-  #httpClient = inject(HttpClient);
   #taskId: number;
   public readonly taskId: number;
 
@@ -72,10 +68,12 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.#httpClient.get<TaskDetails>(`/api/task/${this.#taskId}`).subscribe({
+    this.taskDetailsDataService.getTaskDetails(this.#taskId).subscribe({
       next: (response) => {
         this.details.set(response);
-        this.descriptionEditorValue.set(response.description ?? '');
+        this.editorStateService.setDescriptionEditorValue(
+          response.description ?? ''
+        );
       },
       error: () => this.error.set(true),
     });
@@ -86,7 +84,11 @@ export class TaskDetailsComponent implements OnInit {
       return;
     }
     this.#isLoading.set(true);
-    this.storyTaskSuggestionService
+    this.scrollService.scrollToElement({
+      element: this.taskEditor,
+      timeout: 100,
+    });
+    this.taskSuggestionService
       .getTaskDescriptionSuggestion(
         this.details()?.subject ?? '',
         this.details()?.userStorySubject ?? null,
@@ -95,32 +97,39 @@ export class TaskDetailsComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          this.isSuggestionsVisible.set(true);
-          setTimeout(() => this.scrollToElement(this.taskEditor), 50);
+          this.editorStateService.setSuggestionsVisible(true);
+          this.scrollService.scrollToElement({
+            element: this.taskEditor,
+            timeout: 100,
+          });
         })
       )
       .subscribe({
-        next: (response) => this.suggestion.set(response),
+        next: (response) =>
+          this.editorStateService.setSuggestionString(
+            response.descriptionEditSuggestion
+          ),
         error: () => this.error.set(true),
       });
   }
 
-  openDescriptionEditor() {
-    if (this.isEditorVisible()) {
-      setTimeout(() => this.isEditorVisible.set(false), 100);
-      setTimeout(() => this.scrollToElement(this.taskDescription), 50);
-      return;
-    }
-    setTimeout(() => this.isEditorVisible.set(true), 50);
-    setTimeout(() => this.scrollToElement(this.taskEditor), 100);
-  }
-
-  private scrollToElement(element: ElementRef) {
-    if (element && element.nativeElement) {
-      element.nativeElement.scrollIntoView({
-        behavior: 'smooth',
+  toggleDescriptionEditor() {
+    if (this.editorStateService.isEditorVisible()) {
+      this.editorStateService.setEditorVisible(false);
+      this.scrollService.scrollToElement({
+        element: this.taskDescription,
         block: 'start',
       });
+      return;
     }
+    this.editorStateService.setEditorVisible(true);
+    this.scrollService.scrollToElement({
+      element: this.taskEditor,
+      timeout: 100,
+    });
+  }
+
+  updateTaskDetails(detailsUpdate: TaskDetails) {
+    this.details.set(detailsUpdate);
   }
 }

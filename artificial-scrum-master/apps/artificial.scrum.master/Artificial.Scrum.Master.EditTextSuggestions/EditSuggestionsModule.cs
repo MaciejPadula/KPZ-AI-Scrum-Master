@@ -1,3 +1,4 @@
+using Artificial.Scrum.Master.EditTextSuggestions.Features.GetEditStorySuggestion;
 using Artificial.Scrum.Master.EditTextSuggestions.Features.GetEditTaskSuggestion;
 using Artificial.Scrum.Master.EditTextSuggestions.Infrastructure.Middleware;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,7 @@ public static class EditSuggestionsModule
     public static IServiceCollection AddEditSuggestionsModule(this IServiceCollection services)
     {
         services.AddTransient<IGetEditTaskSuggestionService, GetEditTaskSuggestionService>();
+        services.AddTransient<IGetEditStorySuggestionService, GetEditStorySuggestionService>();
 
         services.AddTransient<EditSuggestionMiddleware>();
 

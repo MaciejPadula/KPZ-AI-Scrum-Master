@@ -1,20 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.UserStoryDetails;
-internal class UserStoryDetailsResponse
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.UserStoryDetails;
+
+internal class UserStorySpecifics
 {
     [JsonPropertyName("assigned_to_extra_info")] public AssignedToExtraInfo? AssignedToInfo { get; set; }
     [JsonPropertyName("status_extra_info")] public StatusExtraInfo? StatusInfo { get; set; }
     [JsonPropertyName("created_date")] public DateTime? Created { get; set; }
-    [JsonPropertyName("description_html")] public string? Description { get; set; }
+    [JsonPropertyName("description_html")] public string? DescriptionHtml { get; set; }
+    public string? Description { get; set; }
     [JsonPropertyName("subject")] public string? Title { get; set; }
     [JsonPropertyName("ref")] public int? Number { get; set; }
-
+    public int Version { get; set; }
 }
 
 internal class AssignedToExtraInfo
@@ -28,5 +25,4 @@ internal class StatusExtraInfo
     [JsonPropertyName("color")] public string? Color { get; set; }
     [JsonPropertyName("is_closed")] public bool Closed { get; set; }
     [JsonPropertyName("name")] public string? Name { get; set; }
-
 }

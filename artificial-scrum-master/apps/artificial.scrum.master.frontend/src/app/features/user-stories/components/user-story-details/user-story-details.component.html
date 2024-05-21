@@ -1,5 +1,5 @@
 <div class="flex items-center justify-center popup">
-  @if(details() != null){
+  @if(details() != null && !error()){
   <mat-card class="h-full w-full" style="max-height: 80dvh">
     <mat-card-header>
       <mat-card-title class="stubborn-text"
@@ -56,6 +56,15 @@
           >
         </button>
         <button
+          (click)="toggleDescriptionEditor()"
+          mat-mini-fab
+          title="{{ 'Shared.OpenEditor' | translate }}"
+          color="primary"
+        >
+          <mat-icon>edit_document</mat-icon>
+        </button>
+        <button
+          (click)="generateSuggestion()"
           mat-mini-fab
           title="{{ 'UserStories.GenerateImprovementSuggestion' | translate }}"
           color="primary"
@@ -66,12 +75,36 @@
     </div>
     <ng-scrollbar>
       <mat-card-content class="stubborn-text" style="padding: 0 0 2rem 1rem">
-        <p [innerHTML]="details()?.description"></p>
+        <div #userStoryDescription class="pb-2">
+          @if(details()?.descriptionHtml){
+          <p [innerHTML]="details()?.descriptionHtml"></p>
+          }@else {
+          <p>{{ 'Shared.Edit.NoDescription' | translate }}</p>
+          }
+        </div>
+        <app-edit-story-details
+          #userStoryEditor
+          [details]="details()"
+          [storyId]="storyId"
+          [isLoading]="isLoading()"
+          (storyDetailsUpdate)="updateStoryDetails($event)"
+        />
       </mat-card-content>
     </ng-scrollbar>
   </mat-card>
 
-  } @else {
+  } 
+  @else {
   <mat-spinner></mat-spinner>
+  } 
+  @if(error()){
+  <mat-card class="h-full w-full">
+    <mat-card-header>
+      <mat-card-title>{{ 'UserStories.Error' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ 'UserStories.ErrorLoadingStory' | translate }}</p>
+    </mat-card-content>
+  </mat-card>
   }
 </div>

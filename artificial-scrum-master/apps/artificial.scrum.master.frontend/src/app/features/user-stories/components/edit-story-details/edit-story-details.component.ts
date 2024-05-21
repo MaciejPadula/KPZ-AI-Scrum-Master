@@ -4,13 +4,13 @@ import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DescriptionDiffComponent } from '../../../../shared/components/description-diff/description-diff.component';
 import { MarkdownEditorComponent } from '../../../../shared/components/markdown-editor/markdown-editor.component';
-import { StoryTaskEditService } from '../../services/story-task-edit.service';
+import { StoryEditService } from '../../services/story-edit.service';
 import { ToastService } from '../../../../shared/services/toast.service';
-import { TaskDetails } from '../../models/task-details';
+import { UserStoryDetails } from '../../models/user-story-details';
 import { EditorStateService } from '../../../../shared/services/editor-state.service';
 
 @Component({
-  selector: 'app-edit-task-details',
+  selector: 'app-edit-story-details',
   standalone: true,
   imports: [
     CommonModule,
@@ -19,23 +19,24 @@ import { EditorStateService } from '../../../../shared/services/editor-state.ser
     DescriptionDiffComponent,
     MarkdownEditorComponent,
   ],
-  templateUrl: './edit-task-details.component.html',
+  templateUrl: './edit-story-details.component.html',
 })
-export class EditTaskDetailsComponent {
+export class EditStoryDetailsComponent {
   private readonly translateService = inject(TranslateService);
-  private readonly storyTaskEditService = inject(StoryTaskEditService);
+  private readonly storyEditService = inject(StoryEditService);
   private readonly toastService = inject(ToastService);
   private readonly editorStateService = inject(EditorStateService);
 
-  @Output() taskDetailsUpdate: EventEmitter<TaskDetails> = new EventEmitter();
+  @Output() storyDetailsUpdate: EventEmitter<UserStoryDetails> =
+    new EventEmitter();
 
   isEditorVisible = this.editorStateService.isEditorVisible;
   isSuggestionsVisible = this.editorStateService.isSuggestionsVisible;
   descriptionEditorValue = this.editorStateService.descriptionEditorValue;
   suggestionString = this.editorStateService.suggestionString;
 
-  details = input.required<TaskDetails | null>();
-  taskId = input.required<number>();
+  details = input.required<UserStoryDetails | null>();
+  storyId = input.required<number>();
   isLoading = input.required<boolean>();
 
   updateDescription(newValue: string) {
@@ -77,30 +78,29 @@ export class EditTaskDetailsComponent {
       this.editorStateService.descriptionEditorValue()
     ) {
       this.toastService.openError(
-        this.translateService.instant('Tasks.Edit.NoChanges')
+        this.translateService.instant('UserStories.Edit.NoChanges')
       );
       return;
     }
-    this.storyTaskEditService
+    this.storyEditService
       .patchDescription(
-        this.taskId(),
+        this.storyId(),
         this.details()?.version ?? 0,
         this.editorStateService.descriptionEditorValue()
       )
       .subscribe({
         next: (response) => {
-          this.taskDetailsUpdate.emit(response);
-          this.editorStateService.setDescriptionEditorValue(
-            response.description ?? ''
-          );
+          this.storyDetailsUpdate.emit(response);
+          this.editorStateService.descriptionEditorValue;
+          response.description ?? '';
           this.toastService.openSuccess(
-            this.translateService.instant('Tasks.UpdatedSuccessfully')
+            this.translateService.instant('UserStories.UpdatedSuccessfully')
           );
           this.editorStateService.setEditorVisible(false);
         },
         error: () =>
           this.toastService.openError(
-            this.translateService.instant('Tasks.ErrorWhileUpdate')
+            this.translateService.instant('UserStories.ErrorWhileUpdate')
           ),
       });
   }

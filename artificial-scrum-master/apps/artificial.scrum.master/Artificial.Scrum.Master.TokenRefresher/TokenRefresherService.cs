@@ -21,7 +21,7 @@ internal class TokenRefresherService : ITokenRefresherService
 
     private const int RetryCount = 5;
     private static readonly TimeSpan RetryDelay = TimeSpan.FromSeconds(30);
-    private static readonly TimeSpan RequestDelay = TimeSpan.FromMinutes(1);
+    private static readonly TimeSpan RequestDelay = TimeSpan.FromSeconds(45);
 
     public TokenRefresherService(
         ILogger<TokenRefresherService> logger,
@@ -37,7 +37,7 @@ internal class TokenRefresherService : ITokenRefresherService
             .Handle<ThrottledException>()
             .WaitAndRetryAsync(
                 RetryCount,
-                _ => RetryDelay);
+                _ => RequestDelay);
     }
 
     public async Task Execute()
@@ -83,7 +83,8 @@ internal class TokenRefresherService : ITokenRefresherService
         var response = await _httpClient.PostAsJsonAsync("auth/refresh", new { refresh = refreshToken });
         if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
         {
-            throw new ThrottledException();
+            var throttleHeader = response.Headers.GetValues("X-Throttle-Wait-Seconds:").First();
+            throw new ThrottledException(int.Parse(throttleHeader));
         }
 
         var result = await response.Content.ReadFromJsonAsync<RefreshResponse>();

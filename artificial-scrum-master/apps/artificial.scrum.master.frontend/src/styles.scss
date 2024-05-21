@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  ul, ol {
+  ul,
+  ol {
     list-style: revert;
     padding: revert;
     margin: revert;
@@ -27,6 +28,9 @@ html {
   filter: invert(0) !important;
 }
 
+.dark-theme .side {
+  background-color: #303030;
+}
 
 .img-loading {
   border-radius: 10px;

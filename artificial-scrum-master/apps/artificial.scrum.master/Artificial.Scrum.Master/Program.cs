@@ -4,6 +4,7 @@ using Artificial.Scrum.Master.Infrastructure;
 using Artificial.Scrum.Master.ScrumProjectIntegration;
 using Artificial.Scrum.Master.UserSettings;
 using Artificial.Scrum.Master.User;
+using Artificial.Scrum.Master.TaskGeneration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddScrumIntegrationModule(
 builder.Services.AddEstimationPokerModule();
 builder.Services.AddEditSuggestionsModule();
 builder.Services.AddUserModule(builder.Configuration);
+builder.Services.AddTaskGenerationModule();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -52,6 +54,7 @@ app.RegisterEstimationPokerEndpoints();
 app.RegisterScrumIntegrationEndpoints();
 app.RegisterEditSuggestionEndpoints();
 app.RegisterUserEndpoints();
+app.RegisterTaskGenerationEndpoints();
 app.MapControllerRoute(name: "default", "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");

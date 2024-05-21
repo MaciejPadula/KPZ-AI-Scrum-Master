@@ -1,4 +1,5 @@
 using Artificial.Scrum.Master.ScrumIntegration;
+using Artificial.Scrum.Master.ScrumIntegration.Features.AddNewTask;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Burndown;
 using Artificial.Scrum.Master.ScrumIntegration.Features.EditTaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
@@ -63,6 +64,7 @@ public static class ScrumIntegrationModule
         services.AddTransient<IGetSprintStatsService, GetSprintStatsService>();
         services.AddTransient<IGetTaskDetailsService, GetTaskDetailsService>();
         services.AddTransient<IPatchTaskService, PatchTaskService>();
+        services.AddTransient<ICreateTaskService, CreateTaskService>();
 
         services.AddTransient<ScrumIntegrationMiddleware>();
 

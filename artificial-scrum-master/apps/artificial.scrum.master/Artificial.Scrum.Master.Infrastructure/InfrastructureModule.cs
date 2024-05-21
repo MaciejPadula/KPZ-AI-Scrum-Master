@@ -6,6 +6,7 @@ using Artificial.Scrum.Master.Infrastructure.ExternalServices;
 using Artificial.Scrum.Master.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
+using Artificial.Scrum.Master.TaskGeneration.Features.Infrastructure;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,7 @@ public static class InfrastructureModule
         services.AddOpenAIService();
         services.AddTransient<IPokerSuggestionService, OpenAIPokerSuggestionService>();
         services.AddTransient<ITaskSuggestionService, OpenAITaskSuggestionService>();
+        services.AddTransient<ITaskGenerationService, OpenAITaskGenerationService>();
 
         services.AddTransient<IUserAccessor, JwtUserAccessor>();
 

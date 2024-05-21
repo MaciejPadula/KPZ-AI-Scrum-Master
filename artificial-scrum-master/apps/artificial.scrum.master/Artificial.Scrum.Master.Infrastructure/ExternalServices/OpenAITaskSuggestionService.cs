@@ -8,21 +8,15 @@ using OpenAI.ObjectModels;
 
 namespace Artificial.Scrum.Master.Infrastructure.ExternalServices;
 
-internal class OpenAITaskSuggestionService : ITaskSuggestionService
+internal class OpenAITaskSuggestionService(
+    IMemoryCache memoryCache,
+    IOpenAIService openAiService) : ITaskSuggestionService
 {
-    private readonly IMemoryCache _memoryCache;
-    private readonly IOpenAIService _openAIService;
+    private readonly IMemoryCache _memoryCache = memoryCache;
+    private readonly IOpenAIService _openAIService = openAiService;
 
     private readonly TimeSpan CacheTTL = TimeSpan.FromMinutes(45);
     private const int MaxTokens = 1000;
-
-    public OpenAITaskSuggestionService(
-        IMemoryCache memoryCache,
-        IOpenAIService openAiService)
-    {
-        _memoryCache = memoryCache;
-        _openAIService = openAiService;
-    }
 
     public async Task<GetEditTaskSuggestionResult?> GetEditTaskSuggestion(
         string userStoryTitle,

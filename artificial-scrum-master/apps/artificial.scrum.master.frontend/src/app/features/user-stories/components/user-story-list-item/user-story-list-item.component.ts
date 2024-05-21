@@ -30,13 +30,20 @@ export class UserStoryListItemComponent {
   @Input()
   public userStory: UserStory;
 
+  @Input()
+  public projectId: number;
+
   public panelOpenState = false;
 
   #dialog = inject(MatDialog);
 
   public openDetails(): void {
     this.#dialog.open(UserStoryDetailsComponent, {
-      data: this.userStory.userStoryId,
+      data: 
+      {
+        userStoryId: this.userStory.userStoryId,
+        projectId: this.projectId 
+      }
     });
   }
 }

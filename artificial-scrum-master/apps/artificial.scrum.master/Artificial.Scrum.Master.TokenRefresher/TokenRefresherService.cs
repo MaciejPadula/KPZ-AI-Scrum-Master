@@ -37,7 +37,7 @@ internal class TokenRefresherService : ITokenRefresherService
             .Handle<ThrottledException>()
             .WaitAndRetryAsync(
                 RetryCount,
-                _ => RequestDelay);
+                _ => RetryDelay);
     }
 
     public async Task Execute()

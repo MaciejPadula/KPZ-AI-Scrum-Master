@@ -3,10 +3,22 @@ name: Release NX App to k8s
 on:
   workflow_call:
     inputs:
+      image_name:
+        type: string
+        description: the name of the image to build
+        required: true
+      application_dll:
+        type: string
+        description: the name of the dll to run
+        required: true
       environment:
         type: string
         description: environment to deploy to
         required: true
+      deploy_to_restart:
+        type: string
+        description: the name of the deployment to restart
+        required: false
     secrets:
       ZEROTIER_NETWORK_ID:
         required: true
@@ -52,12 +64,13 @@ jobs:
       
     - name: Build and push to local registry
       run: |
-        docker build -t ${{ secrets.DOCKER_REGISTRY_NAME }}/artificialscrummaster:latest .
-        docker push ${{ secrets.DOCKER_REGISTRY_NAME }}/artificialscrummaster:latest
+        docker build --build-arg DLL_TO_RUN=${{inputs.application_dll}} -t ${{ secrets.DOCKER_REGISTRY_NAME }}/${{inputs.image_name}}:latest .
+        docker push ${{ secrets.DOCKER_REGISTRY_NAME }}/${{inputs.image_name}}:latest
     
     - name: Restart pods
+      if: ${{ inputs.deploy_to_restart }}
       uses: actions-hub/kubectl@master
       env:
         KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
       with:
-        args: rollout restart deploy ai-scrum-master-deploy --namespace scrum-master
+        args: rollout restart deploy ${{deploy_to_restart}} --namespace scrum-master

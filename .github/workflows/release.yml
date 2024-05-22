@@ -9,11 +9,27 @@ jobs:
     secrets:
       GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
 
+  release-job-eris:
+    needs: build
+    uses: ./.github/workflows/release-env.yml
+    with:
+      environment: 'eris'
+      application_dll: 'Artificial.Scrum.Master.TokenRefresher.dll'
+      image_name: 'artificial-scrum-master-token-refresher'
+    secrets:
+      ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
+      ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+      DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
   release-eris:
     needs: build
     uses: ./.github/workflows/release-env.yml
     with:
       environment: 'eris'
+      application_dll: 'Artificial.Scrum.Master.dll'
+      image_name: 'artificial-scrum-master'
+      deploy_to_restart: 'ai-scrum-master-deploy'
     secrets:
       ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
       ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
@@ -25,6 +41,9 @@ jobs:
     uses: ./.github/workflows/release-env.yml
     with:
       environment: 'roxy'
+      application_dll: 'Artificial.Scrum.Master.dll'
+      image_name: 'artificial-scrum-master'
+      deploy_to_restart: 'ai-scrum-master-deploy'
     secrets:
       ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
       ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}

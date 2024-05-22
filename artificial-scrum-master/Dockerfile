@@ -5,4 +5,4 @@ EXPOSE 8080
 EXPOSE 8081
 
 COPY ./dist .
-ENTRYPOINT ["dotnet", "Artificial.Scrum.Master.dll"]
+ENTRYPOINT ["dotnet", ${DLL_TO_RUN}]

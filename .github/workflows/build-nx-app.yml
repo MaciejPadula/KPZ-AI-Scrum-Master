@@ -49,9 +49,16 @@ jobs:
     - name: Copy frontend
       run: cp -r ./dist/apps/artificial.scrum.master.frontend/browser ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0/wwwroot
 
-    - name: 'Upload Artifact'
+    - name: 'Upload Artifact Application'
       uses: actions/upload-artifact@v4
       with:
         name: artificial-scrum-master-binaries
         path: ./artificial-scrum-master/dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0
+        retention-days: 1
+
+    - name: 'Upload Artifact Job'
+      uses: actions/upload-artifact@v4
+      with:
+        name: artificial-scrum-master-job-binaries
+        path: ./artificial-scrum-master/dist/apps/artificial.scrum.master/Artificial.Scrum.Master.TokenRefresher/net8.0
         retention-days: 1

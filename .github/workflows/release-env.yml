@@ -3,6 +3,10 @@ name: Release NX App to k8s
 on:
   workflow_call:
     inputs:
+      artifact_name:
+        type: string
+        description: the name of the artifact to download
+        required: true
       image_name:
         type: string
         description: the name of the image to build
@@ -41,7 +45,7 @@ jobs:
     - name: Download Artifact
       uses: actions/download-artifact@v4
       with:
-        name: artificial-scrum-master-binaries
+        name: ${{inputs.artifact_name}}
         path: ./dist
 
     - name: Copy Dockerfile

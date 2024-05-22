@@ -41,7 +41,7 @@ jobs:
       run: sed -i 's/<GOOGLE_CLIENT_ID>/${{ secrets.GOOGLE_CLIENT_ID }}/g' ./apps/artificial.scrum.master.frontend/src/app/app.secrets.ts
 
     - name: Build dotnet jobs
-      run: dotnet publish apps/artificial.scrum.master/Artificial.Scrum.Master.TokenRefresher/Artificial.Scrum.Master.TokenRefresher.csproj
+      run: npx nx build artificial.scrum.master.tokenrefresher
 
     - name: Build dotnet app
       run: npx nx build artificial.scrum.master

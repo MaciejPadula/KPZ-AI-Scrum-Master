@@ -24,7 +24,7 @@ jobs:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
   release-job-roxy:
-    needs: release-job-eris
+    needs: build
     uses: ./.github/workflows/release-env.yml
     with:
       environment: 'roxy'
@@ -36,3 +36,34 @@ jobs:
       ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
       DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
+  release-production:
+    needs: release-job-eris
+    runs-on: ubuntu-latest
+    environment:
+      name: 'production'
+
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: artificial-scrum-master-job-binaries
+          path: ./dist
+
+      - name: Copy Dockerfile
+        run: cp ./artificial-scrum-master/Dockerfile .
+
+      - name: Docker Login
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.AZURE_URL }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and Push to ACR
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          labels: artificial-scrum-master-token-refresher
+          tags: latest
+          file: Dockerfile

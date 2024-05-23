@@ -23,52 +23,8 @@ jobs:
       DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
-  release-job-roxy:
-    needs: release-job-eris
-    uses: ./.github/workflows/release-env.yml
-    with:
-      environment: 'roxy'
-      application_dll: 'Artificial.Scrum.Master.TokenRefresher.dll'
-      image_name: 'artificial-scrum-master-token-refresher'
-      artifact_name: 'artificial-scrum-master-job-binaries'
-    secrets:
-      ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
-      ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
-      DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-
-  release-eris:
-    needs: build
-    uses: ./.github/workflows/release-env.yml
-    with:
-      environment: 'eris'
-      application_dll: 'Artificial.Scrum.Master.dll'
-      image_name: 'artificial-scrum-master'
-      deploy_to_restart: 'ai-scrum-master-deploy'
-      artifact_name: 'artificial-scrum-master-binaries'
-    secrets:
-      ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
-      ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
-      DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-
-  release-roxy:
-    needs: build
-    uses: ./.github/workflows/release-env.yml
-    with:
-      environment: 'roxy'
-      application_dll: 'Artificial.Scrum.Master.dll'
-      image_name: 'artificial-scrum-master'
-      deploy_to_restart: 'ai-scrum-master-deploy'
-      artifact_name: 'artificial-scrum-master-binaries'
-    secrets:
-      ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
-      ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
-      DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-
   release-production:
-    needs: release-eris
+    needs: release-job-eris
     runs-on: ubuntu-latest
     environment:
       name: 'production'
@@ -77,13 +33,74 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          name: artificial-scrum-master-binaries
+          name: artificial-scrum-master-job-binaries
           path: ./dist
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+      - name: Copy Dockerfile
+        run: cp ./artificial-scrum-master/Dockerfile .
+
+      - name: Docker Login
+        uses: azure/docker-login@v1
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ./dist
+          login-server: ${{ secrets.AZURE_URL }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and Push to ACR
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          labels: artificial-scrum-master-token-refresher
+          tags: latest
+          file: Dockerfile
+
+  # release-eris:
+  #   needs: build
+  #   uses: ./.github/workflows/release-env.yml
+  #   with:
+  #     environment: 'eris'
+  #     application_dll: 'Artificial.Scrum.Master.dll'
+  #     image_name: 'artificial-scrum-master'
+  #     deploy_to_restart: 'ai-scrum-master-deploy'
+  #     artifact_name: 'artificial-scrum-master-binaries'
+  #   secrets:
+  #     ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
+  #     ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+  #     DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
+  #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
+  # release-roxy:
+  #   needs: build
+  #   uses: ./.github/workflows/release-env.yml
+  #   with:
+  #     environment: 'roxy'
+  #     application_dll: 'Artificial.Scrum.Master.dll'
+  #     image_name: 'artificial-scrum-master'
+  #     deploy_to_restart: 'ai-scrum-master-deploy'
+  #     artifact_name: 'artificial-scrum-master-binaries'
+  #   secrets:
+  #     ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
+  #     ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+  #     DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
+  #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
+  # release-production:
+  #   needs: release-eris
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: 'production'
+
+  #   steps:
+  #     - name: Download Artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: artificial-scrum-master-binaries
+  #         path: ./dist
+
+  #     - name: Deploy to Azure Web App
+  #       id: deploy-to-webapp
+  #       uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+  #       with:
+  #         app-name: ${{ env.AZURE_WEBAPP_NAME }}
+  #         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+  #         package: ./dist

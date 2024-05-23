@@ -8,7 +8,7 @@ namespace Artificial.Scrum.Master.TokenRefresher;
 
 internal interface ITokenRefresherService
 {
-    Task Execute();
+    Task Execute(CancellationToken cancellationToken);
 }
 
 internal class TokenRefresherService : ITokenRefresherService
@@ -40,7 +40,7 @@ internal class TokenRefresherService : ITokenRefresherService
                 _ => RetryDelay);
     }
 
-    public async Task Execute()
+    public async Task Execute(CancellationToken cancellationToken)
     {
         using var operation = _telemetryClient.StartOperation<RequestTelemetry>("TokenRefreshing");
         var tokens = await _userTokenRepository.GetAllAccessTokens();
@@ -63,6 +63,7 @@ internal class TokenRefresherService : ITokenRefresherService
             { "UserIds", $"[{string.Join(",", userIds)}]" },
             { "ProcessedTokens", userIds.Count.ToString() }
         });
+        await _telemetryClient.FlushAsync(cancellationToken);
     }
 
     private async Task<string?> TryRefreshToken(string userId, string refreshToken)

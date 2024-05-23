@@ -18,7 +18,7 @@ public class TokenRefresherHostedService : BackgroundService
         await using var scope = _serviceScopeFactory.CreateAsyncScope();
         var tokenRefresherService = scope.ServiceProvider.GetRequiredService<ITokenRefresherService>();
 
-        await tokenRefresherService.Execute();
+        await tokenRefresherService.Execute(stoppingToken);
         _hostApplicationLifetime.StopApplication();
     }
 }

@@ -40,7 +40,7 @@ jobs:
           path: ./dist
 
       - name: Copy Dockerfile
-        run: cp ./artificial-scrum-master/DockerfileJob .
+        run: cp ./artificial-scrum-master/DockerfileJob Dockerfile
 
       - name: Docker Login
         run: |

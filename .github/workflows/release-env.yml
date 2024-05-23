@@ -49,7 +49,7 @@ jobs:
         path: ./dist
 
     - name: Copy Dockerfile
-      run: cp ./artificial-scrum-master/${{ inputs.dockerfile_name }} .
+      run: cp ./artificial-scrum-master/${{ inputs.dockerfile_name }} Dockerfile
 
     - name: ZeroTier
       uses: zerotier/github-action@v1

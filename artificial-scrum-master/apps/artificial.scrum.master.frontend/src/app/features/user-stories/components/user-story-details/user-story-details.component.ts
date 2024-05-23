@@ -10,7 +10,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './../../../../shared/material.module';
 import { UserStoryDetails } from '../../models/user-story-details';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { EditStoryDetailsComponent } from '../edit-story-details/edit-story-details.component';
 import { StorySuggestionService } from '../../services/story-suggestion.service';
@@ -18,11 +18,11 @@ import { finalize } from 'rxjs';
 import { EditorStateService } from '../../../../shared/services/editor-state.service';
 import { StoryDetailsDataService } from '../../services/story-details-data.service';
 import { ScrollService } from '../../../../shared/services/scroll.service';
-import { TranslateModule } from '@ngx-translate/core';
 import { GenerateTaskSuggestionsResponse, TaskSuggestion } from '../../models/get-task-suggestions-response';
 import { CreateTaskRequest } from '../../models/create-task-request';
 import { ToastService } from 'apps/artificial.scrum.master.frontend/src/app/shared/services/toast.service';
 import { ConfirmCreateTaskDialogComponent } from '../confirn-create-task-dialog/confirm-create-task-dialog.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-story-details',

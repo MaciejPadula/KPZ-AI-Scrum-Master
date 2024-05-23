@@ -43,11 +43,8 @@ jobs:
         run: cp ./artificial-scrum-master/Dockerfile .
 
       - name: Docker Login
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.AZURE_URL }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+        run: |
+          docker login ${{ secrets.AZURE_URL }} -u ${{ secrets.ACR_USERNAME }} -p ${{ secrets.ACR_PASSWORD }}
 
       - name: Build and push to azure registry
         run: |

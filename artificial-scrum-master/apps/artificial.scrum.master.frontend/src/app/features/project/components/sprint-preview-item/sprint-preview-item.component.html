@@ -12,9 +12,16 @@
         </span>
       </div>
       <div class="items-end">
-        <a mat-icon-button [href]="sprintUrl()" target="_blank">
-          <mat-icon aria-label="Open sprint">open_in_new</mat-icon></a
-        >
+        <div class="flex flex-row justify-center items-center">
+          <app-retro-session
+            [sprintId]="sprintElement().sprintId"
+            [sprintName]="sprintElement().sprintName"
+            [projectId]="sprintElement().projectId"
+          />
+          <a mat-icon-button [href]="sprintUrl()" target="_blank" (click)="$event.stopPropagation()">
+            <mat-icon aria-label="Open sprint">open_in_new</mat-icon></a
+          >
+        </div>
       </div>
     </div>
 

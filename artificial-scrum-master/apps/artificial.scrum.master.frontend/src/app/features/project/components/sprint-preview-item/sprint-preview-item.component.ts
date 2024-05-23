@@ -10,19 +10,21 @@ import { SprintPreview } from '../../models/sprint-preview';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { RetroSessionComponent } from "../retro-session/retro-session.component";
 
 @Component({
-  selector: 'app-sprint-preview-item',
-  standalone: true,
-  imports: [
-    CommonModule,
-    AvatarComponent,
-    MaterialModule,
-    RouterModule,
-    TranslateModule,
-  ],
-  templateUrl: './sprint-preview-item.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-sprint-preview-item',
+    standalone: true,
+    templateUrl: './sprint-preview-item.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        AvatarComponent,
+        MaterialModule,
+        RouterModule,
+        TranslateModule,
+        RetroSessionComponent
+    ]
 })
 export class SprintPreviewItemComponent {
   public sprintElement = input.required<SprintPreview>();

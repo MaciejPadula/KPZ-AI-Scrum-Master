@@ -46,6 +46,13 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'Retrospective',
+    loadChildren: () =>
+      import('./features/retrospective/routes').then(
+        (mod) => mod.RetrospectiveRoutes
+      ),
+  },
+  {
     path: '**',
     component: NotFoundComponent,
   },

@@ -1,6 +1,9 @@
-namespace Artificial.Scrum.Master.EstimationPoker.Infrastructure;
+using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
-internal class Error
+namespace Artificial.Scrum.Master.SharedKernel;
+
+public class Error
 {
     public Exception Exception { get; private set; }
 
@@ -10,7 +13,7 @@ internal class Error
     }
 }
 
-internal class Result
+public class Result
 {
     protected Result(Error? error = null)
     {
@@ -26,7 +29,7 @@ internal class Result
 
 file class ErrorValueAccessedException : Exception { }
 
-internal sealed class Result<T> : Result
+public sealed class Result<T> : Result
 {
     private Result(
         T? value = default,
@@ -50,4 +53,7 @@ internal sealed class Result<T> : Result
 
     public static Result<T> OnSuccess(T value) => new(value: value);
     public new static Result<T> OnError(Exception exception) => new(error: new(exception));
+
+    public static implicit operator Result<T>(T value) => OnSuccess(value);
+    public static implicit operator Result<T>(Exception exception) => OnError(exception);
 }

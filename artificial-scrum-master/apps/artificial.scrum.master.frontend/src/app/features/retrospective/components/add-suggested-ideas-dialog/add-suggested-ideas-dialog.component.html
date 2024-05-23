@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>{{ 'Retrospective.Suggestions.Title' | translate }}</h2>
+<mat-dialog-content>
+  <div class="flex justify-end">
+    <button mat-raised-button color="primary" [disabled]="loading()" (click)="loadSuggestions()">
+      <mat-icon>restart_alt</mat-icon>
+      <span>{{ 'Retrospective.Suggestions.Load' | translate }}</span>
+    </button>
+  </div>
+  <div class="flex flex-col justify-center items-center gap-2">
+    @if (loading()) {
+      <mat-spinner diameter="24"></mat-spinner>
+    } @else {
+      @for (suggestion of suggestions(); track $index) {
+        <mat-card class="w-full">
+          <mat-card-content>
+            <div class="flex flex-row justify-between items-center">
+              <p>{{suggestion}}</p>
+              <button mat-icon-button (click)="addSuggestion(suggestion)">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    }
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="flex !justify-end">
+  <button mat-button (click)="onNoClick()">{{ 'Shared.Words.Close' | translate }}</button>
+</mat-dialog-actions>

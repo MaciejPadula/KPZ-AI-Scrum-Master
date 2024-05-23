@@ -1,5 +1,5 @@
 <div class="flex items-center justify-center popup">
-  @if(details() != null){
+  @if(details() != null && !error()){
   <mat-card class="h-full w-full" style="max-height: 80dvh">
     <mat-card-header>
       <mat-card-title class="stubborn-text"
@@ -106,7 +106,7 @@
       <mat-card-title>{{ 'Tasks.Description' | translate }}:</mat-card-title>
       <span class="flex space-x-3">
         <button
-          (click)="openDescriptionEditor()"
+          (click)="toggleDescriptionEditor()"
           class="my-2"
           title="{{ 'Shared.OpenEditor' | translate }}"
           mat-mini-fab
@@ -131,24 +131,31 @@
           @if(details()?.descriptionHtml){
           <p [innerHTML]="details()?.descriptionHtml"></p>
           }@else {
-          <p>{{ 'Tasks.Edit.NoDescription' | translate }}</p>
+          <p>{{ 'Shared.Edit.NoDescription' | translate }}</p>
           }
         </div>
         <app-edit-task-details
           #taskEditor
-          [(details)]="details"
+          [details]="details()"
           [taskId]="taskId"
           [isLoading]="isLoading()"
-          [suggestion]="suggestion()"
-          [(isSuggestionsVisible)]="isSuggestionsVisible"
-          [(isEditorVisible)]="isEditorVisible"
-          [(descriptionEditorValue)]="descriptionEditorValue"
+          (taskDetailsUpdate)="updateTaskDetails($event)"
         />
       </mat-card-content>
     </ng-scrollbar>
   </mat-card>
-
-  } @else {
+  } 
+  @else {
   <mat-spinner></mat-spinner>
+  } 
+  @if(error()){
+  <mat-card class="h-full w-full">
+    <mat-card-header>
+      <mat-card-title>{{ 'Tasks.Error' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ 'Tasks.ErrorLoadingTask' | translate }}</p>
+    </mat-card-content>
+  </mat-card>
   }
 </div>

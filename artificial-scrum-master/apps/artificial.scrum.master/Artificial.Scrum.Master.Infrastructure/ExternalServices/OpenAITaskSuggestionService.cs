@@ -53,7 +53,7 @@ Try not to remove any information from the original description, especially URLs
                 ChatMessage.FromSystem($"Task title: {taskTitle}"),
                 ChatMessage.FromSystem($"Task description: {taskDescription}"),
             ],
-            Model = Models.Gpt_3_5_Turbo,
+            Model = OpenAIConsts.AIModel,
             MaxTokens = MaxTokens,
             ResponseFormat = new()
             {

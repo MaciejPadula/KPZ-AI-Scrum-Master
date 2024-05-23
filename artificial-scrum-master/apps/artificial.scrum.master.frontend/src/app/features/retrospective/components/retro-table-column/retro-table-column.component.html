@@ -1,0 +1,14 @@
+<div class="min-h-full p-2 flex flex-col gap-2">
+  <div class="flex flex-row justify-between items-center">
+    <p class="mat-headline-5 !m-0">{{titleKey() | translate}}</p>
+    <ng-content></ng-content>
+  </div>
+  <button mat-raised-button color="primary" (click)="addCardClicked(columnType())">{{'Retrospective.Table.Add' | translate}}</button>
+  @for (card of content(); track $index) {
+    <mat-card>
+      <mat-card-content>
+        <p>{{ card }}</p>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

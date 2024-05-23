@@ -1,9 +1,23 @@
-import { Component, Inject, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './../../../../shared/material.module';
 import { UserStoryDetails } from '../../models/user-story-details';
-import { HttpClient } from '@angular/common/http';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
+import { EditStoryDetailsComponent } from '../edit-story-details/edit-story-details.component';
+import { StorySuggestionService } from '../../services/story-suggestion.service';
+import { finalize } from 'rxjs';
+import { EditorStateService } from '../../../../shared/services/editor-state.service';
+import { StoryDetailsDataService } from '../../services/story-details-data.service';
+import { ScrollService } from '../../../../shared/services/scroll.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { GenerateTaskSuggestionsResponse, TaskSuggestion } from '../../models/get-task-suggestions-response';
 import { CreateTaskRequest } from '../../models/create-task-request';
@@ -15,14 +29,33 @@ import { ConfirmCreateTaskDialogComponent } from '../confirn-create-task-dialog/
   standalone: true,
   templateUrl: './user-story-details.component.html',
   styleUrls: ['./user-story-details.component.scss'],
-  imports: [CommonModule, MaterialModule, TranslateModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    TranslateModule,
+    EditStoryDetailsComponent,
+  ],
 })
 export class UserStoryDetailsComponent implements OnInit {
+  @ViewChild('userStoryDescription', { read: ElementRef })
+  storyDescription: ElementRef;
+  @ViewChild('userStoryEditor', { read: ElementRef })
+  storyEditor: ElementRef;
+
+  private readonly storyDetailsDataService = inject(StoryDetailsDataService);
+  private readonly storySuggestionService = inject(StorySuggestionService);
+  private readonly editorStateServiceService = inject(EditorStateService);
+  private readonly scrollService = inject(ScrollService);
+
   details = signal<UserStoryDetails | null>(null);
   taskSuggestions = signal<GenerateTaskSuggestionsResponse | null>(null);
   error = signal<boolean>(false);
-  #httpClient = inject(HttpClient);
+
+  #isLoading = signal<boolean>(false);
+  public isLoading = this.#isLoading.asReadonly();
+
   #storyId: number;
+  public readonly storyId: number;
   #projectId: number;
   suggestionsOpen = signal(false);
   private readonly toastService = inject(ToastService);
@@ -38,14 +71,69 @@ export class UserStoryDetailsComponent implements OnInit {
   private readonly baseApiUrl = 'api/user-story/generate-tasks';
 
   ngOnInit(): void {
-    this.#httpClient
-      .get<UserStoryDetails>(`/api/userStories/${this.#storyId}`)
+    this.storyDetailsDataService.getStoryDetails(this.#storyId).subscribe({
+      next: (response) => {
+        this.details.set(response);
+        this.editorStateServiceService.setDescriptionEditorValue(
+          response.description ?? ''
+        );
+      },
+      error: () => this.error.set(true),
+    });
+  }
+
+  generateSuggestion() {
+    if (this.details() == null || !this.details()?.title) {
+      return;
+    }
+    this.#isLoading.set(true);
+    this.scrollService.scrollToElement({
+      element: this.storyEditor,
+      timeout: 100,
+    });
+    this.storySuggestionService
+      .getStorykDescriptionSuggestion(
+        this.details()?.title ?? '',
+        this.details()?.description ?? null
+      )
+      .pipe(
+        finalize(() => {
+          this.#isLoading.set(false);
+          this.editorStateServiceService.setSuggestionsVisible(true);
+          this.scrollService.scrollToElement({
+            element: this.storyEditor,
+            timeout: 100,
+          });
+        })
+      )
       .subscribe({
-        next: (response) => this.details.set(response),
+        next: (response) =>
+          this.editorStateServiceService.setSuggestionString(
+            response.descriptionEditSuggestion
+          ),
         error: () => this.error.set(true),
       });
   }
 
+  toggleDescriptionEditor() {
+    if (this.editorStateServiceService.isEditorVisible()) {
+      this.editorStateServiceService.setEditorVisible(false);
+      this.scrollService.scrollToElement({
+        element: this.storyDescription,
+        block: 'start',
+      });
+      return;
+    }
+    this.editorStateServiceService.setEditorVisible(true);
+    this.scrollService.scrollToElement({
+      element: this.storyEditor,
+      timeout: 100,
+    });
+  }
+
+  updateStoryDetails(detailsUpdate: UserStoryDetails) {
+    this.details.set(detailsUpdate);
+    }
   generateTaskSuggestions() {
     if (this.details() == null || !this.details()?.description) {
       return;

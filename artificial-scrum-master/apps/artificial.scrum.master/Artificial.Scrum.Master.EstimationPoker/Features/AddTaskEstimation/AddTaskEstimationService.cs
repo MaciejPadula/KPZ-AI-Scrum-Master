@@ -1,9 +1,7 @@
 using Artificial.Scrum.Master.EstimationPoker.Features.AddTaskEstimation.Validator;
-using Artificial.Scrum.Master.EstimationPoker.Features.AddTaskEstimation.Validator.Estimation;
-using Artificial.Scrum.Master.EstimationPoker.Features.Shared;
-using Artificial.Scrum.Master.EstimationPoker.Infrastructure;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Models;
 using Artificial.Scrum.Master.EstimationPoker.Infrastructure.Repositories;
+using Artificial.Scrum.Master.SharedKernel;
 
 namespace Artificial.Scrum.Master.EstimationPoker.Features.AddTaskEstimation;
 

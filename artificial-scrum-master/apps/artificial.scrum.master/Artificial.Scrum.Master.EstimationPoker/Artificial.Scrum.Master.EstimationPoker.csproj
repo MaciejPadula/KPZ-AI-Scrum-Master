@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Artificial.Scrum.Master.Interfaces\Artificial.Scrum.Master.Interfaces.csproj" />
+    <ProjectReference Include="..\Artificial.Scrum.Master.SharedKernel\Artificial.Scrum.Master.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

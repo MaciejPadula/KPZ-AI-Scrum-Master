@@ -18,11 +18,11 @@ import { finalize } from 'rxjs';
 import { EditorStateService } from '../../../../shared/services/editor-state.service';
 import { StoryDetailsDataService } from '../../services/story-details-data.service';
 import { ScrollService } from '../../../../shared/services/scroll.service';
-import { GenerateTaskSuggestionsResponse, TaskSuggestion } from '../../models/get-task-suggestions-response';
-import { CreateTaskRequest } from '../../models/create-task-request';
+import { GenerateTaskSuggestionsResponse } from '../../models/get-task-suggestions-response';
 import { ToastService } from 'apps/artificial.scrum.master.frontend/src/app/shared/services/toast.service';
-import { ConfirmCreateTaskDialogComponent } from '../confirn-create-task-dialog/confirm-create-task-dialog.component';
 import { HttpClient } from '@angular/common/http';
+import { TaskSuggestionsComponent } from "../task-suggestions/task-suggestions.component";
+import { TaskSuggestionsService } from '../../services/task-suggestions.service';
 
 @Component({
   selector: 'app-user-story-details',
@@ -34,7 +34,8 @@ import { HttpClient } from '@angular/common/http';
     MaterialModule,
     TranslateModule,
     EditStoryDetailsComponent,
-  ],
+    TaskSuggestionsComponent
+  ]
 })
 export class UserStoryDetailsComponent implements OnInit {
   @ViewChild('userStoryDescription', { read: ElementRef })
@@ -46,6 +47,7 @@ export class UserStoryDetailsComponent implements OnInit {
   private readonly storySuggestionService = inject(StorySuggestionService);
   private readonly editorStateServiceService = inject(EditorStateService);
   private readonly scrollService = inject(ScrollService);
+  private readonly taskSuggestionsService = inject(TaskSuggestionsService);
 
   details = signal<UserStoryDetails | null>(null);
   taskSuggestions = signal<GenerateTaskSuggestionsResponse | null>(null);
@@ -54,24 +56,23 @@ export class UserStoryDetailsComponent implements OnInit {
   #isLoading = signal<boolean>(false);
   public isLoading = this.#isLoading.asReadonly();
 
-  #storyId: number;
-  public readonly storyId: number;
-  #projectId: number;
+  storyId: number;
+  projectId: number;
   suggestionsOpen = signal(false);
   private readonly toastService = inject(ToastService);
 
   private readonly dialog = inject(MatDialog);
 
   constructor(@Inject(MAT_DIALOG_DATA) data: { userStoryId: number, projectId: number }) {
-    this.#storyId = data.userStoryId;
-    this.#projectId = data.projectId;
+    this.storyId = data.userStoryId;
+    this.projectId = data.projectId;
   }
 
   private readonly httpClient = inject(HttpClient);
   private readonly baseApiUrl = 'api/user-story/generate-tasks';
 
   ngOnInit(): void {
-    this.storyDetailsDataService.getStoryDetails(this.#storyId).subscribe({
+    this.storyDetailsDataService.getStoryDetails(this.storyId).subscribe({
       next: (response) => {
         this.details.set(response);
         this.editorStateServiceService.setDescriptionEditorValue(
@@ -133,83 +134,21 @@ export class UserStoryDetailsComponent implements OnInit {
 
   updateStoryDetails(detailsUpdate: UserStoryDetails) {
     this.details.set(detailsUpdate);
-    }
+  }
   generateTaskSuggestions() {
     if (this.details() == null || !this.details()?.description) {
       return;
     }
     this.suggestionsOpen.set(true);
 
-    this.httpClient.post<GenerateTaskSuggestionsResponse>(`${this.baseApiUrl}`, {
-      UserStoryTitle: this.details()!.title,
-      UserStoryDescription: this.details()!.description,
-    })
+    this.taskSuggestionsService.getTaskSuggestions(this.details()!.title, this.details()!.description)
       .subscribe({
         next: (response) => this.taskSuggestions.set(response),
         error: () => this.error.set(true),
       });
   }
 
-  acceptSuggestion(suggestion: TaskSuggestion) {
-    if (this.taskSuggestions() == null || this.taskSuggestions()?.tasks.length == 0) {
-      return;
-    }
-    const dialogRef = this.dialog.open(ConfirmCreateTaskDialogComponent, {
-      data: {
-        delete: false,
-        task: suggestion
-      }
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-
-      if (result === true) {
-        suggestion.accepted = true;
-
-        console.log(`Accepted suggestion: ${suggestion.title}`);
-
-        this.httpClient.post<CreateTaskRequest>("/api/task", {
-          Description: suggestion.description,
-          Subject: suggestion.title,
-          ProjectId: this.#projectId,
-          UserStoryId: this.#storyId,
-        })
-          .subscribe({
-            next: (response) => {
-              this.removeSuggestionFromList(suggestion);
-              this.toastService.openSuccess("Task created successfully");
-            },
-            error: () => this.toastService.openError("Error creating task"),
-          });
-      }
-    });
-  }
-
-  removeSuggestion(suggestion: TaskSuggestion) {
-    const dialogRef = this.dialog.open(ConfirmCreateTaskDialogComponent, {
-      data: {
-        delete: true,
-        task: suggestion
-      }
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === true) {
-        this.removeSuggestionFromList(suggestion);
-      }
-    });
-  }
-
-  removeSuggestionFromList(suggestion: TaskSuggestion) {
-    const updatedTasks = this.taskSuggestions()!.tasks.filter((s) => s !== suggestion) ?? this.taskSuggestions()?.tasks;
-    const updatedSuggestions = { tasks: updatedTasks };
-    this.taskSuggestions.set(updatedSuggestions);
-    if(updatedSuggestions.tasks.length == 0)
-    {
-      this.closeSuggestions();
-    }
-  }
-
-  closeSuggestions()
-  {
+  closeSuggestions() {
     this.suggestionsOpen.set(false);
     this.taskSuggestions.set(null);
   }

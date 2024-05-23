@@ -1,4 +1,4 @@
-import { Component, Inject, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AddCardDialogData } from './add-card-dialog-data';
@@ -13,19 +13,17 @@ import { finalize } from 'rxjs';
   standalone: true,
   imports: [CommonModule, MaterialModule, TranslateModule, ReactiveFormsModule],
   templateUrl: './add-card-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddCardDialogComponent {
   private readonly dialogRef = inject(MatDialogRef<AddCardDialogComponent>);
   private readonly retrospectiveDataService = inject(RetrospectiveDataService);
+  private readonly data: AddCardDialogData = inject(MAT_DIALOG_DATA);
 
   public formControl = new FormControl('', [Validators.required, Validators.minLength(3)]);
 
   #loading = signal<boolean>(false);
   public loading = this.#loading.asReadonly();
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) private readonly data: AddCardDialogData
-  ) {}
 
   public onNoClick() {
     this.dialogRef.close();

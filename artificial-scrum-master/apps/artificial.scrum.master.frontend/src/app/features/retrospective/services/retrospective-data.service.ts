@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { GetSessionCardsResponse } from '../models/get-session-cards-response';
 import { CardType } from '../components/add-card-dialog/add-card-dialog-data';
+import { GetSuggestedIdeasResponse } from '../models/get-suggested-ideas-response';
 
 @Injectable({
   providedIn: 'root',
@@ -26,5 +27,13 @@ export class RetrospectiveDataService {
       sessionId: sessionId,
       type: type,
     });
+  }
+
+  public getSuggestions(sessionId: string): Observable<string[]> {
+    return this.httpClient
+      .get<GetSuggestedIdeasResponse>(
+        `${this.baseApiUrl}/suggestions/${sessionId}`
+      )
+      .pipe(map((response) => response.suggestedIdeas));
   }
 }

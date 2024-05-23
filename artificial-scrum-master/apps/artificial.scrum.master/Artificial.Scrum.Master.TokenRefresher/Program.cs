@@ -3,6 +3,8 @@ using Artificial.Scrum.Master.Infrastructure;
 
 var builder = Host.CreateApplicationBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables();
+
 var sqlConnectionString = builder.Configuration.GetConnectionString("MS-SQL")
     ?? throw new ArgumentNullException("MS-SQL");
 

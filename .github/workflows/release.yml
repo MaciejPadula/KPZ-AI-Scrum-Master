@@ -44,12 +44,12 @@ jobs:
 
       - name: Docker Login
         run: |
-          docker login ${{ secrets.AZURE_URL }} -u ${{ secrets.ACR_USERNAME }} -p ${{ secrets.ACR_PASSWORD }}
+          docker login -u ${{ secrets.ACR_USERNAME }} -p ${{ secrets.ACR_PASSWORD }} ${{ secrets.AZURE_URL }}
 
       - name: Build and push to azure registry
         run: |
-          docker build --build-arg DLL_TO_RUN=Artificial.Scrum.Master.TokenRefresher.dll -t aiscrummasterprod/artificial-scrum-master-token-refresher:latest .
-          docker push aiscrummasterprod/artificial-scrum-master-token-refresher:latest
+          docker build --build-arg DLL_TO_RUN=Artificial.Scrum.Master.TokenRefresher.dll -t aiscrummasterprod.azurecr.io/artificial-scrum-master-token-refresher:latest .
+          docker push aiscrummasterprod.azurecr.io/artificial-scrum-master-token-refresher:latest
 
   # release-eris:
   #   needs: build

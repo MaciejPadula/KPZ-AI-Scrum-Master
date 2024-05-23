@@ -44,6 +44,9 @@ jobs:
       name: 'production'
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
@@ -54,17 +57,10 @@ jobs:
         run: cp ./artificial-scrum-master/Dockerfile .
 
       - name: Docker Login
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.AZURE_URL }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+        run: |
+          docker login -u ${{ secrets.ACR_USERNAME }} -p ${{ secrets.ACR_PASSWORD }} ${{ secrets.AZURE_URL }}
 
-      - name: Build and Push to ACR
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          labels: artificial-scrum-master-token-refresher
-          tags: latest
-          file: Dockerfile
-          
+      - name: Build and push to azure registry
+        run: |
+          docker build --build-arg DLL_TO_RUN=Artificial.Scrum.Master.TokenRefresher.dll -t aiscrummasterprod.azurecr.io/artificial-scrum-master-token-refresher:latest .
+          docker push aiscrummasterprod.azurecr.io/artificial-scrum-master-token-refresher:latest

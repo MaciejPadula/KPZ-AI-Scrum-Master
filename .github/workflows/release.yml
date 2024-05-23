@@ -9,14 +9,30 @@ jobs:
     secrets:
       GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
 
-  release-job-eris:
+  release-eris:
     needs: build
     uses: ./.github/workflows/release-env.yml
     with:
       environment: 'eris'
-      dockerfile_name: 'DockerfileJob'
-      image_name: 'artificial-scrum-master-token-refresher'
-      artifact_name: 'artificial-scrum-master-job-binaries'
+      dockerfile_name: 'DockerfileApp'
+      image_name: 'artificial-scrum-master'
+      deploy_to_restart: 'ai-scrum-master-deploy'
+      artifact_name: 'artificial-scrum-master-binaries'
+    secrets:
+      ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
+      ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+      DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
+  release-roxy:
+    needs: build
+    uses: ./.github/workflows/release-env.yml
+    with:
+      environment: 'roxy'
+      dockerfile_name: 'DockerfileApp'
+      image_name: 'artificial-scrum-master'
+      deploy_to_restart: 'ai-scrum-master-deploy'
+      artifact_name: 'artificial-scrum-master-binaries'
     secrets:
       ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
       ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
@@ -24,80 +40,22 @@ jobs:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
   release-production:
-    needs: release-job-eris
+    needs: release-eris
     runs-on: ubuntu-latest
     environment:
       name: 'production'
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          name: artificial-scrum-master-job-binaries
+          name: artificial-scrum-master-binaries
           path: ./dist
 
-      - name: Copy Dockerfile
-        run: cp ./artificial-scrum-master/DockerfileJob Dockerfile
-
-      - name: Docker Login
-        run: |
-          docker login -u ${{ secrets.ACR_USERNAME }} -p ${{ secrets.ACR_PASSWORD }} ${{ secrets.AZURE_URL }}
-
-      - name: Build and push to azure registry
-        run: |
-          docker build --build-arg DLL_TO_RUN=Artificial.Scrum.Master.TokenRefresher.dll -t aiscrummasterprod.azurecr.io/artificial-scrum-master-token-refresher:latest .
-          docker push aiscrummasterprod.azurecr.io/artificial-scrum-master-token-refresher:latest
-
-  # release-eris:
-  #   needs: build
-  #   uses: ./.github/workflows/release-env.yml
-  #   with:
-  #     environment: 'eris'
-  #     dockerfile_name: 'DockerfileApp'
-  #     image_name: 'artificial-scrum-master'
-  #     deploy_to_restart: 'ai-scrum-master-deploy'
-  #     artifact_name: 'artificial-scrum-master-binaries'
-  #   secrets:
-  #     ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
-  #     ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
-  #     DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
-  #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-
-  # release-roxy:
-  #   needs: build
-  #   uses: ./.github/workflows/release-env.yml
-  #   with:
-  #     environment: 'roxy'
-  #     dockerfile_name: 'DockerfileApp'
-  #     image_name: 'artificial-scrum-master'
-  #     deploy_to_restart: 'ai-scrum-master-deploy'
-  #     artifact_name: 'artificial-scrum-master-binaries'
-  #   secrets:
-  #     ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
-  #     ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
-  #     DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
-  #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-
-  # release-production:
-  #   needs: release-eris
-  #   runs-on: ubuntu-latest
-  #   environment:
-  #     name: 'production'
-
-  #   steps:
-  #     - name: Download Artifact
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: artificial-scrum-master-binaries
-  #         path: ./dist
-
-  #     - name: Deploy to Azure Web App
-  #       id: deploy-to-webapp
-  #       uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
-  #       with:
-  #         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-  #         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-  #         package: ./dist
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./dist

@@ -67,3 +67,4 @@ jobs:
           labels: artificial-scrum-master-token-refresher
           tags: latest
           file: Dockerfile
+          

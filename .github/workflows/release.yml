@@ -46,13 +46,10 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Build and Push to ACR
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          labels: artificial-scrum-master-token-refresher
-          tags: latest
-          file: Dockerfile
+      - name: Build and push to azure registry
+        run: |
+          docker build --build-arg DLL_TO_RUN=Artificial.Scrum.Master.TokenRefresher.dll -t aiscrummasterprod/artificial-scrum-master-token-refresher:latest .
+          docker push aiscrummasterprod/artificial-scrum-master-token-refresher:latest
 
   # release-eris:
   #   needs: build

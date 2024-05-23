@@ -8,4 +8,6 @@ EXPOSE 8081
 
 COPY ./dist .
 ARG DLL_TO_RUN
-ENTRYPOINT ["dotnet", "$DLL_TO_RUN"]
+RUN echo "dotnet $DLL_TO_RUN" > run.sh
+RUN chmod +x run.sh
+ENTRYPOINT ["sh", "run.sh"]

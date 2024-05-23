@@ -14,7 +14,7 @@ jobs:
     uses: ./.github/workflows/release-env.yml
     with:
       environment: 'eris'
-      application_dll: 'Artificial.Scrum.Master.TokenRefresher.dll'
+      dockerfile_name: 'DockerfileJob'
       image_name: 'artificial-scrum-master-token-refresher'
       artifact_name: 'artificial-scrum-master-job-binaries'
     secrets:
@@ -40,7 +40,7 @@ jobs:
           path: ./dist
 
       - name: Copy Dockerfile
-        run: cp ./artificial-scrum-master/Dockerfile .
+        run: cp ./artificial-scrum-master/DockerfileJob .
 
       - name: Docker Login
         run: |
@@ -56,7 +56,7 @@ jobs:
   #   uses: ./.github/workflows/release-env.yml
   #   with:
   #     environment: 'eris'
-  #     application_dll: 'Artificial.Scrum.Master.dll'
+  #     dockerfile_name: 'DockerfileApp'
   #     image_name: 'artificial-scrum-master'
   #     deploy_to_restart: 'ai-scrum-master-deploy'
   #     artifact_name: 'artificial-scrum-master-binaries'
@@ -71,7 +71,7 @@ jobs:
   #   uses: ./.github/workflows/release-env.yml
   #   with:
   #     environment: 'roxy'
-  #     application_dll: 'Artificial.Scrum.Master.dll'
+  #     dockerfile_name: 'DockerfileApp'
   #     image_name: 'artificial-scrum-master'
   #     deploy_to_restart: 'ai-scrum-master-deploy'
   #     artifact_name: 'artificial-scrum-master-binaries'

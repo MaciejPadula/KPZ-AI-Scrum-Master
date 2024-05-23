@@ -11,9 +11,9 @@ on:
         type: string
         description: the name of the image to build
         required: true
-      application_dll:
+      dockerfile_name:
         type: string
-        description: the name of the dll to run
+        description: the name of the dockerfile to use
         required: true
       environment:
         type: string
@@ -49,7 +49,7 @@ jobs:
         path: ./dist
 
     - name: Copy Dockerfile
-      run: cp ./artificial-scrum-master/Dockerfile .
+      run: cp ./artificial-scrum-master/${{ dockerfile_name }} .
 
     - name: ZeroTier
       uses: zerotier/github-action@v1
@@ -68,7 +68,7 @@ jobs:
       
     - name: Build and push to local registry
       run: |
-        docker build --build-arg DLL_TO_RUN=${{inputs.application_dll}} -t ${{ secrets.DOCKER_REGISTRY_NAME }}/${{inputs.image_name}}:latest .
+        docker build -t ${{ secrets.DOCKER_REGISTRY_NAME }}/${{inputs.image_name}}:latest .
         docker push ${{ secrets.DOCKER_REGISTRY_NAME }}/${{inputs.image_name}}:latest
     
     - name: Restart pods

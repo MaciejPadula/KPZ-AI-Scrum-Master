@@ -1,28 +1,66 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET
+name: Release Artificial Scrum Master Jobs
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
+    uses: ./.github/workflows/build-nx-app.yml
+    secrets:
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
 
+  release-job-eris:
+    needs: build
+    uses: ./.github/workflows/release-env.yml
+    with:
+      environment: 'eris'
+      dockerfile_name: 'DockerfileJob'
+      image_name: 'artificial-scrum-master-token-refresher'
+      artifact_name: 'artificial-scrum-master-job-binaries'
+    secrets:
+      ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
+      ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+      DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
+  release-job-roxy:
+    needs: build
+    uses: ./.github/workflows/release-env.yml
+    with:
+      environment: 'roxy'
+      dockerfile_name: 'DockerfileJob'
+      image_name: 'artificial-scrum-master-token-refresher'
+      artifact_name: 'artificial-scrum-master-job-binaries'
+    secrets:
+      ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
+      ZEROTIER_CENTRAL_TOKEN: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+      DOCKER_REGISTRY_NAME: ${{ secrets.DOCKER_REGISTRY_NAME }}
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
+  release-production:
+    needs: release-job-eris
     runs-on: ubuntu-latest
+    environment:
+      name: 'production'
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: artificial-scrum-master-job-binaries
+          path: ./dist
+
+      - name: Copy Dockerfile
+        run: cp ./artificial-scrum-master/DockerfileJob Dockerfile
+
+      - name: Docker Login
+        run: |
+          docker login -u ${{ secrets.ACR_USERNAME }} -p ${{ secrets.ACR_PASSWORD }} ${{ secrets.AZURE_URL }}
+
+      - name: Build and push to azure registry
+        run: |
+          docker build --build-arg DLL_TO_RUN=Artificial.Scrum.Master.TokenRefresher.dll -t aiscrummasterprod.azurecr.io/artificial-scrum-master-token-refresher:latest .
+          docker push aiscrummasterprod.azurecr.io/artificial-scrum-master-token-refresher:latest

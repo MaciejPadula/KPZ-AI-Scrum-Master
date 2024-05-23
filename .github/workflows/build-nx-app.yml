@@ -38,7 +38,10 @@ jobs:
       run: npx nx test artificial.scrum.master.frontend
 
     - name: Restore Secrets
-      run: sed -i 's/<GOOGLE_CLIENT_ID>/${{ secrets.GOOGLE_CLIENT_ID }}/g' ./apps/artificial.scrum.master.frontend/src/app/app.secrets.ts 
+      run: sed -i 's/<GOOGLE_CLIENT_ID>/${{ secrets.GOOGLE_CLIENT_ID }}/g' ./apps/artificial.scrum.master.frontend/src/app/app.secrets.ts
+
+    - name: Build dotnet jobs
+      run: npx nx build artificial.scrum.master.tokenrefresher
 
     - name: Build dotnet app
       run: npx nx build artificial.scrum.master
@@ -49,9 +52,16 @@ jobs:
     - name: Copy frontend
       run: cp -r ./dist/apps/artificial.scrum.master.frontend/browser ./dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0/wwwroot
 
-    - name: 'Upload Artifact'
+    - name: 'Upload Artifact Application'
       uses: actions/upload-artifact@v4
       with:
         name: artificial-scrum-master-binaries
         path: ./artificial-scrum-master/dist/apps/artificial.scrum.master/Artificial.Scrum.Master/net8.0
+        retention-days: 1
+
+    - name: 'Upload Artifact Job'
+      uses: actions/upload-artifact@v4
+      with:
+        name: artificial-scrum-master-job-binaries
+        path: ./artificial-scrum-master/dist/apps/artificial.scrum.master/Artificial.Scrum.Master.TokenRefresher/net8.0
         retention-days: 1

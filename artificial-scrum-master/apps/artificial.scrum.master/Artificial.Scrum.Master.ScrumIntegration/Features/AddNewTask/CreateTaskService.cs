@@ -34,17 +34,10 @@ internal class CreateTaskService(
             taskboard_order = 1
         };
 
-        var requestjsoncontent = JsonContent.Create(request);
-
-        var b = requestjsoncontent.ReadAsStringAsync();
-
-
-
         var response = await _projectHttpClientWrapper.PostHttpRequest<ApiCreateTaskRequest, TaskSpecifics>(
             userId,
             refreshToken,
             _ => $"tasks",
             request);
-        var a = 1;
     }
 }

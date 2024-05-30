@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from 'apps/artificial.scrum.master.frontend/src/app/shared/material.module';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -16,26 +16,30 @@ import { TaskService } from '../../services/task.service';
   imports: [CommonModule, MaterialModule, TranslateModule],
   templateUrl: './task-suggestions.component.html',
 })
-export class TaskSuggestionsComponent {
+export class TaskSuggestionsComponent implements OnInit {
   @Output() closeSuggestionsEvent: EventEmitter<boolean> = new EventEmitter();
-  @Input() taskSuggestions: GenerateTaskSuggestionsResponse;
+  taskSuggestions = input.required<GenerateTaskSuggestionsResponse>();
+  taskSuggestionsList: GenerateTaskSuggestionsResponse;
 
-  @Input() projectId: number;
-  @Input() storyId: number;
+  projectId = input.required<number>();
+  storyId = input.required<number>();
 
   #dialog = inject(MatDialog);
-  #httpClient = inject(HttpClient);
   #toastService = inject(ToastService);
   #translateService = inject(TranslateService);
 
   private readonly taskService = inject(TaskService);
+
+  ngOnInit() {
+    this.taskSuggestionsList = this.taskSuggestions();
+  }
 
   closeSuggestions() {
     this.closeSuggestionsEvent.emit(true);
   }
 
   acceptSuggestion(suggestion: TaskSuggestion) {
-    if (this.taskSuggestions == null || this.taskSuggestions.tasks.length == 0) {
+    if (this.taskSuggestionsList == null || this.taskSuggestionsList.tasks.length == 0) {
       return;
     }
     const dialogRef = this.#dialog.open(ConfirmCreateTaskDialogComponent, {
@@ -49,19 +53,14 @@ export class TaskSuggestionsComponent {
       if (result === true) {
         suggestion.accepted = true;
 
-        this.taskService.createTask(suggestion.description, suggestion.title, this.projectId, this.storyId)
+        this.taskService.createTask(suggestion.description, suggestion.title, this.projectId(), this.storyId())
           .subscribe({
-            next: (response) => {
+            next: () => {
               this.removeSuggestionFromList(suggestion);
-              this.#translateService.get("UserStories.GenerateTask.Success").subscribe({
-                next: key => this.#toastService.openSuccess(key),
-              }
-              );
+              this.#toastService.openSuccess(this.#translateService.instant("UserStories.GenerateTask.Success"));
             },
             error: () => {
-              this.#translateService.get("UserStories.GenerateTask.Failure").subscribe({
-                next: key => this.#toastService.openError(key),
-              });
+              this.#toastService.openError(this.#translateService.instant("UserStories.GenerateTask.Failure"));
             }
           });
       }
@@ -83,9 +82,10 @@ export class TaskSuggestionsComponent {
   }
 
   removeSuggestionFromList(suggestion: TaskSuggestion) {
-    const updatedTasks = this.taskSuggestions.tasks.filter((s) => s !== suggestion) ?? this.taskSuggestions?.tasks;
+    const updatedTasks = this.taskSuggestionsList.tasks.filter((s) => s !== suggestion) ?? this.taskSuggestionsList?.tasks;
     const updatedSuggestions = { tasks: updatedTasks };
-    this.taskSuggestions = updatedSuggestions
+    this.taskSuggestionsList = updatedSuggestions;
+
     if (updatedSuggestions.tasks.length == 0) {
       this.closeSuggestions();
     }

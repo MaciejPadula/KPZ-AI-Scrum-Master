@@ -15,9 +15,7 @@ internal class OpenAITaskGenerationService : ITaskGenerationService
     private readonly TimeSpan CacheTTL = TimeSpan.FromMinutes(45);
     private const int MaxTokens = 1000;
 
-    public OpenAITaskGenerationService(
-               IMemoryCache memoryCache,
-                      IOpenAIService openAiService)
+    public OpenAITaskGenerationService(IMemoryCache memoryCache, IOpenAIService openAiService)
     {
         _memoryCache = memoryCache;
         _openAIService = openAiService;

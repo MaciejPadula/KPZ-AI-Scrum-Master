@@ -5,6 +5,7 @@ using Artificial.Scrum.Master.Infrastructure.Authorization.Requirements;
 using Artificial.Scrum.Master.Infrastructure.ExternalServices;
 using Artificial.Scrum.Master.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
+using Artificial.Scrum.Master.Prioritization.Infrastructure;
 using Artificial.Scrum.Master.Retrospectives.Infrastructure.Repositories;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.TokenRefresher.Interfaces;
@@ -33,6 +34,7 @@ public static class InfrastructureModule
         services.AddTransient<IStorySuggestionService, OpenAIStorySuggestionService>();
         services.AddTransient<ITaskSuggestionService, OpenAITaskSuggestionService>();
         services.AddTransient<IRetroSuggestionService, OpenAIRetroSuggestionService>();
+        services.AddTransient<IStoryPrioritizationSuggestionService, OpenAIStoryPrioritySuggestionService>();
 
         services.AddSingleton<IActiveUserRepository, InMemorySessionUserRepository>();
 

@@ -1,9 +1,10 @@
 using Artificial.Scrum.Master.Interfaces;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.Task;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.Tasks;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.StoryTasks;
 
 internal interface IGetStoryTasksService
 {
@@ -43,6 +44,6 @@ internal class GetStoryTasksService : IGetStoryTasksService
             refreshToken,
             _ => urlSuffix);
 
-        return _tasksResponseMapper.MapUserStoriesResponse(userStoriesRequestResponse);
+        return _tasksResponseMapper.MapTasksResponse(userStoriesRequestResponse);
     }
 }

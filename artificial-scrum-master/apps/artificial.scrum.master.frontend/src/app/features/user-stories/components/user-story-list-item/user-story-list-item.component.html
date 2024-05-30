@@ -6,7 +6,7 @@
     <button
       mat-icon-button
       (click)="openDetails()"
-      title="{{ 'UserStories.Edit.Title' | translate }}"
+      [matTooltip]="'UserStories.Edit.Title' | translate"
     >
       <mat-icon>edit_note</mat-icon>
     </button>

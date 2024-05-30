@@ -49,7 +49,7 @@
       <span class="flex space-x-3">
         <button
           mat-mini-fab
-          title="{{ 'UserStories.GenerateSuggestedTasks' | translate }}"
+          [matTooltip]="'UserStories.GenerateSuggestedTasks' | translate"
         >
           <mat-icon style="filter: invert(1)" class="stubborn-icon-inverted"
             >psychology</mat-icon
@@ -58,7 +58,7 @@
         <button
           (click)="toggleDescriptionEditor()"
           mat-mini-fab
-          title="{{ 'Shared.OpenEditor' | translate }}"
+          [matTooltip]="'Shared.OpenEditor' | translate"
           color="primary"
         >
           <mat-icon>edit_document</mat-icon>
@@ -66,7 +66,7 @@
         <button
           (click)="generateSuggestion()"
           mat-mini-fab
-          title="{{ 'UserStories.GenerateImprovementSuggestion' | translate }}"
+          [matTooltip]="'UserStories.GenerateImprovementSuggestion' | translate"
           color="primary"
         >
           <mat-icon>auto_fix_high</mat-icon>
@@ -93,11 +93,9 @@
     </ng-scrollbar>
   </mat-card>
 
-  } 
-  @else {
+  } @else {
   <mat-spinner></mat-spinner>
-  } 
-  @if(error()){
+  } @if(error()){
   <mat-card class="h-full w-full">
     <mat-card-header>
       <mat-card-title>{{ 'UserStories.Error' | translate }}</mat-card-title>

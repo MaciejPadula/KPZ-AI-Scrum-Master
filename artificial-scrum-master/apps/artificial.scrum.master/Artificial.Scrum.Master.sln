@@ -44,11 +44,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master.Sha
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jobs", "Jobs", "{7DC6C4B8-5535-4271-AFA0-DAEC723BED11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.TokenRefresher", "Artificial.Scrum.Master.TokenRefresher\Artificial.Scrum.Master.TokenRefresher.csproj", "{D8292526-7A28-4959-8729-38318088C494}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master.TokenRefresher", "Artificial.Scrum.Master.TokenRefresher\Artificial.Scrum.Master.TokenRefresher.csproj", "{D8292526-7A28-4959-8729-38318088C494}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TokenRefresher", "TokenRefresher", "{11B3B7BA-6E0A-4375-9355-EB7E3998DDA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.TokenRefresher.Interfaces", "Artificial.Scrum.Master.TokenRefresher.Interfaces\Artificial.Scrum.Master.TokenRefresher.Interfaces.csproj", "{D9132002-CE93-4D52-A36B-F00E60B19184}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master.TokenRefresher.Interfaces", "Artificial.Scrum.Master.TokenRefresher.Interfaces\Artificial.Scrum.Master.TokenRefresher.Interfaces.csproj", "{D9132002-CE93-4D52-A36B-F00E60B19184}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.Prioritization", "Artificial.Scrum.Master.Prioritization\Artificial.Scrum.Master.Prioritization.csproj", "{5126645A-F56D-486B-9FF6-45FEF2FDC9F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,6 +126,10 @@ Global
 		{D9132002-CE93-4D52-A36B-F00E60B19184}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9132002-CE93-4D52-A36B-F00E60B19184}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9132002-CE93-4D52-A36B-F00E60B19184}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5126645A-F56D-486B-9FF6-45FEF2FDC9F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5126645A-F56D-486B-9FF6-45FEF2FDC9F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5126645A-F56D-486B-9FF6-45FEF2FDC9F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5126645A-F56D-486B-9FF6-45FEF2FDC9F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,6 +149,7 @@ Global
 		{D8292526-7A28-4959-8729-38318088C494} = {11B3B7BA-6E0A-4375-9355-EB7E3998DDA2}
 		{11B3B7BA-6E0A-4375-9355-EB7E3998DDA2} = {7DC6C4B8-5535-4271-AFA0-DAEC723BED11}
 		{D9132002-CE93-4D52-A36B-F00E60B19184} = {11B3B7BA-6E0A-4375-9355-EB7E3998DDA2}
+		{5126645A-F56D-486B-9FF6-45FEF2FDC9F7} = {31D4712E-33B6-4A31-AF65-52041AB7B17B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C3EE4105-802C-4017-AA5D-87CBDAFCA91E}

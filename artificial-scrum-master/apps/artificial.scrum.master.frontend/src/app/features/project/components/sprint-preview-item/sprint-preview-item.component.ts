@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -10,28 +11,33 @@ import { SprintPreview } from '../../models/sprint-preview';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { RetroSessionComponent } from "../retro-session/retro-session.component";
+import { RetroSessionComponent } from '../retro-session/retro-session.component';
+import { MatDialog } from '@angular/material/dialog';
+import { SprintStoriesPriorityComponent } from '../sprint-stories-priority/sprint-stories-priority.component';
 
 @Component({
-    selector: 'app-sprint-preview-item',
-    standalone: true,
-    templateUrl: './sprint-preview-item.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        CommonModule,
-        AvatarComponent,
-        MaterialModule,
-        RouterModule,
-        TranslateModule,
-        RetroSessionComponent
-    ]
+  selector: 'app-sprint-preview-item',
+  standalone: true,
+  templateUrl: './sprint-preview-item.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    AvatarComponent,
+    MaterialModule,
+    RouterModule,
+    TranslateModule,
+    RetroSessionComponent,
+  ],
 })
 export class SprintPreviewItemComponent {
   public sprintElement = input.required<SprintPreview>();
-  public storiesUrl = computed(() => ['/UserStories', this.sprintElement().sprintId]);
+  public storiesUrl = computed(() => [
+    '/UserStories',
+    this.sprintElement().sprintId,
+  ]);
   public storiesQueryParams = computed(() => {
     return {
-      project: this.sprintElement().projectId
+      project: this.sprintElement().projectId,
     };
   });
 
@@ -42,11 +48,25 @@ export class SprintPreviewItemComponent {
     }`;
   });
 
+  #dialog = inject(MatDialog);
+
   public formatDate(dateString: string): string {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     return `${day}.${month}.${year}`;
+  }
+
+  public openStoryPriorityEditor(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.#dialog.open(SprintStoriesPriorityComponent, {
+      data: {
+        sprintId: this.sprintElement().sprintId,
+        projectId: this.sprintElement().projectId,
+      },
+    });
   }
 }

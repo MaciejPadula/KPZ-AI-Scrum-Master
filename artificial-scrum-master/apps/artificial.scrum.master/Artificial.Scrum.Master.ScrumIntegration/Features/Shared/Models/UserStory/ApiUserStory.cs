@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.UserStory;
 
 public class UserStory
 {

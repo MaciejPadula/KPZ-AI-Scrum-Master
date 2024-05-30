@@ -10,7 +10,7 @@
           <button
             mat-icon-button
             (click)="openDetails()"
-            title="{{ 'Tasks.Edit.Title' | translate }}"
+            [matTooltip]="'Tasks.Edit.Title' | translate"
           >
             <mat-icon>edit</mat-icon>
           </button>

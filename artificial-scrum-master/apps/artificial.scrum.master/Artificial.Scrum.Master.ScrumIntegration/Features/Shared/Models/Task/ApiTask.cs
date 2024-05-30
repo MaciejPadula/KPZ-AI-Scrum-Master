@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.Task;
 
 public class StoryTask
 {
@@ -12,6 +12,7 @@ public class StoryTask
     [JsonPropertyName("status_extra_info")] public StatusExtraInfo? StatusExtraInfo { get; set; }
     [JsonPropertyName("assigned_to_extra_info")] public UserInfo? AssignedToExtraInfo { get; set; }
     [JsonPropertyName("is_closed")] public bool IsClosed { get; set; }
+    [JsonPropertyName("user_story")] public int? UserStoryId { get; set; }
 }
 
 public class UserInfo

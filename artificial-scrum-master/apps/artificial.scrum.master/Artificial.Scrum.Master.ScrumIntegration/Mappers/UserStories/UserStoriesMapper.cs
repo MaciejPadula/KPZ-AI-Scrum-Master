@@ -1,15 +1,16 @@
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.UserStory;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.UserStories;
 
 internal interface IUserStoriesMapper
 {
-    GetUserStories MapUserStoriesResponse(List<UserStory> userStories);
+    GetUserStoriesResponse MapUserStoriesResponse(List<UserStory> userStories);
 }
 
 internal class UserStoriesMapper : IUserStoriesMapper
 {
-    public GetUserStories MapUserStoriesResponse(List<UserStory> userStories)
+    public GetUserStoriesResponse MapUserStoriesResponse(List<UserStory> userStories)
     {
         var mappedUserStories = userStories.Select(us => new GetUserStoriesResponseElement
         {
@@ -31,6 +32,6 @@ internal class UserStoriesMapper : IUserStoriesMapper
             TotalPoints = us.TotalPoints,
         }).ToList();
 
-        return new GetUserStories(UserStories: mappedUserStories);
+        return new GetUserStoriesResponse(UserStories: mappedUserStories);
     }
 }

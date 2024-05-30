@@ -108,7 +108,7 @@
         <button
           (click)="toggleDescriptionEditor()"
           class="my-2"
-          title="{{ 'Shared.OpenEditor' | translate }}"
+          [matTooltip]="'Shared.OpenEditor' | translate"
           mat-mini-fab
           color="primary"
         >
@@ -117,7 +117,7 @@
         <button
           (click)="generateSuggestion()"
           class="my-2"
-          title="{{ 'Tasks.GenerateImprovementSuggestion' | translate }}"
+          [matTooltip]="'Tasks.GenerateImprovementSuggestion' | translate"
           mat-mini-fab
           color="primary"
         >
@@ -144,11 +144,9 @@
       </mat-card-content>
     </ng-scrollbar>
   </mat-card>
-  } 
-  @else {
+  } @else {
   <mat-spinner></mat-spinner>
-  } 
-  @if(error()){
+  } @if(error()){
   <mat-card class="h-full w-full">
     <mat-card-header>
       <mat-card-title>{{ 'Tasks.Error' | translate }}</mat-card-title>

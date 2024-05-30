@@ -6,6 +6,7 @@ using Artificial.Scrum.Master.UserSettings;
 using Artificial.Scrum.Master.User;
 using Artificial.Scrum.Master.Retrospectives;
 using Artificial.Scrum.Master.SharedKernel;
+using Artificial.Scrum.Master.Prioritization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ builder.Services.AddScrumIntegrationModule(
     builder.Configuration.GetSection("ScrumManagementService"));
 builder.Services.AddEstimationPokerModule();
 builder.Services.AddEditSuggestionsModule();
+builder.Services.AddPrioritySuggestionsModule();
 builder.Services.AddUserModule(builder.Configuration);
 builder.Services.AddRetrospectives();
 builder.Services.AddSharedKernel();
@@ -55,6 +57,7 @@ app.RegisterUserSettingsEndpoints();
 app.RegisterEstimationPokerEndpoints();
 app.RegisterScrumIntegrationEndpoints();
 app.RegisterEditSuggestionEndpoints();
+app.RegisterPrioritySuggestionsEndpoints();
 app.RegisterUserEndpoints();
 app.RegisterRetrospectivesEndpoints();
 app.MapControllerRoute(name: "default", "{controller}/{action=Index}/{id?}");

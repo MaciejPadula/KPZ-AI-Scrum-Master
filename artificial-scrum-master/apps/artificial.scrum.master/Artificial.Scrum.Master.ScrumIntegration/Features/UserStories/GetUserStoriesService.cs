@@ -1,4 +1,5 @@
 using Artificial.Scrum.Master.Interfaces;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.UserStory;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.UserStories;
@@ -7,7 +8,7 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
 
 internal interface IGetUserStoriesService
 {
-    Task<GetUserStories> Handle(string projectId, string sprintId);
+    Task<GetUserStoriesResponse> Handle(string projectId, string sprintId);
 }
 
 internal class GetUserStoriesService : IGetUserStoriesService
@@ -29,7 +30,7 @@ internal class GetUserStoriesService : IGetUserStoriesService
         _userAccessor = userAccessor;
     }
 
-    public async Task<GetUserStories> Handle(string projectId, string sprintId)
+    public async Task<GetUserStoriesResponse> Handle(string projectId, string sprintId)
     {
         var userId = _userAccessor.UserId ?? throw new UnauthorizedAccessException();
         var userTokens = await _accessTokenProvider.ProvideRefreshTokenOrThrow(userId);

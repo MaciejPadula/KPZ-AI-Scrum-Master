@@ -5,8 +5,8 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.EditUserStoryDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
+using Artificial.Scrum.Master.ScrumIntegration.Features.StoryTasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStoryDetails;
@@ -18,6 +18,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Mappers.Sprints;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.TimelineEvents;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.UserStories;
+using Artificial.Scrum.Master.ScrumIntegration.SharedFeatures;
 using Artificial.Scrum.Master.ScrumIntegration.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -49,6 +50,7 @@ public static class ScrumIntegrationModule
         services.AddTransient<IRolePointsMapper, RolePointsMapper>();
         services.AddTransient<ISprintStatsResponseMapper, SprintStatsResponseMapper>();
         services.AddTransient<ITaskDetailsResponseMapper, TaskDetailsResponseMapper>();
+        services.AddTransient<IUserStoriesWithTasksMapper, UserStoriesWithTasksMapper>();
 
         services.AddTransient<IJwtDecoder, JwtDecoder>();
         services.AddTransient<ITokenValidator, TokenValidator>();
@@ -65,6 +67,7 @@ public static class ScrumIntegrationModule
         services.AddTransient<IGetSprintStatsService, GetSprintStatsService>();
         services.AddTransient<IGetTaskDetailsService, GetTaskDetailsService>();
         services.AddTransient<IPatchTaskService, PatchTaskService>();
+        services.AddTransient<IGetStoriesWithTasksService, GetStoriesWithTasksService>();
 
         services.AddTransient<ScrumIntegrationMiddleware>();
 

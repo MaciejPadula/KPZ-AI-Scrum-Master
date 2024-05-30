@@ -35,6 +35,7 @@ internal class UserStoriesWithTasksMapper : IUserStoriesWithTasksMapper
                 SprintId = us.Milestone,
                 SprintSlug = us.MilestoneSlug,
                 SprintName = us.MilestoneName,
+                SprintOrder = us.SprintOrder,
                 TaskNames = taskNames
             };
         }).ToList();

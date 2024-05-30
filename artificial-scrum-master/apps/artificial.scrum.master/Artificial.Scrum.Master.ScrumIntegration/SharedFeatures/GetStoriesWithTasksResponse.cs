@@ -11,5 +11,6 @@ public readonly record struct GetStoriesWithTaskResponseElement(
     int SprintId,
     string? SprintSlug,
     string? SprintName,
+    int? SprintOrder,
     IEnumerable<string> TaskNames
 );

@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Artificial.Scrum.Master.Prioritization.Features.GetStoryPrioritizationSuggestion;
-internal class GetStoryPrioritizationSuggestionResponse
-{
-}
+
+internal readonly record struct GetStoryPrioritizationSuggestionResponse(
+    List<StoryPrioritySuggestion> Stories
+);
+
+internal readonly record struct StoryPrioritySuggestion(
+    int? UserStoryId,
+    string? UserStorySubject,
+    int? UserStoryRef,
+    int SprintId,
+    string? SprintSlug,
+    string? SprintName,
+    int? SprintOrder
+);

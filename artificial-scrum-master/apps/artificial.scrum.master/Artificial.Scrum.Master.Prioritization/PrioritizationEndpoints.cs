@@ -12,9 +12,9 @@ public static class PrioritizationEndpoints
     {
         routes.MapGet("/api/sprint/userStories/priority",
             async (HttpContext context, IGetStoryPrioritizationSuggestionService service,
-                [FromQuery] string projectId, [FromQuery] string sprintId) =>
+                [FromQuery] string projectId, [FromQuery] string sprintId, [FromQuery] bool generateAgain = false) =>
             {
-                var result = await service.Handle(projectId, sprintId);
+                var result = await service.Handle(projectId, sprintId, generateAgain);
                 await context.Response.WriteAsJsonAsync(result);
             }).RequireAuthorization("UserLoggedInPolicy");
     }

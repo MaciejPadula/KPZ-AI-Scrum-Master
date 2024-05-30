@@ -14,6 +14,7 @@ public class UserStory
     [JsonPropertyName("milestone_slug")] public string? MilestoneSlug { get; set; }
     [JsonPropertyName("milestone_name")] public string? MilestoneName { get; set; }
     [JsonPropertyName("total_points")] public double? TotalPoints { get; set; }
+    [JsonPropertyName("sprint_order")] public int? SprintOrder { get; set; }
 }
 
 public class UserInfo

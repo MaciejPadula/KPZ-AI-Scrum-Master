@@ -93,11 +93,9 @@
     </ng-scrollbar>
   </mat-card>
 
-  } 
-  @else {
+  } @else {
   <mat-spinner></mat-spinner>
-  } 
-  @if(error()){
+  } @if(error()){
   <mat-card class="h-full w-full">
     <mat-card-header>
       <mat-card-title>{{ 'UserStories.Error' | translate }}</mat-card-title>

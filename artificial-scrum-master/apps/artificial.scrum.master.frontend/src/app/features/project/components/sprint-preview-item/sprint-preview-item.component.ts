@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SprintPreview } from '../../models/sprint-preview';
+import { Sprint } from '../../../sprints/models/sprint';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -27,7 +27,7 @@ import { RetroSessionComponent } from "../retro-session/retro-session.component"
     ]
 })
 export class SprintPreviewItemComponent {
-  public sprintElement = input.required<SprintPreview>();
+  public sprintElement = input.required<Sprint>();
   public storiesUrl = computed(() => ['/UserStories', this.sprintElement().sprintId]);
   public storiesQueryParams = computed(() => {
     return {

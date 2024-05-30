@@ -3,10 +3,12 @@ import { EstimationPokerDataService } from './estimation-poker-data.service';
 import { SessionTask } from '../models/session-task';
 import { AuthorizationService } from '../../authorization/services/authorization-service';
 import { TaskEstimation } from '../models/task-estimation';
-import { Subject } from 'rxjs';
+import { Subject, of, switchMap } from 'rxjs';
 import { Session } from '../../../shared/models/session';
 import { ToastService } from '../../../shared/services/toast.service';
 import { TranslateService } from '@ngx-translate/core';
+import { SprintDataService } from '../../sprints/services/sprint-data.service';
+import { UserStoryPreview } from '../../sprints/models/sprint';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class EstimationPokerService {
   private readonly dataService = inject(EstimationPokerDataService);
   private readonly authorizationService = inject(AuthorizationService);
+  private readonly sprintService = inject(SprintDataService);
   private readonly toastService = inject(ToastService);
   private readonly translateService = inject(TranslateService);
 
@@ -42,16 +45,33 @@ export class EstimationPokerService {
   private readonly newTaskLoadedSubject$ = new Subject<void>();
   public newTaskLoaded$ = this.newTaskLoadedSubject$.asObservable();
 
+  #userStories = signal<UserStoryPreview[]>([]);
+  public userStories = this.#userStories.asReadonly();
+
+  public isLoading = signal<boolean>(false);
+
   public loadSession(sessionId: string) {
-    this.dataService.getSession(sessionId).subscribe({
-      next: (session) => {
+    this.dataService.getSession(sessionId)
+      .pipe(switchMap((session) => {
         this.#session.set(session);
-      },
-      error: () =>
-        this.toastService.openError(
-          this.translateService.instant('EstimationPoker.LoadSession.Error')
+        return this.getSprints(session.projectId);
+      }))
+      .subscribe({
+        next: (sprints) => this.#userStories.set(
+          sprints.flatMap((sprint) => sprint.userStories)
         ),
-    });
+        error: () =>
+          this.toastService.openError(
+            this.translateService.instant('EstimationPoker.LoadSession.Error')
+          ),
+      });
+  }
+
+  private getSprints(projectId: number) {
+    if (this.showScrumMasterView()) {
+      return this.sprintService.getSprints(projectId);
+    }
+    return of();
   }
 
   public clearTaskEstimations() {

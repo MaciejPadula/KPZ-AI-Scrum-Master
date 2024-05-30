@@ -93,6 +93,8 @@
   "EstimationPoker.RequiredAndThreeLetters": "Pole wymagane, minimum 3 znaki",
   "EstimationPoker.AddTask.Success": "Zadanie zostało dodane",
   "EstimationPoker.AddTask.Error": "Wystąpił problem z dodaniem zadania",
+  "EstimationPoker.AddTask.UserStories": "Historyjki użytkownika",
+  "EstimationPoker.AddTask.UserStoriesDescription": "Istniejące historyjki użytkownika w backlogu",
   "EstimationPoker.LoadTaskEstimations.Error": "Wystąpił problem z załadowaniem estymacji zadań",
   "EstimationPoker.LoadTask.Error": "Wystąpił problem z załadowaniem zadań",
   "EstimationPoker.LoadSession.Error": "Wystąpił problem z załadowaniem sesji pokera",

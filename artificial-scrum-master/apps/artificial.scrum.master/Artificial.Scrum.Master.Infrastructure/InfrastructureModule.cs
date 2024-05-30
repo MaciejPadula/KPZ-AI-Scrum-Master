@@ -7,6 +7,7 @@ using Artificial.Scrum.Master.Infrastructure.Repositories;
 using Artificial.Scrum.Master.Interfaces;
 using Artificial.Scrum.Master.Retrospectives.Infrastructure.Repositories;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
+using Artificial.Scrum.Master.TokenRefresher.Interfaces;
 using Artificial.Scrum.Master.TaskGeneration.Features.Infrastructure;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
@@ -17,16 +18,16 @@ namespace Artificial.Scrum.Master.Infrastructure;
 
 public static class InfrastructureModule
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string sqlConnectionString)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string sqlConnectionString, InfrastructureType infrastructureType = InfrastructureType.AspNetCore)
     {
         services.AddTransient<IDbConnectionFactory>(_ => new SqlDbConnectionFactory(sqlConnectionString));
         services.AddTransient<IUserSettingsRepository, SqlUserSettingsRepository>();
         services.AddTransient<IUserTokensRepository, SqlUserSettingsRepository>();
+        services.AddTransient<ITokenRepository, SqlUserSettingsRepository>();
         services.AddTransient<ISessionRepository, SqlSessionRepository>();
         services.AddTransient<ISessionTaskRepository, SqlSessionTaskRepository>();
         services.AddTransient<IRetroSessionRepository, SqlRetroSessionRepository>();
         services.AddTransient(_ => TimeProvider.System);
-        services.AddHttpContextAccessor();
 
         services.AddOpenAIService();
         services.AddTransient<IPokerSuggestionService, OpenAIPokerSuggestionService>();
@@ -35,16 +36,20 @@ public static class InfrastructureModule
         services.AddTransient<IRetroSuggestionService, OpenAIRetroSuggestionService>();
         services.AddTransient<ITaskGenerationService, OpenAITaskGenerationService>();
 
-        services.AddTransient<IUserAccessor, JwtUserAccessor>();
-
         services.AddSingleton<IActiveUserRepository, InMemorySessionUserRepository>();
 
-        services.AddAuthorization(options =>
+        if (infrastructureType == InfrastructureType.AspNetCore)
         {
-            options.AddPolicy("UserLoggedInPolicy",
-                policy => policy.Requirements.Add(new LoggedInRequirement(["UserId", "UserName"])));
-        });
-        services.AddScoped<IAuthorizationHandler, UserLoggedInRequirementHandler>();
+            services.AddHttpContextAccessor();
+            services.AddTransient<IUserAccessor, JwtUserAccessor>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("UserLoggedInPolicy",
+                    policy => policy.Requirements.Add(new LoggedInRequirement(["UserId", "UserName"])));
+            });
+            services.AddScoped<IAuthorizationHandler, UserLoggedInRequirementHandler>();
+        }
 
         return services;
     }

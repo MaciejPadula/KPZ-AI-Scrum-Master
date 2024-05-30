@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -20,6 +20,7 @@
     <ProjectReference Include="..\Artificial.Scrum.Master.Interfaces\Artificial.Scrum.Master.Interfaces.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.Retrospectives\Artificial.Scrum.Master.Retrospectives.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.ScrumIntegration\Artificial.Scrum.Master.ScrumIntegration.csproj" />
+    <ProjectReference Include="..\Artificial.Scrum.Master.TokenRefresher.Interfaces\Artificial.Scrum.Master.TokenRefresher.Interfaces.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.TaskGeneration\Artificial.Scrum.Master.TaskGeneration.csproj" />
     <ProjectReference Include="..\Artificial.Scrum.Master.UserSettings\Artificial.Scrum.Master.UserSettings.csproj" />
   </ItemGroup>

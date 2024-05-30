@@ -38,11 +38,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master.Edi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.TaskGeneration", "Artificial.Scrum.Master.TaskGeneration\Artificial.Scrum.Master.TaskGeneration.csproj", "{86A386E9-24F4-4B01-81AA-7009CA62A0E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.Retrospectives", "Artificial.Scrum.Master.Retrospectives\Artificial.Scrum.Master.Retrospectives.csproj", "{D4C43F6B-6517-415D-BD09-D068215A3C4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master.Retrospectives", "Artificial.Scrum.Master.Retrospectives\Artificial.Scrum.Master.Retrospectives.csproj", "{D4C43F6B-6517-415D-BD09-D068215A3C4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.Retrospectives.Tests", "Artificial.Scrum.Master.Retrospectives.Tests\Artificial.Scrum.Master.Retrospectives.Tests.csproj", "{8B2A426B-B3B6-4D32-85FB-B3302269B0F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master.Retrospectives.Tests", "Artificial.Scrum.Master.Retrospectives.Tests\Artificial.Scrum.Master.Retrospectives.Tests.csproj", "{8B2A426B-B3B6-4D32-85FB-B3302269B0F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.SharedKernel", "Artificial.Scrum.Master.SharedKernel\Artificial.Scrum.Master.SharedKernel.csproj", "{7D7FFCD9-AEBB-491E-A06A-8D3CDDC17470}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artificial.Scrum.Master.SharedKernel", "Artificial.Scrum.Master.SharedKernel\Artificial.Scrum.Master.SharedKernel.csproj", "{7D7FFCD9-AEBB-491E-A06A-8D3CDDC17470}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jobs", "Jobs", "{7DC6C4B8-5535-4271-AFA0-DAEC723BED11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.TokenRefresher", "Artificial.Scrum.Master.TokenRefresher\Artificial.Scrum.Master.TokenRefresher.csproj", "{D8292526-7A28-4959-8729-38318088C494}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TokenRefresher", "TokenRefresher", "{11B3B7BA-6E0A-4375-9355-EB7E3998DDA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artificial.Scrum.Master.TokenRefresher.Interfaces", "Artificial.Scrum.Master.TokenRefresher.Interfaces\Artificial.Scrum.Master.TokenRefresher.Interfaces.csproj", "{D9132002-CE93-4D52-A36B-F00E60B19184}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,6 +118,14 @@ Global
 		{7D7FFCD9-AEBB-491E-A06A-8D3CDDC17470}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D7FFCD9-AEBB-491E-A06A-8D3CDDC17470}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D7FFCD9-AEBB-491E-A06A-8D3CDDC17470}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8292526-7A28-4959-8729-38318088C494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8292526-7A28-4959-8729-38318088C494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8292526-7A28-4959-8729-38318088C494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8292526-7A28-4959-8729-38318088C494}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9132002-CE93-4D52-A36B-F00E60B19184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9132002-CE93-4D52-A36B-F00E60B19184}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9132002-CE93-4D52-A36B-F00E60B19184}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9132002-CE93-4D52-A36B-F00E60B19184}.Release|Any CPU.Build.0 = Release|Any CPU
 		{86A386E9-24F4-4B01-81AA-7009CA62A0E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{86A386E9-24F4-4B01-81AA-7009CA62A0E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86A386E9-24F4-4B01-81AA-7009CA62A0E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -130,6 +146,9 @@ Global
 		{30C127A8-0B16-4543-AD35-878849CDD033} = {31D4712E-33B6-4A31-AF65-52041AB7B17B}
 		{D4C43F6B-6517-415D-BD09-D068215A3C4E} = {31D4712E-33B6-4A31-AF65-52041AB7B17B}
 		{8B2A426B-B3B6-4D32-85FB-B3302269B0F8} = {B432A0FE-0244-45E2-962F-3F9B55350DCF}
+		{D8292526-7A28-4959-8729-38318088C494} = {11B3B7BA-6E0A-4375-9355-EB7E3998DDA2}
+		{11B3B7BA-6E0A-4375-9355-EB7E3998DDA2} = {7DC6C4B8-5535-4271-AFA0-DAEC723BED11}
+		{D9132002-CE93-4D52-A36B-F00E60B19184} = {11B3B7BA-6E0A-4375-9355-EB7E3998DDA2}
 		{86A386E9-24F4-4B01-81AA-7009CA62A0E4} = {31D4712E-33B6-4A31-AF65-52041AB7B17B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

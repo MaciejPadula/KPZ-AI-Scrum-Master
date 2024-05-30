@@ -3,12 +3,12 @@ import { EstimationPokerDataService } from './estimation-poker-data.service';
 import { SessionTask } from '../models/session-task';
 import { AuthorizationService } from '../../authorization/services/authorization-service';
 import { TaskEstimation } from '../models/task-estimation';
-import { Subject, of, switchMap } from 'rxjs';
+import { Observable, Subject, of, switchMap } from 'rxjs';
 import { Session } from '../../../shared/models/session';
 import { ToastService } from '../../../shared/services/toast.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SprintDataService } from '../../sprints/services/sprint-data.service';
-import { UserStoryPreview } from '../../sprints/models/sprint';
+import { Sprint, UserStoryPreview } from '../../sprints/models/sprint';
 
 @Injectable({
   providedIn: 'root',
@@ -67,11 +67,10 @@ export class EstimationPokerService {
       });
   }
 
-  private getSprints(projectId: number) {
-    if (this.showScrumMasterView()) {
-      return this.sprintService.getSprints(projectId);
-    }
-    return of();
+  private getSprints(projectId: number): Observable<Sprint[]> {
+    return this.showScrumMasterView()
+      ? this.sprintService.getSprints(projectId)
+      : of([]);
   }
 
   public clearTaskEstimations() {

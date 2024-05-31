@@ -13,6 +13,8 @@ import { TaigaAuthorizationComponent } from './components/taiga-authorization/ta
 import { MaterialModule } from '../../shared/material.module';
 import { TaigaIconComponent } from '../../shared/components/taiga-icon/taiga-icon.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { ImageLoaderDirective } from '../../shared/directives/image-loader-directive'
+import { AuthorizationService } from '../authorization/services/authorization-service';
 
 @Component({
   selector: 'app-user-settings',
@@ -25,6 +27,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MaterialModule,
     TaigaIconComponent,
     TranslateModule,
+    ImageLoaderDirective
   ],
 })
 export class UserSettingsComponent implements OnInit {
@@ -35,6 +38,11 @@ export class UserSettingsComponent implements OnInit {
 
   #settings = signal<UserSettings | null>(null);
   public settings = this.#settings.asReadonly();
+
+  private authService = inject(AuthorizationService);
+
+  userData = this.authService.userData;
+
 
   public ngOnInit(): void {
     this.userSettingsDataService.getUserSettings().subscribe((settings) => {

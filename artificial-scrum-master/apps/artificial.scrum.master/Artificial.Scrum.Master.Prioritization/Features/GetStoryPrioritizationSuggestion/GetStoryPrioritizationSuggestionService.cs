@@ -40,7 +40,7 @@ internal class GetStoryPrioritizationSuggestionService : IGetStoryPrioritization
 
             stories.Add(new StoryWithTasks(
                 story.UserStoryId.Value,
-                story.UserStorySubject!,
+                story.UserStorySubject,
                 story.TaskNames.ToList()
             ));
         }

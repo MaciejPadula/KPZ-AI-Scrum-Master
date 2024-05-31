@@ -42,14 +42,15 @@ internal class OpenAIStoryPrioritySuggestionService : IStoryPrioritizationSugges
     private async Task<GetStoryPrioritizationSuggestionResult?> GetStoryPrioritizationSuggestionInternal(
         StoriesPrioritySuggestionRequest suggestionRequest)
     {
+        var storiesWithTasks = JsonSerializer.Serialize(suggestionRequest.Stories);
         var chat = await _openAIService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest
         {
             Messages =
-            {
+            [
                 ChatMessage.FromSystem(@"
 You are asked to suggest the priority of UserStories of a Sprint in a project.
 Sort the UserStories by priority from highest to least.
-Please provide the priority of the following UserStories in the format:
+Please provide the priority of the following UserStories in json format:
 {
     'UserStories': [
         {
@@ -63,9 +64,10 @@ Please provide the priority of the following UserStories in the format:
         ...
     ]
 }"),
-                ChatMessage.FromUser("You have the following UserStories with UserStoryIds, Titles and their tasks:"),
-                ChatMessage.FromUser(JsonSerializer.Serialize(suggestionRequest.Stories)),
-            },
+                ChatMessage.FromUser(
+                    "You have the following UserStories with UserStoryIds, Titles and their tasks, provided in json:"),
+                ChatMessage.FromUser(storiesWithTasks),
+            ],
             Model = OpenAIConsts.AIModel,
             MaxTokens = MaxTokens,
             ResponseFormat = new()

@@ -36,16 +36,18 @@ internal class GetStoriesWithTasksService : IGetStoriesWithTasksService
         var userId = _userAccessor.UserId ?? throw new UnauthorizedAccessException();
         var userTokens = await _accessTokenProvider.ProvideRefreshTokenOrThrow(userId);
 
-        var userStoriesRequest = _projectHttpClientWrapper.GetHttpRequest<List<UserStory>>(
+        var userStoriesRequestTask = _projectHttpClientWrapper.GetHttpRequest<List<UserStory>>(
             userId,
             userTokens,
             _ => $"userstories?project={projectId}&milestone={sprintId}");
-        var tasksRequest = _projectHttpClientWrapper.GetHttpRequest<List<StoryTask>>(
+        var tasksRequestTask = _projectHttpClientWrapper.GetHttpRequest<List<StoryTask>>(
             userId,
             userTokens,
             _ => $"tasks?milestone={sprintId}&order_by=us_order&project={projectId}");
 
-        await Task.WhenAll(userStoriesRequest, tasksRequest);
-        return _userStoriesMapper.MapUserStoriesWithTasksResponse(userStoriesRequest.Result, tasksRequest.Result);
+        await Task.WhenAll(userStoriesRequestTask, tasksRequestTask);
+        return _userStoriesMapper.MapUserStoriesWithTasksResponse(
+            userStoriesRequestTask.Result,
+            tasksRequestTask.Result);
     }
 }

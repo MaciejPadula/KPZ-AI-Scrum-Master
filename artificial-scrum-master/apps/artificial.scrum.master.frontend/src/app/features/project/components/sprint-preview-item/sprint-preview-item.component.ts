@@ -64,8 +64,8 @@ export class SprintPreviewItemComponent {
 
     this.#dialog.open(SprintStoriesPriorityComponent, {
       data: {
-        sprintId: this.sprintElement().sprintId,
         projectId: this.sprintElement().projectId,
+        sprintId: this.sprintElement().sprintId,
       },
     });
   }

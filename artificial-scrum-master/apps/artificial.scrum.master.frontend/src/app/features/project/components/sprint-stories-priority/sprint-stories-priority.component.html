@@ -1,8 +1,82 @@
-<div>
-  <p>
-    {{ this.sprintId }}
-  </p>
-  <p>
-    {{ this.projectId }}
-  </p>
+<div class="flex items-center justify-center popup">
+  @if(storiesSuggestions().length > 0 && !error() && !isLoading()){
+  <mat-card class="h-full w-full">
+    <mat-card-header class="flex justify-between">
+      <mat-card-subtitle class="stubborn-text">
+        {{ 'Project.Priority.Sprint' | translate }}
+      </mat-card-subtitle>
+      <mat-card-title class="stubborn-text">
+        {{ storiesSuggestions()[0].sprintName }}
+      </mat-card-title>
+      <button mat-icon-button mat-dialog-close>
+        <mat-icon class="stubborn-icon">close</mat-icon>
+      </button>
+    </mat-card-header>
+    <div
+      class="ml-4 mr-6 flex flex-row items-center stubborn-text"
+      style="justify-content: space-between"
+    >
+      <mat-card-subtitle>{{
+        'Project.Priority.AISuggestion' | translate
+      }}</mat-card-subtitle>
+      <span class="flex space-x-3 pt-4">
+        <button
+          (click)="generateSuggestionAnew()"
+          mat-mini-fab
+          [matTooltip]="'Project.Priority.GenerateAnew' | translate"
+        >
+          <mat-icon style="filter: invert(1)" class="stubborn-icon-inverted"
+            >psychology</mat-icon
+          >
+        </button>
+      </span>
+    </div>
+    <ng-scrollbar>
+      <mat-card-content class="stubborn-text">
+        <div class="py-2">
+          @if(storiesSuggestions().length > 0){
+          <div
+            cdkDropList
+            class="flex flex-col justify-center items-center story-priority-list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            @for (story of storiesSuggestions(); track story.userStoryId; let
+            idx = $index) {
+            <mat-card cdkDrag class="w-11/12 my-0.5 story-list-item">
+              <mat-card-content>
+                <div class="flex justify-between">
+                  <div class="flex flex-row">
+                    <div class="mr-2">{{ idx + 1 }}.</div>
+                    <div class="mat-title">
+                      #{{ story.userStoryRef }}
+                      {{ story.userStorySubject }}
+                    </div>
+                  </div>
+                  <div>
+                    <mat-icon>drag_handle</mat-icon>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            }
+          </div>
+          }@else {
+          <p>{{ 'Project.Priority.NoUserStories' | translate }}</p>
+          }
+        </div>
+      </mat-card-content>
+    </ng-scrollbar>
+  </mat-card>
+
+  } @else if(isLoading() && !error()) {
+  <mat-spinner></mat-spinner>
+  } @else if(error()){
+  <mat-card class="h-full w-full">
+    <mat-card-header>
+      <mat-card-title>{{
+        'Project.Priority.Fails' | translate
+      }}</mat-card-title>
+    </mat-card-header>
+  </mat-card>
+  }
 </div>

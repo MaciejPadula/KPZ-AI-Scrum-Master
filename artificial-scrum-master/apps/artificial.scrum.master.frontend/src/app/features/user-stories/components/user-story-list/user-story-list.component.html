@@ -5,7 +5,7 @@
   <div class="mat-headline-6">{{ sprintName }}</div>
   <mat-accordion>
     @for (story of userStories(); track $index) {
-    <app-user-story-list-item [userStory]="story" />
+    <app-user-story-list-item [userStory]="story" [projectId]="projectId()"/>
     }
   </mat-accordion>
 </div>

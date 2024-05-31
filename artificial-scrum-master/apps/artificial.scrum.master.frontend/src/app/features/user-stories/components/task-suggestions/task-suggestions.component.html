@@ -1,0 +1,41 @@
+<span class="absolute left-0 top-1">
+    <button mat-icon-button (click)="closeSuggestions()">
+        <mat-icon class="stubborn-icon-inverted">chevron_right</mat-icon>
+    </button>
+</span>
+<div class="h-[8%] p-4 px-14">
+    <mat-card-title>{{"UserStories.TaskSuggestions" | translate}}</mat-card-title>
+</div>
+<div class="flex h-[92%] items-center justify-center">
+    @if(taskSuggestions != null){
+
+    <ng-scrollbar>
+        <div class="space-y-4 pl-4 pr-2 mb-4 max-w-[100%]">
+            @for(taskSuggestion of taskSuggestionsList.tasks; track $index)
+            {
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>{{ taskSuggestion.title }}</mat-card-title>
+                </mat-card-header>
+                @if(!taskSuggestion.accepted){
+                <mat-card-content [innerHTML]="taskSuggestion.description">
+                </mat-card-content>
+                }
+                @else {
+                <mat-card-content>
+                    {{"UserStories.AddingTask" | translate}}
+                    <mat-spinner></mat-spinner>
+                </mat-card-content>
+                }
+                <mat-card-actions>
+                    <button (click)="acceptSuggestion(taskSuggestion)" mat-button color="primary">{{"Shared.Accept" | translate}}</button>
+                    <button (click)="removeSuggestion(taskSuggestion)" mat-button color="warn">{{"Shared.AI.Reject" | translate}}</button>
+                </mat-card-actions>
+            </mat-card>
+            }
+        </div>
+    </ng-scrollbar>
+    } @else {
+    <mat-spinner></mat-spinner>
+    }
+</div>

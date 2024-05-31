@@ -6,6 +6,7 @@ using Artificial.Scrum.Master.UserSettings;
 using Artificial.Scrum.Master.User;
 using Artificial.Scrum.Master.Retrospectives;
 using Artificial.Scrum.Master.SharedKernel;
+using Artificial.Scrum.Master.TaskGeneration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Services.AddEditSuggestionsModule();
 builder.Services.AddUserModule(builder.Configuration);
 builder.Services.AddRetrospectives();
 builder.Services.AddSharedKernel();
+builder.Services.AddTaskGenerationModule();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -57,6 +59,7 @@ app.RegisterScrumIntegrationEndpoints();
 app.RegisterEditSuggestionEndpoints();
 app.RegisterUserEndpoints();
 app.RegisterRetrospectivesEndpoints();
+app.RegisterTaskGenerationEndpoints();
 app.MapControllerRoute(name: "default", "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");

@@ -1,14 +1,23 @@
-<div>{{ 'UserSettings.Title' | translate }}</div>
-
-<mat-accordion class="m-4">
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <app-taiga-icon />
-        {{ 'UserSettings.Tagia.Title' | translate }}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <app-taiga-authorization />
-  </mat-expansion-panel>
-</mat-accordion>
+<div class="flex flex-col items-center">
+  <div class="flex justify-center items-center flex-col px-8 py-4 space-y-3">
+    <img class="rounded-full max-h-20 max-w-20 cursor-pointer" imageLoader
+        [placeholderSrc]="'assets\\images\\user-placeholder.jpg'" src="{{userData().userPhotoUrl}}"
+        alt="{{userData().userName}}'s Profile Picture">
+    <h1 class="font-medium text-3xl stubborn-text">{{userData().userName}}</h1>
+</div>
+  <div class="m-4 lg:w-1/3">
+    <mat-card class="py-4">
+      <mat-card-title>
+        <div class="flex flex-row items-center px-8">
+          <app-taiga-icon class="mt-1" />
+          <p class="px-4">
+            {{ 'UserSettings.Tagia.Title' | translate }}
+          </p>
+        </div>
+      </mat-card-title>
+      <mat-card-content>
+        <app-taiga-authorization />
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

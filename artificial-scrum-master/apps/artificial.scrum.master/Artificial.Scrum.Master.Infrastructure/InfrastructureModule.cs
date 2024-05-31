@@ -9,6 +9,7 @@ using Artificial.Scrum.Master.Prioritization.Infrastructure;
 using Artificial.Scrum.Master.Retrospectives.Infrastructure.Repositories;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.TokenRefresher.Interfaces;
+using Artificial.Scrum.Master.TaskGeneration.Features.Infrastructure;
 using Artificial.Scrum.Master.UserSettings.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,7 @@ public static class InfrastructureModule
         services.AddTransient<IStorySuggestionService, OpenAIStorySuggestionService>();
         services.AddTransient<ITaskSuggestionService, OpenAITaskSuggestionService>();
         services.AddTransient<IRetroSuggestionService, OpenAIRetroSuggestionService>();
+        services.AddTransient<ITaskGenerationService, OpenAITaskGenerationService>();
         services.AddTransient<IStoryPrioritizationSuggestionService, OpenAIStoryPrioritySuggestionService>();
 
         services.AddSingleton<IActiveUserRepository, InMemorySessionUserRepository>();

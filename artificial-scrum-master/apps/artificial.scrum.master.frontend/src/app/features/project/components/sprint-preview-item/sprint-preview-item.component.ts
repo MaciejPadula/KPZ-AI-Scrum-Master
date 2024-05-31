@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SprintPreview } from '../../models/sprint-preview';
+import { Sprint } from '../../../sprints/models/sprint';
 import { AvatarComponent } from '../../../../shared/components/avatar/avatar.component';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -30,11 +30,8 @@ import { SprintStoriesPriorityComponent } from '../sprint-stories-priority/sprin
   ],
 })
 export class SprintPreviewItemComponent {
-  public sprintElement = input.required<SprintPreview>();
-  public storiesUrl = computed(() => [
-    '/UserStories',
-    this.sprintElement().sprintId,
-  ]);
+  public sprintElement = input.required<Sprint>();
+  public storiesUrl = computed(() => ['/UserStories', this.sprintElement().sprintId]);
   public storiesQueryParams = computed(() => {
     return {
       project: this.sprintElement().projectId,

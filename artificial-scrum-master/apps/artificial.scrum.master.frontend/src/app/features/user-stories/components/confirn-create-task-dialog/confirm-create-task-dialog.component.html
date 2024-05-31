@@ -1,0 +1,20 @@
+@if(data.delete){
+<h2 mat-dialog-title>{{"UserStories.GenerateTask.ConfirmReject" | translate}}</h2>
+} @else {
+<h2 mat-dialog-title>{{"UserStories.GenerateTask.ConfirmAccept" | translate}}</h2>
+}
+<mat-dialog-content>
+  <h3 mat-dialog-title>{{data.task.title}}</h3>
+  <div class="mx-7" [innerHTML]="data.task.description">
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="true">
+    {{
+    data.delete ?
+    ("Shared.AI.Reject" | translate) :
+    ("Shared.AI.Create" | translate)
+    }}
+  </button>
+  <button mat-button mat-dialog-close>{{"Shared.Cancel" | translate}}</button>
+</mat-dialog-actions>

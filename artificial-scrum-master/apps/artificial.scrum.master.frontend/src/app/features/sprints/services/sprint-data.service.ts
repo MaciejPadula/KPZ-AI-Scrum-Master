@@ -1,20 +1,20 @@
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { GetSprintPreviewResponse } from '../models/get-sprint-preview-response';
-import { SprintPreview } from '../models/sprint-preview';
+import { GetSprintsResponse } from '../models/get-sprint-response';
+import { Sprint } from '../models/sprint';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SprintPreviewDataService {
+export class SprintDataService {
   private readonly httpClient = inject(HttpClient);
 
   private readonly baseApiUrl = 'api/projects/sprints';
 
-  public getSprintPreviews(projectId: number): Observable<SprintPreview[]> {
+  public getSprints(projectId: number): Observable<Sprint[]> {
     return this.httpClient
-      .get<GetSprintPreviewResponse>(`${this.baseApiUrl}/${projectId}`)
+      .get<GetSprintsResponse>(`${this.baseApiUrl}/${projectId}`)
       .pipe(map((response) => response.sprints));
   }
 }

@@ -1,15 +1,32 @@
 <h2 mat-dialog-title>{{ 'EstimationPoker.TaskDialogTitle' | translate }}</h2>
-<mat-dialog-content [formGroup]="formGroup">
+<mat-dialog-content [formGroup]="formGroup" class="popup">
+  <div class="flex mb-4 w-full">
+    <mat-accordion class="w-full">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header #stories>
+          <mat-panel-title>
+            {{ 'EstimationPoker.AddTask.UserStories' | translate }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ 'EstimationPoker.AddTask.UserStoriesDescription' | translate }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        @defer (on interaction(stories)) {
+          <app-user-story-selector (userStorySelected)="storySelected($event)" />
+        }
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
   <div class="flex flex-col justify-center items-center">
-    <mat-form-field>
+    <mat-form-field class="w-full">
       <mat-label>{{ 'EstimationPoker.TaskName' | translate }}</mat-label>
       <input matInput formControlName="name" />
       <mat-error>{{ 'EstimationPoker.RequiredAndThreeLetters' | translate }}</mat-error>
     </mat-form-field>
   
-    <mat-form-field>
+    <mat-form-field class="w-full min-h-full">
       <mat-label>{{ 'EstimationPoker.TaskDescription' | translate }}</mat-label>
-      <input matInput formControlName="description" />
+      <textarea matInput formControlName="description"></textarea>
       <mat-error>{{ 'EstimationPoker.RequiredAndThreeLetters' | translate }}</mat-error>
     </mat-form-field>
   </div>

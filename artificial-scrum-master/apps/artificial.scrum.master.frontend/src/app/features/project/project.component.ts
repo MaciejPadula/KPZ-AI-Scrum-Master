@@ -12,9 +12,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { SprintPreviewComponent } from './components/sprint-preview/sprint-preview.component';
 import { SprintStatsComponent } from '../sprint-stats/sprint-stats.component';
-import { SprintPreviewDataService } from './services/sprint-preview.service';
+import { SprintDataService } from '../sprints/services/sprint-data.service';
 import { ToastService } from '../../shared/services/toast.service';
-import { SprintPreview } from './models/sprint-preview';
+import { Sprint } from '../sprints/models/sprint';
 import { EstimationPokerButtonComponent } from './components/estimation-poker-button/estimation-poker-button.component';
 
 @Component({
@@ -34,10 +34,10 @@ import { EstimationPokerButtonComponent } from './components/estimation-poker-bu
 export class ProjectComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly sprintPreviewDataService = inject(SprintPreviewDataService);
+  private readonly sprintPreviewDataService = inject(SprintDataService);
   private readonly toastService = inject(ToastService);
 
-  #sprints = signal<SprintPreview[]>([]);
+  #sprints = signal<Sprint[]>([]);
   public readonly sprints = this.#sprints.asReadonly();
 
   #projectId = signal<number>(0);
@@ -58,7 +58,7 @@ export class ProjectComponent implements OnInit {
   }
 
   private loadSprintPreviews(projectId: number): void {
-    this.sprintPreviewDataService.getSprintPreviews(projectId).subscribe({
+    this.sprintPreviewDataService.getSprints(projectId).subscribe({
       next: (sprints) => {
         this.#sprints.set(sprints);
       },

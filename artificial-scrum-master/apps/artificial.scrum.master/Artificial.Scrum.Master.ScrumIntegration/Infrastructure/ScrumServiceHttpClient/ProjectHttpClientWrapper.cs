@@ -67,6 +67,7 @@ internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
         httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {userTokens.AccessToken}");
 
         var httpResponse = await messageSender(httpClient, new(memberId));
+
         await EnsureStatusSuccess(httpResponse);
 
         return await httpResponse.Content.ReadFromJsonAsync<TResponse>()

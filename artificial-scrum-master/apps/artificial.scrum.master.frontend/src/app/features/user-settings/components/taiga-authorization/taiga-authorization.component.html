@@ -1,15 +1,20 @@
 <div class="m-4 flex justify-start">
   @if (!showLoginForm()) {
-  <div class="flex flex-col">
-    <p>{{ 'UserSettings.Tagia.AlreadyLoggedIn' | translate }}</p>
-    <button
-      mat-raised-button
+  <div class="flex flex-col items-center">
+    <div class="flex flex-row pl-4 py-2">
+      <mat-icon>check</mat-icon>
+      <p class="mr-1">{{ 'UserSettings.Tagia.AlreadyLoggedIn' | translate }}</p>
+    </div>
+    <div>
+      <button
+      mat-stroked-button
       color="primary"
       type="button"
       (click)="forceLoginForm()"
-    >
+      >
       {{ 'UserSettings.Tagia.ProvideDataOnceAgain' | translate }}
     </button>
+  </div>
   </div>
   } @else {
   <div [formGroup]="formGroup" class="flex flex-col w-full">

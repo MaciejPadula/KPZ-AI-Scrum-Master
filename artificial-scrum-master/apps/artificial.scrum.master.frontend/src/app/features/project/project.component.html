@@ -1,22 +1,19 @@
-<div class="w-full flex flex-col sm:flex-row">
+<div class="w-full flex flex-col sm:flex-row pt-4">
   <div class="w-full sm:w-3/5">
-    <p class="mat-headline-5">
-      {{ 'Project.Title' | translate }}
-    </p>
 
     <div class="w-full">
-      <app-sprint-preview [sprints]="sprints()" />
       @if (projectId() && topSprintId()!==topSprintIdNotSet) {
-      <div class="mx-4">
-        <app-sprint-stats
-          [projectId]="projectId()"
-          [sprintId]="topSprintId()"
-        />
-      </div>
-      }
+        <div class="mx-4">
+          <app-sprint-stats
+            [projectId]="projectId()"
+            [sprintId]="topSprintId()"
+          />
+        </div>
+        }
+      <app-sprint-preview [sprints]="sprints()" />      
     </div>
   </div>
-  <div class="w-full sm:w-2/5 flex flex-col space-y-4">
+  <div class="w-full sm:w-2/5 flex flex-col space-y-4 px-4">
     @if (projectId()) {
       <app-estimation-poker-button [projectId]="projectId()" />
       <app-project-feed [projectId]="projectId()" />

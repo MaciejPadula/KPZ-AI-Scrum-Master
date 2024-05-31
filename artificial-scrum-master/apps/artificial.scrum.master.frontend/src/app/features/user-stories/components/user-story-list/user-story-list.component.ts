@@ -16,7 +16,8 @@ import { finalize } from 'rxjs';
   templateUrl: './user-story-list.component.html',
 })
 export class UserStoryListComponent implements OnInit {
-  private projectId: number;
+  #projectId = signal<number>(0);
+  public projectId = this.#projectId.asReadonly();
   private sprintId: number;
 
   private readonly translateService = inject(TranslateService);
@@ -38,10 +39,10 @@ export class UserStoryListComponent implements OnInit {
       this.sprintId = +params['sprintId'];
     });
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.projectId = +params['project'];
+      this.#projectId.set(+params['project']);
     });
 
-    this.loadUserStories(this.projectId, this.sprintId);
+    this.loadUserStories(this.#projectId(), this.sprintId);
   }
 
   private loadUserStories(projectId: number, sprintId: number) {

@@ -1,3 +1,5 @@
+using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
+using Artificial.Scrum.Master.ScrumIntegration.Features.AddNewTask;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Burndown;
 using Artificial.Scrum.Master.ScrumIntegration.Features.EditTaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.EditUserStoryDetails;
@@ -5,12 +7,14 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.UserStoryDetails;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TimeLine;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
 using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStoryDetails;
+using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -72,7 +76,7 @@ public static class ScrumIntegrationEndpoints
                 {
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
                     await context.Response.WriteAsJsonAsync(new
-                        { Message = "Either userStoryId or sprintId is required" });
+                    { Message = "Either userStoryId or sprintId is required" });
                     return;
                 }
 
@@ -118,6 +122,37 @@ public static class ScrumIntegrationEndpoints
             {
                 var result = await service.Handle(taskId, request);
                 await context.Response.WriteAsJsonAsync(result);
+            });
+
+        routes.MapPost("/api/task",
+            async (HttpContext context, ICreateTaskService service,
+                           [FromBody] CreateTaskRequest request) =>
+            {
+                if (string.IsNullOrEmpty(request.Subject) || !request.ProjectId.HasValue)
+                {
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    await context.Response.WriteAsJsonAsync(new
+                    { Message = "Subject or ProjectId is missing" });
+                    return;
+                }
+
+                try
+                {
+                    await service.Handle(request);
+                    context.Response.StatusCode = StatusCodes.Status201Created;
+                }
+                catch (UnauthorizedAccessException e)
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    await context.Response.WriteAsJsonAsync(new
+                    { Message = e });
+                }
+                catch (Exception e)
+                {
+                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                    await context.Response.WriteAsJsonAsync(new
+                    { Message = e });
+                }
             });
     }
 }

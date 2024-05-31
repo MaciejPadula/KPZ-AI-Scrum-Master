@@ -28,7 +28,7 @@ internal class SprintsResponseMapper : ISprintsResponseMapper
                 StatusName = userStory.StatusExtraInfo?.Name,
                 IsClosed = userStory.IsClosed,
                 UserStoryRef = userStory.Ref,
-                TotalPoints = userStory.TotalPoints
+                TotalPoints = userStory.TotalPoints ?? 0
             })
         }).ToList();
 

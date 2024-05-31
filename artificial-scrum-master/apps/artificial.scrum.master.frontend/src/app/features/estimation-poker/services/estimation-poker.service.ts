@@ -48,8 +48,6 @@ export class EstimationPokerService {
   #userStories = signal<UserStoryPreview[]>([]);
   public userStories = this.#userStories.asReadonly();
 
-  public isLoading = signal<boolean>(false);
-
   public loadSession(sessionId: string) {
     this.dataService.getSession(sessionId)
       .pipe(switchMap((session) => {

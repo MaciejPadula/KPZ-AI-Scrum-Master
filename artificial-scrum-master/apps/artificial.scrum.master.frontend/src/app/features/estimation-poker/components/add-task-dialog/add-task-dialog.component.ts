@@ -15,6 +15,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { UserStorySelectorComponent } from '../user-story-selector/user-story-selector.component';
 import { SelectedUserStory } from '../../models/selected-user-story';
+import { AddTaskDialogService } from '../../services/add-task-dialog.service';
 @Component({
   selector: 'app-add-task-dialog',
   standalone: true,
@@ -34,13 +35,13 @@ export class AddTaskDialogComponent {
     EstimationPokerDataService
   );
   private readonly estimationPokerService = inject(EstimationPokerService);
+  private readonly addTaskDialogService = inject(AddTaskDialogService);
   private readonly toastService = inject(ToastService);
   private readonly translateService = inject(TranslateService);
   private readonly sessionId: string = inject(MAT_DIALOG_DATA);
 
   #loading = signal<boolean>(false);
-  #loadingFromService = this.estimationPokerService.isLoading;
-  public loading = computed(() => this.#loading() || this.#loadingFromService());
+  public loading = computed(() => this.#loading() || this.addTaskDialogService.loader());
 
   public nameControl = new FormControl('', [
     Validators.required,

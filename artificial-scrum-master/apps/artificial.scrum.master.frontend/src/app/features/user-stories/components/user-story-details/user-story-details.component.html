@@ -2,49 +2,76 @@
   @if(details() != null && !error()){
   <mat-card class="h-full w-full" style="max-height: 80dvh">
     <mat-card-header>
-      <mat-card-title class="stubborn-text">#{{ details()?.number }} {{ details()?.title }}</mat-card-title>
+      <mat-card-title class="stubborn-text"
+        >#{{ details()?.number }} {{ details()?.title }}</mat-card-title
+      >
       <span class="absolute right-0 top-0">
         <button mat-icon-button mat-dialog-close>
           <mat-icon class="stubborn-icon">close</mat-icon>
         </button>
       </span>
       <mat-card-subtitle>
-        <span mat-button [style.color]="
+        <span
+          mat-button
+          [style.color]="
             !details()?.isStatusClosed ? details()?.statusColor : null
-          ">
+          "
+        >
           {{
-          details()?.isStatusClosed
-          ? ('Shared.Words.Closed' | translate)
-          : details()?.statusName
+            details()?.isStatusClosed
+              ? ('Shared.Words.Closed' | translate)
+              : details()?.statusName
           }}
         </span>
       </mat-card-subtitle>
       <mat-card-subtitle>
         <div class="flex items-center">
           {{ 'UserStories.AssignedTo' | translate }}:
-          <div style="margin: 0 0.5rem 0 1rem" mat-card-avatar [ngStyle]="{
+          <div
+            style="margin: 0 0.5rem 0 1rem"
+            mat-card-avatar
+            [ngStyle]="{
               'background-image': 'url(' + details()?.assignedToPhotoUrl + ')',
               'background-size': 'cover'
-            }"></div>
+            }"
+          ></div>
           {{ details()?.assignedToName }}
         </div>
       </mat-card-subtitle>
     </mat-card-header>
-    <div class="ml-4 mr-6 flex flex-row items-center stubborn-text" style="justify-content: space-between">
-      <mat-card-title>{{ 'UserStories.Description' | translate }}:</mat-card-title>
+    <div
+      class="ml-4 mr-6 flex flex-row items-center stubborn-text"
+      style="justify-content: space-between"
+    >
+      <mat-card-title
+        >{{ 'UserStories.Description' | translate }}:</mat-card-title
+      >
       <span class="flex space-x-3">
         @if(!suggestionsOpen()){
-        <button (click)="generateTaskSuggestions()" mat-mini-fab
-          [matTooltip]="'UserStories.GenerateSuggestedTasks' | translate">
-          <mat-icon style="filter: invert(1)" class="stubborn-icon-inverted">psychology</mat-icon>
+        <button
+          (click)="generateTaskSuggestions()"
+          mat-mini-fab
+          [matTooltip]="'UserStories.GenerateSuggestedTasks' | translate"
+        >
+          <mat-icon style="filter: invert(1)" class="stubborn-icon-inverted"
+            >psychology</mat-icon
+          >
         </button>
         }
-        <button (click)="toggleDescriptionEditor()" mat-mini-fab  [matTooltip]="'Shared.OpenEditor' | translate"
-          color="primary">
+        <button
+          (click)="toggleDescriptionEditor()"
+          mat-mini-fab
+          [matTooltip]="'Shared.OpenEditor' | translate"
+          color="primary"
+        >
           <mat-icon>edit_document</mat-icon>
         </button>
-        <button (click)="generateSuggestion()" mat-mini-fab
-           [matTooltip]="'UserStories.GenerateImprovementSuggestion' | translate" color="primary">
+        <button
+          (click)="generateSuggestion()"
+          mat-mini-fab
+          [matTooltip]="'UserStories.GenerateImprovementSuggestion' | translate"
+          color="primary"
+        >
           <mat-icon>auto_fix_high</mat-icon>
         </button>
       </span>
@@ -58,22 +85,30 @@
           <p>{{ 'Shared.Edit.NoDescription' | translate }}</p>
           }
         </div>
-        <app-edit-story-details #userStoryEditor [details]="details()" [storyId]="storyId" [isLoading]="isLoading()"
-          (storyDetailsUpdate)="updateStoryDetails($event)" />
+        <app-edit-story-details
+          #userStoryEditor
+          [details]="details()"
+          [storyId]="storyId"
+          [isLoading]="isLoading()"
+          (storyDetailsUpdate)="updateStoryDetails($event)"
+        />
       </mat-card-content>
     </ng-scrollbar>
   </mat-card>
   @if(suggestionsOpen() && taskSuggestions()){
   <div class="stubborn-text w-1/3 h-full side relative">
-    <app-task-suggestions class="w-1/3 h-full side relative" (closeSuggestionsEvent)="closeSuggestions()"
-      [taskSuggestions]="taskSuggestions()!" [storyId]="storyId" [projectId]="projectId">
+    <app-task-suggestions
+      class="w-1/3 h-full side relative"
+      (closeSuggestionsEvent)="closeSuggestions()"
+      [taskSuggestions]="taskSuggestions()!"
+      [storyId]="storyId"
+      [projectId]="projectId"
+    >
     </app-task-suggestions>
   </div>
-  }
-  } @else {
+  } } @else {
   <mat-spinner></mat-spinner>
-  }
-  @if(error()){
+  } @if(error()){
   <mat-card class="h-full w-full">
     <mat-card-header>
       <mat-card-title>{{ 'UserStories.Error' | translate }}</mat-card-title>

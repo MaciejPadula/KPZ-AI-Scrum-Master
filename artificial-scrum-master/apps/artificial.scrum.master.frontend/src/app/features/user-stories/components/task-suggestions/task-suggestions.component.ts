@@ -1,13 +1,11 @@
 import { Component, EventEmitter, inject, Output, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from 'apps/artificial.scrum.master.frontend/src/app/shared/material.module';
+import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { GenerateTaskSuggestionsResponse, TaskSuggestion } from '../../models/get-task-suggestions-response';
 import { ConfirmCreateTaskDialogComponent } from '../confirn-create-task-dialog/confirm-create-task-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
-import { ToastService } from 'apps/artificial.scrum.master.frontend/src/app/shared/services/toast.service';
-import { CreateTaskRequest } from '../../models/create-task-request';
+import { ToastService } from '../../../../shared/services/toast.service';
 import { TaskService } from '../../services/task.service';
 
 @Component({

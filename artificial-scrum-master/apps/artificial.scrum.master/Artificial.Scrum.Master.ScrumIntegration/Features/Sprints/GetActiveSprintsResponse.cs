@@ -17,8 +17,8 @@ internal readonly record struct ActiveSprint(
 );
 
 internal readonly record struct ActiveSprintUserStory(
-    int UserStoryId,
-    string? UserStoryName,
+    int Id,
+    string? Name,
     string? StatusName,
     bool IsClosed,
     int UserStoryRef,

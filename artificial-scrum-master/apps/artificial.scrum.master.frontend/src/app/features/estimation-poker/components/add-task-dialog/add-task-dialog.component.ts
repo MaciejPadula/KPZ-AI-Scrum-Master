@@ -1,4 +1,4 @@
-import { Component, Inject, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from '../../../../shared/material.module';
@@ -13,11 +13,21 @@ import {
 import { finalize } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { UserStorySelectorComponent } from '../user-story-selector/user-story-selector.component';
+import { SelectedUserStory } from '../../models/selected-user-story';
+import { AddTaskDialogService } from '../../services/add-task-dialog.service';
 @Component({
   selector: 'app-add-task-dialog',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './add-task-dialog.component.html',
+  styleUrls: ['./add-task-dialog.component.scss'],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    UserStorySelectorComponent,
+  ],
 })
 export class AddTaskDialogComponent {
   private readonly dialogRef = inject(MatDialogRef<AddTaskDialogComponent>);
@@ -25,11 +35,13 @@ export class AddTaskDialogComponent {
     EstimationPokerDataService
   );
   private readonly estimationPokerService = inject(EstimationPokerService);
+  private readonly addTaskDialogService = inject(AddTaskDialogService);
   private readonly toastService = inject(ToastService);
   private readonly translateService = inject(TranslateService);
+  private readonly sessionId: string = inject(MAT_DIALOG_DATA);
 
   #loading = signal<boolean>(false);
-  public loading = this.#loading.asReadonly();
+  public loading = computed(() => this.#loading() || this.addTaskDialogService.loader());
 
   public nameControl = new FormControl('', [
     Validators.required,
@@ -44,8 +56,6 @@ export class AddTaskDialogComponent {
     description: this.descriptionControl,
   });
 
-  constructor(@Inject(MAT_DIALOG_DATA) private readonly sessionId: string) {}
-
   public addTask() {
     this.#loading.set(true);
     this.estimationPokerDataService
@@ -59,15 +69,24 @@ export class AddTaskDialogComponent {
         next: () => {
           this.estimationPokerService.loadSessionTask(this.sessionId);
           this.dialogRef.close();
-          this.toastService.openSuccess(this.translateService.instant("EstimationPoker.AddTask.Success"));
+          this.toastService.openSuccess(
+            this.translateService.instant('EstimationPoker.AddTask.Success')
+          );
         },
         error: () => {
-          this.toastService.openError(this.translateService.instant("EstimationPoker.AddTask.Error"));
-        }
+          this.toastService.openError(
+            this.translateService.instant('EstimationPoker.AddTask.Error')
+          );
+        },
       });
   }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  public storySelected(story: SelectedUserStory) {
+    this.nameControl.setValue(story.name);
+    this.descriptionControl.setValue(story.description);
   }
 }

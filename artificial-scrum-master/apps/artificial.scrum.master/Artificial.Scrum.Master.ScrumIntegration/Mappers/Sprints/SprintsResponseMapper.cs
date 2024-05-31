@@ -23,8 +23,8 @@ internal class SprintsResponseMapper : ISprintsResponseMapper
             EstimatedFinish = sprint.EstimatedFinish,
             UserStories = sprint.UserStories?.Select(userStory => new ActiveSprintUserStory
             {
-                UserStoryId = userStory.Id,
-                UserStoryName = userStory.Subject,
+                Id = userStory.Id,
+                Name = userStory.Subject,
                 StatusName = userStory.StatusExtraInfo?.Name,
                 IsClosed = userStory.IsClosed,
                 UserStoryRef = userStory.Ref,

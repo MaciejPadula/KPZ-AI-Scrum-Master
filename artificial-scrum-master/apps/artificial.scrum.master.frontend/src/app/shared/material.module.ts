@@ -28,6 +28,7 @@ import { MatCardModule } from '@angular/material/card';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [],
@@ -57,6 +58,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatDialogModule,
     MatTabsModule,
     MatTooltipModule,
+    MatListModule,
   ],
   exports: [
     MatButtonModule,
@@ -83,6 +85,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatDialogModule,
     MatTabsModule,
     MatTooltipModule,
+    MatListModule,
   ],
 })
 export class MaterialModule {}

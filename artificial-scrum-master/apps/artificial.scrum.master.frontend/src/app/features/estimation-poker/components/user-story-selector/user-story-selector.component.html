@@ -1,0 +1,5 @@
+<mat-selection-list #shoes>
+  @for (story of availableUserStories(); track $index) {
+    <mat-list-item (click)="selectUserStory(story)">{{story.name}}</mat-list-item>
+  }
+</mat-selection-list>

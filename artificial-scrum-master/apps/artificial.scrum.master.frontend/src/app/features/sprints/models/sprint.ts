@@ -1,4 +1,4 @@
-export interface SprintPreview {
+export interface Sprint {
   projectId: number;
   projectName: string;
   projectSlug: string;
@@ -7,12 +7,12 @@ export interface SprintPreview {
   sprintSlug: string;
   estimatedStart: string;
   estimatedFinish: string;
-  userStories: UserStoryPrweview[];
+  userStories: UserStoryPreview[];
 }
 
-export interface UserStoryPrweview {
-  userStoryId: number;
-  userStoryName: string;
+export interface UserStoryPreview {
+  id: number;
+  name: string;
   statusName: string;
   isClosed: boolean;
   userStoryRef: number;

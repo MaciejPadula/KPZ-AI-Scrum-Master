@@ -11,10 +11,10 @@ internal class Sprint
     public string? Slug { get; set; }
     [JsonPropertyName("estimated_start")] public string? EstimatedStart { get; set; }
     [JsonPropertyName("estimated_finish")] public string? EstimatedFinish { get; set; }
-    [JsonPropertyName("user_stories")] public List<UserStory>? UserStories { get; set; }
+    [JsonPropertyName("user_stories")] public List<SprintUserStory>? UserStories { get; set; }
 }
 
-internal class UserStory
+internal class SprintUserStory
 {
     [JsonPropertyName("status_extra_info")] public StatusExtraInfo? StatusExtraInfo { get; set; }
     public int Id { get; set; }

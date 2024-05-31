@@ -1,4 +1,4 @@
-namespace Artificial.Scrum.Master.ScrumIntegration.SharedFeatures;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.GetStoriesWithTasks;
 
 public readonly record struct GetStoriesWithTasksResponse(
     List<GetStoriesWithTaskResponseElement> Stories

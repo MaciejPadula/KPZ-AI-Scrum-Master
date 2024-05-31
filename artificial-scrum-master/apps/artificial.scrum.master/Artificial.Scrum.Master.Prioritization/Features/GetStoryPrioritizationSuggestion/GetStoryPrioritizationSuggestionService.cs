@@ -1,7 +1,7 @@
 using Artificial.Scrum.Master.Prioritization.Exceptions;
 using Artificial.Scrum.Master.Prioritization.Infrastructure;
 using Artificial.Scrum.Master.Prioritization.Infrastructure.Models;
-using Artificial.Scrum.Master.ScrumIntegration.SharedFeatures;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.GetStoriesWithTasks;
 
 namespace Artificial.Scrum.Master.Prioritization.Features.GetStoryPrioritizationSuggestion;
 
@@ -14,13 +14,16 @@ internal class GetStoryPrioritizationSuggestionService : IGetStoryPrioritization
 {
     private readonly IStoryPrioritizationSuggestionService _prioritizationSuggestionService;
     private readonly IGetStoriesWithTasksService _getStoriesWithTasksService;
+    private readonly IStoryPrioritizationMapper _storyPrioritizationMapper;
 
     public GetStoryPrioritizationSuggestionService(
         IStoryPrioritizationSuggestionService prioritizationSuggestionService,
-        IGetStoriesWithTasksService getStoriesWithTasksService)
+        IGetStoriesWithTasksService getStoriesWithTasksService,
+        IStoryPrioritizationMapper storyPrioritizationMapper)
     {
         _prioritizationSuggestionService = prioritizationSuggestionService;
         _getStoriesWithTasksService = getStoriesWithTasksService;
+        _storyPrioritizationMapper = storyPrioritizationMapper;
     }
 
     public async Task<GetStoryPrioritizationSuggestionResponse> Handle(
@@ -29,21 +32,7 @@ internal class GetStoryPrioritizationSuggestionService : IGetStoryPrioritization
         bool generateAgain)
     {
         var storiesWithTasks = await _getStoriesWithTasksService.Handle(projectId, sprintId);
-
-        var stories = new List<StoryWithTasks>();
-        foreach (var story in storiesWithTasks.Stories)
-        {
-            if (!story.UserStoryId.HasValue || string.IsNullOrEmpty(story.UserStorySubject))
-            {
-                continue;
-            }
-
-            stories.Add(new StoryWithTasks(
-                story.UserStoryId.Value,
-                story.UserStorySubject,
-                story.TaskNames.ToList()
-            ));
-        }
+        var stories = _storyPrioritizationMapper.MapStoriesWithTasks(storiesWithTasks.Stories);
 
         var prioritizationSuggestion = await _prioritizationSuggestionService.GetStoryPrioritizationSuggestion(
             new StoriesPrioritySuggestionRequest(stories), generateAgain);
@@ -53,40 +42,8 @@ internal class GetStoryPrioritizationSuggestionService : IGetStoryPrioritization
             throw new GeneratePrioritySuggestionFailException(
                 $"Generating stories priority suggestion for sprint:{sprintId} failed");
         }
-        // todo: middleware dodac!!!
 
-        return ReorderModelsById(storiesWithTasks.Stories, prioritizationSuggestion.Value.UserStories);
-    }
-
-    private GetStoryPrioritizationSuggestionResponse ReorderModelsById(
-        List<GetStoriesWithTaskResponseElement> original,
-        List<UserStory> suggestion)
-    {
-        Dictionary<int, GetStoriesWithTaskResponseElement> modelDict = new();
-        foreach (var story in original)
-        {
-            if (!story.UserStoryId.HasValue || string.IsNullOrEmpty(story.UserStorySubject))
-            {
-                continue;
-            }
-
-            modelDict.Add(story.UserStoryId.Value, story);
-        }
-
-        var orderedModels = suggestion
-            .Select(us => modelDict[us.UserStoryId])
-            .ToList();
-
-        return new GetStoryPrioritizationSuggestionResponse(
-            Stories: orderedModels.Select(s => new StoryPrioritySuggestion(
-                s.UserStoryId,
-                s.UserStorySubject,
-                s.UserStoryRef,
-                s.SprintId,
-                s.SprintSlug,
-                s.SprintName,
-                s.SprintOrder
-            )).ToList()
-        );
+        return _storyPrioritizationMapper.MapPrioritySuggestionResponse(storiesWithTasks.Stories,
+            prioritizationSuggestion.Value.UserStories);
     }
 }

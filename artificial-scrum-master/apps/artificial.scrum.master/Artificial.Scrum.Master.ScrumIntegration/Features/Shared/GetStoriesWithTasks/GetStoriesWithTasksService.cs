@@ -5,7 +5,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.UserStories;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.SharedFeatures;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.GetStoriesWithTasks;
 
 public interface IGetStoriesWithTasksService
 {

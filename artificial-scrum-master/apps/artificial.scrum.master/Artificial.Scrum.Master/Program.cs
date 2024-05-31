@@ -52,6 +52,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseScrumProjectIntegration();
 app.UseEditSuggestionsModule();
+app.UsePrioritySuggestionsModule();
 
 app.RegisterUserSettingsEndpoints();
 app.RegisterEstimationPokerEndpoints();

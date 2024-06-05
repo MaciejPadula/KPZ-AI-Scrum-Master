@@ -40,16 +40,15 @@
             class="flex flex-col justify-center items-center story-priority-list"
             (cdkDropListDropped)="drop($event)"
           >
-            @for (story of storiesSuggestions(); track story.userStoryId; let
-            idx = $index) {
+            @for (story of storiesSuggestions(); track story.id; let idx = $index) {
             <mat-card cdkDrag class="w-11/12 my-0.5 story-list-item">
               <mat-card-content>
                 <div class="flex justify-between">
                   <div class="flex flex-row">
                     <div class="mr-2">{{ idx + 1 }}.</div>
                     <div class="mat-title">
-                      #{{ story.userStoryRef }}
-                      {{ story.userStorySubject }}
+                      #{{ story.ref }}
+                      {{ story.subject }}
                     </div>
                   </div>
                   <div>

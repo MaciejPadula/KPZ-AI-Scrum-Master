@@ -144,7 +144,10 @@ internal class TimeLineEventObjectsParser : ITimeLineEventObjectsParser
                 $"{nameof(ValuesDiff.DescriptionDiff)}", "Description has been changed"));
         }
 
-        if (valuesDiff.Attachments is null || valuesDiff.Attachments.New.IsNullOrEmpty()) return keyValuePairs;
+        if (valuesDiff.Attachments is null || valuesDiff.Attachments.New.IsNullOrEmpty())
+        {
+            return keyValuePairs;
+        }
 
         var value = valuesDiff.Attachments.New?.FirstOrDefault()?.Url;
         if (value is not null)

@@ -19,9 +19,9 @@ import { EditorStateService } from '../../../../shared/services/editor-state.ser
 import { StoryDetailsDataService } from '../../services/story-details-data.service';
 import { ScrollService } from '../../../../shared/services/scroll.service';
 import { GenerateTaskSuggestionsResponse } from '../../models/get-task-suggestions-response';
-import { ToastService } from 'apps/artificial.scrum.master.frontend/src/app/shared/services/toast.service';
+import { ToastService } from '../../../../shared/services/toast.service';
 import { HttpClient } from '@angular/common/http';
-import { TaskSuggestionsComponent } from "../task-suggestions/task-suggestions.component";
+import { TaskSuggestionsComponent } from '../task-suggestions/task-suggestions.component';
 import { TaskSuggestionsService } from '../../services/task-suggestions.service';
 
 @Component({
@@ -34,8 +34,8 @@ import { TaskSuggestionsService } from '../../services/task-suggestions.service'
     MaterialModule,
     TranslateModule,
     EditStoryDetailsComponent,
-    TaskSuggestionsComponent
-  ]
+    TaskSuggestionsComponent,
+  ],
 })
 export class UserStoryDetailsComponent implements OnInit {
   @ViewChild('userStoryDescription', { read: ElementRef })
@@ -63,7 +63,9 @@ export class UserStoryDetailsComponent implements OnInit {
 
   private readonly dialog = inject(MatDialog);
 
-  constructor(@Inject(MAT_DIALOG_DATA) data: { userStoryId: number, projectId: number }) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) data: { userStoryId: number; projectId: number }
+  ) {
     this.storyId = data.userStoryId;
     this.projectId = data.projectId;
   }
@@ -141,7 +143,8 @@ export class UserStoryDetailsComponent implements OnInit {
     }
     this.suggestionsOpen.set(true);
 
-    this.taskSuggestionsService.getTaskSuggestions(this.details()!.title, this.details()!.description)
+    this.taskSuggestionsService
+      .getTaskSuggestions(this.details()!.title, this.details()!.description)
       .subscribe({
         next: (response) => this.taskSuggestions.set(response),
         error: () => this.error.set(true),

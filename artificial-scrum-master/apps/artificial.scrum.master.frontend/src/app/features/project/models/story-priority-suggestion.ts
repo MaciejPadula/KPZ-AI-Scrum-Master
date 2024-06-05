@@ -1,8 +1,8 @@
 export interface StoryPrioritySuggestion {
-  userStoryId: number | null;
-  userStorySubject: string | null;
-  userStoryRef: number | null;
-  sprintId: number;
+  id: number;
+  subject: string;
+  ref: number;
+  sprintId: number | null;
   sprintSlug: string | null;
   sprintName: string | null;
   sprintOrder: number | null;

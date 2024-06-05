@@ -27,6 +27,6 @@ internal class TasksResponseMapper : ITasksResponseMapper
             IsClosed = x.IsClosed
         }).ToList();
 
-        return new GetStoryTasksResponse(Tasks: mappedTasks);
+        return new GetStoryTasksResponse(mappedTasks);
     }
 }

@@ -1,4 +1,4 @@
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.GetStoriesWithTasks;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Handlers;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.Task;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.UserStory;
 
@@ -17,30 +17,33 @@ internal class UserStoriesWithTasksMapper : IUserStoriesWithTasksMapper
         List<UserStory> userStoriesWithTasks,
         List<StoryTask> tasks)
     {
-        var mappedUserStories = userStoriesWithTasks.OrderBy(us => us.SprintOrder)
-            .Select(us =>
-            {
-                var taskNames = tasks
-                    .Where(t =>
-                        !string.IsNullOrEmpty(t.Subject) &&
-                        t.UserStoryId is not null &&
-                        t.UserStoryId == us.Id)
-                    .Select(t => t.Subject ?? string.Empty)
-                    .ToList();
+        var taskNames = tasks
+            .Where(t =>
+                t.UserStoryId is not null &&
+                !string.IsNullOrEmpty(t.Subject)
+            )
+            .GroupBy(t => t.UserStoryId!.Value)
+            .ToDictionary(
+                t => t.Key,
+                t => t
+                    .Select(task => task.Subject ?? string.Empty)
+                    .ToList()
+            );
 
-                return new GetStoriesWithTaskResponseElement
-                {
-                    UserStoryId = us.Id,
-                    UserStorySubject = us.Subject,
-                    UserStoryRef = us.Ref,
-                    SprintId = us.Milestone,
-                    SprintSlug = us.MilestoneSlug,
-                    SprintName = us.MilestoneName,
-                    SprintOrder = us.SprintOrder,
-                    TaskNames = taskNames
-                };
+        var mappedUserStories = userStoriesWithTasks
+            .OrderBy(us => us.SprintOrder)
+            .Select(us => new StoryWithTasksTitles
+            {
+                Id = us.Id,
+                Subject = us.Subject ?? string.Empty,
+                Ref = us.Ref,
+                SprintId = us.Milestone,
+                SprintSlug = us.MilestoneSlug,
+                SprintName = us.MilestoneName,
+                SprintOrder = us.SprintOrder,
+                TaskNames = taskNames[us.Id],
             }).ToList();
 
-        return new GetStoriesWithTasksResponse(Stories: mappedUserStories);
+        return new GetStoriesWithTasksResponse(mappedUserStories);
     }
 }

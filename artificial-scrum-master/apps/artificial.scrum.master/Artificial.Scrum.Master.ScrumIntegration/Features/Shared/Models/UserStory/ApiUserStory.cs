@@ -4,8 +4,8 @@ namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.UserSt
 
 public class UserStory
 {
-    public int? Id { get; set; }
-    [JsonPropertyName("ref")] public int? Ref { get; set; }
+    public int Id { get; set; }
+    [JsonPropertyName("ref")] public int Ref { get; set; }
     public string? Subject { get; set; }
     [JsonPropertyName("status_extra_info")] public StatusExtraInfo? StatusExtraInfo { get; set; }
     [JsonPropertyName("assigned_to_extra_info")] public UserInfo? AssignedToExtraInfo { get; set; }

@@ -32,6 +32,6 @@ internal class SprintsResponseMapper : ISprintsResponseMapper
             })
         }).ToList();
 
-        return new GetActiveSprintsResponse(Sprints: mappedSprints);
+        return new GetActiveSprintsResponse(mappedSprints);
     }
 }

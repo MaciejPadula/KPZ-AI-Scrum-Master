@@ -5,21 +5,21 @@ using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.UserStories;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.GetStoriesWithTasks;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Handlers;
 
-public interface IGetStoriesWithTasksService
+public interface IGetStoriesWithTasksHandler
 {
     Task<GetStoriesWithTasksResponse> Handle(string projectId, string sprintId);
 }
 
-internal class GetStoriesWithTasksService : IGetStoriesWithTasksService
+internal class GetStoriesWithTasksHandler : IGetStoriesWithTasksHandler
 {
     private readonly IAccessTokenProvider _accessTokenProvider;
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
     private readonly IUserStoriesWithTasksMapper _userStoriesMapper;
     private readonly IUserAccessor _userAccessor;
 
-    public GetStoriesWithTasksService(
+    public GetStoriesWithTasksHandler(
         IAccessTokenProvider accessTokenProvider,
         IProjectHttpClientWrapper projectHttpClientWrapper,
         IUserStoriesWithTasksMapper userStoriesMapper,

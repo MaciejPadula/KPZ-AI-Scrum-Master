@@ -32,11 +32,8 @@ export class SprintStoriesPriorityComponent implements OnInit {
     StoriesPrioritySuggestionService
   );
 
-  #sprintId: number;
-  public sprintId: number;
-
-  #projectId: number;
-  public projectId: number;
+  private readonly sprintId: number;
+  private readonly projectId: number;
 
   #storiesSuggestions = signal<StoryPrioritySuggestion[]>([]);
   public storiesSuggestions = this.#storiesSuggestions.asReadonly();
@@ -50,15 +47,13 @@ export class SprintStoriesPriorityComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) data: { sprintId: number; projectId: number }
   ) {
-    this.#sprintId = data.sprintId;
     this.sprintId = data.sprintId;
-    this.#projectId = data.projectId;
     this.projectId = data.projectId;
   }
 
   ngOnInit(): void {
     this.storySuggestionService
-      .getSuggestedStoriesPriority(this.#projectId, this.#sprintId)
+      .getSuggestedStoriesPriority(this.projectId, this.sprintId)
       .subscribe({
         next: (suggestions) => {
           this.#storiesSuggestions.set(suggestions);
@@ -74,7 +69,7 @@ export class SprintStoriesPriorityComponent implements OnInit {
   generateSuggestionAnew() {
     this.#isLoading.set(true);
     this.storySuggestionService
-      .getSuggestedStoriesPriority(this.#projectId, this.#sprintId, true)
+      .getSuggestedStoriesPriority(this.projectId, this.sprintId, true)
       .subscribe({
         next: (suggestions) => {
           this.#storiesSuggestions.set(suggestions);

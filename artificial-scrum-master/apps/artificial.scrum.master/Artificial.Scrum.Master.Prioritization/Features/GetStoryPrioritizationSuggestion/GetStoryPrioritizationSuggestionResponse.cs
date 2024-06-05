@@ -5,10 +5,10 @@ internal readonly record struct GetStoryPrioritizationSuggestionResponse(
 );
 
 internal readonly record struct StoryPrioritySuggestion(
-    int? UserStoryId,
-    string? UserStorySubject,
-    int? UserStoryRef,
-    int SprintId,
+    int Id,
+    string Subject,
+    int Ref,
+    int? SprintId,
     string? SprintSlug,
     string? SprintName,
     int? SprintOrder

@@ -1,39 +1,39 @@
 using Artificial.Scrum.Master.Prioritization.Infrastructure.Models;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.GetStoriesWithTasks;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Handlers;
 
 namespace Artificial.Scrum.Master.Prioritization.Features.GetStoryPrioritizationSuggestion;
 
 internal interface IStoryPrioritizationMapper
 {
-    List<StoryWithTasks> MapStoriesWithTasks(List<GetStoriesWithTaskResponseElement> responseElements);
+    List<StoryWithTasks> MapStoriesWithTasks(List<StoryWithTasksTitles> responseElements);
 
     GetStoryPrioritizationSuggestionResponse MapPrioritySuggestionResponse(
-        List<GetStoriesWithTaskResponseElement> original,
+        List<StoryWithTasksTitles> original,
         List<UserStory> suggestion);
 }
 
 internal class StoryPrioritizationMapper : IStoryPrioritizationMapper
 {
-    public List<StoryWithTasks> MapStoriesWithTasks(List<GetStoriesWithTaskResponseElement> responseElements)
+    public List<StoryWithTasks> MapStoriesWithTasks(List<StoryWithTasksTitles> responseElements)
     {
         var stories = responseElements
-            .Where(story => story.UserStoryId.HasValue && !string.IsNullOrEmpty(story.UserStorySubject))
+            .Where(story => !string.IsNullOrEmpty(story.Subject))
             .Select(story => new StoryWithTasks(
-                story.UserStoryId!.Value,
-                story.UserStorySubject!,
-                story.TaskNames.ToList()))
-            .ToList();
+                story.Id,
+                story.Subject,
+                story.TaskNames.ToList())
+            ).ToList();
 
         return stories;
     }
 
     public GetStoryPrioritizationSuggestionResponse MapPrioritySuggestionResponse(
-        List<GetStoriesWithTaskResponseElement> original,
+        List<StoryWithTasksTitles> original,
         List<UserStory> suggestion)
     {
         var modelDict = original
-            .Where(story => story.UserStoryId.HasValue && !string.IsNullOrEmpty(story.UserStorySubject))
-            .ToDictionary(story => story.UserStoryId!.Value);
+            .Where(story => !string.IsNullOrEmpty(story.Subject))
+            .ToDictionary(story => story.Id);
 
         var orderedModels = suggestion
             .Select(us => modelDict[us.UserStoryId])
@@ -41,15 +41,15 @@ internal class StoryPrioritizationMapper : IStoryPrioritizationMapper
 
         var storyPrioritySuggestions = orderedModels
             .Select(s => new StoryPrioritySuggestion(
-                s.UserStoryId,
-                s.UserStorySubject,
-                s.UserStoryRef,
+                s.Id,
+                s.Subject,
+                s.Ref,
                 s.SprintId,
                 s.SprintSlug,
                 s.SprintName,
                 s.SprintOrder))
             .ToList();
 
-        return new GetStoryPrioritizationSuggestionResponse(Stories: storyPrioritySuggestions);
+        return new GetStoryPrioritizationSuggestionResponse(storyPrioritySuggestions);
     }
 }

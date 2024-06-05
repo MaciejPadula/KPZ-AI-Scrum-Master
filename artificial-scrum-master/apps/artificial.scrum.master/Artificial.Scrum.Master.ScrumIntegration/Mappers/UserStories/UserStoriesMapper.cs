@@ -12,7 +12,8 @@ internal class UserStoriesMapper : IUserStoriesMapper
 {
     public GetUserStoriesResponse MapUserStoriesResponse(List<UserStory> userStories)
     {
-        var mappedUserStories = userStories.OrderBy(us => us.SprintOrder)
+        var mappedUserStories = userStories
+            .OrderBy(us => us.SprintOrder)
             .Select(us => new GetUserStoriesResponseElement
             {
                 UserStoryId = us.Id,
@@ -33,7 +34,9 @@ internal class UserStoriesMapper : IUserStoriesMapper
                 TotalPoints = us.TotalPoints,
             }).ToList();
 
-        var firstOrDefaultStory = mappedUserStories.FirstOrDefault();
+        var firstOrDefaultStory = mappedUserStories
+            .FirstOrDefault();
+
         var milestoneId = firstOrDefaultStory.SprintId;
         mappedUserStories.Add(new GetUserStoriesResponseElement
         {
@@ -44,6 +47,6 @@ internal class UserStoriesMapper : IUserStoriesMapper
             SprintName = firstOrDefaultStory.SprintName,
         });
 
-        return new GetUserStoriesResponse(UserStories: mappedUserStories);
+        return new GetUserStoriesResponse(mappedUserStories);
     }
 }

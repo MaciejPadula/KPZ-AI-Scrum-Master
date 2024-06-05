@@ -1,5 +1,4 @@
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TimeLine;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 
@@ -52,7 +51,7 @@ internal class TimeLineEventMapper : ITimeLineEventMapper
             };
         }).ToList();
 
-        return new GetProfileTimeLineResponse { TimeLineEvents = timelineEvents };
+        return new GetProfileTimeLineResponse(timelineEvents);
     }
 
     public GetProjectTimeLine ParseProjectTimeLineElement(IEnumerable<TimeLineEventRoot> elements)
@@ -87,6 +86,6 @@ internal class TimeLineEventMapper : ITimeLineEventMapper
             };
         }).ToList();
 
-        return new GetProjectTimeLine { TimeLineEvents = timelineEvents };
+        return new GetProjectTimeLine(timelineEvents);
     }
 }

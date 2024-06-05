@@ -1,4 +1,4 @@
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.StoryTasks;
 
 internal readonly record struct GetStoryTasksResponse(
     List<UserStoryTask> Tasks

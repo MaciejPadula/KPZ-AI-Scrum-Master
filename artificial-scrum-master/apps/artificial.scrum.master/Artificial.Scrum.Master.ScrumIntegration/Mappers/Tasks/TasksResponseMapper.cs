@@ -1,17 +1,18 @@
-using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.Task;
+using Artificial.Scrum.Master.ScrumIntegration.Features.StoryTasks;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Mappers.Tasks;
 
 internal interface ITasksResponseMapper
 {
-    GetStoryTasksResponse MapUserStoriesResponse(List<StoryTask> userStories);
+    GetStoryTasksResponse MapTasksResponse(List<StoryTask> tasks);
 }
 
 internal class TasksResponseMapper : ITasksResponseMapper
 {
-    public GetStoryTasksResponse MapUserStoriesResponse(List<StoryTask> userStories)
+    public GetStoryTasksResponse MapTasksResponse(List<StoryTask> tasks)
     {
-        var mappedTasks = userStories.Select(x => new UserStoryTask
+        var mappedTasks = tasks.Select(x => new UserStoryTask
         {
             TaskId = x.Id,
             Subject = x.Subject,
@@ -26,6 +27,6 @@ internal class TasksResponseMapper : ITasksResponseMapper
             IsClosed = x.IsClosed
         }).ToList();
 
-        return new GetStoryTasksResponse(Tasks: mappedTasks);
+        return new GetStoryTasksResponse(mappedTasks);
     }
 }

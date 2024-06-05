@@ -5,9 +5,10 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.EditTaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.EditUserStoryDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Handlers;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
+using Artificial.Scrum.Master.ScrumIntegration.Features.StoryTasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStoryDetails;
@@ -50,6 +51,7 @@ public static class ScrumIntegrationModule
         services.AddTransient<IRolePointsMapper, RolePointsMapper>();
         services.AddTransient<ISprintStatsResponseMapper, SprintStatsResponseMapper>();
         services.AddTransient<ITaskDetailsResponseMapper, TaskDetailsResponseMapper>();
+        services.AddTransient<IUserStoriesWithTasksMapper, UserStoriesWithTasksMapper>();
 
         services.AddTransient<IJwtDecoder, JwtDecoder>();
         services.AddTransient<ITokenValidator, TokenValidator>();
@@ -67,6 +69,7 @@ public static class ScrumIntegrationModule
         services.AddTransient<IGetTaskDetailsService, GetTaskDetailsService>();
         services.AddTransient<IPatchTaskService, PatchTaskService>();
         services.AddTransient<ICreateTaskService, CreateTaskService>();
+        services.AddTransient<IGetStoriesWithTasksHandler, GetStoriesWithTasksHandler>();
 
         services.AddTransient<ScrumIntegrationMiddleware>();
 

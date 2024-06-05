@@ -1,14 +1,14 @@
-using Artificial.Scrum.Master.EditTextSuggestions.Exceptions;
+using Artificial.Scrum.Master.Prioritization.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Artificial.Scrum.Master.EditTextSuggestions.Infrastructure.Middleware;
+namespace Artificial.Scrum.Master.Prioritization.Infrastructure.Middleware;
 
-internal class EditSuggestionMiddleware : IMiddleware
+internal class PrioritizationMiddleware : IMiddleware
 {
-    private readonly ILogger<EditSuggestionMiddleware> _logger;
+    private readonly ILogger<PrioritizationMiddleware> _logger;
 
-    public EditSuggestionMiddleware(ILogger<EditSuggestionMiddleware> logger)
+    public PrioritizationMiddleware(ILogger<PrioritizationMiddleware> logger)
     {
         _logger = logger;
     }
@@ -19,7 +19,7 @@ internal class EditSuggestionMiddleware : IMiddleware
         {
             await next.Invoke(context);
         }
-        catch (GenerateSuggestionFailException ex)
+        catch (GeneratePrioritySuggestionFailException ex)
         {
             context.Response.StatusCode = 500;
             await context.Response.WriteAsJsonAsync(ex.Message);

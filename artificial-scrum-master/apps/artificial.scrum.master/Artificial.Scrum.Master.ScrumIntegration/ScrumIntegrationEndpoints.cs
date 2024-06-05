@@ -9,8 +9,8 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TaskDetail
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.UserStoryDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TimeLine;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
+using Artificial.Scrum.Master.ScrumIntegration.Features.StoryTasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Tasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Timeline;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
 using Artificial.Scrum.Master.ScrumIntegration.Features.UserStoryDetails;

@@ -13,12 +13,27 @@
       </div>
       <div class="items-end">
         <div class="flex flex-row justify-center items-center">
+          <button
+            mat-icon-button
+            (click)="openStoryPriorityEditor($event)"
+            [matTooltip]="'Project.Priority.Title' | translate"
+          >
+            <mat-icon> psychology </mat-icon>
+          </button>
           <app-retro-session
             [sprintId]="sprintElement().sprintId"
             [sprintName]="sprintElement().sprintName"
             [projectId]="sprintElement().projectId"
           />
-          <a mat-icon-button [href]="sprintUrl()" target="_blank" (click)="$event.stopPropagation()">
+          <a
+            mat-icon-button
+            [href]="sprintUrl()"
+            target="_blank"
+            (click)="$event.stopPropagation()"
+            [matTooltip]="
+              'Project.SprintPreview.OpenInScrumService' | translate
+            "
+          >
             <mat-icon aria-label="Open sprint">open_in_new</mat-icon></a
           >
         </div>

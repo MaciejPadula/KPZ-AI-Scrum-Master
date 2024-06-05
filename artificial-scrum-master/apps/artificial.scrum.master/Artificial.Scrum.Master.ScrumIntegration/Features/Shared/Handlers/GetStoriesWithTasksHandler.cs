@@ -1,27 +1,28 @@
 using Artificial.Scrum.Master.Interfaces;
+using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.Task;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.UserStory;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
 using Artificial.Scrum.Master.ScrumIntegration.Mappers.UserStories;
 
-namespace Artificial.Scrum.Master.ScrumIntegration.Features.UserStories;
+namespace Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Handlers;
 
-internal interface IGetUserStoriesService
+public interface IGetStoriesWithTasksHandler
 {
-    Task<GetUserStoriesResponse> Handle(string projectId, string sprintId);
+    Task<GetStoriesWithTasksResponse> Handle(string projectId, string sprintId);
 }
 
-internal class GetUserStoriesService : IGetUserStoriesService
+internal class GetStoriesWithTasksHandler : IGetStoriesWithTasksHandler
 {
     private readonly IAccessTokenProvider _accessTokenProvider;
     private readonly IProjectHttpClientWrapper _projectHttpClientWrapper;
-    private readonly IUserStoriesMapper _userStoriesMapper;
+    private readonly IUserStoriesWithTasksMapper _userStoriesMapper;
     private readonly IUserAccessor _userAccessor;
 
-    public GetUserStoriesService(
+    public GetStoriesWithTasksHandler(
         IAccessTokenProvider accessTokenProvider,
         IProjectHttpClientWrapper projectHttpClientWrapper,
-        IUserStoriesMapper userStoriesMapper,
+        IUserStoriesWithTasksMapper userStoriesMapper,
         IUserAccessor userAccessor)
     {
         _accessTokenProvider = accessTokenProvider;
@@ -30,16 +31,23 @@ internal class GetUserStoriesService : IGetUserStoriesService
         _userAccessor = userAccessor;
     }
 
-    public async Task<GetUserStoriesResponse> Handle(string projectId, string sprintId)
+    public async Task<GetStoriesWithTasksResponse> Handle(string projectId, string sprintId)
     {
         var userId = _userAccessor.UserId ?? throw new UnauthorizedAccessException();
         var userTokens = await _accessTokenProvider.ProvideRefreshTokenOrThrow(userId);
 
-        var userStoriesRequestResponse = await _projectHttpClientWrapper.GetHttpRequest<List<UserStory>>(
+        var userStoriesRequestTask = _projectHttpClientWrapper.GetHttpRequest<List<UserStory>>(
             userId,
             userTokens,
             _ => $"userstories?project={projectId}&milestone={sprintId}");
+        var tasksRequestTask = _projectHttpClientWrapper.GetHttpRequest<List<StoryTask>>(
+            userId,
+            userTokens,
+            _ => $"tasks?milestone={sprintId}&order_by=us_order&project={projectId}");
 
-        return _userStoriesMapper.MapUserStoriesResponse(userStoriesRequestResponse);
+        await Task.WhenAll(userStoriesRequestTask, tasksRequestTask);
+        return _userStoriesMapper.MapUserStoriesWithTasksResponse(
+            userStoriesRequestTask.Result,
+            tasksRequestTask.Result);
     }
 }

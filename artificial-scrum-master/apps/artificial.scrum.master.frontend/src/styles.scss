@@ -32,6 +32,10 @@ html {
   background-color: #303030;
 }
 
+.dark-theme .cdk-drag-preview {
+  color: white !important;
+}
+
 .img-loading {
   border-radius: 10px;
   background-color: rgb(224, 224, 224);

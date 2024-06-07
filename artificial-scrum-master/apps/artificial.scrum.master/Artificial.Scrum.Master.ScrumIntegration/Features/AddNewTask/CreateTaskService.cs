@@ -3,10 +3,6 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TaskDetail
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ApiTokens;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.Models;
 using Artificial.Scrum.Master.ScrumIntegration.Infrastructure.ScrumServiceHttpClient;
-using Artificial.Scrum.Master.ScrumIntegration.Mappers.Tasks;
-using Microsoft.Extensions.Options;
-using System.Net.Http.Json;
-using System.Text.Json.Serialization;
 
 namespace Artificial.Scrum.Master.ScrumIntegration.Features.AddNewTask;
 
@@ -14,6 +10,7 @@ internal interface ICreateTaskService
 {
     Task Handle(CreateTaskRequest createTaskRequest);
 }
+
 internal class CreateTaskService(
     IAccessTokenProvider _accessTokenProvider,
     IProjectHttpClientWrapper _projectHttpClientWrapper,
@@ -24,20 +21,20 @@ internal class CreateTaskService(
         var userId = _userAccessor.UserId ?? throw new UnauthorizedAccessException();
         var refreshToken = await _accessTokenProvider.ProvideRefreshTokenOrThrow(userId);
 
-        var request = new ApiCreateTaskRequest()
+        var request = new ApiCreateTaskRequest
         {
-            description = createTaskRequest.Description,
-            subject = createTaskRequest.Subject,
-            project = createTaskRequest.ProjectId,
-            user_story = createTaskRequest.UserStoryId,
-            us_order = 1,
-            taskboard_order = 1
+            Description = createTaskRequest.Description,
+            Subject = createTaskRequest.Subject,
+            Project = createTaskRequest.ProjectId,
+            UserStory = createTaskRequest.UserStoryId,
+            UsOrder = 1,
+            TaskboardOrder = 1
         };
 
-        var response = await _projectHttpClientWrapper.PostHttpRequest<ApiCreateTaskRequest, TaskSpecifics>(
+        await _projectHttpClientWrapper.PostHttpRequest(
             userId,
             refreshToken,
-            _ => $"tasks",
+            _ => "tasks",
             request);
     }
 }

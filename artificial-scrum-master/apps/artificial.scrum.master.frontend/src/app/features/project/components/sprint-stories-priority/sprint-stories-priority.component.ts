@@ -5,12 +5,14 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { StoryPrioritySuggestion } from '../../models/story-priority-suggestion';
 import { StoriesPrioritySuggestionService } from '../../services/stories-priority-suggestion.service';
 import { MaterialModule } from '../../../../shared/material.module';
+import { ToastService } from '../../../../shared/services/toast.service';
 import {
   CdkDragDrop,
   CdkDropList,
   CdkDrag,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
+import { UpdateStoriesPriorityService } from '../../services/update-stories-priority.service';
 
 @Component({
   selector: 'app-sprint-stories-priority',
@@ -27,9 +29,13 @@ import {
   styleUrl: './sprint-stories-priority.component.scss',
 })
 export class SprintStoriesPriorityComponent implements OnInit {
+  private readonly toastService = inject(ToastService);
   private readonly translateService = inject(TranslateService);
   private readonly storySuggestionService = inject(
     StoriesPrioritySuggestionService
+  );
+  private readonly updateStoriesPriorityService = inject(
+    UpdateStoriesPriorityService
   );
 
   private readonly sprintId: number;
@@ -66,6 +72,14 @@ export class SprintStoriesPriorityComponent implements OnInit {
       });
   }
 
+  drop(event: CdkDragDrop<StoryPrioritySuggestion[]>) {
+    moveItemInArray(
+      this.storiesSuggestions(),
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
   generateSuggestionAnew() {
     this.#isLoading.set(true);
     this.storySuggestionService
@@ -78,15 +92,31 @@ export class SprintStoriesPriorityComponent implements OnInit {
         error: () => {
           this.#error.set(true);
           this.#isLoading.set(false);
+          this.toastService.openError(
+            this.translateService.instant('Project.Priority.Fails')
+          );
         },
       });
   }
 
-  drop(event: CdkDragDrop<StoryPrioritySuggestion[]>) {
-    moveItemInArray(
-      this.storiesSuggestions(),
-      event.previousIndex,
-      event.currentIndex
-    );
+  savePriorityChanges() {
+    this.updateStoriesPriorityService
+      .updateStoriesPriority(
+        this.projectId,
+        this.sprintId,
+        this.storiesSuggestions()
+      )
+      .subscribe({
+        next: () => {
+          this.toastService.openSuccess(
+            this.translateService.instant('Project.Priority.Update.Success')
+          );
+        },
+        error: () => {
+          this.toastService.openError(
+            this.translateService.instant('Project.Priority.Update.Error')
+          );
+        },
+      });
   }
 }

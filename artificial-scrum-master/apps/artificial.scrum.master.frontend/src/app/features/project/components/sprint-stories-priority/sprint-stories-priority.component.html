@@ -29,6 +29,14 @@
             >psychology</mat-icon
           >
         </button>
+        <button
+          (click)="savePriorityChanges()"
+          mat-mini-fab
+          [matTooltip]="'Project.Priority.Save' | translate"
+          color="primary"
+        >
+          <mat-icon>check </mat-icon>
+        </button>
       </span>
     </div>
     <ng-scrollbar>
@@ -52,14 +60,17 @@
                     </div>
                   </div>
                   <div>
-                    <mat-icon>drag_handle</mat-icon>
+                    <button mat-icon-button>
+                      <mat-icon>drag_handle</mat-icon>
+                    </button>
                   </div>
                 </div>
               </mat-card-content>
             </mat-card>
             }
           </div>
-          }@else {
+          }
+          @else {
           <p>{{ 'Project.Priority.NoUserStories' | translate }}</p>
           }
         </div>

@@ -1,4 +1,3 @@
-using Artificial.Scrum.Master.ScrumIntegration.Exceptions;
 using Artificial.Scrum.Master.ScrumIntegration.Features.AddNewTask;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Burndown;
 using Artificial.Scrum.Master.ScrumIntegration.Features.EditTaskDetails;
@@ -7,7 +6,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TaskDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.UserStoryDetails;
-using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Models.TimeLine;
+using Artificial.Scrum.Master.ScrumIntegration.Features.SprintOrder;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
 using Artificial.Scrum.Master.ScrumIntegration.Features.StoryTasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
@@ -76,7 +75,7 @@ public static class ScrumIntegrationEndpoints
                 {
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
                     await context.Response.WriteAsJsonAsync(new
-                    { Message = "Either userStoryId or sprintId is required" });
+                        { Message = "Either userStoryId or sprintId is required" });
                     return;
                 }
 
@@ -126,33 +125,18 @@ public static class ScrumIntegrationEndpoints
 
         routes.MapPost("/api/task",
             async (HttpContext context, ICreateTaskService service,
-                           [FromBody] CreateTaskRequest request) =>
+                [FromBody] CreateTaskRequest request) =>
             {
-                if (string.IsNullOrEmpty(request.Subject) || !request.ProjectId.HasValue)
-                {
-                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    await context.Response.WriteAsJsonAsync(new
-                    { Message = "Subject or ProjectId is missing" });
-                    return;
-                }
+                await service.Handle(request);
+                context.Response.StatusCode = StatusCodes.Status201Created;
+            });
 
-                try
-                {
-                    await service.Handle(request);
-                    context.Response.StatusCode = StatusCodes.Status201Created;
-                }
-                catch (UnauthorizedAccessException e)
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsJsonAsync(new
-                    { Message = e });
-                }
-                catch (Exception e)
-                {
-                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                    await context.Response.WriteAsJsonAsync(new
-                    { Message = e });
-                }
+        routes.MapPost("/api/projects/sprints/priority",
+            async (HttpContext context, IUpdateSprintOrderService service,
+                [FromBody] SprintOrderRequest request) =>
+            {
+                await service.Handle(request);
+                context.Response.StatusCode = StatusCodes.Status200OK;
             });
     }
 }

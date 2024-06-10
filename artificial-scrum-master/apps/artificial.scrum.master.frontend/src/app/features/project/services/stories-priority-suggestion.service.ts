@@ -9,7 +9,6 @@ import { StoryPrioritySuggestion } from '../models/story-priority-suggestion';
 })
 export class StoriesPrioritySuggestionService {
   private readonly httpClient = inject(HttpClient);
-
   private readonly baseApiUrl = 'api/sprint/userStories/priority';
 
   public getSuggestedStoriesPriority(

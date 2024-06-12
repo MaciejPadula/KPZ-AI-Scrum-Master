@@ -54,7 +54,7 @@ export class RetroTableComponent {
   public addSuggestions() {
     this.dialog
       .open(AddSuggestedIdeasDialogComponent, {
-        data: this.sessionId(),
+        data: {sessionId: this.sessionId()},
       })
       .afterClosed()
       .subscribe();

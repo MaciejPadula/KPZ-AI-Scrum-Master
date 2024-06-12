@@ -10,7 +10,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './../../../../shared/material.module';
 import { UserStoryDetails } from '../../models/user-story-details';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { EditStoryDetailsComponent } from '../edit-story-details/edit-story-details.component';
 import { StorySuggestionService } from '../../services/story-suggestion.service';
@@ -19,8 +19,6 @@ import { EditorStateService } from '../../../../shared/services/editor-state.ser
 import { StoryDetailsDataService } from '../../services/story-details-data.service';
 import { ScrollService } from '../../../../shared/services/scroll.service';
 import { GenerateTaskSuggestionsResponse } from '../../models/get-task-suggestions-response';
-import { ToastService } from '../../../../shared/services/toast.service';
-import { HttpClient } from '@angular/common/http';
 import { TaskSuggestionsComponent } from '../task-suggestions/task-suggestions.component';
 import { TaskSuggestionsService } from '../../services/task-suggestions.service';
 
@@ -28,7 +26,6 @@ import { TaskSuggestionsService } from '../../services/task-suggestions.service'
   selector: 'app-user-story-details',
   standalone: true,
   templateUrl: './user-story-details.component.html',
-  styleUrls: ['./user-story-details.component.scss'],
   imports: [
     CommonModule,
     MaterialModule,
@@ -59,9 +56,6 @@ export class UserStoryDetailsComponent implements OnInit {
   storyId: number;
   projectId: number;
   suggestionsOpen = signal(false);
-  private readonly toastService = inject(ToastService);
-
-  private readonly dialog = inject(MatDialog);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data: { userStoryId: number; projectId: number }
@@ -69,9 +63,6 @@ export class UserStoryDetailsComponent implements OnInit {
     this.storyId = data.userStoryId;
     this.projectId = data.projectId;
   }
-
-  private readonly httpClient = inject(HttpClient);
-  private readonly baseApiUrl = 'api/user-story/generate-tasks';
 
   ngOnInit(): void {
     this.storyDetailsDataService.getStoryDetails(this.storyId).subscribe({
@@ -138,13 +129,13 @@ export class UserStoryDetailsComponent implements OnInit {
     this.details.set(detailsUpdate);
   }
   generateTaskSuggestions() {
-    if (this.details() == null || !this.details()?.description) {
+    const details = this.details();
+    if (details == null || !details) {
       return;
     }
     this.suggestionsOpen.set(true);
-
     this.taskSuggestionsService
-      .getTaskSuggestions(this.details()!.title, this.details()!.description)
+      .getTaskSuggestions(details.title, details.description)
       .subscribe({
         next: (response) => this.taskSuggestions.set(response),
         error: () => this.error.set(true),

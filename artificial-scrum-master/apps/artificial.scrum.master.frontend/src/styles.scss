@@ -36,6 +36,22 @@ html {
   color: white !important;
 }
 
+.popup {
+  height: 80dvh;
+  width: 80dvw;
+}
+
+.popup .mat-dialog-container {
+  max-width: none;
+}
+
+@media (max-width: 767px) {
+  .popup {
+    height: 100dvh;
+    width: 100dvw;
+  }
+}
+
 .img-loading {
   border-radius: 10px;
   background-color: rgb(224, 224, 224);

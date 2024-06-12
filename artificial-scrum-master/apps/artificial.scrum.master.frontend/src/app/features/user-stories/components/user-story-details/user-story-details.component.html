@@ -1,6 +1,6 @@
-<div class="flex items-center justify-center popup">
+<div class="flex items-center justify-center h-full">
   @if(details() != null && !error()){
-  <mat-card class="h-full w-full" style="max-height: 80dvh">
+  <mat-card class="h-full w-full">
     <mat-card-header>
       <mat-card-title class="stubborn-text"
         >#{{ details()?.number }} {{ details()?.title }}</mat-card-title
@@ -107,7 +107,9 @@
     </app-task-suggestions>
   </div>
   } } @else {
-  <mat-spinner></mat-spinner>
+  <div class="flex justify-center h-[80dvh] items-center">
+    <mat-spinner></mat-spinner>
+  </div>
   } @if(error()){
   <mat-card class="h-full w-full">
     <mat-card-header>

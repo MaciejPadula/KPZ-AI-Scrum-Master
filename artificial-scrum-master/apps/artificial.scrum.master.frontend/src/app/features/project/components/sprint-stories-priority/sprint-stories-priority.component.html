@@ -1,4 +1,4 @@
-<div class="flex items-center justify-center popup">
+<div class="flex items-center justify-center h-full">
   @if(storiesSuggestions().length > 0 && !error() && !isLoading()){
   <mat-card class="h-full w-full">
     <mat-card-header class="flex justify-between">
@@ -48,7 +48,8 @@
             class="flex flex-col justify-center items-center story-priority-list"
             (cdkDropListDropped)="drop($event)"
           >
-            @for (story of storiesSuggestions(); track story.id; let idx = $index) {
+            @for (story of storiesSuggestions(); track story.id; let idx =
+            $index) {
             <mat-card cdkDrag class="w-11/12 my-0.5 story-list-item">
               <mat-card-content>
                 <div class="flex justify-between">
@@ -69,8 +70,7 @@
             </mat-card>
             }
           </div>
-          }
-          @else {
+          } @else {
           <p>{{ 'Project.Priority.NoUserStories' | translate }}</p>
           }
         </div>

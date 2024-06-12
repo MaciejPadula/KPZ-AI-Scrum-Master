@@ -1,19 +1,16 @@
 <div>
-  <div>
-    <div>
-      @if(stats().totalRolePoints){
-      <p class="text-3xl">
-        {{ stats().sprintName }}
-      </p>
-      }
-    </div>
-    <div>
-      @if(stats().totalRolePoints){
-      <app-stats [stats]="stats()" />
-      }
-    </div>
-  </div>
   @if(stats().totalRolePoints){
+  <div>
+    <p class="text-3xl">
+      {{ stats().sprintName }}
+    </p>
+    <app-stats [stats]="stats()" />
+  </div>
+
   <app-burndown-chart [sprintDayStats]="stats().sprintDayStats" />
+  } @else if (isLoading()) {
+  <p class="flex flex-row justify-center h-72 items-center">
+    <mat-spinner></mat-spinner>
+  </p>
   }
 </div>

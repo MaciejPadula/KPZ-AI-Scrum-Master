@@ -1,15 +1,16 @@
 <div>
   <p class="text-lg mt-2">{{ 'Stats.BurndownChart' | translate }}</p>
   <apx-chart
-    [series]="burndownChartOptions().series || []"
-    [chart]="burndownChartOptions().chart"
-    [colors]="burndownChartOptions().colors"
-    [yaxis]="burndownChartOptions().yaxis || []"
-    [dataLabels]="commonOptions.dataLabels || {}"
-    [markers]="commonOptions.markers || {}"
-    [stroke]="commonOptions.stroke || {}"
-    [grid]="commonOptions.grid"
-    [xaxis]="commonOptions.xaxis || {}"
-    [tooltip]="commonOptions.tooltip || {}"
+    [series]="burndownChartOptions().series!"
+    [chart]="burndownChartOptions().chart!"
+    [colors]="burndownChartOptions().colors!"
+    [dataLabels]="commonOptions.dataLabels!"
+    [markers]="commonOptions.markers!"
+    [stroke]="commonOptions.stroke!"
+    [grid]="commonOptions.grid!"
+    [xaxis]="burndownChartOptions().xaxis!"
+    [yaxis]="burndownChartOptions().yaxis!"
+    [tooltip]="commonOptions.tooltip!"
+    [legend]="burndownChartOptions().legend!"
   ></apx-chart>
 </div>

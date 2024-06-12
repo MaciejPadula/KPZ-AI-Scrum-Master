@@ -31,7 +31,10 @@ import { SprintStoriesPriorityComponent } from '../sprint-stories-priority/sprin
 })
 export class SprintPreviewItemComponent {
   public sprintElement = input.required<Sprint>();
-  public storiesUrl = computed(() => ['/UserStories', this.sprintElement().sprintId]);
+  public storiesUrl = computed(() => [
+    '/UserStories',
+    this.sprintElement().sprintId,
+  ]);
   public storiesQueryParams = computed(() => {
     return {
       project: this.sprintElement().projectId,
@@ -64,6 +67,8 @@ export class SprintPreviewItemComponent {
         projectId: this.sprintElement().projectId,
         sprintId: this.sprintElement().sprintId,
       },
+      panelClass: 'popup',
+      maxWidth: '100dvw',
     });
   }
 }

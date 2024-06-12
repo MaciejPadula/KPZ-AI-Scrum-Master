@@ -2,6 +2,7 @@ import {
   Component,
   computed,
   EventEmitter,
+  inject,
   Input,
   Output,
 } from '@angular/core';
@@ -9,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, Subject } from 'rxjs';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-markdown-editor',
@@ -17,6 +19,8 @@ import { debounceTime, Subject } from 'rxjs';
   templateUrl: './markdown-editor.component.html',
 })
 export class MarkdownEditorComponent {
+  private readonly themeService = inject(ThemeService);
+
   private contentChangeSubject = new Subject<string>();
 
   constructor() {
@@ -27,9 +31,7 @@ export class MarkdownEditorComponent {
 
   editorOptions = computed(() => {
     return {
-      theme: document.body.classList.contains('dark-theme')
-        ? 'vs-dark'
-        : 'vs-light',
+      theme: this.themeService.darkTheme() ? 'vs-dark' : 'vs-light',
       language: 'markdown',
       lineNumbers: 'off',
       wordWrap: 'on',

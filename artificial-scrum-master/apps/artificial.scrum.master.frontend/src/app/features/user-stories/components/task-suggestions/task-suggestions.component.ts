@@ -1,12 +1,23 @@
-import { Component, EventEmitter, inject, Output, input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Output,
+  input,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { GenerateTaskSuggestionsResponse, TaskSuggestion } from '../../models/get-task-suggestions-response';
+import {
+  GenerateTaskSuggestionsResponse,
+  TaskSuggestion,
+} from '../../models/get-task-suggestions-response';
 import { ConfirmCreateTaskDialogComponent } from '../confirn-create-task-dialog/confirm-create-task-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { TaskService } from '../../services/task.service';
+import { StoryStateService } from '../../services/story-state.service';
 
 @Component({
   selector: 'app-task-suggestions',
@@ -27,6 +38,7 @@ export class TaskSuggestionsComponent implements OnInit {
   #translateService = inject(TranslateService);
 
   private readonly taskService = inject(TaskService);
+  private readonly storyStateService = inject(StoryStateService);
 
   ngOnInit() {
     this.taskSuggestionsList = this.taskSuggestions();
@@ -37,29 +49,46 @@ export class TaskSuggestionsComponent implements OnInit {
   }
 
   acceptSuggestion(suggestion: TaskSuggestion) {
-    if (this.taskSuggestionsList == null || this.taskSuggestionsList.tasks.length == 0) {
+    if (
+      this.taskSuggestionsList == null ||
+      this.taskSuggestionsList.tasks.length == 0
+    ) {
       return;
     }
     const dialogRef = this.#dialog.open(ConfirmCreateTaskDialogComponent, {
       data: {
         delete: false,
-        task: suggestion
-      }
+        task: suggestion,
+      },
     });
     dialogRef.afterClosed().subscribe((result) => {
-
       if (result === true) {
         suggestion.accepted = true;
 
-        this.taskService.createTask(suggestion.description, suggestion.title, this.projectId(), this.storyId())
+        this.taskService
+          .createTask(
+            suggestion.description,
+            suggestion.title,
+            this.projectId(),
+            this.storyId()
+          )
           .subscribe({
             next: () => {
               this.removeSuggestionFromList(suggestion);
-              this.#toastService.openSuccess(this.#translateService.instant("UserStories.GenerateTask.Success"));
+              this.#toastService.openSuccess(
+                this.#translateService.instant(
+                  'UserStories.GenerateTask.Success'
+                )
+              );
+              this.storyStateService.refresh();
             },
             error: () => {
-              this.#toastService.openError(this.#translateService.instant("UserStories.GenerateTask.Failure"));
-            }
+              this.#toastService.openError(
+                this.#translateService.instant(
+                  'UserStories.GenerateTask.Failure'
+                )
+              );
+            },
           });
       }
     });
@@ -69,8 +98,8 @@ export class TaskSuggestionsComponent implements OnInit {
     const dialogRef = this.#dialog.open(ConfirmCreateTaskDialogComponent, {
       data: {
         delete: true,
-        task: suggestion
-      }
+        task: suggestion,
+      },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
@@ -80,7 +109,9 @@ export class TaskSuggestionsComponent implements OnInit {
   }
 
   removeSuggestionFromList(suggestion: TaskSuggestion) {
-    const updatedTasks = this.taskSuggestionsList.tasks.filter((s) => s !== suggestion) ?? this.taskSuggestionsList?.tasks;
+    const updatedTasks =
+      this.taskSuggestionsList.tasks.filter((s) => s !== suggestion) ??
+      this.taskSuggestionsList?.tasks;
     const updatedSuggestions = { tasks: updatedTasks };
     this.taskSuggestionsList = updatedSuggestions;
 

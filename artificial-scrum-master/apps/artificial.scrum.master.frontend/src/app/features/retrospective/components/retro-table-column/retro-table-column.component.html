@@ -3,20 +3,23 @@
     <p class="mat-headline-5 !m-0">{{titleKey() | translate}}</p>
     <ng-content></ng-content>
   </div>
-  <button mat-raised-button color="primary" (click)="addCardClicked(columnType())">{{'Retrospective.Table.Add' | translate}}</button>
+  <button mat-raised-button color="primary" (click)="addCardClicked(columnType())">{{'Retrospective.Table.Add' |
+    translate}}</button>
   @for (card of content(); track $index) {
-    <mat-card>
-      <mat-card-content>
-        <div class="flex flex-row items-center justify-start">
-          @if (columnType() != CardType.Idea) {
-            <button mat-icon-button (click)="addSuggestionsForCard(card)">
-              <mat-icon>psychology</mat-icon>
-            </button>
-          }
-          <p>{{ card }}</p>
-        </div>
-      </mat-card-content>
-      
-    </mat-card>
+  <mat-card>
+    <mat-card-content class="relative">
+      <div class="flex flex-row items-center justify-start">
+        <p>{{ card }}</p>
+      </div>
+      @if (columnType() != CardType.Idea) {
+      <span class="absolute top-0 right-0">
+        <button mat-icon-button (click)="addSuggestionsForCard(card)">
+          <mat-icon>psychology</mat-icon>
+        </button>
+      </span>
+      }
+    </mat-card-content>
+
+  </mat-card>
   }
 </div>

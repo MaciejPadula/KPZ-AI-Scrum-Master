@@ -1,54 +1,33 @@
 <mat-card class="flex flex-col divide-y mx-2 shadow-md">
-  <a
-    class="flex flex-col p-4 shadow-lg my-1 hover:cursor-pointer"
-    [routerLink]="storiesUrl()"
-    [queryParams]="storiesQueryParams()"
-  >
+  <a class="flex flex-col p-4 shadow-lg my-1 hover:cursor-pointer" [routerLink]="storiesUrl()"
+    [queryParams]="storiesQueryParams()">
     <div class="flex flex-row justify-between">
       <div class="flex flex-col">
         <span class="mat-headline-8">{{ sprintElement().projectName }} </span>
-        <span class="mat-headline-6 font-bold"
-          >{{ sprintElement().sprintName }}
+        <span class="mat-headline-6 font-bold">{{ sprintElement().sprintName }}
         </span>
       </div>
       <div class="items-end">
         <div class="flex flex-row justify-center items-center">
-          <button
-            mat-icon-button
-            (click)="openStoryPriorityEditor($event)"
-            [matTooltip]="'Project.Priority.Title' | translate"
-          >
+          <button mat-icon-button (click)="openStoryPriorityEditor($event)"
+            [matTooltip]="'Project.Priority.Title' | translate">
             <mat-icon> psychology </mat-icon>
           </button>
-          <app-retro-session
-            [sprintId]="sprintElement().sprintId"
-            [sprintName]="sprintElement().sprintName"
-            [projectId]="sprintElement().projectId"
-          />
-          <a
-            mat-icon-button
-            [href]="sprintUrl()"
-            target="_blank"
-            (click)="$event.stopPropagation()"
-            [matTooltip]="
+          <app-retro-session [sprintId]="sprintElement().sprintId" [sprintName]="sprintElement().sprintName"
+            [projectId]="sprintElement().projectId" />
+          <a mat-icon-button [href]="sprintUrl()" target="_blank" (click)="$event.stopPropagation()" [matTooltip]="
               'Project.SprintPreview.OpenInScrumService' | translate
-            "
-          >
-            <mat-icon aria-label="Open sprint">open_in_new</mat-icon></a
-          >
+            ">
+            <mat-icon aria-label="Open sprint">open_in_new</mat-icon></a>
         </div>
       </div>
     </div>
 
     <span class="grid grid-cols-3 items-center pb-2">
-      <span class="mat-caption ml-2"
-        >{{ 'Project.SprintPreview.Start' | translate }}:
-        {{ formatDate(sprintElement().estimatedStart) }}</span
-      >
-      <span class="mat-caption ml-2"
-        >{{ 'Project.SprintPreview.End' | translate }}:
-        {{ formatDate(sprintElement().estimatedFinish) }}</span
-      >
+      <span class="mat-caption ml-2">{{ 'Project.SprintPreview.Start' | translate }}:
+        {{ formatDate(sprintElement().estimatedStart) }}</span>
+      <span class="mat-caption ml-2">{{ 'Project.SprintPreview.End' | translate }}:
+        {{ formatDate(sprintElement().estimatedFinish) }}</span>
     </span>
   </a>
 
@@ -58,21 +37,16 @@
         @for (story of sprintElement().userStories; track $index) {
         <mat-expansion-panel hideToggle>
           <mat-expansion-panel-header>
-            <mat-panel-title>
+            <mat-panel-title class="font-normal">
               #{{ story.userStoryRef }}
               {{ story.name }}
-              </mat-panel-title
-            >
+            </mat-panel-title>
           </mat-expansion-panel-header>
           <span class="grid grid-cols-3 items-center">
-            <span class="mat-body"
-              >{{ 'Project.SprintPreview.Story.Status' | translate }}:
-              {{ story.statusName }}</span
-            >
-            <span class="mat-body"
-              >{{ 'Project.SprintPreview.Story.TotalPoints' | translate }}:
-              {{ story.totalPoints }}</span
-            >
+            <span class="mat-body">{{ 'Project.SprintPreview.Story.Status' | translate }}:
+              {{ story.statusName }}</span>
+            <span class="mat-body">{{ 'Project.SprintPreview.Story.TotalPoints' | translate }}:
+              {{ story.totalPoints }}</span>
           </span>
         </mat-expansion-panel>
         }

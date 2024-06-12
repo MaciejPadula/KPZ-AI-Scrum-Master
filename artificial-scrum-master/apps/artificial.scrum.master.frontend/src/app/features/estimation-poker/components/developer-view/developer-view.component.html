@@ -1,29 +1,35 @@
 @if (!userData().isAuthorized && !isRegistered()) {
-  <div class="flex items-center justify-center">
-    <mat-form-field>
-      <mat-label>{{ 'Shared.Words.Username' | translate }}</mat-label>
-      <input matInput [formControl]="usernameControl" />
-    </mat-form-field>
-  </div>
+<div class="flex items-center justify-center">
+  <mat-form-field>
+    <mat-label>{{ 'Shared.Words.Username' | translate }}</mat-label>
+    <input matInput [formControl]="usernameControl" />
+  </mat-form-field>
+</div>
 }
 
 @if (!isRegistered()) {
-  <button mat-raised-button color="primary" (click)="register()">
-    {{ 'EstimationPoker.Register' | translate }}
-  </button>
+<button mat-raised-button color="primary" (click)="register()">
+  {{ 'EstimationPoker.Join' | translate }}
+</button>
 }
 
 @if (isRegistered()) {
-  <div class="flex flex-row flex-wrap">
-    @for (estimation of estimationValues(); track $index) {
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="estimateCurrentTask(estimation)"
-        [disabled]="disableEstimationButtons()"
-      >
-        {{ estimation }}
-      </button>
-    }
-  </div>
+@if(disableEstimationButtons()){
+<div class="flex items-center justify-center">
+  {{"Project.Poker.Chosen" | translate}}
+</div>
+} @else {
+<div class="max-w-[98vw] flex flex-row flex-wrap justify-center gap-3 items-center">
+  @for (estimation of estimationValues(); track $index) {
+  <button style="
+        background-image: url('assets/images/poker-token.png');
+        background-size: cover;
+        background-repeat: no-repeat;        
+        " class="w-16 h-16 text-black hover:filter hover:invert" color="primary"
+    (click)="estimateCurrentTask(estimation)">
+    {{ estimation }}
+  </button>
+  }
+</div>
+}
 }

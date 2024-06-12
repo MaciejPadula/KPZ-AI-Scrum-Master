@@ -52,6 +52,22 @@ html {
   animation: pulse 2s infinite;
 }
 
+.popup {
+  height: 80dvh;
+  width: 80dvw;
+}
+
+.popup .mat-dialog-container {
+  max-width: none;
+}
+
+@media (max-width: 767px) {
+  .popup {
+    height: 100dvh;
+    width: 100dvw;
+  }
+}
+
 @keyframes pulse {
   0% {
     transform: scale(0.95);

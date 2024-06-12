@@ -1,13 +1,26 @@
-<button mat-raised-button color="primary" (click)="createSession()">
-  <mat-icon>add</mat-icon>
-  <span>{{ 'Project.Poker.Create' | translate }}</span>
-</button>
-<div class="flex flex-col w-full overflow-y-scroll" style="max-height: 40vh;">
-  @for (session of sessions(); track $index) {
-    <div>
-        <app-link [href]="'EstimationPoker/' + session.id">
-            {{ session.name }}
-        </app-link>
-    </div>
-  }
+<div>
+  <div class="flex flex-row mb-4  items-end">
+    <h2 class="text-lg">
+      {{"Project.Poker.ExistingSessions" | translate}}
+    </h2>
+    <div class="flex-1"></div>
+    <button mat-mini-fab color="primary" (click)="createSession()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
 </div>
+
+
+<!-- <div class="flex flex-col w-full overflow-y-scroll"> -->
+@for (session of sessions(); track $index) {
+<a [href]="'EstimationPoker/' + session.id">
+  <div class="w-full rounded-sm px-4 py-2 overflow-hidden">
+    <span class="text-xl p-0 text-white">
+      {{ session.name }}
+    </span>
+  </div>
+</a>
+<mat-divider></mat-divider>
+}
+<!-- </div> -->

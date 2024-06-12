@@ -23,11 +23,11 @@
     >
       <div class="flex flex-row items-center">
         <p class="mat-body-1">
-          <span class="text-xs">
+          <span class="text-xs text-gray-400">
             {{ 'UserStories.CreatedBy' | translate }}:
           </span>
           <br />
-          <span class="font-bold"> {{ userStory.ownerFullNameDisplay }}</span>
+          <span> {{ userStory.ownerFullNameDisplay }}</span>
         </p>
 
         <app-avatar [src]="userStory.ownerPhoto" class="ml-1.5" />
@@ -35,11 +35,11 @@
 
       <div class="flex flex-row items-center">
         <p class="mat-body-1">
-          <span class="text-xs">
+          <span class="text-xs text-gray-400">
             {{ 'UserStories.AssignedTo' | translate }}:
           </span>
           <br />
-          <span class="font-bold">
+          <span>
             {{
               userStory.assignedToFullNameDisplay === null
                 ? ('UserStories.NotAssigned' | translate)

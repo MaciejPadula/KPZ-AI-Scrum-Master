@@ -2,34 +2,8 @@ import { Component, computed, inject, input, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SprintDayStats } from '../../models/GetSprintStats';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {
-  NgApexchartsModule,
-  ApexAxisChartSeries,
-  ApexTitleSubtitle,
-  ApexDataLabels,
-  ApexFill,
-  ApexMarkers,
-  ApexYAxis,
-  ApexXAxis,
-  ApexTooltip,
-  ApexStroke,
-} from 'ng-apexcharts';
-
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: any;
-  dataLabels: ApexDataLabels;
-  markers: ApexMarkers;
-  title: ApexTitleSubtitle;
-  fill: ApexFill;
-  yaxis: ApexYAxis;
-  xaxis: ApexXAxis;
-  tooltip: ApexTooltip;
-  stroke: ApexStroke;
-  grid: any;
-  colors: any;
-  toolbar: any;
-};
+import { NgApexchartsModule, ApexOptions } from 'ng-apexcharts';
+import { ThemeService } from 'apps/artificial.scrum.master.frontend/src/app/shared/services/theme.service';
 
 @Component({
   selector: 'app-burndown-chart',
@@ -39,6 +13,11 @@ export type ChartOptions = {
 })
 export class BurndownChartComponent {
   private readonly translateService = inject(TranslateService);
+  private readonly themeService = inject(ThemeService);
+
+  private readonly textColor: Signal<string> = computed(() =>
+    this.themeService.darkTheme() ? 'white' : 'black'
+  );
 
   sprintDayStats = input.required<SprintDayStats[]>();
 
@@ -56,7 +35,7 @@ export class BurndownChartComponent {
     ])
   );
 
-  burndownChartOptions: Signal<Partial<ChartOptions>> = computed(() => {
+  burndownChartOptions: Signal<Partial<ApexOptions>> = computed(() => {
     return {
       series: [
         {
@@ -75,20 +54,37 @@ export class BurndownChartComponent {
         height: 240,
       },
       colors: ['lightgray', '#0078d4'],
+      xaxis: {
+        type: 'datetime',
+        labels: {
+          format: 'dd.MM',
+          style: {
+            colors: this.textColor(),
+          },
+        },
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: this.textColor(),
+          },
+        },
+      },
+      legend: {
+        show: true,
+        labels: {
+          colors: this.textColor(),
+        },
+      },
     };
   });
 
-  public commonOptions: Partial<ChartOptions> = {
+  public commonOptions: Partial<ApexOptions> = {
     dataLabels: {
       enabled: false,
     },
     stroke: {
       curve: 'straight',
-    },
-    toolbar: {
-      tools: {
-        selection: false,
-      },
     },
     markers: {
       size: 5,
@@ -104,15 +100,6 @@ export class BurndownChartComponent {
       },
       marker: {
         show: false,
-      },
-    },
-    grid: {
-      clipMarkers: false,
-    },
-    xaxis: {
-      type: 'datetime',
-      labels: {
-        format: 'dd.MM',
       },
     },
   };

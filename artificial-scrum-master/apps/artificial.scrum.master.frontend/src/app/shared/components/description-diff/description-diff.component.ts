@@ -1,6 +1,7 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DiffEditorModel, MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-description-diff',
@@ -9,6 +10,8 @@ import { DiffEditorModel, MonacoEditorModule } from 'ngx-monaco-editor-v2';
   templateUrl: './description-diff.component.html',
 })
 export class DescriptionDiffComponent {
+  private readonly themeService = inject(ThemeService);
+
   originalData = input.required<string | null | undefined>();
   modifiedData = input.required<string | null | undefined>();
 
@@ -16,9 +19,7 @@ export class DescriptionDiffComponent {
 
   options = computed(() => {
     return {
-      theme: document.body.classList.contains('dark-theme')
-        ? 'vs-dark'
-        : 'vs-light',
+      theme: this.themeService.darkTheme() ? 'vs-dark' : 'vs-light',
       readOnly: true,
       lineNumbers: 'off',
       wordWrap: 'on',

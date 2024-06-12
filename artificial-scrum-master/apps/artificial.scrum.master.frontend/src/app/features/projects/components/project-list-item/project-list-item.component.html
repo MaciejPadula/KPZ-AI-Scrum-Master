@@ -1,38 +1,43 @@
-<div
-  class="flex flex-col shadow-lg my-1 hover:cursor-pointer"
-  (click)="redirectToProject(userProject.id)"
->
+<div class="flex flex-col shadow-lg my-1 hover:cursor-pointer" (click)="redirectToProject(userProject.id)">
   <mat-card>
     <mat-card-header>
       <mat-card-title>
-        <p>
-          <span class="mat-headline-6 font-bold">{{ userProject.name }}</span>
-          <span class="mat-caption ml-2"
-            >{{ 'Projects.Item.Owner' | translate }}
-            {{ userProject.ownerUsername }}</span
-          >
-        </p></mat-card-title
-      >
+        {{ userProject.name }}
+      </mat-card-title>
       <mat-card-subtitle>
+        <span class="mat-caption">{{ 'Projects.Item.LastModified' | translate }}
+          {{ formatDate(userProject.modifiedDate) }}</span>
         <div class="space-x-1 mat-body-1">
           <div class="grid grid-cols-1 divide-y">
-            <span
-              >{{ 'Projects.Item.Owner' | translate }}
-              {{ isOwnerKey | translate }}</span
-            >
-            <span
-              >{{ 'Projects.Item.Visibility' | translate }}
-              {{ visibilityKey | translate }}</span
-            >
+            <mat-chip-set>
+              <mat-chip class="!h-6">
+                <span class="flex items-center justify-center">
+                  <mat-icon class="text-[18px] !flex !items-center">person</mat-icon>
+                  <span class="text-sm">
+                    @if(userProject.amOwner){
+                    {{ 'Projects.Item.YouAreTheOwner' | translate }}
+                    }
+                    @else{
+                    {{ userProject.ownerUsername }}
+                    }
+                  </span>
+                </span>
+              </mat-chip>
+              <mat-chip class="!h-6">
+                <span class="flex items-center justify-center">
+                  <mat-icon class="text-[18px] !flex !items-center">{{ userProject.isPrivate ? "lock" : "lock_open"}}</mat-icon>
+                  <span class="text-sm">
+                    {{ visibilityKey | translate }}
+                  </span>
+                </span>
+              </mat-chip>
+            </mat-chip-set>
           </div>
-        </div></mat-card-subtitle
-      >
+        </div>
+      </mat-card-subtitle>
     </mat-card-header>
     <mat-card-actions align="end">
-      <span class="mat-caption"
-        >{{ 'Projects.Item.LastModified' | translate }}
-        {{ formatDate(userProject.modifiedDate) }}</span
-      >
+
     </mat-card-actions>
   </mat-card>
 </div>

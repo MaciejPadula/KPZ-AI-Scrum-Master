@@ -1,16 +1,15 @@
-<div class="flex flex-col p-4">
+<div class="flex flex-col lg:flex-row p-3 py-4 w-full my-1 rounded-md shadow-md">
   <div class="flex flex-row">
     <app-avatar [src]="timelineRow().userAvatar" class="mr-4" />
     <div class="flex flex-col">
       <p>
-        <span class="mat-subtitle-2 sm:mat-subtitle-1">{{
+        <span class="font-normal">{{
           timelineRow().userName
         }}</span>
-        <span class="mat-caption ml-2">({{ timelineRow().userNick }})</span>
       </p>
-      <p class="space-x-1 mat-body-2 sm:mat-body-1">
+      <p class="space-x-1 sm:mat-body-1 text-gray-400">
         {{ getScrumObjectTypeText(timelineRow().scrumObjectType) }}
-        <span class="font-bold">{{ timelineRow().scrumObjectName }}</span>
+        <span class="text-primary">{{ timelineRow().scrumObjectName }}</span>
         {{ getHasBeenText(timelineRow().scrumObjectType) }}
         {{
           getStateText(
@@ -22,11 +21,11 @@
     </div>
   </div>
   @if (showProjectLink()) {
+    <div class="lg:flex lg:flex-1"></div>
   <div class="flex justify-end">
-    <a class="link" [routerLink]="'/Project/' + timelineRow().projectId">
+    <a class="text-gray-400 hover:underline hover:decoration-gray-400" [routerLink]="'/Project/' + timelineRow().projectId">
       {{ timelineRow().projectName }}
     </a>
   </div>
   }
-  <mat-divider />
 </div>

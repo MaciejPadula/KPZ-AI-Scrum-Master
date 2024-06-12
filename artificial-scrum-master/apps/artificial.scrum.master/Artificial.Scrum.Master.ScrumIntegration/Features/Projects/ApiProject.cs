@@ -15,4 +15,6 @@ internal class Project
 internal class Owner
 {
     public required string Username { get; set; }
+    [JsonPropertyName("full_name_display")]
+    public required string DisplayName { get; set; }
 }

@@ -1,7 +1,6 @@
 using Artificial.Scrum.Master.Retrospectives.Features.Shared.Models;
 using Artificial.Scrum.Master.Retrospectives.Infrastructure.Models;
 using Artificial.Scrum.Master.Retrospectives.Infrastructure.Repositories;
-using Microsoft.Extensions.Caching.Memory;
 using OpenAI.Interfaces;
 using OpenAI.ObjectModels;
 using OpenAI.ObjectModels.RequestModels;
@@ -12,7 +11,7 @@ namespace Artificial.Scrum.Master.Infrastructure.ExternalServices;
 internal class OpenAIRetroSuggestionService : IRetroSuggestionService
 {
     private readonly IOpenAIService _openAIService;
-    private const int MaxTokens = 250;
+    private const int MaxTokens = 2048;
 
     public OpenAIRetroSuggestionService(IOpenAIService openAIService)
     {
@@ -45,7 +44,7 @@ Return only few the most important ideas and try not to repeat ideas that are al
                 ChatMessage.FromSystem("Please try to return always at least three new unique ideas that are not present in the list."),
                 ChatMessage.FromSystem("Please translate Ideas to Polish.")
             ],
-            Model = OpenAIConsts.AIModel,
+            Model = OpenAIConsts.AINewerModel,
             MaxTokens = MaxTokens,
             ResponseFormat = new()
             {

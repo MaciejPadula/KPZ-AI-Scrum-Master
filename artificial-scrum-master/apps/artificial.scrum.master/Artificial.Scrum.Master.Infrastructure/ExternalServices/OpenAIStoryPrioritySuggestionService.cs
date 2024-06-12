@@ -68,7 +68,7 @@ Please provide the priority of the following UserStories in json format:
                     "You have the following UserStories with UserStoryIds, Titles and their tasks, provided in json:"),
                 ChatMessage.FromUser(storiesWithTasks),
             ],
-            Model = OpenAIConsts.AIModel,
+            Model = OpenAIConsts.AINewerModel,
             MaxTokens = MaxTokens,
             ResponseFormat = new()
             {

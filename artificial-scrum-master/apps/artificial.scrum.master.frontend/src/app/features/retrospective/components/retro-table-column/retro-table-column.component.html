@@ -7,8 +7,16 @@
   @for (card of content(); track $index) {
     <mat-card>
       <mat-card-content>
-        <p>{{ card }}</p>
+        <div class="flex flex-row items-center justify-start">
+          @if (columnType() != CardType.Idea) {
+            <button mat-icon-button (click)="addSuggestionsForCard(card)">
+              <mat-icon>psychology</mat-icon>
+            </button>
+          }
+          <p>{{ card }}</p>
+        </div>
       </mat-card-content>
+      
     </mat-card>
   }
 </div>

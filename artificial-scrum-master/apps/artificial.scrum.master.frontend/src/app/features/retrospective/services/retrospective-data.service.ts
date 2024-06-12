@@ -36,4 +36,16 @@ export class RetrospectiveDataService {
       )
       .pipe(map((response) => response.suggestedIdeas));
   }
+
+  public getCardSuggestions(cardContent: string, cardType: CardType): Observable<string[]> {
+    return this.httpClient
+      .post<GetSuggestedIdeasResponse>(
+        `${this.baseApiUrl}/card-suggestions`,
+        {
+          cardContent: cardContent,
+          cardType: cardType,
+        }
+      )
+      .pipe(map((response) => response.suggestedIdeas));
+  }
 }

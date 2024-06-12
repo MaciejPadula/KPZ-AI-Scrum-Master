@@ -188,5 +188,6 @@
   "Retrospective.Suggestions.Title": "Pomysły zasugerowane przez sztuczną inteligencję",
   "Retrospective.Suggestions.GetError": "Wystąpił błąd z pobraniem sugestii",
   "Retrospective.Suggestions.SetError": "Wystąpił błąd z tworzeniem kartki z sugestii",
-  "Retrospective.Suggestions.Load": "Załaduj sugestie"
+  "Retrospective.Suggestions.Load": "Załaduj sugestie",
+  "Retrospective.Card.AddedInfo": "Dodano kartkę, poczekaj do 5 sekund aż się pojawi"
 }

@@ -8,5 +8,7 @@ internal interface IProjectHttpClientWrapper
 
     Task<TResponse> PostHttpRequest<TRequest, TResponse>(string userId, string refreshToken, Func<UserDetails, string> urlFactory, TRequest payload);
 
+    Task PostHttpRequest<TRequest>(string userId, string refreshToken, Func<UserDetails, string> urlFactory, TRequest payload);
+
     Task<TResponse> PatchHttpRequest<TRequest, TResponse>(string userId, string refreshToken, Func<UserDetails, string> urlFactory, TRequest payload);
 }

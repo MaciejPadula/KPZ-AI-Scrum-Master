@@ -6,6 +6,7 @@ using Artificial.Scrum.Master.ScrumIntegration.Features.EditUserStoryDetails;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Project;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Projects;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Shared.Handlers;
+using Artificial.Scrum.Master.ScrumIntegration.Features.SprintOrder;
 using Artificial.Scrum.Master.ScrumIntegration.Features.Sprints;
 using Artificial.Scrum.Master.ScrumIntegration.Features.StoryTasks;
 using Artificial.Scrum.Master.ScrumIntegration.Features.TaskDetails;
@@ -69,6 +70,7 @@ public static class ScrumIntegrationModule
         services.AddTransient<IGetTaskDetailsService, GetTaskDetailsService>();
         services.AddTransient<IPatchTaskService, PatchTaskService>();
         services.AddTransient<ICreateTaskService, CreateTaskService>();
+        services.AddTransient<IUpdateSprintOrderService, UpdateSprintOrderService>();
         services.AddTransient<IGetStoriesWithTasksHandler, GetStoriesWithTasksHandler>();
 
         services.AddTransient<ScrumIntegrationMiddleware>();

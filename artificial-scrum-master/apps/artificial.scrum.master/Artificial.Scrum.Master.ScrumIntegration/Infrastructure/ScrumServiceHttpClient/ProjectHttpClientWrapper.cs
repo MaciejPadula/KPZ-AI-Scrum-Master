@@ -40,6 +40,16 @@ internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
             refreshToken,
             (httpClient, user) => httpClient.PostAsJsonAsync(urlFactory(user), payload));
 
+    public async Task PostHttpRequest<TRequest>(
+        string userId,
+        string refreshToken,
+        Func<UserDetails, string> urlFactory,
+        TRequest payload) =>
+        await SendRequest(
+            userId,
+            refreshToken,
+            (httpClient, user) => httpClient.PostAsJsonAsync(urlFactory(user), payload));
+
     public async Task<TResponse> PatchHttpRequest<TRequest, TResponse>(
         string userId,
         string refreshToken,
@@ -51,6 +61,24 @@ internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
             (httpClient, user) => httpClient.PatchAsJsonAsync(urlFactory(user), payload));
 
     private async Task<TResponse> SendRequest<TResponse>(
+        string userId,
+        string refreshToken,
+        Func<HttpClient, UserDetails, Task<HttpResponseMessage>> messageSender)
+    {
+        var httpResponse = await MakeHttpRequest(userId, refreshToken, messageSender);
+        return await httpResponse.Content.ReadFromJsonAsync<TResponse>()
+               ?? throw new ProjectRequestFailedException("Response deserialization failed");
+    }
+
+    private async Task SendRequest(
+        string userId,
+        string refreshToken,
+        Func<HttpClient, UserDetails, Task<HttpResponseMessage>> messageSender)
+    {
+        await MakeHttpRequest(userId, refreshToken, messageSender);
+    }
+
+    private async Task<HttpResponseMessage> MakeHttpRequest(
         string userId,
         string refreshToken,
         Func<HttpClient, UserDetails, Task<HttpResponseMessage>> messageSender)
@@ -67,15 +95,18 @@ internal class ProjectHttpClientWrapper : IProjectHttpClientWrapper
         httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {userTokens.AccessToken}");
 
         var httpResponse = await messageSender(httpClient, new(memberId));
+        await EnsureRequestSuccessful(httpResponse);
 
-        await EnsureStatusSuccess(httpResponse);
-
-        return await httpResponse.Content.ReadFromJsonAsync<TResponse>()
-               ?? throw new ProjectRequestFailedException("Response deserialization failed");
+        return httpResponse;
     }
 
-    private static async Task EnsureStatusSuccess(HttpResponseMessage httpResponse)
+    private static async Task EnsureRequestSuccessful(HttpResponseMessage? httpResponse)
     {
+        if (httpResponse is null)
+        {
+            throw new ProjectRequestFailedException("Response is null");
+        }
+
         if (!httpResponse.IsSuccessStatusCode)
         {
             var errorContent = await httpResponse.Content.ReadAsStringAsync();

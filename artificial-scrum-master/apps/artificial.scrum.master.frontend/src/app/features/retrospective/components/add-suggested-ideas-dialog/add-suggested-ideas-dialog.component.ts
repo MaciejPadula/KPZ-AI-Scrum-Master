@@ -10,7 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RetrospectiveDataService } from '../../services/retrospective-data.service';
-import { finalize } from 'rxjs';
+import { Observable, finalize } from 'rxjs';
 import { CardType } from '../add-card-dialog/add-card-dialog-data';
 import { ToastService } from '../../../../shared/services/toast.service';
 
@@ -25,7 +25,7 @@ export class AddSuggestedIdeasDialogComponent implements OnInit {
   private readonly dialogRef = inject(
     MatDialogRef<AddSuggestedIdeasDialogComponent>
   );
-  private readonly sessionId: string = inject(MAT_DIALOG_DATA);
+  private readonly data: {sessionId: string, cardContent: string | null, cardType: CardType | null} = inject(MAT_DIALOG_DATA);
   private readonly retrospectiveDataService = inject(RetrospectiveDataService);
   private readonly toastService = inject(ToastService);
   private readonly translateService = inject(TranslateService);
@@ -42,8 +42,12 @@ export class AddSuggestedIdeasDialogComponent implements OnInit {
 
   public loadSuggestions(): void {
     this.#loading.set(true);
-    this.retrospectiveDataService
-      .getSuggestions(this.sessionId)
+
+    const observable: Observable<string[]> = !!this.data.cardContent && !!this.data.cardType
+      ? this.retrospectiveDataService.getCardSuggestions(this.data.cardContent, this.data.cardType)
+      : this.retrospectiveDataService.getSuggestions(this.data.sessionId);
+
+    observable
       .pipe(finalize(() => this.#loading.set(false)))
       .subscribe({
         next: (suggestions) => {
@@ -59,7 +63,7 @@ export class AddSuggestedIdeasDialogComponent implements OnInit {
 
   public addSuggestion(suggestion: string) {
     this.retrospectiveDataService
-      .createSessionCard(suggestion, this.sessionId, CardType.Idea)
+      .createSessionCard(suggestion, this.data.sessionId, CardType.Idea)
       .subscribe({
         next: () => {
           this.#suggestion.update((sug) => sug.filter((s) => s !== suggestion));

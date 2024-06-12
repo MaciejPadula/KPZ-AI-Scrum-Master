@@ -32,6 +32,10 @@ html {
   background-color: #303030;
 }
 
+.dark-theme .cdk-drag-preview {
+  color: white !important;
+}
+
 .dark-theme .text-primary {
   color: white;
 }

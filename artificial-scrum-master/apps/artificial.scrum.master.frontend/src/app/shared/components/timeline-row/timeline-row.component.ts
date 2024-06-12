@@ -1,4 +1,4 @@
-import { Component, Input, inject, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimelineRow } from './timeline-row';
 import { TranslateService } from '@ngx-translate/core';

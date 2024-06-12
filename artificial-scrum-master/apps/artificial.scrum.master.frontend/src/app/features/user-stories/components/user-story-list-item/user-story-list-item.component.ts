@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserStoryDetailsComponent } from '../user-story-details/user-story-details.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { TasksComponent } from '../../../tasks/tasks.component';
-import { EditorStateService } from 'apps/artificial.scrum.master.frontend/src/app/shared/services/editor-state.service';
+import { EditorStateService } from '../../../../shared/services/editor-state.service';
 
 @Component({
   selector: 'app-user-story-list-item',
@@ -37,17 +37,16 @@ export class UserStoryListItemComponent {
   public panelOpenState = false;
 
   #dialog = inject(MatDialog);
-  private readonly editorStateServiceService = inject(
-    EditorStateService
-  );
+  private readonly editorStateServiceService = inject(EditorStateService);
 
   public openDetails(): void {
     const dialogRef = this.#dialog.open(UserStoryDetailsComponent, {
-      data: 
-      {
+      data: {
         userStoryId: this.userStory.userStoryId,
-        projectId: this.projectId 
-      }
+        projectId: this.projectId,
+      },
+      panelClass: 'popup',
+      maxWidth: '100dvw',
     });
 
     dialogRef.afterClosed().subscribe(() => {

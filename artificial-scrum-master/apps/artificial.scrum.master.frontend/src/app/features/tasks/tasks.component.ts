@@ -7,6 +7,8 @@ import { TaskRow } from './models/task-row';
 import { finalize } from 'rxjs';
 import { TaskRowComponent } from './components/task-row/task-row.component';
 import { MaterialModule } from '../../shared/material.module';
+import { StoryStateService } from '../user-stories/services/story-state.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-tasks',
@@ -23,6 +25,7 @@ export class TasksComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
   private readonly sprintPreviewDataService = inject(StoryTasksService);
   private readonly toastService = inject(ToastService);
+  private readonly storyStateService = inject(StoryStateService);
 
   #storyTasks = signal<TaskRow[]>([]);
   public readonly storyTasks = this.#storyTasks.asReadonly();
@@ -30,7 +33,17 @@ export class TasksComponent implements OnInit {
   #isLoading = signal<boolean>(false);
   public isLoading = this.#isLoading.asReadonly();
 
+  constructor() {
+    this.storyStateService.refresh$
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.loadStoryTasks());
+  }
+
   ngOnInit(): void {
+    this.loadStoryTasks();
+  }
+
+  private loadStoryTasks(): void {
     this.#isLoading.set(true);
 
     this.sprintPreviewDataService

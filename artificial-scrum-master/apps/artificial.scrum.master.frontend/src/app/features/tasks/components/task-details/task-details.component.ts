@@ -27,7 +27,6 @@ import { ScrollService } from '../../../../shared/services/scroll.service';
   selector: 'app-task-details',
   standalone: true,
   templateUrl: './task-details.component.html',
-  styleUrls: ['./task-details.component.scss'],
   imports: [
     CommonModule,
     MaterialModule,

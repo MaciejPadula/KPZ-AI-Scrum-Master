@@ -8,9 +8,11 @@
     <mat-card>
       <mat-card-content>
         <div class="flex flex-row items-center justify-start">
-          <button mat-icon-button (click)="addSuggestionsForCard(card)">
-            <mat-icon>psychology</mat-icon>
-          </button>
+          @if (columnType() != CardType.Idea) {
+            <button mat-icon-button (click)="addSuggestionsForCard(card)">
+              <mat-icon>psychology</mat-icon>
+            </button>
+          }
           <p>{{ card }}</p>
         </div>
       </mat-card-content>

@@ -22,6 +22,8 @@ export class RetroTableColumnComponent {
   public columnType = input.required<CardType>();
   public content = input.required<string[]>();
 
+  CardType = CardType;
+
   public addCardClicked(cardType: CardType) {
     this.dialog
       .open(AddCardDialogComponent, {

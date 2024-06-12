@@ -1,8 +1,8 @@
 <div>
   @if(stats().totalRolePoints){
   <div>
-    <p class="mat-subtitle-2">
-      {{ 'Stats.Title' | translate }}: {{ stats().sprintName }}
+    <p class="text-3xl">
+      {{ stats().sprintName }}
     </p>
     <app-stats [stats]="stats()" />
   </div>

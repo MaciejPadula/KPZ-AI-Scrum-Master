@@ -44,7 +44,7 @@ internal class GetUserProjectsService : IGetUserProjectsService
                 ModifiedDate = project.ModifiedDate,
                 IsPrivate = project.IsPrivate,
                 AmOwner = project.AmOwner,
-                OwnerUsername = project.Owner.Username
+                OwnerUsername = project.Owner.DisplayName
             }).ToList()
         };
     }

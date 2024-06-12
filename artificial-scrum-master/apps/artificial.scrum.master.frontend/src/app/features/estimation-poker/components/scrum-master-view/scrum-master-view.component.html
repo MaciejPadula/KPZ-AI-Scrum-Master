@@ -1,45 +1,52 @@
-<div class="flex flex-col">
-  @if (currentTask() !== null && estimations().length > 0) {
-    <div>
-      @for (estimation of estimations(); track $index) {
+<div class="flex flex-col lg:flex-row justify-center gap-10 w-[80dvw]">
+  <div class="flex flex-col">
+    @if (currentTask() !== null && estimations().length == 0) {
+    <button mat-raised-button color="primary" (click)="revealEstimations()">
+      <span>{{ 'EstimationPoker.RevealEstimations' | translate }}</span>
+    </button>
+    }
+    @if (currentTask() !== null && estimations().length > 0) {
+    <div class="flex flex-col">
+      <div class="my-4">
+        <app-suggest-estimation [taskId]="taskId()" [teamEstimations]="estimationValues()" />
+      </div>
+      <div class="p-2">
+        @for (estimation of estimations(); track $index) {
         <div>
           <span class="font-bold">{{ estimation.username }}: </span>
           <span>{{ estimation.estimation }}</span>
         </div>
-      }
-  
-      <div>
-        <span class="font-bold"
-          >{{ 'EstimationPoker.AverageEstimation' | translate }}:
-        </span>
-        <span>{{ averageEstimation() }}</span>
+        }
+        <div>
+          <span class="font-bold">{{ 'EstimationPoker.AverageEstimation' | translate }}:
+          </span>
+          <span>{{ averageEstimation() }}</span>
+        </div>
       </div>
     </div>
-  
-    <div class="my-4">
-      <app-suggest-estimation
-        [taskId]="taskId()"
-        [teamEstimations]="estimationValues()"
-      />
-    </div>
-  }
-  @if (currentTask() === null || estimations().length !== 0) {
-    <button mat-raised-button color="primary" (click)="addTask()">
+    }
+    @if (currentTask() === null || estimations().length !== 0) {
+    <button class="flex-grow-0 max-w-[200px]" mat-raised-button color="primary" (click)="addTask()">
       <mat-icon>add</mat-icon>
       <span>{{ 'EstimationPoker.AddTask' | translate }}</span>
     </button>
-  }
-  @if (currentTask() !== null && estimations().length == 0) {
-    <button mat-raised-button color="primary" (click)="revealEstimations()">
-      <span>{{ 'EstimationPoker.RevealEstimations' | translate }}</span>
-    </button>
-  }
-
-  <div class="flex flex-col justify-center items-start m-2">
-    <p class="mat-headline-5">{{ 'EstimationPoker.UsersList' | translate }}</p>
-    @for (user of users(); track $index) {
-      <div>{{user}}</div>
     }
   </div>
-  
+
+  <mat-card class="flex flex-col m-2 p-4">
+    <p class="mat-headline-5">{{ 'EstimationPoker.UsersList' | translate }}</p>
+    <div class="flex flex-col items-center justify-center w-full">
+      @if ((users() == null || users().length == 0)) {
+      <span>
+        {{"EstimationPoker.NoUsers" | translate}}
+      </span>
+      }
+      @else{
+      @for (user of users(); track $index) {
+      <div>{{user}}</div>
+      }
+      }
+    </div>
+  </mat-card>
+
 </div>

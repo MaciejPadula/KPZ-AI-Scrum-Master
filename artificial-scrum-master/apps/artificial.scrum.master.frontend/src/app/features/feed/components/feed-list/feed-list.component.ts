@@ -13,12 +13,14 @@ import { finalize, map } from 'rxjs';
 import { ProfileTimelineEvent } from '../../models/profile-timeline-event';
 import { TimelineRowComponent } from '../../../../shared/components/timeline-row/timeline-row.component';
 import { MaterialModule } from '../../../../shared/material.module';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-feed-list',
   standalone: true,
   templateUrl: './feed-list.component.html',
-  imports: [CommonModule, TimelineRowComponent, MaterialModule],
+  imports: [CommonModule, TimelineRowComponent, MaterialModule, RouterLink, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeedListComponent implements OnInit {
@@ -30,6 +32,9 @@ export class FeedListComponent implements OnInit {
 
   #isLoading = signal<boolean>(false);
   public isLoading = this.#isLoading.asReadonly();
+
+  #loggedOutOfTaiga = signal<boolean>(false);
+  public loggedOutOfTaiga = this.#loggedOutOfTaiga.asReadonly();
 
   public ngOnInit(): void {
     this.#isLoading.set(true);
@@ -43,7 +48,9 @@ export class FeedListComponent implements OnInit {
         next: (events) => {
           this.#feeds.set(events);
         },
-        error: () => this.toastService.openError('Error fetching feed events'),
+        error: () => {
+          this.#loggedOutOfTaiga.set(true);
+        },
       });
   }
 

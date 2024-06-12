@@ -11,13 +11,14 @@ import { ProjectListItemComponent } from '../project-list-item/project-list-item
 import { UserProject } from '../../models/user-project';
 import { ProjectsListDataService } from '../../services/projects-list-data.service';
 import { ToastService } from '../../../../shared/services/toast.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-projects-list',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ProjectListItemComponent],
+  imports: [CommonModule, MaterialModule, ProjectListItemComponent, RouterLink, TranslateModule],
   templateUrl: './projects-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -32,6 +33,9 @@ export class ProjectsListComponent implements OnInit {
   #isLoading = signal<boolean>(false);
   public isLoading = this.#isLoading.asReadonly();
 
+  #loggedOutOfTaiga = signal<boolean>(false);
+  public loggedOutOfTaiga = this.#loggedOutOfTaiga.asReadonly();
+
   public ngOnInit(): void {
     this.#isLoading.set(true);
 
@@ -43,9 +47,7 @@ export class ProjectsListComponent implements OnInit {
           this.#projects.set(project);
         },
         error: () =>
-          this.toastService.openError(
-            this.translateService.instant('Projects.Error')
-          ),
+          this.#loggedOutOfTaiga.set(true),
       });
   }
 }

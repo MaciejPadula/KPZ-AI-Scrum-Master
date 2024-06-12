@@ -19,6 +19,11 @@ export class EstimationPokerButtonComponent {
     this.dialog
       .open(EstimationPokerDialogComponent, {
         data: this.projectId(),
+        minWidth: '50%',
+        height: '80%',
+        maxWidth: '100dvw',
+        panelClass: 'popup'
+
       })
       .afterClosed()
       .subscribe();

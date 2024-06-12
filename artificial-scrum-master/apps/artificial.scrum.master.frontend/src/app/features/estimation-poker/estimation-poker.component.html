@@ -1,17 +1,28 @@
-<div class="mat-headline-5">{{ 'EstimationPoker.Title' | translate }}</div>
+<div class="p-4 max-w-[100dvw]">
+  <h1 class="text-4xl">
+    {{ 'EstimationPoker.Title' | translate }}
+  </h1>
+</div>
 <div class="flex flex-col items-center justify-center gap-4">
   @if (currentTask() !== null) {
+  <div style="
+    background-image: url('https://img.freepik.com/free-vector/flat-design-poker-table-background_23-2151047002.jpg?w=1380&t=st=1718226780~exp=1718227380~hmac=cd4c4d92a67c5adea98ff59f8953ae57ae98b3e2b6f6cc39e35168aad9f41f53');
+    background-size: cover;
+    background-repeat: no-repeat;    
+    "
+    class="p-10">
     <app-session-task [task]="currentTask()!" />
+  </div>
   } @else {
-    <div>{{ 'EstimationPoker.NoTasks' | translate }}</div>
+  <div>{{ 'EstimationPoker.NoTasks' | translate }}</div>
   }
-  
+
   @if (showAnything()) {
-    @if (showScrumMasterView()) {
-      <app-scrum-master-view [sessionId]="sessionId()" />
-    } @else {
-      <app-developer-view [sessionId]="sessionId()" />
-    }
+  @if (showScrumMasterView()) {
+  <app-scrum-master-view [sessionId]="sessionId()" />
+  } @else {
+  <app-developer-view [sessionId]="sessionId()" />
   }
-  
+  }
+
 </div>

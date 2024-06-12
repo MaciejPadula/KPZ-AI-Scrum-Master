@@ -36,6 +36,22 @@ html {
   color: white !important;
 }
 
+.dark-theme .text-primary {
+  color: white;
+}
+
+.text-primary {
+  color: black;
+}
+
+.img-loading {
+  border-radius: 10px;
+  background-color: rgb(224, 224, 224);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+  transform: scale(1);
+  animation: pulse 2s infinite;
+}
+
 .popup {
   height: 80dvh;
   width: 80dvw;
@@ -50,14 +66,6 @@ html {
     height: 100dvh;
     width: 100dvw;
   }
-}
-
-.img-loading {
-  border-radius: 10px;
-  background-color: rgb(224, 224, 224);
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
-  transform: scale(1);
-  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {

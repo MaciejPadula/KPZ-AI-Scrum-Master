@@ -1,33 +1,21 @@
 @if (notFoundError()) {
-  <p class="mat-headline-2">{{'Retrospective.Error.SessionNotFound' | translate}}</p>
+<p class="mat-headline-2">{{'Retrospective.Error.SessionNotFound' | translate}}</p>
 } @else if (cardsLoaded()) {
-  <div class="min-h-dvh grid grid-cols-3 divide-x-4 overflow-x-scroll">
-    <app-retro-table-column
-      [titleKey]="'Retrospective.Table.Goods'"
-      [sessionId]="sessionId()"
-      [columnType]="CardType.Good"
-      [content]="goods()"
-    />
+<div class="min-h-dvh max-w-[100dvw] flex flex-col lg:flex-row overflow-x-scroll">
+  <app-retro-table-column class="lg:w-1/3" [titleKey]="'Retrospective.Table.Goods'" [sessionId]="sessionId()"
+    [columnType]="CardType.Good" [content]="goods()" />
 
-    <app-retro-table-column
-      [titleKey]="'Retrospective.Table.Bads'"
-      [sessionId]="sessionId()"
-      [columnType]="CardType.Bad"
-      [content]="bads()"
-    />
+  <app-retro-table-column class="lg:w-1/3" [titleKey]="'Retrospective.Table.Bads'" [sessionId]="sessionId()"
+    [columnType]="CardType.Bad" [content]="bads()" />
 
-    <app-retro-table-column
-      [titleKey]="'Retrospective.Table.Ideas'"
-      [sessionId]="sessionId()"
-      [columnType]="CardType.Idea"
-      [content]="ideas()"
-    >
-      <button mat-raised-button color="primary" (click)="addSuggestions()">
-        <mat-icon>psychology</mat-icon>
-        <span>{{'Retrospective.Suggestions.Button' | translate}}</span>
-      </button>
-    </app-retro-table-column>
-  </div>
+  <app-retro-table-column class="lg:w-1/3" [titleKey]="'Retrospective.Table.Ideas'" [sessionId]="sessionId()"
+    [columnType]="CardType.Idea" [content]="ideas()">
+    <button mat-raised-button color="primary" (click)="addSuggestions()">
+      <mat-icon>psychology</mat-icon>
+      <span>{{'Retrospective.Suggestions.Button' | translate}}</span>
+    </button>
+  </app-retro-table-column>
+</div>
 } @else {
-  <mat-progress-bar mode="indeterminate" />
+<mat-progress-bar mode="indeterminate" />
 }

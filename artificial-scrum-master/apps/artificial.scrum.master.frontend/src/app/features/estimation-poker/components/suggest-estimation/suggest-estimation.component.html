@@ -1,26 +1,24 @@
 @if (!estimationResult()) {
-  <button mat-raised-button color="primary" [disabled]="loading()" (click)="suggestEstimation()">
-    <span class="flex flex-row items-center justify-center gap-2">
-      <span>{{ 'Project.Poker.Suggestion.Button' | translate }}</span>
-      @if (loading()) {
-        <mat-spinner diameter="16"></mat-spinner>
-      }
-    </span>
-    <mat-icon>auto_fix_high</mat-icon>
-  </button>
+<button mat-raised-button color="primary" [disabled]="loading()" (click)="suggestEstimation()">
+  <span class="flex flex-row items-center justify-center gap-2">
+    <span>{{ 'Project.Poker.Suggestion.Button' | translate }}</span>
+    @if (loading()) {
+    <mat-spinner diameter="16"></mat-spinner>
+    }
+  </span>
+  <mat-icon>auto_fix_high</mat-icon>
+</button>
 } @else {
-  <div>
-    <p>
-      <span class="font-bold"
-        >{{ 'Project.Poker.Suggestion.Title' | translate }}
-      </span>
-      <span>{{ reason() }}</span>
-    </p>
-    <p>
-      <span class="font-bold"
-        >{{ 'Project.Poker.Suggestion.Estimation' | translate }}
-      </span>
-      <span>{{ estimation() }}</span>
-    </p>
-  </div>
+<div class="lg:max-w-[40dvw]">
+  <p>
+    <span class="font-bold">{{ 'Project.Poker.Suggestion.Estimation' | translate }}
+    </span>
+    <span>{{ estimation() }}</span>
+  </p>
+  <p>
+    <span class="font-bold">{{ 'Project.Poker.Suggestion.Title' | translate }}
+    </span>
+    <span>{{ reason() }}</span>
+  </p>
+</div>
 }

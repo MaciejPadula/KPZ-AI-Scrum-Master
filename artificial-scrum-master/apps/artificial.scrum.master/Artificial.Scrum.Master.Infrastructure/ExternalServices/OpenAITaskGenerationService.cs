@@ -58,7 +58,7 @@ Do not remove any information from the original description, especially URLs."),
                 ChatMessage.FromSystem($"User Story title: {request.UserStoryTitle}"),
                 ChatMessage.FromSystem($"User Story description: {request.UserStoryDescription}"),
             ],
-            Model = Models.Gpt_3_5_Turbo,
+            Model = OpenAIConsts.AIModel,
             MaxTokens = MaxTokens,
             ResponseFormat = new()
             {

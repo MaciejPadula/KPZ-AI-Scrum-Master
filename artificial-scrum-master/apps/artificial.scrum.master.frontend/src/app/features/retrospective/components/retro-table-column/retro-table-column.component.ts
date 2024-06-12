@@ -5,6 +5,7 @@ import { MaterialModule } from '../../../../shared/material.module';
 import { AddCardDialogComponent } from '../add-card-dialog/add-card-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
+import { AddSuggestedIdeasDialogComponent } from '../add-suggested-ideas-dialog/add-suggested-ideas-dialog.component';
 
 @Component({
   selector: 'app-retro-table-column',
@@ -28,6 +29,15 @@ export class RetroTableColumnComponent {
           sessionId: this.sessionId(),
           cardType: cardType
         },
+      })
+      .afterClosed()
+      .subscribe();
+  }
+
+  public addSuggestionsForCard(content: string) {
+    this.dialog
+      .open(AddSuggestedIdeasDialogComponent, {
+        data: {cardContent: content, cardType: this.columnType(), sessionId: this.sessionId()},
       })
       .afterClosed()
       .subscribe();

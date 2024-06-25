@@ -13,6 +13,7 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { UpdateStoriesPriorityService } from '../../services/update-stories-priority.service';
+import { SprintPreviewStateService } from '../../services/sprint-preview-state.service';
 
 @Component({
   selector: 'app-sprint-stories-priority',
@@ -36,6 +37,9 @@ export class SprintStoriesPriorityComponent implements OnInit {
   );
   private readonly updateStoriesPriorityService = inject(
     UpdateStoriesPriorityService
+  );
+  private readonly sprintPreviewStateService = inject(
+    SprintPreviewStateService
   );
 
   private readonly sprintId: number;
@@ -111,6 +115,7 @@ export class SprintStoriesPriorityComponent implements OnInit {
           this.toastService.openSuccess(
             this.translateService.instant('Project.Priority.Update.Success')
           );
+          this.sprintPreviewStateService.refresh();
         },
         error: () => {
           this.toastService.openError(

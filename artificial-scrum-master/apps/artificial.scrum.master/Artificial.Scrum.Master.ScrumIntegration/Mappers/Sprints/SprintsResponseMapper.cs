@@ -21,15 +21,17 @@ internal class SprintsResponseMapper : ISprintsResponseMapper
             SprintSlug = sprint.Slug,
             EstimatedStart = sprint.EstimatedStart,
             EstimatedFinish = sprint.EstimatedFinish,
-            UserStories = sprint.UserStories?.Select(userStory => new ActiveSprintUserStory
-            {
-                Id = userStory.Id,
-                Name = userStory.Subject,
-                StatusName = userStory.StatusExtraInfo?.Name,
-                IsClosed = userStory.IsClosed,
-                UserStoryRef = userStory.Ref,
-                TotalPoints = userStory.TotalPoints ?? 0,
-            })
+            UserStories = sprint.UserStories?
+                .OrderBy(userStory => userStory.SprintOrder)
+                .Select(userStory => new ActiveSprintUserStory
+                {
+                    Id = userStory.Id,
+                    Name = userStory.Subject,
+                    StatusName = userStory.StatusExtraInfo?.Name,
+                    IsClosed = userStory.IsClosed,
+                    UserStoryRef = userStory.Ref,
+                    TotalPoints = userStory.TotalPoints ?? 0,
+                })
         }).ToList();
 
         return new GetActiveSprintsResponse(mappedSprints);

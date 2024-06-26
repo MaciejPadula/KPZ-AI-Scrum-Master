@@ -16,6 +16,8 @@ import { SprintDataService } from '../sprints/services/sprint-data.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { Sprint } from '../sprints/models/sprint';
 import { EstimationPokerButtonComponent } from './components/estimation-poker-button/estimation-poker-button.component';
+import { SprintPreviewStateService } from './services/sprint-preview-state.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-project',
@@ -36,6 +38,9 @@ export class ProjectComponent implements OnInit {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly sprintPreviewDataService = inject(SprintDataService);
   private readonly toastService = inject(ToastService);
+  private readonly sprintPreviewStateService = inject(
+    SprintPreviewStateService
+  );
 
   #sprints = signal<Sprint[]>([]);
   public readonly sprints = this.#sprints.asReadonly();
@@ -48,13 +53,19 @@ export class ProjectComponent implements OnInit {
     return this.sprints()[0]?.sprintId ?? this.topSprintIdNotSet;
   });
 
-  public ngOnInit(): void {
+  constructor() {
     this.activatedRoute.params.subscribe((params) => {
       const projectId = params['projectId'];
       this.#projectId.set(projectId);
-
-      this.loadSprintPreviews(projectId);
     });
+
+    this.sprintPreviewStateService.refresh$
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.loadSprintPreviews(this.#projectId()));
+  }
+
+  public ngOnInit(): void {
+    this.loadSprintPreviews(this.#projectId());
   }
 
   private loadSprintPreviews(projectId: number): void {

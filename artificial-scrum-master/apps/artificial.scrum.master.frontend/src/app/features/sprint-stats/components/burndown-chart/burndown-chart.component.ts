@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SprintDayStats } from '../../models/GetSprintStats';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgApexchartsModule, ApexOptions } from 'ng-apexcharts';
-import { ThemeService } from 'apps/artificial.scrum.master.frontend/src/app/shared/services/theme.service';
+import { ThemeService } from '../../../../shared/services/theme.service';
 
 @Component({
   selector: 'app-burndown-chart',

@@ -22,6 +22,7 @@ internal class SprintUserStory
     public string? Subject { get; set; }
     [JsonPropertyName("ref")] public int Ref { get; set; }
     [JsonPropertyName("total_points")] public double? TotalPoints { get; set; }
+    [JsonPropertyName("sprint_order")] public int? SprintOrder { get; set; }
 }
 
 internal class ProjectExtraInfo
